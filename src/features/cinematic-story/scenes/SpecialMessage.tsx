@@ -3,14 +3,17 @@ import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
 import { useStoryVariants } from '../animations/dynamicVariants';
 
 export const SpecialMessage = () => {
-  const { customMessage, name, relationship } = useBirthdayStore(state => state.config);
+  const { customMessage, name, relationship, gender } = useBirthdayStore(state => state.config);
   const variants = useStoryVariants();
   const words = customMessage ? customMessage.split(' ') : ['Wishing', 'you', 'the', 'best', 'day', 'ever!'];
 
+  const isMale = gender === 'male';
+  const isFemale = gender === 'female';
+
   // Adaptive typography based on relationship
   const typographyClass = 
-    relationship === 'partner' ? 'font-serif tracking-widest text-white/90' :
-    relationship === 'friend' ? 'font-sans font-black uppercase text-white tracking-tight' :
+    relationship === 'partner' ? 'font-serif tracking-widest text-white/90 italic' :
+    relationship === 'friend' ? 'font-sans font-black uppercase text-white tracking-tight italic' :
     'font-sans font-medium text-white/80';
 
   return (
@@ -25,7 +28,7 @@ export const SpecialMessage = () => {
         style={{ textShadow: 'var(--glow-effect)' }}
         variants={variants.item}
       >
-        For {name || 'You'},
+        For My {relationship === 'partner' ? (isMale ? 'Handsome King' : isFemale ? 'Beautiful Queen' : 'Everything') : relationship === 'friend' ? (isMale ? 'Legendary Brother' : isFemale ? 'Amazing Sister' : 'Bestie') : (name || 'You')},
       </motion.h2>
 
       <div className="flex flex-wrap justify-center max-w-4xl gap-x-4 gap-y-3">

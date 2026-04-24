@@ -37,7 +37,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
 
   // DYNAMIC CONFIGURATION ENGINE
   const { config, getAnimationPacing } = useBirthdayStore();
-  const { name, age, relationship, favoriteColor } = config;
+  const { name, age, relationship, favoriteColor, gender } = config;
   const pacing = getAnimationPacing();
   const speedMultiplier = pacing === 'fast' ? 0.7 : pacing === 'slow' ? 1.3 : 1;
 
@@ -77,49 +77,81 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
     setTimeout(() => setFlashWhite(false), 300);
   }, []);
 
-  const storyLines = useMemo(() => relationship === 'partner' ? [
-    "There's someone I've been thinking about...",
-    "Someone who makes ordinary moments feel extraordinary...",
-    "Someone whose smile lights up the darkest days...",
-    "I could have sent a simple message..."
-  ] : relationship === 'friend' ? [
-    "Hey! Guess what day it is?...",
-    "Yep, it's about time we celebrate you!",
-    "I couldn't just send a boring text...",
-    "So I built an entire experience..."
-  ] : [
-    "Today is a very special day...",
-    "Because we are celebrating someone truly wonderful...",
-    "Someone who brings so much joy to our lives...",
-    "I wanted to do something memorable..."
-  ], [relationship]);
+  const storyLines = useMemo(() => {
+    const isMale = gender === 'male';
+    const isFemale = gender === 'female';
 
-  const postChatLines = useMemo(() => relationship === 'friend' ? [
-    "Because you're not just any friend...",
-    "You deserve something epic...",
-    "So let's get this party started! 🎉",
-  ] : [
-    "But you are not just anyone to me...",
-    "You deserve something as special as you are...",
-    "So I stayed up, and I made this... just for you ❤️",
-  ], [relationship]);
+    if (relationship === 'partner') {
+      return [
+        "There's someone who has been the center of my world...",
+        `Someone who makes every second feel like a movie scene...`,
+        isMale ? "The man who redefined what strength and kindness mean to me..." : isFemale ? "The woman whose grace and beauty light up every room she enters..." : "The soul who makes me believe in magic every single day...",
+        "I could have just texted 'I love you'...",
+        "But a simple message could never hold all that I feel for you."
+      ];
+    }
+    if (relationship === 'friend') {
+      return [
+        "Alert! A legend has reached another level! 🚀",
+        "Wait, is it actually your birthday? Or is the calendar just lying? 😂",
+        isMale ? "To the guy who is responsible for 99% of my bad decisions..." : isFemale ? "To the girl who is basically the CEO of making me laugh..." : "To the human who is definitely too cool for this planet...",
+        "I thought about getting you a sensible gift...",
+        "But then I remembered... that's just not our style! 😎"
+      ];
+    }
+    return [
+      "Today is a day that belongs to history...",
+      `Because we are celebrating the ${isMale ? 'King' : isFemale ? 'Queen' : 'Icon'} of the family!`,
+      "Someone whose presence is a gift to every single one of us...",
+      "I wanted to build something that lasts as long as the memories we share...",
+      "So, sit back, relax, and enjoy the show! ✨"
+    ];
+  }, [relationship, gender]);
 
-  const finalLines = useMemo(() => relationship === 'partner' ? [
-    `My dearest ${name || 'Love'}`,
-    "I hope you felt every ounce of love in this...",
-    "You mean the world to me ✨",
-    "I can't wait for our beautiful future ahead 💖"
-  ] : relationship === 'friend' ? [
-    `Happy Birthday ${name || 'Bestie'}!`,
-    "Hope this put a huge smile on your face!",
-    "Let's make this year the craziest one yet 🎉",
-    "Stay awesome! 😎"
-  ] : [
-    `Dear ${name || 'You'}`,
-    "We all wanted to wish you the happiest of birthdays...",
-    "May this year bring you endless joy ✨",
-    "We love you so much! 💖"
-  ], [name, relationship]);
+  const postChatLines = useMemo(() => {
+    if (relationship === 'friend') return [
+      "Because you're not just any friend...",
+      "You're the person I can always count on for chaos and coffee! ☕️",
+      "You deserve something as epic and weird as our friendship...",
+      "So let's get this party started! 🎉",
+    ];
+    if (relationship === 'partner') return [
+      "But you are so much more than just a partner to me...",
+      "You are my safe haven, my greatest adventure, and my home.",
+      "I stayed up late, making sure every pixel was perfect... just like you.",
+      "Are you ready for the big reveal? ❤️",
+    ];
+    return [
+      "You bring so much warmth into our lives...",
+      "You deserve a celebration as bright as your smile.",
+      "We put our hearts into this, just for you...",
+      "Let the celebration begin! ✨",
+    ];
+  }, [relationship]);
+
+  const finalLines = useMemo(() => {
+    const isMale = gender === 'male';
+    const isFemale = gender === 'female';
+
+    if (relationship === 'partner') return [
+      `My dearest ${name || (isMale ? 'Prince' : isFemale ? 'Princess' : 'Love')}`,
+      "I hope you felt the heartbeat behind every animation...",
+      "You are my today, my tomorrow, and my always ✨",
+      "Happy Birthday, I love you infinitely! 💖"
+    ];
+    if (relationship === 'friend') return [
+      `Happy Birthday ${name || (isMale ? 'Bro' : isFemale ? 'Bestie' : 'Legend')}!`,
+      "May your day be filled with cake, chaos, and zero regrets!",
+      "I'm so lucky to have a partner-in-crime like you 🎉",
+      "Stay legendary! 😎"
+    ];
+    return [
+      `Dear ${name || 'Wonderful Human'}`,
+      "We all wanted to wish you a year of pure happiness...",
+      "May your kindness always come back to you tenfold ✨",
+      "We love you so much! 💖"
+    ];
+  }, [name, relationship, gender]);
 
   const primaryColor = favoriteColor || '#FF6B6B';
 
@@ -228,7 +260,15 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
             transition={{ duration: 1.5, ease: "easeOut" }}
             className="relative z-50 text-center max-w-3xl mx-auto px-6"
           >
-            <div className="text-3xl mb-8 animate-pulse opacity-60">💭</div>
+            <div className="flex justify-center mb-12">
+              <motion.div 
+                animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.8, 0.4] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="w-16 h-16 rounded-full border-2 border-primary/30 flex items-center justify-center text-3xl"
+              >
+                ✨
+              </motion.div>
+            </div>
             {(age ? [...storyLines.slice(0, -1), `As you celebrate your ${age}th year...`, storyLines[storyLines.length - 1]] : storyLines).map((line, i) => (
               <p
                 key={i}
@@ -304,25 +344,25 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                 initial={{ scale: 1.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 2, ease: "circOut" }}
-                className="text-center"
+                className="text-center px-4"
               >
-                <p className="text-2xl md:text-4xl text-muted-foreground mb-4 font-display italic">This is for you...</p>
-                <h2 className="font-display text-7xl md:text-9xl lg:text-[12rem] font-black animate-glow-pulse" style={{ color: primaryColor }}>
+                <p className="text-xl md:text-4xl text-muted-foreground mb-4 font-display italic">This is for you...</p>
+                <h2 className="font-display text-5xl sm:text-7xl md:text-9xl lg:text-[12rem] font-black animate-glow-pulse break-words leading-tight" style={{ color: primaryColor }}>
                   <KineticText text={name || 'You'} animation="zoom-in" delay={600} />
                 </h2>
               </motion.div>
             )}
 
             {revealStep === "grand-reveal" && (
-              <div className="text-center">
+              <div className="text-center px-4">
                 <Balloons count={20} />
                 <div className="flex justify-center mb-6"><HeartProgression stage={4} /></div>
-                <h1 className="font-display text-6xl md:text-8xl lg:text-[10rem] font-black mb-4">
+                <h1 className="font-display text-4xl sm:text-6xl md:text-8xl lg:text-[10rem] font-black mb-4 break-words leading-tight">
                   <span className="bg-gradient-to-r from-[var(--color-primary)] via-[hsl(45,100%,65%)] to-[hsl(200,80%,70%)] bg-clip-text text-transparent animate-gradient-shift">
                     Happy Birthday
                   </span>
                 </h1>
-                <h2 className="font-display text-7xl md:text-9xl lg:text-[12rem] font-black text-foreground animate-glow-pulse mt-4">
+                <h2 className="font-display text-5xl sm:text-7xl md:text-9xl lg:text-[12rem] font-black text-foreground animate-glow-pulse mt-4 break-words">
                   {name}!
                 </h2>
               </div>

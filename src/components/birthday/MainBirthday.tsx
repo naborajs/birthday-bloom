@@ -25,7 +25,7 @@ export const MainBirthday = () => {
 
   // Dynamic Store
   const { config, getMood } = useBirthdayStore();
-  const { name, age, customMessage, relationship, favoriteColor } = config;
+  const { name, age, customMessage, relationship, favoriteColor, gender } = config;
   const mood = getMood();
   const primaryColor = favoriteColor || '#FF6B6B';
 
@@ -84,22 +84,29 @@ export const MainBirthday = () => {
     }
   };
 
-  const dynamicWishes = relationship === 'partner' ? [
-    { emoji: "💖", wish: "To a lifetime of beautiful moments together!" },
-    { emoji: "✨", wish: "You are the best thing that ever happened to me." },
-    { emoji: "🌹", wish: "My love for you grows stronger every single day." },
-    { emoji: "🥂", wish: "Here's to us, and to your amazing year ahead!" }
-  ] : relationship === 'friend' ? [
-    { emoji: "😎", wish: "Stay awesome and never change!" },
-    { emoji: "🍻", wish: "To more crazy nights and epic memories!" },
-    { emoji: "🚀", wish: "May you crush all your goals this year!" },
-    { emoji: "🔥", wish: "Keep shining, you absolute legend!" }
-  ] : [
-    { emoji: "🌟", wish: "May your dreams take flight and reach the stars!" },
-    { emoji: "💖", wish: "Wishing you a year filled with love and happiness!" },
-    { emoji: "🎁", wish: "May life surprise you with the most wonderful gifts!" },
-    { emoji: "🌈", wish: "Here's to colorful days and magical moments ahead!" },
-  ];
+  const dynamicWishes = useMemo(() => {
+    const isMale = gender === 'male';
+    const isFemale = gender === 'female';
+
+    if (relationship === 'partner') return [
+      { emoji: "💖", wish: `To the ${isMale ? 'man' : isFemale ? 'woman' : 'soul'} of my dreams - you are my everything.` },
+      { emoji: "✨", wish: "Every day with you is a gift I never take for granted." },
+      { emoji: "🌹", wish: "I love you more than words could ever express." },
+      { emoji: "🥂", wish: "Here's to a lifetime of adventures, just you and me." }
+    ];
+    if (relationship === 'friend') return [
+      { emoji: "😎", wish: `Stay as legendary as you are, ${isMale ? 'man' : isFemale ? 'girl' : 'bestie'}!` },
+      { emoji: "🍻", wish: "May your glass always be full and your troubles be zero." },
+      { emoji: "🚀", wish: "To more epic nights that we'll probably forget! 😂" },
+      { emoji: "🔥", wish: "Keep killing it, you absolute icon!" }
+    ];
+    return [
+      { emoji: "🌟", wish: "May your light continue to shine on all of us." },
+      { emoji: "💖", wish: "Wishing you a year as beautiful as your heart." },
+      { emoji: "🎁", wish: "May life surprise you with endless joy and laughter." },
+      { emoji: "🌈", wish: "Here's to your brightest and best chapter yet!" },
+    ];
+  }, [relationship, gender]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -171,13 +178,13 @@ export const MainBirthday = () => {
           )}
         </motion.div>
 
-        <motion.h1 variants={itemVariants} className="font-display text-5xl md:text-8xl lg:text-9xl font-black mb-4">
+        <motion.h1 variants={itemVariants} className="font-display text-4xl sm:text-5xl md:text-8xl lg:text-9xl font-black mb-4 break-words leading-tight px-2">
           <span className="bg-gradient-to-r from-[var(--color-primary)] via-[hsl(45,100%,75%)] to-[hsl(200,80%,70%)] bg-clip-text text-transparent animate-gradient-shift drop-shadow-[0_4px_30px_rgba(255,255,255,0.3)]">
             {age ? `Happy ${age}th Birthday` : "Happy Birthday"}
           </span>
         </motion.h1>
 
-        <motion.h2 variants={itemVariants} className="font-display text-7xl md:text-[10rem] lg:text-[13rem] font-black text-foreground animate-glow-pulse mb-10">
+        <motion.h2 variants={itemVariants} className="font-display text-5xl sm:text-7xl md:text-[10rem] lg:text-[13rem] font-black text-foreground animate-glow-pulse mb-10 break-words leading-none px-2">
           <TypeWriter text={`${name}!`} speed={120} delay={1500} cursor={false} />
         </motion.h2>
 

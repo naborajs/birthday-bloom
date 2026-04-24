@@ -131,10 +131,10 @@ const MagicDust = ({ count }: { count: number }) => {
 
 const CakeSVG = ({ cake, split, candlesLit }: { cake: CakeOption; split: boolean; candlesLit: boolean }) => (
   <motion.div 
-    animate={{ rotateX: split ? 25 : 15, rotateY: split ? 5 : 0, scale: split ? 1.1 : 1 }}
+    animate={{ rotateX: split ? 20 : 5, rotateY: split ? 3 : 0, scale: split ? 1.1 : 1 }}
     transition={{ type: "spring", stiffness: 100, damping: 15 }}
     className="relative preserve-3d"
-    style={{ perspective: "1000px" }}
+    style={{ perspective: "1200px" }}
   >
     <svg viewBox="0 0 200 200" className="w-64 sm:w-80 md:w-[28rem] mx-auto drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)]">
       <defs>
@@ -161,37 +161,37 @@ const CakeSVG = ({ cake, split, candlesLit }: { cake: CakeOption; split: boolean
       <ellipse cx="100" cy="185" rx="90" ry="15" fill="black" opacity="0.3" filter="blur(8px)" />
 
       {/* Bottom Layer */}
-      <g style={{ transform: split ? "translateX(-20px) rotate(-5deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
-        <rect x="20" y="110" width="80" height="65" rx="12" fill={cake.layers[0]} filter="url(#cakeDepth)" />
-        <rect x="20" y="110" width="80" height="65" rx="12" fill="url(#layerGrad)" />
-        <path d="M20,110 Q60,130 100,110 L100,120 Q60,140 20,120 Z" fill={cake.frosting} opacity="0.9" />
+      <g style={{ transform: split ? "translateX(-25px) rotate(-8deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
+        <rect x="15" y="110" width="85" height="65" rx="12" fill={cake.layers[0]} filter="url(#cakeDepth)" />
+        <rect x="15" y="110" width="85" height="65" rx="12" fill="url(#layerGrad)" />
+        <path d="M15,110 Q57.5,130 100,110 L100,120 Q57.5,140 15,120 Z" fill={cake.frosting} opacity="0.9" />
       </g>
-      <g style={{ transform: split ? "translateX(20px) rotate(5deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
-        <rect x="100" y="110" width="80" height="65" rx="12" fill={cake.layers[0]} filter="url(#cakeDepth)" />
-        <rect x="100" y="110" width="80" height="65" rx="12" fill="url(#layerGrad)" />
-        <path d="M100,110 Q140,130 180,110 L180,120 Q140,140 100,120 Z" fill={cake.frosting} opacity="0.9" />
+      <g style={{ transform: split ? "translateX(25px) rotate(8deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
+        <rect x="100" y="110" width="85" height="65" rx="12" fill={cake.layers[0]} filter="url(#cakeDepth)" />
+        <rect x="100" y="110" width="85" height="65" rx="12" fill="url(#layerGrad)" />
+        <path d="M100,110 Q142.5,130 185,110 L185,120 Q142.5,140 100,120 Z" fill={cake.frosting} opacity="0.9" />
       </g>
 
       {/* Middle Layer */}
-      <g style={{ transform: split ? "translateX(-15px) rotate(-3deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
-        <rect x="35" y="65" width="65" height="55" rx="10" fill={cake.layers[1]} filter="url(#cakeDepth)" />
-        <rect x="35" y="65" width="65" height="55" rx="10" fill="url(#layerGrad)" />
-        <path d="M35,65 Q67,85 100,65 L100,75 Q67,95 35,75 Z" fill={cake.frosting} opacity="0.8" />
+      <g style={{ transform: split ? "translateX(-18px) rotate(-5deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
+        <rect x="30" y="65" width="70" height="55" rx="10" fill={cake.layers[1]} filter="url(#cakeDepth)" />
+        <rect x="30" y="65" width="70" height="55" rx="10" fill="url(#layerGrad)" />
+        <path d="M30,65 Q65,85 100,65 L100,75 Q65,95 30,75 Z" fill={cake.frosting} opacity="0.8" />
       </g>
-      <g style={{ transform: split ? "translateX(15px) rotate(3deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
-        <rect x="100" y="65" width="65" height="55" rx="10" fill={cake.layers[1]} filter="url(#cakeDepth)" />
-        <rect x="100" y="65" width="65" height="55" rx="10" fill="url(#layerGrad)" />
-        <path d="M100,65 Q133,85 165,65 L165,75 Q133,95 100,75 Z" fill={cake.frosting} opacity="0.8" />
+      <g style={{ transform: split ? "translateX(18px) rotate(5deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
+        <rect x="100" y="65" width="70" height="55" rx="10" fill={cake.layers[1]} filter="url(#cakeDepth)" />
+        <rect x="100" y="65" width="70" height="55" rx="10" fill="url(#layerGrad)" />
+        <path d="M100,65 Q135,85 170,65 L170,75 Q135,95 100,75 Z" fill={cake.frosting} opacity="0.8" />
       </g>
 
       {/* Top Layer */}
-      <g style={{ transform: split ? "translateX(-8px)" : "translateX(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
-        <rect x="50" y="30" width="50" height="45" rx="8" fill={cake.layers[2]} filter="url(#cakeDepth)" />
-        <rect x="50" y="30" width="50" height="45" rx="8" fill="url(#layerGrad)" />
+      <g style={{ transform: split ? "translateX(-12px) rotate(-3deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
+        <rect x="45" y="30" width="55" height="45" rx="8" fill={cake.layers[2]} filter="url(#cakeDepth)" />
+        <rect x="45" y="30" width="55" height="45" rx="8" fill="url(#layerGrad)" />
       </g>
-      <g style={{ transform: split ? "translateX(8px)" : "translateX(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
-        <rect x="100" y="30" width="50" height="45" rx="8" fill={cake.layers[2]} filter="url(#cakeDepth)" />
-        <rect x="100" y="30" width="50" height="45" rx="8" fill="url(#layerGrad)" />
+      <g style={{ transform: split ? "translateX(12px) rotate(3deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
+        <rect x="100" y="30" width="55" height="45" rx="8" fill={cake.layers[2]} filter="url(#cakeDepth)" />
+        <rect x="100" y="30" width="55" height="45" rx="8" fill="url(#layerGrad)" />
       </g>
 
       {/* Candles */}
@@ -299,31 +299,34 @@ export const CakeCutting = () => {
   const { fireCannon } = useConfetti();
   const { playBoom, playReveal, playPop, playWhoosh } = useSoundManager();
   
-  const { name, relationship } = useBirthdayStore(state => state.config);
+  const { name, relationship, gender } = useBirthdayStore(state => state.config);
 
   const quotes = useMemo(() => {
+    const isMale = gender === 'male';
+    const isFemale = gender === 'female';
+
     if (relationship === 'partner') return [
-      { text: `To my Love, ${name || 'You'}...`, animation: "zoom-in" as const },
-      { text: "My heart's favorite person", animation: "pop-out" as const },
-      { text: "The reason for all my smiles", animation: "float" as const },
-      { text: "Happy Birthday My Dear!", animation: "typewriter-burst" as const },
-      { text: `I love you infinitely 💖`, animation: "pop-out" as const },
+      { text: `My ${isMale ? 'Prince' : isFemale ? 'Princess' : 'Everything'}...`, animation: "zoom-in" as const },
+      { text: "Make a wish for our future...", animation: "float" as const },
+      { text: "I love you to the stars and back", animation: "pop-out" as const },
+      { text: "Happy Birthday My Love! ❤️", animation: "typewriter-burst" as const },
+      { text: `Forever Yours ✨`, animation: "pop-out" as const },
     ];
     if (relationship === 'friend') return [
       { text: `Yo ${name || 'Legend'}!`, animation: "pop-out" as const },
-      { text: "The Ultimate MVP", animation: "zoom-in" as const },
-      { text: "Ready for another crazy year?", animation: "stagger-up" as const },
-      { text: "Happy Birthday Buddy!", animation: "typewriter-burst" as const },
+      { text: "Ready to get older but 0% wiser? 😂", animation: "zoom-in" as const },
+      { text: "Wishing you zero hangovers tomorrow!", animation: "stagger-up" as const },
+      { text: "Happy Birthday Bestie!", animation: "typewriter-burst" as const },
       { text: `Let's make some noise! 🎉`, animation: "float" as const },
     ];
     return [
-      { text: `Dear ${name || 'You'}...`, animation: "zoom-in" as const },
+      { text: `For our ${isMale ? 'King' : isFemale ? 'Queen' : 'Favorite Human'}...`, animation: "zoom-in" as const },
       { text: "A truly wonderful soul", animation: "pop-out" as const },
-      { text: "Bringing joy to everyone", animation: "stagger-up" as const },
+      { text: "May your day be magical", animation: "stagger-up" as const },
       { text: "Happy Birthday!", animation: "typewriter-burst" as const },
       { text: `Stay blessed always ✨`, animation: "float" as const },
     ];
-  }, [name, relationship]);
+  }, [name, relationship, gender]);
 
   const handleSelectCake = useCallback((cake: CakeOption) => {
     if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(30);

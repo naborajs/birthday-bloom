@@ -12,10 +12,17 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
   const [typedText, setTypedText] = useState("");
   const { playType, playWhoosh, playReveal } = useSoundManager();
   const { config } = useBirthdayStore();
-  const { name, relationship, favoriteColor } = config;
+  const { name, relationship, favoriteColor, gender } = config;
+
+  const isMale = gender === 'male';
+  const isFemale = gender === 'female';
 
   const fullText = "Happy Birthday";
-  const retypeFullText = relationship === 'partner' ? "I wanted to say something more..." : relationship === 'friend' ? "Wait, this is too boring..." : "I have a special surprise...";
+  const retypeFullText = useMemo(() => {
+    if (relationship === 'partner') return isMale ? "To the man who holds my heart..." : isFemale ? "To the woman of my dreams..." : "To the soul who completes me...";
+    if (relationship === 'friend') return "Wait, a boring text? That's not us! 😂";
+    return "Something special is coming...";
+  }, [relationship, isMale, isFemale]);
 
   const primaryColor = favoriteColor || '#FF6B6B';
 
@@ -148,7 +155,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
               className="self-start max-w-[85%] px-5 py-4 rounded-[1.5rem] rounded-bl-none text-base font-medium shadow-lg"
               style={{ background: theme.bubbleOther, color: "rgba(255,255,255,0.9)" }}
             >
-              {relationship === 'partner' ? "I was just thinking about today..." : "I have something to show you..."}
+              {relationship === 'partner' ? "I stayed up late thinking about you... ❤️" : relationship === 'friend' ? "Prepare yourself for something epic... 🚀" : "I have a special surprise for you..."}
             </motion.div>
 
             {/* Typing Bubble */}
@@ -206,7 +213,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
               className="text-center mt-16 px-6"
             >
               <p className="text-3xl md:text-4xl font-display font-black leading-tight bg-gradient-to-r from-white via-white/80 to-white/60 bg-clip-text text-transparent">
-                {relationship === 'partner' ? "But words aren't enough for someone as beautiful as you..." : relationship === 'friend' ? "But a boring text is not how we do things..." : "But you deserve a much more magical surprise..."}
+                {relationship === 'partner' ? `Because ${isMale ? 'a King' : isFemale ? 'a Queen' : 'someone special'} like you deserves more than just words...` : relationship === 'friend' ? "Warning: High levels of legend-ness detected! ⚠️" : "But you deserve a much more magical surprise..."}
               </p>
               <motion.div 
                 animate={{ 

@@ -16,20 +16,22 @@
   <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-18.x-blue?style=for-the-badge&logo=react" alt="React"></a>
   <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind-3.x-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind"></a>
   <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/Vite-5.x-646CFF?style=for-the-badge&logo=vite" alt="Vite"></a>
-</p>
-
-[**Live Demo**](https://birthday-bloom.vercel.app) • [**Env Guide**](./docs/ENV_GUIDE.md) • [**Documentation Hub**](./docs/getting-started.md) • [**Architecture**](./docs/architecture.md)
-
-</div>
+- **Hyper-Personalization Engine**: Automatically adjusts narratives, titles, and icons based on gender (`male` | `female` | `other`) and relationship (`partner` | `friend` | `family`).
+- **Dynamic Narrative Branching**: Different "vibe" for each template—Funny/Sassy for friends, Romantic/Deep for partners, and Warm/Iconic for family.
+- **Cinematic Finite State Machine**: A phase-based orchestrator that ensures every transition is 100% frame-perfect.
+- **Sound Design Layer**: Integrated audio feedback for typing, whooshes, booms, and reveals.
+- **Zero-Config Deployment**: Fully operational via `.env` variables.
+- **60fps Performance**: Optimized SVG animations and Framer Motion spring physics.
 
 ---
 
 ## 📖 Table of Contents
 
 1. [Introduction](#-introduction)
-2. [Why Birthday Bloom?](#-why-birthday-bloom)
+2. [Hyper-Personalization & Templates](#-hyper-personalization--templates)
 3. [System Architecture](#-system-architecture)
 4. [Mastering the Lifecycle](#-mastering-the-lifecycle)
+5. [Environment Variables Guide](#-environment-variables-guide)
 5. [In-Depth Code Explanation](#-in-depth-code-explanation)
     1. [The Cinematic Intro](#1-cinematic-intro-cinematicintrotsx)
     2. [The Interactive Cake](#2-the-interactive-cake-cakecuttingtsx)
