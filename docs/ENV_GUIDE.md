@@ -1,77 +1,65 @@
-# 🌐 Environment & Personalization Guide
+# 🛠️ Complete Environment Configuration Guide
 
-This guide explains how to fully customize **Birthday Bloom** using environment variables and configuration files.
+This guide explains how to fully personalize the cinematic experience using the `.env` file. Since the setup wizard has been removed for a "Secret Surprise" launch, this file is mandatory for personalization.
 
-## 🛠️ The Dual-Tier System
+## 🗝️ Core Configuration Variables
 
-Birthday Bloom uses a prioritized configuration system:
+These variables define the heart of the experience.
 
-1.  **Environment Variables (`.env`)**: Highest priority. Ideal for deployment on Vercel or local development without touching code.
-2.  **Static Config (`src/config.ts`)**: Fallback priority. Good for hardcoding defaults.
-
----
-
-## 🆔 Setting the Birthday Name
-
-The name is resolved in this order:
-`Process ENV` ➔ `src/config.ts` ➔ `"YOU"` (Default)
-
-### Via `.env` (Recommended)
-Add this to your `.env` file:
-```bash
-VITE_BIRTHDAY_NAME="Sarah"
-```
+| Variable | Type | Description |
+| :--- | :--- | :--- |
+| `VITE_BIRTHDAY_NAME` | `String` | The name of the birthday person (e.g., "Naboraj"). |
+| `VITE_BIRTHDAY_AGE` | `Number` | The age they are turning (e.g., `25`). |
+| `VITE_BIRTHDAY_GENDER` | `String` | `male` or `female` (Influences some defaults). |
+| `VITE_BIRTHDAY_DATE` | `ISO Date` | The target date/time (e.g., `2026-04-24T00:00:00`). |
+| `VITE_BIRTHDAY_RELATIONSHIP` | `String` | **CRITICAL**: `partner`, `friend`, or `family`. Controls the entire design template. |
+| `VITE_BIRTHDAY_COLOR` | `Hex` | The main accent color (e.g., `#FF6B6B`). |
+| `VITE_BIRTHDAY_INTERESTS` | `CSV` | Comma-separated list (e.g., `Gaming,Coding,Cars`). |
+| `VITE_BIRTHDAY_CUSTOM_MESSAGE` | `String` | The long message shown in the final card. |
 
 ---
 
-## 🖼️ Managing Photos
+## 🎭 Template-Specific Designs
 
-You can manage photos in two ways: **Local Hosting** or **Cloud URLs**.
+The `VITE_BIRTHDAY_RELATIONSHIP` variable triggers a total UI overhaul:
 
-### 1. Cloud URLs (Easiest for Deployment)
-Directly link to images hosted on the web (Unsplash, Imgur, etc.).
-```bash
-VITE_PHOTO_1="https://example.com/photo1.jpg"
-VITE_PHOTO_2="https://example.com/photo2.jpg"
-VITE_PHOTO_3="https://example.com/photo3.jpg"
-```
+### 1. `partner` (Romantic)
+- **Design**: Elegant serif fonts, deep crimson/purple tones.
+- **Motion**: Dreamy, slow sweeping transitions.
+- **Particles**: Roses, Hearts, and soft glows.
 
-### 2. Local Assets (Best for Offline)
-1. Place your images in `src/assets/`.
-2. Name them `photo1.jpg`, `photo2.jpg`, and `photo3.jpg`.
-3. The app will automatically detect and use them if the ENV variables are empty.
+### 2. `friend` (Energetic)
+- **Design**: Bold Sans-Serif, vibrant neon tones, tight radii.
+- **Motion**: Fast, high-energy pops and bounces.
+- **Particles**: Confetti, Pizza, Beers, and Stars.
 
----
-
-## 🎵 Custom Background Music
-
-To change the celebratory music, provide a direct URL to an `.mp3` or `.wav` file:
-```bash
-VITE_SOUND_URL="https://example.com/birthday-song.mp3"
-```
+### 3. `family` (Warm)
+- **Design**: Modern clean fonts, soft gold/amber tones.
+- **Motion**: Gentle, graceful slides.
+- **Particles**: Balloons, Gift boxes, and Sparkles.
 
 ---
 
-## 🎨 Layout Illustration: Component Flow
+## 🖼️ Media & Sound
 
-```mermaid
-graph LR
-    A[.env Config] --> B{Resolver}
-    C[config.ts] --> B
-    B --> D[App Rendering]
-    D --> E[Cinematic Intro]
-    D --> F[Photo Gallery]
-    D --> G[Interactive Cake]
-```
+| Variable | Description |
+| :--- | :--- |
+| `VITE_PHOTO_1` | URL for the first gallery photo. |
+| `VITE_PHOTO_2` | URL for the second gallery photo. |
+| `VITE_PHOTO_3` | URL for the third gallery photo. |
+| `VITE_SOUND_URL` | Direct link to a celebratory MP3 file. |
 
 ---
 
-## 🚀 Deployment Checklist
+## ✅ Testing Your Setup
 
-When deploying to **Vercel**:
-1. Go to **Project Settings > Environment Variables**.
-2. Add `VITE_BIRTHDAY_NAME`, `VITE_PHOTO_1`, etc.
-3. Redeploy to apply changes.
+1. Create a `.env` file in the root directory.
+2. Paste the variables above with your custom values.
+3. **Restart the dev server**: Press `Ctrl+C` and then run `npm run dev`.
+4. The site should now bypass all setup screens and greet the user directly.
 
-> [!TIP]
-> Always use `VITE_` prefix for variables to make them accessible in the React client.
+---
+
+## 🚀 Deployment (Vercel/Netlify)
+
+When deploying, add these same variables to your host's **Environment Variables** settings. This ensures the site is personalized the moment it is visited.

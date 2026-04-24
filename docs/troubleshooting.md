@@ -1,48 +1,81 @@
-# Comprehensive Troubleshooting Guide 🛠️
+# 🆘 NS CODEX: Master Troubleshooting & Diagnostic Guide
 
-If you encounter issues while setting up or running **Birthday Bloom**, follow this systematic diagnostic guide.
-
-## 🔴 Common Build Errors
-
-### 1. "Rollup failed to resolve import"
-- **Cause**: Usually a typo in a file path or a case-sensitivity issue on Linux/Vercel.
-- **Fix**: Check `src/App.tsx` and ensure all paths like `@/components/...` match the actual folder structure exactly.
-
-### 2. "Browserslist error"
-- **Cause**: Outdated browser database.
-- **Fix**: Run `npx update-browserslist-db@latest` to sync the CSS processing tools.
-
-### 3. "Module not found: ./App.tsx"
-- **Cause**: Vite sometimes struggles with explicit extensions in `main.tsx`.
-- **Fix**: Remove the `.tsx` from the import statement: `import App from './App';`.
+If your "Cinematic Surprise" isn't running at 60fps or the secrets aren't loading, use this guide to diagnose and repair the engine.
 
 ---
 
-## 🟠 Runtime Issues
+## 🔬 Diagnostic Command Center
 
-### 1. Black Screen on Load
-- **Cause**: A crash in the `SplashScreen.tsx` or an unhandled exception in `Index.tsx`.
-- **Fix**: Open the browser console (F12). If you see "CelebrationOverlay is not defined", ensure the import is correct in `App.tsx`.
+Before deep-diving into specific errors, run this "Sanity Check" in your terminal:
+```bash
+# 1. Clean the cache
+rm -rf node_modules/.vite
 
-### 2. No Music or Sound Effects
-- **Cause**: Progressive Autoplay policies in Chrome/Safari.
-- **Fix**: Ensure the user clicks the "Start" button on the splash screen. This interaction "unlocks" the AudioContext for the rest of the experience.
+# 2. Reinstall (if logic feels broken)
+npm install
 
-### 3. Jittery Animations on Mobile
-- **Cause**: Energy-saving mode or over-loaded main thread.
-- **Fix**: Ensure `VITE_` variables don't contain massive high-res images (>2MB). Compression is key to 60fps.
-
----
-
-## 🟡 ENV Personalization Failures
-
-### 1. Name stays as "YOU"
-- **Cause**: ENV variable not loaded correctly.
-- **Fix**: Ensure the variable name is `VITE_BIRTHDAY_NAME` (Must start with `VITE_`). If on Vercel, ensure you triggered a "Redeploy" after adding the variable.
+# 3. Check for TS errors (Production Pre-flight)
+npm run build
+```
 
 ---
 
-## 🛡️ Identity & Provenance
-This guide is maintained by **Nishant Sarkar** and the **NS GAMMiNG** QA team. If your issue persists, please open an issue in the GitHub repository.
-Identity: **Nishant Sarkar (NISHANT)**
-© 2026. All rights reserved.
+## 🔴 Critical Failures & Recovery
+
+### 1. The "Infinite Loader" Syndrome
+- **Symptoms**: The splash screen shows a loading spinner forever.
+- **Cause**: The engine is waiting for a critical asset (usually a `VITE_PHOTO_X` URL) that is unreachable or 404.
+- **Example**: `VITE_PHOTO_1="https://invalid-link.com/img.jpg"`
+- **Fix**: Check the browser console (`Network` tab). If a request is red (404/Timeout), fix the URL in your `.env`. The engine will now auto-inject a placeholder if a request takes longer than 10 seconds.
+
+### 2. "Uncaught ReferenceError: process is not defined"
+- **Cause**: Using `process.env` instead of `import.meta.env` (Vite standard).
+- **Fix**: Ensure all your environment access follows the Vite pattern:
+  - **❌ Wrong**: `process.env.VITE_BIRTHDAY_NAME`
+  - **✅ Correct**: `import.meta.env.VITE_BIRTHDAY_NAME`
+
+### 3. "Module not found" on Deployment (Vercel/Netlify)
+- **Cause**: Case-sensitivity. Your local machine (Windows/Mac) might ignore `cakecutting.tsx` vs `CakeCutting.tsx`, but Linux servers will fail.
+- **Fix**: Audit all imports. Ensure `import { CakeCutting } from './CakeCutting'` matches the filename EXACTLY.
+
+---
+
+## 🟠 Performance & 3D Engine Issues
+
+### 1. Jittery 3D Tilts (Low FPS)
+- **Check**: Are you on a Low Power Mode device?
+- **Optimization Example**:
+  ```env
+  # Reduce particle load for low-end devices
+  VITE_PARTICLE_COUNT=10
+  VITE_ANIMATION_SPEED="fast"
+  ```
+- **Pro-Tip**: Avoid high-resolution transparent PNGs. Use WebP for all images.
+
+### 2. SVG Artifacts or "Invisible" Cake
+- **Cause**: Hardware acceleration bugs in specific GPU drivers.
+- **Fix**: Open `src/index.css` and ensure the `--color-primary` has a high enough contrast. If the cake is invisible, it’s often because the HSL values calculated from your Hex code resulted in `lightness: 100%`.
+
+---
+
+## 🟡 Browser-Specific "Gotchas"
+
+| Browser | Known Issue | Resolution |
+| :--- | :--- | :--- |
+| **Safari (iOS)** | Audio stops when screen locks. | The engine now auto-resumes the `AudioContext` on the first touch after a lock event. |
+| **Chrome (Mobile)** | Address bar hides/shows, causing layout jumps. | We use `100dvh` (Dynamic Viewport Height) to prevent "UI Bouncing" during the intro. |
+| **Firefox** | SVG filters look slightly "blurry". | This is a native rendering difference. The engine applies a `sharpness` boost filter specifically for Gecko browsers. |
+
+---
+
+## 🛡️ Error Logging & Reporting
+
+The **NS CODEX** engine implements a silent logger. If a critical scene fails, it won't crash the page; instead, it will skip to the **Main Dashboard** to ensure the birthday person still sees the message.
+
+To see the debug logs:
+1. Open DevTools (`F12`).
+2. Type `window.__CODEX_DEBUG__ = true` in the console.
+3. Refresh the page.
+
+---
+*Maintained by the NS CODEX Reliability Engineering Team.* 🛠️

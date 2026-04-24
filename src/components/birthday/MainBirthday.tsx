@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
-import { BIRTHDAY_NAME } from "@/config/birthday";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useConfetti } from "./Confetti";
 import { Balloons } from "./Balloons";
 import { Sparkles } from "./Sparkles";
 import { PhotoGallery } from "./PhotoGallery";
 import { HeartProgression } from "./HeartProgression";
-import { KineticText } from "./KineticText";
 import { TypeWriter } from "./TypeWriter";
 import { useSoundManager } from "./SoundManager";
 import { CakeCutting } from "./CakeCutting";
 import { HeartTree } from "./HeartTree";
+import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 
 export const MainBirthday = () => {
   const [visible, setVisible] = useState(false);
@@ -17,30 +17,45 @@ export const MainBirthday = () => {
   const [showName, setShowName] = useState(false);
   const [showEmojis, setShowEmojis] = useState(false);
   const [emojis, setEmojis] = useState<{ id: number; emoji: string; x: number }[]>([]);
-  const { fireConfetti, fireCannon } = useConfetti();
-  const { playReveal, playPop, playBoom, setBgVolume } = useSoundManager();
+  const [cakeClicks, setCakeClicks] = useState(0);
+  const [megaSurprise, setMegaSurprise] = useState(false);
+  
+  const { fireConfetti, fireCannon, fireStars } = useConfetti();
+  const { playReveal, playPop, playBoom, playWhoosh, setBgVolume } = useSoundManager();
+
+  // Dynamic Store
+  const { config, getMood } = useBirthdayStore();
+  const { name, age, customMessage, relationship, favoriteColor } = config;
+  const mood = getMood();
+  const primaryColor = favoriteColor || '#FF6B6B';
+
+  // Magnetic Effect for Buttons
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { damping: 20, stiffness: 150 });
+  const springY = useSpring(mouseY, { damping: 20, stiffness: 150 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const { clientX, clientY } = e;
+    const moveX = (clientX - window.innerWidth / 2) / 25;
+    const moveY = (clientY - window.innerHeight / 2) / 25;
+    mouseX.set(moveX);
+    mouseY.set(moveY);
+  };
 
   useEffect(() => {
-    setBgVolume(0.4); // Raise volume for the celebration
+    setBgVolume(0.4);
     setTimeout(() => setVisible(true), 100);
-    setTimeout(() => {
-      setHeroRevealed(true);
-      playBoom();
-    }, 600);
-    setTimeout(() => {
-      setShowName(true);
-      playReveal();
-    }, 1200);
+    setTimeout(() => { setHeroRevealed(true); playBoom(); }, 600);
+    setTimeout(() => { setShowName(true); playReveal(); }, 1200);
     setTimeout(() => setShowEmojis(true), 1800);
-    setTimeout(() => {
-      fireCannon();
-      playBoom();
-    }, 2000);
+    setTimeout(() => { fireCannon(); playBoom(); }, 2000);
   }, [playReveal, playBoom, setBgVolume, fireCannon]);
 
   const addEmoji = () => {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(50);
     playPop();
-    const emojiList = ["🎉", "🥳", "💖", "⭐", "🎈", "🎊", "🎁", "🎂", "✨", "💫"];
+    const emojiList = relationship === 'friend' ? ["🎉", "😎", "🍻", "🍕", "⭐", "🔥", "🎈", "🥳"] : ["🎉", "🥳", "💖", "⭐", "🎈", "🎊", "🎁", "🎂", "✨", "💫"];
     const newEmoji = {
       id: Date.now(),
       emoji: emojiList[Math.floor(Math.random() * emojiList.length)],
@@ -50,155 +65,222 @@ export const MainBirthday = () => {
     setTimeout(() => setEmojis((prev) => prev.filter((e) => e.id !== newEmoji.id)), 2000);
   };
 
+  const handleCakeClick = () => {
+    addEmoji();
+    const newCount = cakeClicks + 1;
+    setCakeClicks(newCount);
+    
+    // Easter Egg: Mega Surprise
+    if (newCount === 7) {
+      setMegaSurprise(true);
+      playBoom();
+      playReveal();
+      fireCannon();
+      fireStars();
+      fireConfetti({ particleCount: 500, spread: 200 });
+      if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 300]);
+      setTimeout(() => setMegaSurprise(false), 3000);
+      setCakeClicks(0);
+    }
+  };
+
+  const dynamicWishes = relationship === 'partner' ? [
+    { emoji: "💖", wish: "To a lifetime of beautiful moments together!" },
+    { emoji: "✨", wish: "You are the best thing that ever happened to me." },
+    { emoji: "🌹", wish: "My love for you grows stronger every single day." },
+    { emoji: "🥂", wish: "Here's to us, and to your amazing year ahead!" }
+  ] : relationship === 'friend' ? [
+    { emoji: "😎", wish: "Stay awesome and never change!" },
+    { emoji: "🍻", wish: "To more crazy nights and epic memories!" },
+    { emoji: "🚀", wish: "May you crush all your goals this year!" },
+    { emoji: "🔥", wish: "Keep shining, you absolute legend!" }
+  ] : [
+    { emoji: "🌟", wish: "May your dreams take flight and reach the stars!" },
+    { emoji: "💖", wish: "Wishing you a year filled with love and happiness!" },
+    { emoji: "🎁", wish: "May life surprise you with the most wonderful gifts!" },
+    { emoji: "🌈", wish: "Here's to colorful days and magical moments ahead!" },
+  ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.5 } },
+  };
+
+  const itemVariants = {
+    hidden: { y: 30, opacity: 0, filter: "blur(10px)" },
+    visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.8, ease: "easeOut" } },
+  };
+
   return (
     <div
-      className={`min-h-screen transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}
-      style={{
-        background: "linear-gradient(135deg, hsl(280, 60%, 8%) 0%, hsl(300, 40%, 15%) 30%, hsl(330, 50%, 12%) 60%, hsl(270, 50%, 10%) 100%)",
-      }}
+      onMouseMove={handleMouseMove}
+      className={`min-h-screen transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"} ${megaSurprise ? "animate-screen-shake" : ""}`}
+      style={{ background: 'transparent' }}
     >
-      <Balloons count={10} />
-      <Sparkles count={12} />
+      <Balloons count={15} />
+      <Sparkles count={15} />
 
-      {emojis.map((e) => (
-        <div
-          key={e.id}
-          className="fixed z-50 text-4xl pointer-events-none"
-          style={{ left: `${e.x}%`, bottom: "20%", animation: "emoji-float 2s ease-out forwards" }}
+      {/* Mega Surprise Overlay */}
+      {megaSurprise && (
+        <div className="fixed inset-0 z-[100] bg-white/20 backdrop-blur-sm pointer-events-none animate-flash flex items-center justify-center">
+          <h1 className="text-6xl md:text-9xl font-black text-white drop-shadow-2xl animate-bounce">MEGA SURPRISE! 🎊</h1>
+        </div>
+      )}
+
+      <AnimatePresence>
+        {emojis.map((e) => (
+          <motion.div
+            key={e.id}
+            initial={{ opacity: 0, y: 100, x: `${e.x}%` }}
+            animate={{ opacity: 1, y: -600, rotate: 360 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 2.5, ease: "easeOut" }}
+            className="fixed z-50 text-5xl pointer-events-none"
+          >
+            {e.emoji}
+          </motion.div>
+        ))}
+      </AnimatePresence>
+
+      {/* Hero Section */}
+      <motion.section 
+        variants={containerVariants}
+        initial="hidden"
+        animate={visible ? "visible" : "hidden"}
+        className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 py-20 overflow-hidden"
+      >
+        <motion.div 
+          style={{ x: springX, y: springY }}
+          className="absolute inset-0 pointer-events-none flex items-center justify-center"
         >
-          {e.emoji}
-        </div>
-      ))}
+          <div className="w-[150%] h-[150%] bg-[radial-gradient(circle,var(--color-primary)_0%,transparent_70%)] opacity-[0.05]" />
+        </motion.div>
 
-      {/* Hero Section — staggered reveal */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 py-20 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-[100px] animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
-        </div>
+        <motion.div variants={itemVariants} className="mb-6 relative z-10">
+          <div className="flex justify-center mb-8"><HeartProgression stage={4} /></div>
+          <motion.div 
+            whileHover={{ scale: 1.2, rotate: relationship === 'friend' ? [0, -10, 10, 0] : [0, -5, 5, 0] }}
+            whileTap={{ scale: 0.9 }}
+            className="text-8xl md:text-[10rem] mb-6 cursor-pointer drop-shadow-[0_0_50px_var(--color-primary)]" 
+            onClick={handleCakeClick}
+          >
+            🎂
+          </motion.div>
+          {cakeClicks > 0 && cakeClicks < 7 && (
+            <p className="text-primary font-bold animate-pulse">Click 🎂 {7 - cakeClicks} more times!</p>
+          )}
+        </motion.div>
 
-        {/* Full merged heart */}
-        <div className={`transition-all duration-1000 ${heroRevealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <div className="flex justify-center mb-4">
-            <HeartProgression stage={4} />
-          </div>
-          <div className="text-7xl md:text-8xl mb-6 animate-cake-glow hover:scale-110 transition-transform cursor-pointer" onClick={addEmoji}>🎂</div>
-        </div>
-
-        <h1 className={`font-display text-4xl md:text-7xl lg:text-8xl font-black mb-4 transition-all duration-1000 delay-300 ${heroRevealed ? "opacity-100 scale-100" : "opacity-0 scale-75"}`}>
-          <span className="bg-gradient-to-r from-[hsl(330,85%,65%)] via-[hsl(45,100%,75%)] to-[hsl(200,80%,70%)] bg-clip-text text-transparent animate-gradient-shift drop-shadow-[0_4px_25px_rgba(255,255,255,0.4)]">
-            <TypeWriter text="Happy Birthday" speed={90} delay={500} cursor={false} />
+        <motion.h1 variants={itemVariants} className="font-display text-5xl md:text-8xl lg:text-9xl font-black mb-4">
+          <span className="bg-gradient-to-r from-[var(--color-primary)] via-[hsl(45,100%,75%)] to-[hsl(200,80%,70%)] bg-clip-text text-transparent animate-gradient-shift drop-shadow-[0_4px_30px_rgba(255,255,255,0.3)]">
+            {age ? `Happy ${age}th Birthday` : "Happy Birthday"}
           </span>
-        </h1>
+        </motion.h1>
 
-        <h2 className={`font-display text-6xl md:text-9xl lg:text-[10rem] font-black text-foreground animate-glow-pulse transition-all duration-1000 ${showName ? "opacity-100 scale-100" : "opacity-0 scale-50"}`}>
-          <TypeWriter text={`${BIRTHDAY_NAME}!`} speed={120} delay={1200} cursor={false} />
-        </h2>
+        <motion.h2 variants={itemVariants} className="font-display text-7xl md:text-[10rem] lg:text-[13rem] font-black text-foreground animate-glow-pulse mb-10">
+          <TypeWriter text={`${name}!`} speed={120} delay={1500} cursor={false} />
+        </motion.h2>
 
-        <div className={`text-4xl md:text-5xl mt-8 space-x-3 transition-all duration-700 ${showEmojis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+        <motion.div variants={itemVariants} className="text-5xl md:text-7xl space-x-4">
           <span>🎈</span><span>🎉</span><span>🎊</span><span>🎁</span><span>🥳</span>
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
-      {/* Cake Cutting Celebration */}
+      {/* Components */}
       <CakeCutting />
-
-      {/* Photo Gallery */}
       <PhotoGallery />
 
       {/* Message Card */}
-      <section className="relative z-20 flex justify-center px-4 pb-20">
-        <div
-          className="max-w-2xl w-full rounded-3xl p-8 md:p-12 backdrop-blur-lg border border-[hsl(330,85%,60%,0.2)] shadow-2xl hover:border-[hsl(330,85%,60%,0.4)] transition-colors duration-500 overflow-hidden"
+      <section className="relative z-20 flex justify-center px-4 pb-32 pt-16">
+        <motion.div
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-4xl w-full p-12 md:p-20 backdrop-blur-3xl border relative overflow-hidden"
           style={{
-            background: "linear-gradient(135deg, hsl(280, 40%, 15%, 0.8), hsl(330, 40%, 12%, 0.8))",
-            boxShadow: "0 0 60px hsl(330, 85%, 60%, 0.15), 0 0 120px hsl(270, 60%, 55%, 0.1)",
+            background: `linear-gradient(165deg, rgba(30,30,30,0.9), rgba(10,10,10,0.98))`,
+            borderColor: `${primaryColor}40`,
+            boxShadow: `0 30px 100px -30px ${primaryColor}30`,
+            borderRadius: 'var(--card-radius, 2rem)',
           }}
         >
-          <div className="text-5xl text-center mb-6 animate-bounce">💌</div>
-          <h3 className="font-display text-2xl md:text-3xl font-bold text-center mb-6 bg-gradient-to-r from-[hsl(330,85%,70%)] to-[hsl(45,100%,70%)] bg-clip-text text-transparent drop-shadow-sm">
-            <TypeWriter text="A Birthday Message for You" speed={50} cursor={false} />
+          <div className="absolute top-0 right-0 p-8 opacity-10 text-9xl">✨</div>
+          <div className="text-7xl text-center mb-10 animate-bounce">💌</div>
+          <h3 className="font-display text-4xl md:text-6xl font-black text-center mb-12 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            {relationship === 'partner' ? "From My Heart" : relationship === 'friend' ? "Legendary Message" : "A Special Message"}
           </h3>
-          <div className="space-y-4 text-center text-lg md:text-xl text-foreground/90 leading-relaxed max-w-full break-words">
-            <p><TypeWriter text={`Dear ${BIRTHDAY_NAME},`} speed={45} delay={1500} cursor={false} /></p>
-            <p className="min-h-[4rem] sm:min-h-[3rem]"><TypeWriter text="On this special day, I want you to know how truly amazing you are. Your presence lights up every room, and your smile makes the world a brighter place. 🌟" speed={40} delay={3000} cursor={false} /></p>
-            <p className="min-h-[4rem] sm:min-h-[3rem]"><TypeWriter text="May this year bring you everything your heart desires — endless laughter, beautiful moments, and dreams come true. ✨" speed={40} delay={8500} cursor={false} /></p>
-            <p className="text-2xl md:text-3xl font-display font-bold bg-gradient-to-r from-[hsl(330,85%,60%)] to-[hsl(45,100%,60%)] bg-clip-text text-transparent pt-4 min-h-[3rem]">
-              <TypeWriter text="Happy Birthday! 🎉" speed={60} delay={12500} cursor={true} />
-            </p>
+          <div className="space-y-10 text-center text-2xl md:text-3xl text-foreground/90 leading-relaxed">
+            <p className="font-display font-black text-3xl md:text-5xl" style={{ color: primaryColor }}>Dear {name},</p>
+            {customMessage ? (
+              <p className="italic font-light text-3xl md:text-5xl leading-tight">"{customMessage}"</p>
+            ) : (
+              <div className="space-y-8">
+                <p>{mood === 'romantic' ? "My world is infinitely brighter because you are in it. Today is a celebration of the most beautiful soul I know." : mood === 'energetic' ? "You're not just older, you're better. A true legend deserves an epic day!" : "Today is a day of joy and gratitude as we celebrate you. You bring so much light into our lives."}</p>
+                <p className="text-xl md:text-2xl text-foreground/60">May this new chapter be your best one yet. ✨</p>
+              </div>
+            )}
+            <div className="pt-12">
+              <p className="text-4xl md:text-7xl font-display font-black bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent animate-gradient-shift">Happy Birthday! 🎉</p>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
-      {/* Wishes Section */}
-      <section className="relative z-20 px-4 pb-20">
-        <h3 className="font-display text-3xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-[hsl(200,80%,60%)] to-[hsl(270,60%,55%)] bg-clip-text text-transparent">
-          Birthday Wishes ✨
-        </h3>
-        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[
-            { emoji: "🌟", wish: "May your dreams take flight and reach the stars!" },
-            { emoji: "💖", wish: "Wishing you a year filled with love and happiness!" },
-            { emoji: "🎁", wish: "May life surprise you with the most wonderful gifts!" },
-            { emoji: "🌈", wish: "Here's to colorful days and magical moments ahead!" },
-          ].map((item, i) => (
-            <div
+      {/* Wishes */}
+      <section className="relative z-20 px-4 pb-32">
+        <h3 className="font-display text-5xl md:text-8xl font-black text-center mb-20 drop-shadow-xl" style={{ color: primaryColor }}>Wishes for You ✨</h3>
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+          {dynamicWishes.map((item, i) => (
+            <motion.div
               key={i}
-              className="rounded-2xl p-6 backdrop-blur-md border border-[hsl(270,60%,55%,0.2)] hover:scale-105 transition-transform duration-300 cursor-pointer"
-              style={{
-                background: "linear-gradient(135deg, hsl(280, 40%, 15%, 0.6), hsl(270, 40%, 12%, 0.6))",
-              }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.15 }}
+              whileHover={{ y: -15, scale: 1.03, boxShadow: `0 20px 50px -10px ${primaryColor}20` }}
+              className="p-10 backdrop-blur-2xl border cursor-pointer group bg-white/5 border-white/10"
+              style={{ borderRadius: 'var(--card-radius, 2rem)' }}
               onClick={addEmoji}
             >
-              <div className="text-4xl mb-3">{item.emoji}</div>
-              <p className="text-foreground/90 text-lg">{item.wish}</p>
-            </div>
+              <div className="text-6xl mb-6 group-hover:rotate-12 transition-transform">{item.emoji}</div>
+              <p className="text-foreground/95 text-2xl md:text-3xl font-semibold leading-relaxed">{item.wish}</p>
+            </motion.div>
           ))}
         </div>
       </section>
 
-      {/* Interactive buttons */}
-      <section className="relative z-20 flex flex-wrap justify-center gap-4 px-4 pb-10">
-        <button
-          onClick={() => { fireCannon(); addEmoji(); }}
-          className="px-8 py-4 rounded-full text-lg font-bold text-white transition-all duration-300 hover:scale-110 active:scale-95"
-          style={{ background: "linear-gradient(135deg, hsl(330, 85%, 55%), hsl(270, 60%, 50%))", boxShadow: "0 0 30px hsl(330, 85%, 55%, 0.4)" }}
-        >
-          🎊 Confetti Cannon!
-        </button>
-        <button
-          onClick={() => { fireConfetti(); addEmoji(); }}
-          className="px-8 py-4 rounded-full text-lg font-bold text-white transition-all duration-300 hover:scale-110 active:scale-95"
-          style={{ background: "linear-gradient(135deg, hsl(45, 100%, 50%), hsl(15, 85%, 55%))", boxShadow: "0 0 30px hsl(45, 100%, 50%, 0.4)" }}
-        >
-          🎈 Pop Celebration!
-        </button>
-        <button
-          onClick={() => { for (let i = 0; i < 5; i++) setTimeout(addEmoji, i * 200); }}
-          className="px-8 py-4 rounded-full text-lg font-bold text-white transition-all duration-300 hover:scale-110 active:scale-95"
-          style={{ background: "linear-gradient(135deg, hsl(200, 80%, 50%), hsl(160, 60%, 45%))", boxShadow: "0 0 30px hsl(200, 80%, 50%, 0.4)" }}
-        >
-          💫 Send Love!
-        </button>
+      {/* Magnetic Buttons Section */}
+      <section className="relative z-20 flex flex-wrap justify-center gap-8 px-4 pb-32">
+        {[
+          { label: "🎊 Cannon!", color: primaryColor, action: fireCannon },
+          { label: "🎈 Party!", color: "hsl(45, 100%, 50%)", action: fireConfetti },
+          { label: "💫 Love!", color: "hsl(200, 80%, 50%)", action: () => { for (let i = 0; i < 5; i++) setTimeout(addEmoji, i * 200); } }
+        ].map((btn, i) => (
+          <motion.button
+            key={i}
+            whileHover={{ scale: 1.15, rotate: i % 2 === 0 ? 3 : -3 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => { btn.action(); addEmoji(); }}
+            className="px-12 py-6 rounded-full text-2xl font-black text-white shadow-2xl transition-all"
+            style={{ 
+              background: `linear-gradient(135deg, ${btn.color}, ${btn.color}dd)`,
+              boxShadow: `0 15px 45px -10px ${btn.color}60` 
+            }}
+          >
+            {btn.label}
+          </motion.button>
+        ))}
       </section>
 
-      {/* Grand Finale / Heart Tree Section */}
-      <section className="relative z-20 flex justify-center px-4 pb-20 pt-10">
-        <div className="w-full flex justify-center">
-          <HeartTree delay={500} />
-        </div>
-      </section>
+      <HeartTree delay={500} />
 
-      <footer className="relative z-20 text-center py-12 pb-24 text-muted-foreground bg-gradient-to-t from-black/40 to-transparent">
-        <p className="text-xl md:text-2xl drop-shadow-md">
-          Made with ❤️ for <span className="font-display font-bold text-foreground text-2xl md:text-3xl bg-gradient-to-r from-[hsl(330,85%,70%)] to-[hsl(45,100%,70%)] bg-clip-text text-transparent">{BIRTHDAY_NAME}</span>
-        </p>
-        <div className="text-4xl mt-6 space-x-3 drop-shadow-lg">
-          <span className="animate-bounce inline-block" style={{ animationDelay: "0ms" }}>🎂</span>
-          <span className="animate-bounce inline-block" style={{ animationDelay: "150ms" }}>🎈</span>
-          <span className="animate-bounce inline-block" style={{ animationDelay: "300ms" }}>💖</span>
-          <span className="animate-bounce inline-block" style={{ animationDelay: "450ms" }}>🎈</span>
-          <span className="animate-bounce inline-block" style={{ animationDelay: "600ms" }}>🎂</span>
+      <footer className="relative z-20 text-center py-32 bg-gradient-to-t from-black to-transparent">
+        <motion.p className="text-3xl md:text-5xl font-light">Made with ❤️ for <span className="font-display font-black text-foreground" style={{ color: primaryColor }}>{name}</span></motion.p>
+        <div className="text-6xl mt-12 space-x-6">
+          {["🎂", "🎈", "💖", "🎈", "🎂"].map((emoji, i) => (
+            <motion.span key={i} animate={{ y: [0, -30, 0], scale: [1, 1.2, 1] }} transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.3 }} className="inline-block">{emoji}</motion.span>
+          ))}
         </div>
       </footer>
     </div>

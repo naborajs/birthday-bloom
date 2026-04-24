@@ -1,209 +1,228 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useSoundManager } from "./SoundManager";
+import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 
 interface FakeChatSceneProps {
   onComplete: () => void;
 }
 
 export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
-  const [phase, setPhase] = useState<
-    "appear" | "typing" | "typed" | "cursor-move" | "cursor-hover" | "deleting" | "deleted" | "retype" | "message" | "fadeout"
-  >("appear");
+  const [phase, setPhase] = useState<"typing" | "deleting" | "retype" | "special" | "done">("typing");
   const [typedText, setTypedText] = useState("");
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [showCursor, setShowCursor] = useState(false);
-  const [fadeOut, setFadeOut] = useState(false);
-  const [retypeText, setRetypeText] = useState("");
   const { playType, playWhoosh, playReveal } = useSoundManager();
+  const { config } = useBirthdayStore();
+  const { name, relationship, favoriteColor } = config;
 
   const fullText = "Happy Birthday";
-  const retypeFullText = "I could have sent this…";
+  const retypeFullText = relationship === 'partner' ? "I wanted to say something more..." : relationship === 'friend' ? "Wait, this is too boring..." : "I have a special surprise...";
+
+  const primaryColor = favoriteColor || '#FF6B6B';
 
   useEffect(() => {
-    const timers: ReturnType<typeof setTimeout>[] = [];
+    let isMounted = true;
 
-    // Phase 1: Chat appears (0-1s)
-    timers.push(setTimeout(() => {
-      setPhase("typing");
-      playWhoosh();
-    }, 1000));
-
-    // Phase 2: Type "Happy Birthday" (1-3s)
-    for (let i = 0; i < fullText.length; i++) {
-      timers.push(setTimeout(() => {
-        setTypedText(fullText.slice(0, i + 1));
-        playType();
-      }, 1000 + i * 120));
-    }
-
-    const typeEnd = 1000 + fullText.length * 120;
-
-    // Phase 3: Cursor moves toward send (3-5s)
-    timers.push(setTimeout(() => {
-      setPhase("cursor-move");
-      setShowCursor(true);
-      setCursorPos({ x: 50, y: 75 });
-      playWhoosh();
-    }, typeEnd + 300));
-    timers.push(setTimeout(() => setCursorPos({ x: 80, y: 68 }), typeEnd + 800));
-    timers.push(setTimeout(() => setCursorPos({ x: 90, y: 63 }), typeEnd + 1400));
-
-    // Phase 4: Hover near send (5-6.5s)
-    timers.push(setTimeout(() => {
-      setPhase("cursor-hover");
-      setCursorPos({ x: 93, y: 61 });
-    }, typeEnd + 2000));
-
-    // Phase 5: Cursor pulls away, start deleting (6.5-8.5s)
-    timers.push(setTimeout(() => {
-      setShowCursor(false);
-      setPhase("deleting");
-    }, typeEnd + 3500));
-
-    for (let i = fullText.length; i >= 0; i--) {
-      timers.push(setTimeout(() => {
+    const runSequence = async () => {
+      await new Promise(r => setTimeout(r, 1000));
+      for (let i = 0; i <= fullText.length; i++) {
+        if (!isMounted) return;
         setTypedText(fullText.slice(0, i));
         playType();
-      }, typeEnd + 3500 + (fullText.length - i) * 80));
-    }
+        if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(10);
+        await new Promise(r => setTimeout(r, 120));
+      }
 
-    const deleteEnd = typeEnd + 3500 + fullText.length * 80;
-
-    // Phase 6: Pause after deletion
-    timers.push(setTimeout(() => setPhase("deleted"), deleteEnd + 200));
-
-    // Phase 7: Retype emotional text
-    timers.push(setTimeout(() => setPhase("retype"), deleteEnd + 1000));
-    for (let i = 0; i < retypeFullText.length; i++) {
-      timers.push(setTimeout(() => {
-        setRetypeText(retypeFullText.slice(0, i + 1));
+      await new Promise(r => setTimeout(r, 2000));
+      
+      setPhase("deleting");
+      for (let i = fullText.length; i >= 0; i--) {
+        if (!isMounted) return;
+        setTypedText(fullText.slice(0, i));
         playType();
-      }, deleteEnd + 1000 + i * 70));
-    }
+        await new Promise(r => setTimeout(r, 60));
+      }
 
-    const retypeEnd = deleteEnd + 1000 + retypeFullText.length * 70;
+      await new Promise(r => setTimeout(r, 800));
 
-    // Phase 8: Show "but you deserve something more special"
-    timers.push(setTimeout(() => {
-      setPhase("message");
+      setPhase("retype");
+      for (let i = 0; i <= retypeFullText.length; i++) {
+        if (!isMounted) return;
+        setTypedText(retypeFullText.slice(0, i));
+        playType();
+        if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(10);
+        await new Promise(r => setTimeout(r, 80));
+      }
+
+      await new Promise(r => setTimeout(r, 1200));
+
+      setPhase("special");
       playReveal();
-    }, retypeEnd + 800));
 
-    // Phase 9: Fade out
-    timers.push(setTimeout(() => {
-      setFadeOut(true);
-      setPhase("fadeout");
+      await new Promise(r => setTimeout(r, 4500));
+      
       playWhoosh();
-    }, retypeEnd + 4000));
+      onComplete();
+    };
 
-    timers.push(setTimeout(() => onComplete(), retypeEnd + 5500));
+    runSequence();
+    return () => { isMounted = false; };
+  }, [onComplete, playType, playWhoosh, playReveal, retypeFullText]);
 
-    return () => timers.forEach(clearTimeout);
-  }, [onComplete, playType, playWhoosh, playReveal]);
-
-  const isTypingPhase = phase === "typing" || phase === "typed";
-  const showRetypeInInput = phase === "retype" || phase === "message" || phase === "fadeout";
+  // Design Tokens
+  const theme = useMemo(() => {
+    if (relationship === 'partner') return {
+      bg: "rgba(30, 10, 20, 0.95)",
+      border: "rgba(255, 100, 150, 0.2)",
+      headerBg: "rgba(255, 255, 255, 0.05)",
+      bubbleOther: "rgba(255, 255, 255, 0.1)",
+      bubbleMe: `${primaryColor}40`,
+      icon: "💖",
+      status: "typing love notes...",
+    };
+    if (relationship === 'friend') return {
+      bg: "rgba(10, 15, 25, 0.98)",
+      border: "rgba(0, 200, 255, 0.2)",
+      headerBg: "rgba(255, 255, 255, 0.03)",
+      bubbleOther: "rgba(255, 255, 255, 0.08)",
+      bubbleMe: `${primaryColor}60`,
+      icon: "😎",
+      status: "setting up the vibe...",
+    };
+    return {
+      bg: "rgba(25, 20, 15, 0.95)",
+      border: "rgba(255, 200, 100, 0.2)",
+      headerBg: "rgba(255, 255, 255, 0.05)",
+      bubbleOther: "rgba(255, 255, 255, 0.1)",
+      bubbleMe: `${primaryColor}40`,
+      icon: "🎈",
+      status: "sending warm vibes...",
+    };
+  }, [relationship, primaryColor]);
 
   return (
-    <div className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-1000 ${fadeOut ? "opacity-0" : "opacity-100"}`}>
-      <div className="relative w-[90vw] max-w-md animate-slide-up-fade" style={{ animationDuration: "0.6s" }}>
-        {/* Phone frame */}
-        <div className="rounded-2xl overflow-hidden shadow-2xl border border-border/30" style={{ background: "hsl(280, 40%, 10%)" }}>
-          {/* Chat header */}
-          <div className="px-4 py-3 flex items-center gap-3 border-b border-border/20" style={{ background: "hsl(280, 40%, 12%)" }}>
-            <div className="w-9 h-9 rounded-full bg-primary/30 flex items-center justify-center text-sm">💖</div>
+    <div className="fixed inset-0 flex items-center justify-center p-4" style={{ perspective: "1500px" }}>
+      <motion.div 
+        initial={{ scale: 0.8, opacity: 0, y: 100, rotateX: 30 }}
+        animate={{ scale: 1, opacity: 1, y: 0, rotateX: 5 }}
+        exit={{ scale: 1.2, opacity: 0, filter: "blur(40px)", rotateX: -20 }}
+        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+        className="w-full max-w-md preserve-3d"
+      >
+        <div 
+          className="rounded-[3rem] overflow-hidden shadow-[0_60px_120px_-20px_rgba(0,0,0,0.8)] border backdrop-blur-2xl" 
+          style={{ background: theme.bg, borderColor: theme.border }}
+        >
+          {/* Header */}
+          <div className="px-8 py-6 flex items-center gap-4 border-b" style={{ background: theme.headerBg, borderColor: theme.border }}>
+            <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center text-2xl shadow-xl border border-white/10">
+              {theme.icon}
+            </div>
             <div>
-              <p className="text-foreground text-sm font-semibold">My Special Person</p>
-              <p className="text-xs" style={{ color: "hsl(120, 60%, 60%)" }}>online</p>
-            </div>
-            <div className="ml-auto flex gap-2 text-muted-foreground/40">
-              <span>📞</span><span>📹</span>
-            </div>
-          </div>
-
-          {/* Chat body */}
-          <div className="px-4 py-6 min-h-[220px] flex flex-col justify-end gap-2">
-            <div className="self-start max-w-[70%] px-3 py-2 rounded-xl rounded-bl-sm text-sm text-foreground/80" style={{ background: "hsl(280, 30%, 18%)" }}>
-              Hey! 💕
-            </div>
-            <div className="self-start max-w-[70%] px-3 py-2 rounded-xl rounded-bl-sm text-sm text-foreground/80" style={{ background: "hsl(280, 30%, 18%)" }}>
-              I have something to tell you...
-            </div>
-
-            {/* Typing indicator */}
-            {isTypingPhase && typedText.length === 0 && (
-              <div className="self-end flex gap-1 px-4 py-3 rounded-xl rounded-br-sm" style={{ background: "hsl(330, 50%, 25%)" }}>
-                <span className="w-2 h-2 rounded-full bg-foreground/50 animate-bounce" style={{ animationDelay: "0ms" }} />
-                <span className="w-2 h-2 rounded-full bg-foreground/50 animate-bounce" style={{ animationDelay: "150ms" }} />
-                <span className="w-2 h-2 rounded-full bg-foreground/50 animate-bounce" style={{ animationDelay: "300ms" }} />
+              <p className="text-white font-black tracking-tight text-lg">{name || 'Special Someone'}</p>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#22c55e]" />
+                <p className="text-xs text-green-500/80 font-bold uppercase tracking-widest">{theme.status}</p>
               </div>
-            )}
+            </div>
+            <div className="ml-auto flex gap-5 text-white/30">
+              <span className="text-xl hover:text-white transition-colors cursor-pointer">📞</span>
+              <span className="text-xl hover:text-white transition-colors cursor-pointer">📹</span>
+            </div>
           </div>
 
-          {/* Input bar */}
-          <div className="px-3 py-3 flex items-center gap-2 border-t border-border/20" style={{ background: "hsl(280, 40%, 9%)" }}>
-            <div className="flex-1 rounded-full px-4 py-2.5 text-sm text-foreground min-h-[40px] flex items-center" style={{ background: "hsl(280, 30%, 15%)" }}>
-              {showRetypeInInput && retypeText ? (
-                <span className="italic" style={{ color: "hsl(280, 10%, 65%)" }}>
-                  {retypeText}
-                  {phase === "retype" && <span className="inline-block w-[2px] h-4 ml-0.5 bg-primary animate-blink align-middle" />}
-                </span>
-              ) : typedText ? (
-                <span>
-                  {typedText}
-                  <span className="inline-block w-[2px] h-4 ml-0.5 bg-primary animate-blink align-middle" />
-                </span>
-              ) : (
-                <span className="text-muted-foreground/50 flex items-center">
-                  Type a message...
-                  {(phase === "appear" || phase === "deleted") && (
-                    <span className="inline-block w-[2px] h-4 ml-0.5 bg-primary animate-blink align-middle" />
-                  )}
-                </span>
-              )}
-            </div>
-            <button
-              className="w-10 h-10 rounded-full flex items-center justify-center text-primary-foreground transition-all duration-300"
-              style={{
-                background: phase === "cursor-hover" ? "hsl(330, 85%, 55%)" : "hsl(330, 85%, 45%)",
-                transform: phase === "cursor-hover" ? "scale(1.15)" : "scale(1)",
-                boxShadow: phase === "cursor-hover" ? "0 0 20px hsl(330, 85%, 55%, 0.5)" : "none",
-              }}
+          {/* Body */}
+          <div className="px-8 py-10 min-h-[300px] flex flex-col justify-end gap-4">
+            <motion.div 
+              initial={{ opacity: 0, x: -30, scale: 0.9 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              className="self-start max-w-[85%] px-5 py-4 rounded-[1.5rem] rounded-bl-none text-base font-medium shadow-lg"
+              style={{ background: theme.bubbleOther, color: "rgba(255,255,255,0.9)" }}
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-              </svg>
-            </button>
+              {relationship === 'partner' ? "Hey my love... ❤️" : relationship === 'friend' ? "Yoooo! 👋" : "Hi there! ✨"}
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, x: -30, scale: 0.9 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ delay: 0.5 }}
+              className="self-start max-w-[85%] px-5 py-4 rounded-[1.5rem] rounded-bl-none text-base font-medium shadow-lg"
+              style={{ background: theme.bubbleOther, color: "rgba(255,255,255,0.9)" }}
+            >
+              {relationship === 'partner' ? "I was just thinking about today..." : "I have something to show you..."}
+            </motion.div>
+
+            {/* Typing Bubble */}
+            <AnimatePresence>
+              {(phase === "typing" || phase === "retype") && (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.5, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.5, y: 20 }}
+                  className="self-end px-6 py-4 rounded-[1.5rem] rounded-br-none flex gap-2 shadow-2xl"
+                  style={{ background: theme.bubbleMe }}
+                >
+                  <motion.div animate={{ opacity: [0.3, 1, 0.3], scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 0.8 }} className="w-2.5 h-2.5 rounded-full bg-white" />
+                  <motion.div animate={{ opacity: [0.3, 1, 0.3], scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 0.8, delay: 0.2 }} className="w-2.5 h-2.5 rounded-full bg-white" />
+                  <motion.div animate={{ opacity: [0.3, 1, 0.3], scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 0.8, delay: 0.4 }} className="w-2.5 h-2.5 rounded-full bg-white" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Input */}
+          <div className="px-6 py-6 bg-black/40 border-t" style={{ borderColor: theme.border }}>
+            <div className="flex items-center gap-4">
+              <div className="flex-1 rounded-[2rem] px-6 py-4 text-sm bg-white/5 border border-white/10 flex items-center min-h-[56px] shadow-inner">
+                <span className={`text-base tracking-tight ${phase === "retype" || phase === "special" ? "text-white/60 italic font-light" : "text-white font-medium"}`}>
+                  {typedText}
+                  <motion.span 
+                    animate={{ opacity: [0, 1, 0] }}
+                    transition={{ repeat: Infinity, duration: 0.6 }}
+                    className="inline-block w-[2px] h-5 ml-1 bg-primary align-middle shadow-[0_0_10px_var(--color-primary)]"
+                  />
+                </span>
+              </div>
+              <motion.div 
+                animate={(phase === "typing" || phase === "retype") && typedText.length > 5 ? { scale: [1, 1.15, 1], rotate: [0, -5, 5, 0] } : {}}
+                transition={{ duration: 1, repeat: Infinity }}
+                className="w-14 h-14 rounded-full flex items-center justify-center text-white shadow-2xl cursor-pointer"
+                style={{ background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}dd)` }}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                </svg>
+              </motion.div>
+            </div>
           </div>
         </div>
 
-        {/* Animated fake cursor */}
-        {showCursor && (
-          <div
-            className="absolute w-5 h-5 pointer-events-none z-50 transition-all ease-in-out"
-            style={{
-              left: `${cursorPos.x}%`,
-              top: `${cursorPos.y}%`,
-              transitionDuration: "700ms",
-              filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))",
-            }}
-          >
-            <svg viewBox="0 0 24 24" fill="white" stroke="black" strokeWidth="1">
-              <path d="M5 3l14 8-6 2-4 6z" />
-            </svg>
-          </div>
-        )}
-
-        {/* Emotional message */}
-        {(phase === "message" || phase === "fadeout") && (
-          <div className="text-center mt-8 animate-slide-up-fade">
-            <p className="text-lg md:text-xl font-display text-foreground/90 italic mb-2" style={{ textShadow: "0 0 30px hsl(330, 85%, 60%, 0.3)" }}>
-              but you deserve something more special...
-            </p>
-            <p className="text-sm text-muted-foreground/60 animate-pulse">✨</p>
-          </div>
-        )}
-      </div>
+        {/* Special Message Below */}
+        <AnimatePresence>
+          {(phase === "special") && (
+            <motion.div 
+              initial={{ opacity: 0, y: 30, scale: 0.8, filter: "blur(10px)" }}
+              animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, scale: 1.2, filter: "blur(20px)" }}
+              className="text-center mt-16 px-6"
+            >
+              <p className="text-3xl md:text-4xl font-display font-black leading-tight bg-gradient-to-r from-white via-white/80 to-white/60 bg-clip-text text-transparent">
+                {relationship === 'partner' ? "But words aren't enough for someone as beautiful as you..." : relationship === 'friend' ? "But a boring text is not how we do things..." : "But you deserve a much more magical surprise..."}
+              </p>
+              <motion.div 
+                animate={{ 
+                  scale: [1, 1.3, 1], 
+                  rotate: [0, 180, 360],
+                  filter: ["drop-shadow(0 0 10px white)", "drop-shadow(0 0 30px white)", "drop-shadow(0 0 10px white)"]
+                }}
+                transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                className="mt-8 text-4xl"
+              >
+                ✨
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 };

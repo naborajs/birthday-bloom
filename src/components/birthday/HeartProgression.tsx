@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import { BIRTHDAY_NAME } from "@/config/birthday";
 import { Snowflake, Heart, Sparkles, Star } from "lucide-react";
+import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 
 interface HeartProgressionProps {
   stage: 1 | 2 | 3 | 4;
@@ -85,6 +85,7 @@ const FourCornerMerge = ({ onDone }: { onDone: () => void }) => {
   const heartRefs = useRef<(HTMLDivElement | null)[]>([null, null, null, null]);
   const particleIdRef = useRef(0);
   const rafRef = useRef<number>(0);
+  const { name } = useBirthdayStore(state => state.config);
 
   useEffect(() => {
     const t1 = setTimeout(() => setPhase("merging"), 100);
@@ -252,11 +253,11 @@ const FourCornerMerge = ({ onDone }: { onDone: () => void }) => {
         </div>
       ))}
 
-      {/* "Love You Dear Riya" Personalized Text */}
+      {/* Personalized Text */}
       {showText && (
         <div className="z-40 mt-2 animate-love-text-reveal text-center px-4">
           <span className="font-display text-xl sm:text-2xl md:text-5xl font-black bg-gradient-to-r from-[hsl(330,85%,65%)] via-[hsl(350,90%,70%)] to-[hsl(330,85%,60%)] bg-clip-text text-transparent animate-glow-pulse whitespace-nowrap leading-normal">
-            {`Love You Dear ${BIRTHDAY_NAME}`}
+            {`Love You Dear ${name || 'One'}`}
           </span>
         </div>
       )}
