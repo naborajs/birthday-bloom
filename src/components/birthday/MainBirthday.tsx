@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useConfetti } from "./Confetti";
 import { Balloons } from "./Balloons";
@@ -8,6 +8,12 @@ import { HeartProgression } from "./HeartProgression";
 import { TypeWriter } from "./TypeWriter";
 import { useSoundManager } from "./SoundManager";
 import { CakeCutting } from "./CakeCutting";
+import { HeartTree } from "./HeartTree";
+import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
+import { FireflyEffect } from "./FireflyEffect";
+import { FloatingOrbs } from "./FloatingOrbs";
+import { ShootingStars } from "./ShootingStars";
+import { GlitchEffect } from "./GlitchEffect";
 import { HeartTree } from "./HeartTree";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 

@@ -9,6 +9,10 @@ import { FloatingElements } from "@/components/birthday/FloatingElements";
 import { MorphingElements } from "@/components/birthday/MorphingElements";
 import { EnhancedFloatingElements } from "@/components/birthday/EnhancedFloatingElements";
 import { SparkleRain } from "@/components/birthday/SparkleRain";
+import { FireflyEffect } from "@/components/birthday/FireflyEffect";
+import { FloatingOrbs } from "@/components/birthday/FloatingOrbs";
+import { ShootingStars } from "@/components/birthday/ShootingStars";
+import { AnimatedGradient } from "@/components/birthday/AnimatedGradient";
 
 type Phase = "splash" | "intro" | "main";
 
@@ -27,7 +31,15 @@ const Index = () => {
       <FloatingElements />
       <MorphingElements />
       <EnhancedFloatingElements />
-      {phase === "main" && <SparkleRain intensity={15} />}
+      <AnimatedGradient />
+      {phase === "main" && (
+        <>
+          <SparkleRain intensity={15} />
+          <FireflyEffect intensity={12} />
+          <FloatingOrbs count={6} />
+          <ShootingStars count={8} />
+        </>
+      )}
 
       {/* Cinematic Overlays */}
       <div className="vignette" />

@@ -1,4 +1,41 @@
+# Birthday Bloom - SEO Robot Rules
+# https://birthday-bloom-by-naboraj.vercel.app
+
+# Allow all bots
 User-agent: *
 Allow: /
 
-Sitemap: https://birthday-bloom.vercel.app/sitemap.xml
+# Disallow private routes (if any added in future)
+Disallow: /admin/
+Disallow: /private/
+Disallow: /.env
+Disallow: /.git/
+
+# Specify sitemap location
+Sitemap: https://birthday-bloom-by-naboraj.vercel.app/sitemap.xml
+
+# Crawl delay (milliseconds) - reasonable for Vercel
+Crawl-delay: 1
+
+# Specific bots
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
