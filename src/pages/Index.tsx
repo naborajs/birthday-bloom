@@ -6,6 +6,9 @@ import { MainBirthday } from "@/components/birthday/MainBirthday";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useDynamicTheme } from "@/features/core/theme/useDynamicTheme";
 import { FloatingElements } from "@/components/birthday/FloatingElements";
+import { MorphingElements } from "@/components/birthday/MorphingElements";
+import { EnhancedFloatingElements } from "@/components/birthday/EnhancedFloatingElements";
+import { SparkleRain } from "@/components/birthday/SparkleRain";
 
 type Phase = "splash" | "intro" | "main";
 
@@ -20,8 +23,11 @@ const Index = () => {
       className="min-h-screen transition-colors duration-1000 relative overflow-hidden" 
       style={{ background: 'var(--bg-gradient, #000)' }}
     >
-      {/* Background System */}
+      {/* Multi-layer Background System */}
       <FloatingElements />
+      <MorphingElements />
+      <EnhancedFloatingElements />
+      {phase === "main" && <SparkleRain intensity={15} />}
 
       {/* Cinematic Overlays */}
       <div className="vignette" />
