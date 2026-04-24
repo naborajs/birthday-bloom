@@ -66,10 +66,13 @@ Every "Bloom" instance should feel bespoke. When configuring your instance, keep
 ---
 
 ## 📖 Deep Dive Documentation
-- [🛠️ Full Configuration Guide](./ENV_GUIDE.md)
+- [🇮🇳 सेटअप गाइड (Hindi)](./setup-hindi.md)
+- [🇧🇩 সেটআপ গাইড (Bengali)](./setup-bengali.md)
+- [🛠️ Advanced Fixes & Troubleshooting](./advanced-fixes.md)
+- [☁️ Hosting & Deployment Solutions](./hosting-solutions.md)
+- [⚙️ Full Configuration Guide](./ENV_GUIDE.md)
 - [🏛️ System Architecture](./architecture.md)
 - [🎥 Animation Principles](./animations.md)
-- [🚀 Deployment Strategies](./deployment.md)
 
 ---
 *“In the garden of the internet, may your digital memories always bloom.”* 🌸

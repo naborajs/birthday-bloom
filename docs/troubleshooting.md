@@ -68,14 +68,28 @@ npm run build
 
 ---
 
-## 🛡️ Error Logging & Reporting
+---
 
-The **NS CODEX** engine implements a silent logger. If a critical scene fails, it won't crash the page; instead, it will skip to the **Main Dashboard** to ensure the birthday person still sees the message.
+## 🟢 Common Questions (FAQ)
 
-To see the debug logs:
-1. Open DevTools (`F12`).
-2. Type `window.__CODEX_DEBUG__ = true` in the console.
-3. Refresh the page.
+### How do I change the music?
+Replace the files in `public/assets/audio/` with your own MP3 files. Make sure to keep the filenames the same (e.g., `bg-music.mp3`) or update the `SoundManager.tsx`.
+
+### The "I Love You" message isn't showing up?
+Check if `VITE_BIRTHDAY_RELATIONSHIP` is set to `partner`. This triggers the romantic narrative branch.
+
+### How to add more photos?
+Go to `src/components/birthday/PhotoGallery.tsx` and add more URLs to the `PHOTOS` array, or use the `VITE_PHOTO_1`, `VITE_PHOTO_2` etc. variables in your `.env`.
+
+### Can I change the theme colors?
+Yes! Use `VITE_BIRTHDAY_COLOR` in your `.env` with any Hex code (like `#FF0000` for Red). The engine will automatically generate a matching palette.
 
 ---
+
+## 🛡️ "Never Fail" Strategy
+Birthday Bloom is designed with a **Fail-Safe Architecture**. If an animation fails to load, the engine will automatically:
+1.  **Skip the stuck phase** after 5 seconds.
+2.  **Use fallback colors** if your custom color is invalid.
+3.  **Use placeholder names** if `VITE_BIRTHDAY_NAME` is missing.
+
 *Maintained by the NS CODEX Reliability Engineering Team.* 🛠️

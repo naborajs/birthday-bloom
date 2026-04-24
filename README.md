@@ -58,9 +58,11 @@
 18. [Security & Data Integrity](#-security--data-integrity)
 19. [Version History & Changelog](#-version-history--changelog)
 20. [Contributing Guidelines](#-contributing-guidelines)
-21. [Acknowledgments](#-acknowledgments)
-22. [Author & Brand Identity](#-author--brand-identity)
-23. [License](#-license)
+21. [Localized Setup (Hindi/Bengali)](#-localized-setup)
+22. [Advanced Troubleshooting](#-advanced-troubleshooting)
+23. [Acknowledgments](#-acknowledgments)
+24. [Author & Brand Identity](#-author--brand-identity)
+25. [License](#-license)
 
 ---
 
@@ -1335,13 +1337,31 @@ As we reach the conclusion of this master documentation, we want to remind you t
 
 ---
 
+## 🇮🇳 Localized Setup
+For our users in India and Bangladesh, we have provided native language setup guides to make your journey smoother.
+
+- [🇮🇳 हिंदी सेटअप गाइड (Hindi Setup Guide)](./docs/setup-hindi.md)
+- [🇧🇩 বাংলা সেটআপ গাইড (Bengali Setup Guide)](./docs/setup-bengali.md)
+
+---
+
+## 🛠️ Advanced Troubleshooting
+If you encounter any specific issues with sound, animations, or deployment, please refer to our master troubleshooting suite:
+
+- [🆘 Master Troubleshooting Guide](./docs/troubleshooting.md)
+- [🛠️ Advanced Fixes Masterclass](./docs/advanced-fixes.md)
+- [☁️ Hosting & Cloud Deployment](./docs/hosting-solutions.md)
+
+---
+
 ## 📞 Contact & Support
 
 > Need help, collab, or just want to connect? 👇
 
 - 📧 **Email** → [nishant.ns.business@gmail.com](mailto:nishant.ns.business@gmail.com)  
 - 💬 **Telegram** → [@Nishantsarkar10k](https://t.me/Nishantsarkar10k)  
-- 🐦 **Twitter (X)** → [@NSGAMMING699](https://x.com/NSGAMMING699) | [@naborajs](https://x.com/naborajs)
+- 🐦 **Twitter (X)** → [@NSGAMMING699](https://x.com/NSGAMMING699)
+- 📸 **Instagram** → [@naborajs](https://instagram.com/naborajs)
 
 ---
 
@@ -1351,6 +1371,10 @@ As we reach the conclusion of this master documentation, we want to remind you t
 - 💡 **Suggest Feature** → [Create Request](../../issues/new)  
 - ⭐ **Support Project** → Star this repo  
 
-
 ---
+
+<div align="center">
+  <sub>Built with ❤️ by Naboraj Sarkar. © 2024 NS CODEX.</sub>
+</div>
+
 **[Back to Top ↑](#-birthday-bloom--advanced-animated-birthday-website-generator)**
