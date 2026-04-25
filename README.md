@@ -1,4 +1,4 @@
-# 🌸 Birthday Bloom — Cinematic Birthday Engine v2.1
+# 🌸 Birthday Bloom — Cinematic Birthday Engine v2.5
 
 <div align="center">
 
@@ -19,11 +19,11 @@
 ## 🚀 Experience the Magic
 **Birthday Bloom** is a high-end, premium animated birthday surprise platform designed to capture and create unforgettable digital moments. Developed fundamentally with **React 18**, **Framer Motion**, and **Tailwind CSS**, it establishes a physics-based, emotional narrative layout.
 
-### 🌟 New in v2.1 (Performance & Personalization)
-- **Advanced Personalization**: Full control over emotional letters via ENV variables. [Read the Guide →](./docs/advanced-customization.md)
-- **Mobile Kinetic Engine**: Smooth, automatic scrolling for interactive sections like Cake Cutting.
-- **"Super OP" Content**: Hand-crafted emotional templates for Partners, Friends, Family, and Colleagues.
-- **Interactive Easter Eggs**: Hidden surprises triggered by user interaction with the UI.
+- **Interactive Birthday Quiz**: A gamified trivia engine that personalizes questions based on interests.
+- **Polaroid Memory Gallery**: A beautiful "Memory Lane" featuring captions and images revealed through cinematic transitions.
+- **"Pure Reality" Cake 3D**: High-fidelity procedural textures, realistic drips, and volumetric lighting.
+- **Final Surprise Video**: A dedicated emotional closing scene with a configurable finale video.
+- **Advanced Physics Balloons**: Non-linear, physics-correct balloon drift with interactive "pop" mechanics.
 
 ---
 
@@ -67,14 +67,9 @@ Developed by **Naboraj Sarkar**, Birthday Bloom is an open-source gift to the co
 15. [SEO, Social Sharing & OG Tags](#-seo-social-sharing--og-tags)
 16. [Folder Structure Guide](#-folder-structure-guide)
 17. [Troubleshooting & Massive FAQ](#-troubleshooting--massive-faq)
-18. [Security & Data Integrity](#-security--data-integrity)
-19. [Version History & Changelog](#-version-history--changelog)
-20. [Contributing Guidelines](#-contributing-guidelines)
-21. [Localized Setup (Hindi/Bengali)](#-localized-setup)
-22. [Advanced Troubleshooting](#-advanced-troubleshooting)
-23. [Acknowledgments](#-acknowledgments)
+18. [Author & Brand Identity](#-author--brand-identity)
 24. [Author & Brand Identity](#-author--brand-identity)
-25. [License](#-license)
+19. [License](#-license)
 
 ---
 
