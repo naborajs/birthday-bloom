@@ -12,7 +12,7 @@ export default defineConfig(({ mode }: ConfigEnv) => ({
     // Ensure fresh builds - no cache
     outDir: 'dist',
     emptyOutDir: true,
-    // Add cache busting with content hashes
+    // Add cache busting with content hashes.
     rollupOptions: {
       output: {
         manualChunks(id) {
