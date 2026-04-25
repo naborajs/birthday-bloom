@@ -20,15 +20,16 @@ import { TypeWriter } from "./TypeWriter";
 import { useSoundManager } from "./SoundManager";
 import { CakeCutting } from "./CakeCutting";
 import { HeartTree } from "./HeartTree";
-import { EMOTIONAL_LETTERS } from "@/config/templates";
 import { FireflyEffect } from "./FireflyEffect";
 import { FloatingOrbs } from "./FloatingOrbs";
 import { ShootingStars } from "./ShootingStars";
+import { BirthdayQuiz } from "./BirthdayQuiz";
+import { FinalSurprise } from "./FinalSurprise";
 import { GlitchEffect } from "./GlitchEffect";
 import { VideoGallery } from "./VideoGallery";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
-import { getHighlySpecificLetter } from "@/features/core/store/SuperPersonalizedLogic";
-import { Car, Music, Code, Gamepad2, Palmtree, Camera, Pizza, Dumbbell, Rocket, Heart, Trophy } from "lucide-react";
+import { getHighlySpecificLetter, getBigWishes } from "@/features/core/store/SuperPersonalizedLogic";
+import { Car, Music, Code, Gamepad2, Palmtree, Camera, Pizza, Dumbbell, Rocket, Heart, Trophy, Star } from "lucide-react";
 
 export const MainBirthday = () => {
   const [visible, setVisible] = useState(false);
@@ -47,6 +48,7 @@ export const MainBirthday = () => {
   const { name, age, customMessage, relationship, favoriteColor, gender } = config;
   const mood = getMood();
   const primaryColor = favoriteColor || '#FF6B6B';
+  const bigWishes = useMemo(() => getBigWishes(name, relationship, gender, config.interests || []), [name, relationship, gender, config.interests]);
 
   // Magnetic Effect for Buttons
   const mouseX = useMotionValue(0);
@@ -157,29 +159,7 @@ export const MainBirthday = () => {
     return (config.interests || []).map(i => i.toLowerCase().trim()).filter(i => interestIcons[i]);
   }, [config.interests]);
 
-  const dynamicWishes = useMemo(() => {
-    const isMale = gender === 'male';
-    const isFemale = gender === 'female';
 
-    if (relationship === 'partner') return [
-      { emoji: "💖", wish: `To the ${isMale ? 'man' : isFemale ? 'woman' : 'soul'} of my dreams - you are my everything.` },
-      { emoji: "✨", wish: "Every day with you is a gift I never take for granted." },
-      { emoji: "🌹", wish: "I love you more than words could ever express." },
-      { emoji: "🥂", wish: "Here's to a lifetime of adventures, just you and me." }
-    ];
-    if (relationship === 'friend') return [
-      { emoji: "😎", wish: `Stay as legendary as you are, ${isMale ? 'man' : isFemale ? 'girl' : 'bestie'}!` },
-      { emoji: "🍻", wish: "May your glass always be full and your troubles be zero." },
-      { emoji: "🚀", wish: "To more epic nights that we'll probably forget! 😂" },
-      { emoji: "🔥", wish: "Keep killing it, you absolute icon!" }
-    ];
-    return [
-      { emoji: "🌟", wish: "May your light continue to shine on all of us." },
-      { emoji: "💖", wish: "Wishing you a year as beautiful as your heart." },
-      { emoji: "🎁", wish: "May life surprise you with endless joy and laughter." },
-      { emoji: "🌈", wish: "Here's to your brightest and best chapter yet!" },
-    ];
-  }, [relationship, gender]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -367,24 +347,30 @@ export const MainBirthday = () => {
         </div>
       )}
 
-      {/* Wishes */}
+      {/* Birthday Quiz Section */}
+      <BirthdayQuiz />
+
+      {/* Wishes Section */}
       <section className="relative z-20 px-4 pb-32">
         <h3 className="font-display text-5xl md:text-8xl font-black text-center mb-20 drop-shadow-xl" style={{ color: primaryColor }}>Wishes for You ✨</h3>
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-          {dynamicWishes.map((item, i) => (
+          {bigWishes.map((item, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.15 }}
-              whileHover={{ y: -15, scale: 1.03, boxShadow: `0 20px 50px -10px ${primaryColor}20` }}
-              className="p-10 backdrop-blur-2xl border cursor-pointer group bg-white/5 border-white/10"
-              style={{ borderRadius: 'var(--card-radius, 2rem)' }}
+              whileHover={{ y: -15, scale: 1.03, rotate: i % 2 === 0 ? 1 : -1, boxShadow: `0 30px 60px -15px ${primaryColor}40` }}
+              className="p-10 backdrop-blur-3xl border cursor-pointer group bg-gradient-to-br from-white/10 to-transparent border-white/10"
+              style={{ borderRadius: 'var(--card-radius, 2.5rem)' }}
               onClick={addEmoji}
             >
-              <div className="text-6xl mb-6 group-hover:rotate-12 transition-transform">{item.emoji}</div>
-              <p className="text-foreground/95 text-2xl md:text-3xl font-semibold leading-relaxed">{item.wish}</p>
+              <div className="text-7xl mb-8 group-hover:scale-125 transition-transform duration-500">{item.emoji}</div>
+              <p className="text-foreground/95 text-2xl md:text-4xl font-black leading-tight tracking-tight">{item.wish}</p>
+              <div className="mt-6 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                {[1, 2, 3].map(j => <Star key={j} size={16} className="text-primary fill-primary" />)}
+              </div>
             </motion.div>
           ))}
         </div>
@@ -419,7 +405,7 @@ export const MainBirthday = () => {
 
       {/* Cake Cutting Section */}
       {config.showCakeSection && (
-        <section className="relative z-20 px-4 pb-16 sm:pb-32">
+        <section id="cake-section" className="relative z-20 px-4 pb-16 sm:pb-32">
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -450,16 +436,13 @@ export const MainBirthday = () => {
       </section>
       )}
 
-      <footer className="relative z-20 text-center py-20 sm:py-32 bg-gradient-to-t from-black to-transparent w-full overflow-hidden">
-        <motion.p className="text-2xl sm:text-3xl md:text-5xl font-light px-4">
-          Made with ❤️ for <span className="font-display font-black text-foreground" style={{ color: primaryColor }}>{name}</span>
-        </motion.p>
-        <div className="text-4xl sm:text-6xl mt-10 sm:mt-12 space-x-4 sm:space-x-6">
-          {["🎂", "🎈", "💖", "🎈", "🎂"].map((emoji, i) => (
-            <motion.span key={i} animate={{ y: [0, -30, 0], scale: [1, 1.2, 1] }} transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.3 }} className="inline-block">{emoji}</motion.span>
-          ))}
-        </div>
-        <p className="mt-12 text-white/10 text-xs tracking-[0.4em] uppercase">Birthday Bloom — Cinematic Engine</p>
+      {/* Final Surprise & Emotional Closing */}
+      <FinalSurprise />
+
+      <footer className="relative z-20 text-center py-20 bg-black/40 w-full">
+        <p className="mt-4 text-white/10 text-[10px] tracking-[0.5em] uppercase">
+          Crafted by NABORAJ SARKAR — Cinematic Engine v2.5
+        </p>
       </footer>
     </div>
   );

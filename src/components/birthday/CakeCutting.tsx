@@ -132,115 +132,139 @@ const MagicDust = ({ count }: { count: number }) => {
 
 const CakeSVG = ({ cake, split, candlesLit, name }: { cake: CakeOption; split: boolean; candlesLit: boolean; name: string }) => (
   <motion.div 
-    animate={{ rotateX: split ? 20 : 5, rotateY: split ? 3 : 0, scale: split ? 1.1 : 1 }}
-    transition={{ type: "spring", stiffness: 100, damping: 15 }}
+    animate={{ rotateX: split ? 25 : 8, rotateY: split ? 5 : 0, scale: split ? 1.15 : 1 }}
+    transition={{ type: "spring", stiffness: 80, damping: 12 }}
     className="relative preserve-3d"
-    style={{ perspective: "1200px" }}
+    style={{ perspective: "1500px" }}
   >
-    <svg viewBox="0 0 200 200" className="w-64 sm:w-80 md:w-[28rem] mx-auto drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)]">
+    <svg viewBox="0 0 200 200" className="w-64 sm:w-80 md:w-[32rem] mx-auto drop-shadow-[0_40px_80px_rgba(0,0,0,0.7)]">
       <defs>
         <filter id="cakeDepth">
-          <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
-          <feOffset in="blur" dx="2" dy="5" result="offsetBlur" />
-          <feComposite in="SourceGraphic" in2="offsetBlur" operator="over" />
+          <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur" />
+          <feOffset in="blur" dx="0" dy="6" result="offsetBlur" />
+          <feComponentTransfer in="offsetBlur" result="opacity">
+            <feFuncA type="linear" slope="0.5"/>
+          </feComponentTransfer>
+          <feComposite in="SourceGraphic" in2="opacity" operator="over" />
         </filter>
         <filter id="candleGlow">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+          <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="glow" />
           <feMerge>
-            <feMergeNode in="blur" />
+            <feMergeNode in="glow" />
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
-        <linearGradient id="layerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="white" stopOpacity="0.2" />
-          <stop offset="50%" stopColor="white" stopOpacity="0" />
-          <stop offset="100%" stopColor="black" stopOpacity="0.2" />
+        <linearGradient id="layerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="black" stopOpacity="0.3" />
+          <stop offset="30%" stopColor="white" stopOpacity="0.2" />
+          <stop offset="50%" stopColor="white" stopOpacity="0.4" />
+          <stop offset="70%" stopColor="white" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="black" stopOpacity="0.4" />
         </linearGradient>
+        <radialGradient id="topFrosting" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="white" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="black" stopOpacity="0.1" />
+        </radialGradient>
+        <filter id="frostingTexture">
+          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise" />
+          <feDiffuseLighting in="noise" lightingColor="white" surfaceScale="2">
+            <feDistantLight azimuth="45" elevation="60" />
+          </feDiffuseLighting>
+          <feComposite operator="in" in2="SourceGraphic" />
+          <feBlend mode="multiply" in2="SourceGraphic" />
+        </filter>
       </defs>
 
-      {/* Shadow */}
-      <ellipse cx="100" cy="185" rx="90" ry="15" fill="black" opacity="0.3" filter="blur(8px)" />
+      {/* Ground Shadow */}
+      <ellipse cx="100" cy="188" rx="95" ry="12" fill="black" opacity="0.4" filter="blur(12px)" />
 
-      {/* Bottom Layer */}
-      <g style={{ transform: split ? "translateX(-25px) rotate(-8deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
-        <rect x="15" y="110" width="85" height="65" rx="12" fill={cake.layers[0]} filter="url(#cakeDepth)" />
-        <rect x="15" y="110" width="85" height="65" rx="12" fill="url(#layerGrad)" />
-        <path d="M15,110 Q57.5,130 100,110 L100,120 Q57.5,140 15,120 Z" fill={cake.frosting} opacity="0.9" />
+      {/* Bottom Layer (Splittable) */}
+      <g style={{ transform: split ? "translateX(-40px) rotate(-12deg)" : "translateX(0) rotate(0)", transition: "all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
+        <path d="M15,140 L15,175 Q57.5,185 100,180 L100,140 Q57.5,130 15,140 Z" fill={cake.layers[0]} filter="url(#cakeDepth)" />
+        <path d="M15,140 L15,175 Q57.5,185 100,180 L100,140 Q57.5,130 15,140 Z" fill="url(#layerGrad)" />
+        <path d="M15,140 Q57.5,150 100,140 Q57.5,130 15,140 Z" fill={cake.frosting} filter="url(#frostingTexture)" />
+        {/* Drip Effect */}
+        <path d="M30,145 Q35,160 40,145" fill={cake.frosting} opacity="0.8" />
+        <path d="M60,142 Q65,155 70,142" fill={cake.frosting} opacity="0.8" />
       </g>
-      <g style={{ transform: split ? "translateX(25px) rotate(8deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
-        <rect x="100" y="110" width="85" height="65" rx="12" fill={cake.layers[0]} filter="url(#cakeDepth)" />
-        <rect x="100" y="110" width="85" height="65" rx="12" fill="url(#layerGrad)" />
-        <path d="M100,110 Q142.5,130 185,110 L185,120 Q142.5,140 100,120 Z" fill={cake.frosting} opacity="0.9" />
-      </g>
-
-      {/* Middle Layer */}
-      <g style={{ transform: split ? "translateX(-18px) rotate(-5deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
-        <rect x="30" y="65" width="70" height="55" rx="10" fill={cake.layers[1]} filter="url(#cakeDepth)" />
-        <rect x="30" y="65" width="70" height="55" rx="10" fill="url(#layerGrad)" />
-        <path d="M30,65 Q65,85 100,65 L100,75 Q65,95 30,75 Z" fill={cake.frosting} opacity="0.8" />
-      </g>
-      <g style={{ transform: split ? "translateX(18px) rotate(5deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
-        <rect x="100" y="65" width="70" height="55" rx="10" fill={cake.layers[1]} filter="url(#cakeDepth)" />
-        <rect x="100" y="65" width="70" height="55" rx="10" fill="url(#layerGrad)" />
-        <path d="M100,65 Q135,85 170,65 L170,75 Q135,95 100,75 Z" fill={cake.frosting} opacity="0.8" />
+      <g style={{ transform: split ? "translateX(40px) rotate(12deg)" : "translateX(0) rotate(0)", transition: "all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
+        <path d="M100,180 Q142.5,185 185,175 L185,140 Q142.5,130 100,140 L100,180 Z" fill={cake.layers[0]} filter="url(#cakeDepth)" />
+        <path d="M100,180 Q142.5,185 185,175 L185,140 Q142.5,130 100,140 L100,180 Z" fill="url(#layerGrad)" />
+        <path d="M100,140 Q142.5,150 185,140 Q142.5,130 100,140 Z" fill={cake.frosting} filter="url(#frostingTexture)" />
+        {/* Drip Effect */}
+        <path d="M120,145 Q125,160 130,145" fill={cake.frosting} opacity="0.8" />
+        <path d="M150,142 Q155,155 160,142" fill={cake.frosting} opacity="0.8" />
       </g>
 
-      {/* Top Layer */}
-      <g style={{ transform: split ? "translateX(-12px) rotate(-3deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
-        <rect x="45" y="30" width="55" height="45" rx="8" fill={cake.layers[2]} filter="url(#cakeDepth)" />
-        <rect x="45" y="30" width="55" height="45" rx="8" fill="url(#layerGrad)" />
+      {/* Middle Layer (Splittable) */}
+      <g style={{ transform: split ? "translateX(-25px) rotate(-8deg)" : "translateX(0) rotate(0)", transition: "all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
+        <path d="M30,95 L30,130 Q65,140 100,135 L100,95 Q65,85 30,95 Z" fill={cake.layers[1]} filter="url(#cakeDepth)" />
+        <path d="M30,95 L30,130 Q65,140 100,135 L100,95 Q65,85 30,95 Z" fill="url(#layerGrad)" />
+        <path d="M30,95 Q65,105 100,95 Q65,85 30,95 Z" fill={cake.frosting} filter="url(#frostingTexture)" opacity="0.9" />
+        {/* Drip Effect */}
+        <path d="M45,100 Q50,115 55,100" fill={cake.frosting} opacity="0.8" />
       </g>
-      <g style={{ transform: split ? "translateX(12px) rotate(3deg)" : "translateX(0) rotate(0)", transition: "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
-        <rect x="100" y="30" width="55" height="45" rx="8" fill={cake.layers[2]} filter="url(#cakeDepth)" />
-        <rect x="100" y="30" width="55" height="45" rx="8" fill="url(#layerGrad)" />
+      <g style={{ transform: split ? "translateX(25px) rotate(8deg)" : "translateX(0) rotate(0)", transition: "all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
+        <path d="M100,135 Q135,140 170,130 L170,95 Q135,85 100,95 L100,135 Z" fill={cake.layers[1]} filter="url(#cakeDepth)" />
+        <path d="M100,135 Q135,140 170,130 L170,95 Q135,85 100,95 L100,135 Z" fill="url(#layerGrad)" />
+        <path d="M100,95 Q135,105 170,95 Q135,85 100,95 Z" fill={cake.frosting} filter="url(#frostingTexture)" opacity="0.9" />
+        {/* Drip Effect */}
+        <path d="M130,100 Q135,115 140,100" fill={cake.frosting} opacity="0.8" />
       </g>
 
-      {/* Candles */}
-      {[75, 100, 125].map((cx, i) => (
-        <g key={i} style={{ transform: split ? (cx < 100 ? "translateX(-15px)" : cx > 100 ? "translateX(15px)" : "none") : "none", transition: "all 1s ease" }}>
-          <rect x={cx - 2} y="5" width="4" height="28" rx="2" fill={`hsl(${i * 40 + 200}, 80%, 65%)`} />
+      {/* Top Layer (Splittable) */}
+      <g style={{ transform: split ? "translateX(-15px) rotate(-5deg)" : "translateX(0) rotate(0)", transition: "all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
+        <path d="M45,50 L45,85 Q72.5,95 100,90 L100,50 Q72.5,40 45,50 Z" fill={cake.layers[2]} filter="url(#cakeDepth)" />
+        <path d="M45,50 L45,85 Q72.5,95 100,90 L100,50 Q72.5,40 45,50 Z" fill="url(#layerGrad)" />
+        <path d="M45,50 Q72.5,60 100,50 Q72.5,40 45,50 Z" fill={cake.frosting} filter="url(#frostingTexture)" />
+        <path d="M45,50 Q72.5,60 100,50 Q72.5,40 45,50 Z" fill="url(#topFrosting)" />
+        {/* Drip Effect */}
+        <path d="M60,55 Q65,70 70,55" fill={cake.frosting} opacity="0.8" />
+      </g>
+      <g style={{ transform: split ? "translateX(15px) rotate(5deg)" : "translateX(0) rotate(0)", transition: "all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
+        <path d="M100,90 Q127.5,95 155,85 L155,50 Q127.5,40 100,50 L100,90 Z" fill={cake.layers[2]} filter="url(#cakeDepth)" />
+        <path d="M100,90 Q127.5,95 155,85 L155,50 Q127.5,40 100,50 L100,90 Z" fill="url(#layerGrad)" />
+        <path d="M100,50 Q127.5,60 155,50 Q127.5,40 100,50 Z" fill={cake.frosting} filter="url(#frostingTexture)" />
+        <path d="M100,50 Q127.5,60 155,50 Q127.5,40 100,50 Z" fill="url(#topFrosting)" />
+        {/* Drip Effect */}
+        <path d="M130,55 Q135,70 140,55" fill={cake.frosting} opacity="0.8" />
+      </g>
+
+      {/* Candles (Precisely Centered) */}
+      {[68, 84, 100, 116, 132].map((cx, i) => (
+        <g key={i} style={{ transform: split ? (cx < 100 ? "translateX(-15px) rotate(-5deg)" : cx > 100 ? "translateX(15px) rotate(5deg)" : "scale(0.8) translateY(10px)") : "none", transition: "all 1s ease" }}>
+          <rect x={cx - 1.5} y="15" width="3" height="35" rx="1.5" fill={`hsl(${i * 50 + 180}, 80%, 70%)`} />
           {candlesLit ? (
             <g className="animate-flame-premium" filter="url(#candleGlow)">
-              <ellipse cx={cx} cy="-2" rx="6" ry="12" fill={cake.accent} style={{ filter: "blur(1px)" }} />
-              <ellipse cx={cx} cy="-1" rx="3" ry="7" fill="white" />
-              <circle cx={cx} cy="-2" r="20" fill={cake.accent} opacity="0.1" className="animate-pulse" />
+              <ellipse cx={cx} cy="5" rx="6" ry="12" fill={cake.accent} style={{ filter: "blur(1px)" }} />
+              <ellipse cx={cx} cy="6" rx="2.5" ry="7" fill="white" />
+              <circle cx={cx} cy="5" r="20" fill={cake.accent} opacity="0.2" className="animate-pulse" />
             </g>
           ) : (
             <motion.circle 
-              initial={{ y: 0, opacity: 0.5, scale: 1 }}
-              animate={{ y: -50, opacity: 0, scale: 2 }}
-              transition={{ duration: 2 }}
-              cx={cx} cy="5" r="3" fill="white" 
+              initial={{ y: 0, opacity: 0.6, scale: 1 }}
+              animate={{ y: -80, opacity: 0, scale: 3 }}
+              transition={{ duration: 3, ease: "easeOut" }}
+              cx={cx} cy="15" r="3" fill="white" 
             />
           )}
         </g>
       ))}
 
-      {/* Name Plaque on Cake */}
-      <g style={{ transform: split ? "translateY(20px) opacity(0)" : "none", transition: "all 0.8s ease" }}>
-        <rect x="60" y="45" width="80" height="20" rx="10" fill="rgba(255,255,255,0.2)" backdropFilter="blur(5px)" />
+      {/* Name Plaque (Gold Chocolate Style) */}
+      <g style={{ transform: split ? "translateY(40px) opacity(0)" : "none", transition: "all 0.8s ease" }}>
+        <rect x="55" y="62" width="90" height="22" rx="11" fill="#4a3011" stroke="#d4af37" strokeWidth="1.5" />
         <text 
-          x="100" y="59" 
+          x="100" y="77" 
           textAnchor="middle" 
-          fill="white" 
-          className="font-display font-black" 
-          style={{ fontSize: '10px', textShadow: '0 2px 4px rgba(0,0,0,0.5)', letterSpacing: '1px' }}
+          fill="#d4af37" 
+          className="font-display font-black uppercase" 
+          style={{ fontSize: '9px', textShadow: '0 1px 2px rgba(0,0,0,0.8)', letterSpacing: '2px' }}
         >
-          {name?.toUpperCase()}
+          {name}
         </text>
       </g>
-
-      {/* Decorative Swirls (Creams) */}
-      {[55, 80, 105, 130].map((cx, i) => (
-        <circle 
-          key={`cream-${i}`}
-          cx={cx + (split ? (cx < 100 ? -20 : 20) : 0)} 
-          cy="32" r="6" 
-          fill="white" opacity="0.9" 
-          style={{ filter: "url(#cakeDepth)", transition: "all 1s ease" }} 
-        />
-      ))}
-
       {/* Cutting Line Effect */}
       {split && (
         <rect x="98" y="20" width="4" height="160" fill="white" opacity="0.9"
@@ -405,9 +429,9 @@ export const CakeCutting = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[100] flex flex-col items-center justify-start md:justify-center backdrop-blur-3xl overflow-y-auto overscroll-none py-10 md:py-8"
+              className="fixed inset-0 z-[100] flex flex-col items-center justify-start md:justify-center backdrop-blur-2xl overflow-y-auto overscroll-none py-10 md:py-8"
               style={{ 
-                background: "radial-gradient(circle at center, rgba(0,0,0,0.92) 0%, rgba(0,0,0,1) 100%)"
+                background: "radial-gradient(circle at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.95) 100%)"
               }}
             >
               <MagicDust count={40} />

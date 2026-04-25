@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { EMOTIONAL_LETTERS } from '@/config/templates';
-import { RelationshipType, GenderType } from './store/useBirthdayStore';
+import { RelationshipType, GenderType } from './useBirthdayStore';
 
 export const getHighlySpecificLetter = (
   name: string,
@@ -45,4 +45,33 @@ export const getInterestBasedTheme = (interests: string[]) => {
   if (lowerInterests.includes('gaming')) return 'pixel';
   
   return 'classic';
+};
+
+export const getBigWishes = (name: string, relationship: RelationshipType, gender: GenderType, interests: string[] = []) => {
+  const wishes = [
+    { emoji: "🚀", wish: `May your ${name} brand reach new galaxies this year!` },
+    { emoji: "💎", wish: `You are a diamond in the rough, ${name}. Stay precious.` }
+  ];
+
+  if (relationship === 'partner') {
+    wishes.push(
+      { emoji: "❤️", wish: `Every heartbeat of mine is a wish for your happiness, ${name}.` },
+      { emoji: "💍", wish: `To many more years of us making the world jealous of our love.` }
+    );
+  } else if (relationship === 'friend') {
+    wishes.push(
+      { emoji: "🔥", wish: `Stay legendary, stay wild, and keep breaking the internet, ${name}!` },
+      { emoji: "🍻", wish: `To the nights we won't remember and the friend I'll never forget.` }
+    );
+  }
+
+  if (interests.some(i => i.toLowerCase().includes('car'))) {
+    wishes.push({ emoji: "🏎️", wish: `May your life accelerate from 0 to 100 in pure happiness this year!` });
+  }
+
+  if (interests.some(i => i.toLowerCase().includes('coding'))) {
+    wishes.push({ emoji: "💻", wish: `May your life have zero bugs and infinite features, ${name}!` });
+  }
+
+  return wishes;
 };

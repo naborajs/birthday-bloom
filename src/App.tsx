@@ -12,6 +12,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { SparkleEffect } from "./components/birthday/SparkleEffect";
 import { CelebrationOverlay } from "./components/birthday/CelebrationOverlay";
+import { PartyElements } from "./components/birthday/PartyElements";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <SparkleEffect />
+        <PartyElements />
         <CelebrationOverlay />
         <BrowserRouter>
           <Routes>

@@ -28,8 +28,18 @@ VITE_BIRTHDAY_LETTER_OVERRIDE="My Dearest Name,\n\nToday is a celebration of you
 Control which parts of the experience are visible:
 ```env
 VITE_SHOW_CAKE_SECTION=true    # Show/Hide the interactive cake cutting
-VITE_SHOW_VIDEO_SECTION=true   # Show/Hide the video gallery at the end
+VITE_SHOW_VIDEO_SECTION=true   # Show/Hide the video gallery
+VITE_FINAL_VIDEO_URL="https://youtube.com/..." # A special video for the finale
+VITE_SPECIAL_MEMORIES="Moment 1;url|Moment 2;url" # Text;ImageURL pairs separated by |
 ```
+
+---
+
+## 📸 Special Memories Gallery (v2.5)
+You can now create a polaroid-style memory gallery at the end of the journey. 
+Format: `TEXT;IMAGE_URL|TEXT;IMAGE_URL`
+Example:
+`VITE_SPECIAL_MEMORIES="Our First Date;https://link.com/img1.jpg|The Graduation Day;https://link.com/img2.jpg"`
 
 ---
 

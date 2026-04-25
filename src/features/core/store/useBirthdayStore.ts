@@ -25,6 +25,8 @@ export interface BirthdayConfig {
   letterOverride?: string;
   showCakeSection?: boolean;
   showVideoSection?: boolean;
+  finalVideoUrl?: string;
+  specialMemories?: { text: string; image?: string }[];
 }
 
 interface BirthdayStore {
@@ -79,6 +81,13 @@ const envLetterTitle = import.meta.env.VITE_BIRTHDAY_LETTER_TITLE || '';
 const envLetterOverride = import.meta.env.VITE_BIRTHDAY_LETTER_OVERRIDE || '';
 const envShowCake = import.meta.env.VITE_SHOW_CAKE_SECTION !== 'false';
 const envShowVideo = import.meta.env.VITE_SHOW_VIDEO_SECTION !== 'false';
+const envFinalVideo = import.meta.env.VITE_FINAL_VIDEO_URL || '';
+const envMemories = import.meta.env.VITE_SPECIAL_MEMORIES 
+  ? import.meta.env.VITE_SPECIAL_MEMORIES.split('|').map((m: string) => {
+      const [text, image] = m.split(';');
+      return { text: text?.trim(), image: image?.trim() };
+    })
+  : [];
 
 export const useBirthdayStore = create<BirthdayStore>((set, get) => ({
   config: {
@@ -97,6 +106,8 @@ export const useBirthdayStore = create<BirthdayStore>((set, get) => ({
     letterOverride: envLetterOverride,
     showCakeSection: envShowCake,
     showVideoSection: envShowVideo,
+    finalVideoUrl: envFinalVideo,
+    specialMemories: envMemories,
   },
   isConfigured: !!envName,
   setConfig: (newConfig) =>
