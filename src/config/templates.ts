@@ -186,6 +186,42 @@ Cheers to the Journey,
 };
 
 /**
+ * Special Quotes & Shayari for Interactive Elements
+ * Targeted by Relationship and Gender
+ */
+export const SPECIAL_QUOTES = {
+  partner: {
+    male: [
+      "You are the king of my heart, the man of my dreams, and the soul I choose to walk with forever.",
+      "In your arms, I've found my sanctuary. You are my greatest strength and my softest comfort.",
+      "Tere sang bitaye har pal ek shayari hai, tu hi mera junoon, tu hi meri tishnagi hai. ❤️"
+    ],
+    female: [
+      "To the woman who turned my world into a garden of joy—you are my muse, my love, and my everything.",
+      "Your grace is my inspiration, your love is my anchor. Happy Birthday to my beautiful soulmate.",
+      "Tumhari muskurahat hi meri khushi ka raaz hai, tum hi mera kal aur tum hi mera aaj ho. 🌹"
+    ]
+  },
+  friend: {
+    legend: [
+      "To the legend who turns every regular day into an epic story. Stay wild, stay real.",
+      "Brother from another mother, loyal as a shadow, bright as a star. Keep shining.",
+      "Dosti ka naam ho toh tum jaisa, har mushkil mein saath dene wala yaar tum jaisa. 🔥"
+    ],
+    friendly: [
+      "To my soul-sister—thank you for being the person who knows my silence as well as my laughter.",
+      "You aren't just a friend; you're the family I got to choose. Here's to a lifetime of adventures.",
+      "Yaara teri yaari ko maine toh khuda maana, tujh jaisa yaar hai meri sabse badi khushnasibi. ✨"
+    ]
+  },
+  family: [
+    "The roots of our family tree are strengthened by your love. You are our pride and joy.",
+    "Every memory we share is a treasure. Thank you for being the heart of our home.",
+    "Parivaar ka garv ho tum, hamari khushiyon ki wajah ho tum. Sada khush raho. 🙏"
+  ]
+};
+
+/**
  * Template Presets
  * Automatically adjust messages, colors, emojis based on gender, age, and relationship
  */

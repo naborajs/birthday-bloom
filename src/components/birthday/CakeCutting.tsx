@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo, CSSProperties } from "react";
+import { createPortal } from "react-dom";
 import { Cake as CakeIcon, Flame, Heart, Sparkles } from "lucide-react";
 import { useConfetti } from "./Confetti";
 import { useSoundManager } from "./SoundManager";
@@ -359,13 +360,7 @@ export const CakeCutting = () => {
     playPop();
     setPhase("blow-intro");
     
-    // Auto-scroll to top of section for better mobile focus
-    setTimeout(() => {
-      const element = document.getElementById('cake-section');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 100);
+    // Portal Fix: No need for scrollIntoView here as overlay is portaled
   }, [playPop]);
 
   const handleBlow = useCallback(() => {
@@ -403,125 +398,128 @@ export const CakeCutting = () => {
 
   return (
     <>
-      <AnimatePresence>
-        {phase !== "select" && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-start md:justify-center backdrop-blur-3xl overflow-y-auto overscroll-none py-10 md:py-8"
-            style={{ 
-              background: "radial-gradient(circle at center, rgba(0,0,0,0.92) 0%, rgba(0,0,0,1) 100%)"
-            }}
-          >
-            <MagicDust count={40} />
-            
-            <div className="relative w-full max-w-4xl px-4 flex flex-col items-center">
+      {createPortal(
+        <AnimatePresence>
+          {phase !== "select" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] flex flex-col items-center justify-start md:justify-center backdrop-blur-3xl overflow-y-auto overscroll-none py-10 md:py-8"
+              style={{ 
+                background: "radial-gradient(circle at center, rgba(0,0,0,0.92) 0%, rgba(0,0,0,1) 100%)"
+              }}
+            >
+              <MagicDust count={40} />
+              
+              <div className="relative w-full max-w-4xl px-4 flex flex-col items-center">
 
-              {(phase === "blow-intro" || phase === "blowing") && (
-                <motion.div 
-                  initial={{ scale: 0.8, opacity: 0, rotateX: 45 }}
-                  animate={{ scale: 1, opacity: 1, rotateX: 0 }}
-                  className="flex flex-col items-center gap-12"
-                >
-                  <h2 className="font-display text-3xl sm:text-4xl text-white font-black text-center tracking-tighter animate-glow-pulse">
-                    ✨ MAKE A WISH & BLOW ✨
-                  </h2>
-                  <CakeSVG cake={cake} split={false} candlesLit={candlesLit} name={name} />
-                  {phase === "blow-intro" && (
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={handleBlow}
-                      className="group relative px-12 py-5 rounded-full text-xl font-black text-white overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.2)]"
-                      style={{ background: "linear-gradient(90deg, #ff0080, #7928ca)" }}
-                    >
-                      <span className="relative z-10">🌬️ BLOW NOW</span>
-                      <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                    </motion.button>
-                  )}
-                </motion.div>
-              )}
-
-              {phase === "wish" && (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 1.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="flex flex-col items-center gap-12"
-                >
-                  <div className="relative">
-                    <CakeSVG cake={cake} split={false} candlesLit={false} name={name} />
-                    <motion.div 
-                      animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="absolute inset-0 rounded-full bg-white/10 blur-3xl" 
-                    />
-                  </div>
-                  <div className="text-center">
-                    <h2 className="font-display text-4xl sm:text-6xl font-black bg-gradient-to-r from-yellow-200 via-white to-yellow-200 bg-clip-text text-transparent drop-shadow-2xl">
-                      WISH SENT TO THE STARS
+                {(phase === "blow-intro" || phase === "blowing") && (
+                  <motion.div 
+                    initial={{ scale: 0.8, opacity: 0, rotateX: 45 }}
+                    animate={{ scale: 1, opacity: 1, rotateX: 0 }}
+                    className="flex flex-col items-center gap-12"
+                  >
+                    <h2 className="font-display text-3xl sm:text-4xl text-white font-black text-center tracking-tighter animate-glow-pulse">
+                      ✨ MAKE A WISH & BLOW ✨
                     </h2>
-                    <p className="text-white/60 text-xl mt-4 font-light italic">Wait for the magical cut...</p>
+                    <CakeSVG cake={cake} split={false} candlesLit={candlesLit} name={name} />
+                    {phase === "blow-intro" && (
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={handleBlow}
+                        className="group relative px-12 py-5 rounded-full text-xl font-black text-white overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.2)]"
+                        style={{ background: "linear-gradient(90deg, #ff0080, #7928ca)" }}
+                      >
+                        <span className="relative z-10">🌬️ BLOW NOW</span>
+                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                      </motion.button>
+                    )}
+                  </motion.div>
+                )}
+
+                {phase === "wish" && (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 1.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="flex flex-col items-center gap-12"
+                  >
+                    <div className="relative">
+                      <CakeSVG cake={cake} split={false} candlesLit={false} name={name} />
+                      <motion.div 
+                        animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="absolute inset-0 rounded-full bg-white/10 blur-3xl" 
+                      />
+                    </div>
+                    <div className="text-center">
+                      <h2 className="font-display text-4xl sm:text-6xl font-black bg-gradient-to-r from-yellow-200 via-white to-yellow-200 bg-clip-text text-transparent drop-shadow-2xl">
+                        WISH SENT TO THE STARS
+                      </h2>
+                      <p className="text-white/60 text-xl mt-4 font-light italic">Wait for the magical cut...</p>
+                    </div>
+                  </motion.div>
+                )}
+
+                {(phase === "knife-enter" || phase === "cutting" || phase === "burst") && (
+                  <div className="relative flex flex-col items-center">
+                    <KnifeSVG phase={phase} />
+                    {phase === "cutting" && <CutSparks count={30} color={cake.accent} />}
+                    <CakeSVG cake={cake} split={phase === "burst"} candlesLit={false} name={name} />
+                    {phase === "burst" && (
+                      <motion.div 
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 4, opacity: 1 }}
+                        className="absolute inset-0 bg-white/40 rounded-full blur-[100px] pointer-events-none" 
+                      />
+                    )}
                   </div>
-                </motion.div>
-              )}
+                )}
 
-              {(phase === "knife-enter" || phase === "cutting" || phase === "burst") && (
-                <div className="relative flex flex-col items-center">
-                  <KnifeSVG phase={phase} />
-                  {phase === "cutting" && <CutSparks count={30} color={cake.accent} />}
-                  <CakeSVG cake={cake} split={phase === "burst"} candlesLit={false} name={name} />
-                  {phase === "burst" && (
-                    <motion.div 
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: 4, opacity: 1 }}
-                      className="absolute inset-0 bg-white/40 rounded-full blur-[100px] pointer-events-none" 
-                    />
-                  )}
-                </div>
-              )}
-
-              {phase === "quotes" && (
-                <div className="flex flex-col items-center gap-12 w-full">
-                  <CakeSVG cake={cake} split={true} candlesLit={false} />
-                  <div className="text-center min-h-[150px] w-full max-w-2xl">
-                    <AnimatePresence mode="wait">
-                      {quoteIndex >= 0 && (
-                        <motion.div
-                          key={quoteIndex}
-                          initial={{ y: 20, opacity: 0, filter: "blur(10px)" }}
-                          animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                          exit={{ y: -20, opacity: 0, filter: "blur(10px)" }}
-                          transition={{ duration: 0.8 }}
-                          className="flex items-center justify-center h-full"
-                        >
-                          <p className={`text-3xl sm:text-4xl md:text-6xl font-display font-black leading-tight ${quoteIndex === quotes.length - 1
-                            ? "bg-gradient-to-r from-primary via-white to-primary bg-clip-text text-transparent animate-gradient-shift drop-shadow-[0_0_30px_var(--color-primary)]"
-                            : "text-white"
-                            } `}>
-                            <KineticText text={quotes[quoteIndex].text} animation={quotes[quoteIndex].animation} delay={100} />
-                          </p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                {phase === "quotes" && (
+                  <div className="flex flex-col items-center gap-12 w-full">
+                    <CakeSVG cake={cake} split={true} candlesLit={false} name={name} />
+                    <div className="text-center min-h-[150px] w-full max-w-2xl">
+                      <AnimatePresence mode="wait">
+                        {quoteIndex >= 0 && (
+                          <motion.div
+                            key={quoteIndex}
+                            initial={{ y: 20, opacity: 0, filter: "blur(10px)" }}
+                            animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                            exit={{ y: -20, opacity: 0, filter: "blur(10px)" }}
+                            transition={{ duration: 0.8 }}
+                            className="flex items-center justify-center h-full"
+                          >
+                            <p className={`text-3xl sm:text-4xl md:text-6xl font-display font-black leading-tight ${quoteIndex === quotes.length - 1
+                              ? "bg-gradient-to-r from-primary via-white to-primary bg-clip-text text-transparent animate-gradient-shift drop-shadow-[0_0_30px_var(--color-primary)]"
+                              : "text-white"
+                              } `}>
+                              <KineticText text={quotes[quoteIndex].text} animation={quotes[quoteIndex].animation} delay={100} />
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {phase === "quotes" && quoteIndex >= quotes.length - 1 && (
-                <motion.button
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  onClick={() => setPhase("select")}
-                  className="mt-16 px-10 py-4 rounded-full text-sm font-black uppercase tracking-[0.3em] text-white/40 hover:text-white border border-white/10 hover:bg-white/5 transition-all duration-500"
-                >
-                  ✕ Finish Experience
-                </motion.button>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                {phase === "quotes" && quoteIndex >= quotes.length - 1 && (
+                  <motion.button
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    onClick={() => setPhase("select")}
+                    className="mt-16 px-10 py-4 rounded-full text-sm font-black uppercase tracking-[0.3em] text-white/40 hover:text-white border border-white/10 hover:bg-white/5 transition-all duration-500"
+                  >
+                    ✕ Finish Experience
+                  </motion.button>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
       <div id="cake-section" className="relative z-20 py-16 sm:py-32 px-4">
         <div className="max-w-6xl mx-auto text-center">

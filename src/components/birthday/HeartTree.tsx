@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useConfetti } from "./Confetti";
 import { useSoundManager } from "./SoundManager";
+import { SPECIAL_QUOTES } from "@/config/templates";
 
 interface HeartTreeProps {
     delay?: number; 
@@ -46,10 +47,18 @@ const TreeSparks = ({ count, color }: { count: number; color: string }) => {
 
 export const HeartTree = ({ delay = 1000 }: HeartTreeProps) => {
     const [stage, setStage] = useState<0 | 1 | 2 | 3 | 4>(0);
+    const [activeMessage, setActiveMessage] = useState<string | null>(null);
     const { config } = useBirthdayStore();
+    const { name, relationship, gender, photos = [] } = config;
     const primaryColor = config.favoriteColor || 'hsl(330, 90%, 75%)';
     const { fireStars } = useConfetti();
-    const { playReveal } = useSoundManager();
+    const { playReveal, playPop } = useSoundManager();
+
+    const quotesPool = useMemo(() => {
+        if (relationship === 'partner') return SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || SPECIAL_QUOTES.family;
+        if (relationship === 'friend') return (gender === 'male' ? SPECIAL_QUOTES.friend.legend : SPECIAL_QUOTES.friend.friendly) || SPECIAL_QUOTES.family;
+        return SPECIAL_QUOTES.family;
+    }, [relationship, gender]);
 
     useEffect(() => {
         const t1 = setTimeout(() => setStage(1), delay);
@@ -173,26 +182,67 @@ export const HeartTree = ({ delay = 1000 }: HeartTreeProps) => {
                         />
                     ))}
 
-                    {/* Leaves */}
-                    {heartLeaves.map((leaf, i) => (
-                        <motion.g
-                            key={`leaf-${i}`}
-                            initial={{ scale: 0 }}
-                            animate={{ scale: stage >= 3 ? leaf.scale : 0 }}
-                            transition={{ type: "spring", stiffness: 200, damping: 10, delay: 3 + leaf.delay }}
-                            style={{ transform: `translate(${leaf.cx}px, ${leaf.cy}px)` }}
-                        >
-                            <path
-                                d={heartPath}
-                                fill={primaryColor}
-                                filter={stage === 4 ? "url(#treeGlow)" : ""}
-                                style={{
-                                    animation: stage === 4 ? `pulse-scale 3s ease-in-out infinite alternate` : "none"
+                    {/* Interactive Photos & Messages */}
+                    {heartLeaves.map((leaf, i) => {
+                        const hasPhoto = photos.length > 0 && i < photos.length;
+                        const quote = quotesPool[i % quotesPool.length];
+                        
+                        return (
+                            <motion.g
+                                key={`leaf-${i}`}
+                                initial={{ scale: 0 }}
+                                animate={{ scale: stage >= 3 ? leaf.scale : 0 }}
+                                whileHover={{ scale: leaf.scale * 1.2, zIndex: 50 }}
+                                transition={{ type: "spring", stiffness: 200, damping: 10, delay: 3 + leaf.delay }}
+                                style={{ transform: `translate(${leaf.cx}px, ${leaf.cy}px)`, cursor: 'pointer' }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setActiveMessage(quote);
+                                    playPop();
+                                    fireStars();
+                                    setTimeout(() => setActiveMessage(null), 5000);
                                 }}
-                            />
-                        </motion.g>
-                    ))}
+                            >
+                                {hasPhoto ? (
+                                    <g>
+                                        <rect x="-14" y="-14" width="28" height="32" fill="white" rx="2" className="drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]" />
+                                        <image href={photos[i % photos.length]} x="-12" y="-12" width="24" height="24" preserveAspectRatio="xMidYMid slice" />
+                                        <rect x="-14" y="-14" width="28" height="32" fill="none" stroke={primaryColor} strokeWidth="0.5" opacity="0.2" rx="2" />
+                                        <circle cx="0" cy="15" r="1.5" fill={primaryColor} opacity="0.5" />
+                                    </g>
+                                ) : (
+                                    <path
+                                        d={heartPath}
+                                        fill={primaryColor}
+                                        filter={stage === 4 ? "url(#treeGlow)" : ""}
+                                        style={{
+                                            animation: stage === 4 ? `pulse-scale 3s ease-in-out infinite alternate` : "none"
+                                        }}
+                                    />
+                                )}
+                            </motion.g>
+                        );
+                    })}
                 </svg>
+
+                {/* Message Bubble Overlay */}
+                <AnimatePresence>
+                    {activeMessage && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.5, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.5, y: -20 }}
+                            className="absolute left-1/2 bottom-3/4 -translate-x-1/2 z-[100] w-[280px]"
+                        >
+                            <div className="bg-white/10 backdrop-blur-2xl border border-white/20 p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] text-center">
+                                <p className="text-white font-display text-lg leading-relaxed italic">
+                                    "{activeMessage}"
+                                </p>
+                                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white/10 rotate-45 border-r border-b border-white/20" />
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </motion.div>
 
             <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[hsl(var(--background))] via-transparent to-transparent z-20" />
