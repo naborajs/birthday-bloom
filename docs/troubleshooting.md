@@ -1,4 +1,4 @@
-# 🆘 NS CODEX: Master Troubleshooting & Diagnostic Guide
+# 🆘 Naboraj Sarkar: Master Troubleshooting & Diagnostic Guide
 
 If your "Cinematic Surprise" isn't running at 60fps or the secrets aren't loading, use this guide to diagnose and repair the engine.
 
@@ -92,4 +92,4 @@ Birthday Bloom is designed with a **Fail-Safe Architecture**. If an animation fa
 2.  **Use fallback colors** if your custom color is invalid.
 3.  **Use placeholder names** if `VITE_BIRTHDAY_NAME` is missing.
 
-*Maintained by the NS CODEX Reliability Engineering Team.* 🛠️
+*Maintained by the Naboraj Sarkar Reliability Engineering Team.* 🛠️

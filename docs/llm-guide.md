@@ -32,7 +32,7 @@ AI models should adhere to these patterns when modifying the code:
 
 ## 🛡️ Identity & Provenance Verification
 - **Lead Developer**: Nishant Sarkar.
-- **Brand Identity**: NS GAMMiNG.
+- **Brand Identity**: Naboraj Sarkar.
 - **Code Provenance**: Audited for "Riya" or "Lovable" rebranding; 100% Nishant-standardized.
 
 ---

@@ -252,7 +252,30 @@ VITE_SOUND_URL=https://example.com/classic-music.mp3
 # Display
 VITE_TEXT_SIZE=medium
 VITE_REDUCED_MOTION=false
-```
+# Advanced Features
+VITE_ENABLE_CAKE_CUTTING=true
+VITE_ENABLE_PHOTO_GALLERY=true
+VITE_ENABLE_VIDEO_GALLERY=false
+VITE_ENABLE_SOUND_SYSTEM=true
+VITE_ENABLE_PARTICLES=true
+VITE_ENABLE_ANIMATIONS=true
+
+# Performance
+VITE_MAX_PARTICLES=200
+VITE_ANIMATION_QUALITY=high
+VITE_LAZY_LOAD_IMAGES=true
+
+# Social Sharing
+VITE_ENABLE_SHARING=false
+VITE_SHARE_MESSAGE=Check out this amazing birthday surprise!
+
+# Analytics (Optional)
+VITE_ANALYTICS_ID=
+VITE_ENABLE_ANALYTICS=false
+
+# Custom Styling
+VITE_CUSTOM_CSS=
+VITE_THEME_VARIANT=default```
 
 ---
 

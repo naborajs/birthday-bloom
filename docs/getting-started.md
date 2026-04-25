@@ -1,6 +1,6 @@
-# 🚀 Getting Started with NS CODEX Birthday Bloom
+# 🚀 Getting Started with Naboraj Sarkar Birthday Bloom
 
-Welcome to the **NS CODEX** Cinematic Engine. You are about to build a premium, digital surprise that pushes the boundaries of web interactivity. This guide will take you from a fresh clone to a production-ready cinematic launch.
+Welcome to the **Naboraj Sarkar** Cinematic Engine. You are about to build a premium, digital surprise that pushes the boundaries of web interactivity. This guide will take you from a fresh clone to a production-ready cinematic launch.
 
 ---
 
@@ -18,7 +18,7 @@ Ensure you have the following installed on your machine:
 git clone https://github.com/naborajs/birthday-bloom.git
 cd birthday-bloom
 
-# Install dependencies with NS CODEX precision
+# Install dependencies with Naboraj Sarkar precision
 npm install
 
 # Start the dev server
@@ -51,13 +51,13 @@ Before you send the link, run these checks to ensure a flawless experience.
 | **No Sound** | Browser Autoplay Policy | The engine requires a "Splash" interaction. Ensure the user clicks the "Start" button. |
 
 ### Diagnostic Mode
-If things look wrong, check the browser console (`F12` -> `Console`). The NS CODEX engine logs its state machine transitions. If a scene fails to load, it will be logged there with a specific error code.
+If things look wrong, check the browser console (`F12` -> `Console`). The Naboraj Sarkar engine logs its state machine transitions. If a scene fails to load, it will be logged there with a specific error code.
 
 ---
 
 ## 🎭 Design Philosophy: The CODEX Standard
 
-Every "Bloom" instance should feel bespoke. When configuring your instance, keep these **NS CODEX** standards in mind:
+Every "Bloom" instance should feel bespoke. When configuring your instance, keep these **Naboraj Sarkar** standards in mind:
 
 1. **Color Harmony**: Use a color that matches the recipient's personality. Our engine will automatically generate glows and gradients based on your hex code.
 2. **Pacing**: Don't rush the narrative. The default timings are optimized for emotional impact.

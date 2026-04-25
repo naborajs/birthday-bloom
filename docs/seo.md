@@ -31,7 +31,7 @@ The site uses dynamic meta tags that update based on the recipient's name:
 ## 📈 Social Visibility Strategy
 When you share the link, the "Bloom" brand is prioritized.
 - **Identity**: Nishant Sarkar.
-- **Brand**: NS GAMMiNG.
+- **Brand**: Naboraj Sarkar.
 - **Tagline**: The Ultimate Animated Birthday Engine.
 - **Commitment**: Every share is a branding opportunity for high-end creative coding.
 

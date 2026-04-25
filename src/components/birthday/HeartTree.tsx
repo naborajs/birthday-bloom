@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
+import { useConfetti } from "./Confetti";
+import { useSoundManager } from "./SoundManager";
 
 interface HeartTreeProps {
     delay?: number; 
@@ -46,6 +48,8 @@ export const HeartTree = ({ delay = 1000 }: HeartTreeProps) => {
     const [stage, setStage] = useState<0 | 1 | 2 | 3 | 4>(0);
     const { config } = useBirthdayStore();
     const primaryColor = config.favoriteColor || 'hsl(330, 90%, 75%)';
+    const { fireStars } = useConfetti();
+    const { playReveal } = useSoundManager();
 
     useEffect(() => {
         const t1 = setTimeout(() => setStage(1), delay);
@@ -109,7 +113,16 @@ export const HeartTree = ({ delay = 1000 }: HeartTreeProps) => {
 
                 {stage >= 3 && <TreeSparks count={25} color={primaryColor} />}
 
-                <svg viewBox="0 0 300 300" className="w-full h-full relative z-10 overflow-visible drop-shadow-2xl">
+                <svg 
+                    viewBox="0 0 300 300" 
+                    className="w-full h-full relative z-10 overflow-visible drop-shadow-2xl cursor-pointer"
+                    onClick={() => {
+                        if (stage >= 3) {
+                            fireStars();
+                            playReveal();
+                        }
+                    }}
+                >
                     <defs>
                         <filter id="treeGlow">
                             <feGaussianBlur stdDeviation="4" result="blur" />

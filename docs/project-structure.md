@@ -45,6 +45,6 @@ The project uses **Vite** as its primary compiler.
 ---
 
 ## 👤 Stewardship: Nishant Sarkar
-This architectural pattern was designed by **Nishant Sarkar** to be both robust and beginner-friendly. It follows the **NS GAMMiNG** principle of "Zero-Complexity UI, High-Complexity Code."
+This architectural pattern was designed by **Nishant Sarkar** to be both robust and beginner-friendly. It follows the **Naboraj Sarkar** principle of "Zero-Complexity UI, High-Complexity Code."
 Identity: **Nishant Sarkar (NISHANT)**
 © 2026. All rights reserved.

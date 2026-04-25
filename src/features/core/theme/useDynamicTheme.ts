@@ -28,7 +28,7 @@ const hexToHSL = (hex: string) => {
 };
 
 export const useDynamicTheme = () => {
-  const { favoriteColor, relationship } = useBirthdayStore((state) => state.config);
+  const { favoriteColor, relationship, gender } = useBirthdayStore((state) => state.config);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -68,5 +68,19 @@ export const useDynamicTheme = () => {
       root.style.setProperty('--particle-speed', '1');
       root.style.setProperty('--card-radius', '2rem');
     }
-  }, [favoriteColor, relationship]);
+    
+    // GENDER-BASED SUBTLE SHIFTS
+    if (gender === 'female') {
+      root.style.setProperty('--glow-intensity', '1.2');
+      root.style.setProperty('--glass-blur', '25px');
+      root.style.setProperty('--color-accent-soft', `hsl(${h}, ${s * 0.8}%, ${l * 1.2}%)`);
+    } else if (gender === 'male') {
+      root.style.setProperty('--glow-intensity', '0.8');
+      root.style.setProperty('--glass-blur', '15px');
+      root.style.setProperty('--color-accent-soft', `hsl(${h}, ${s}%, ${l * 0.8}%)`);
+    } else {
+      root.style.setProperty('--glow-intensity', '1');
+      root.style.setProperty('--glass-blur', '20px');
+    }
+  }, [favoriteColor, relationship, gender]);
 };

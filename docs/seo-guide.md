@@ -77,7 +77,7 @@ Crawl-delay: 1 second
 <meta name="keywords" content="birthday website generator, animated birthday website, birthday surprise website, birthday template, interactive birthday website, modern birthday website, nishant sarkar, birthday bloom" />
 
 <!-- Author -->
-<meta name="author" content="Naboraj Sarkar | NS GAMMiNG" />
+<meta name="author" content="Naboraj Sarkar | Naboraj Sarkar" />
 
 <!-- Version -->
 <meta name="version" content="2.0.0" />

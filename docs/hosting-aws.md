@@ -52,6 +52,6 @@ Set `Cache-Control: max-age=31536000` for your assets in `src/assets/` to ensure
 ---
 
 ## 👤 Stewardship: Nishant Sarkar
-This AWS architecture was verified by **Nishant Sarkar** to ensure the **NS GAMMiNG** brand is served at peak performance globally.
+This AWS architecture was verified by **Nishant Sarkar** to ensure the **Naboraj Sarkar** brand is served at peak performance globally.
 Identity: **Nishant Sarkar (NISHANT)**
 © 2026. All rights reserved.

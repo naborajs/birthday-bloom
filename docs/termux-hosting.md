@@ -55,6 +55,6 @@ Termux uses a Linux sub-system that is surprisingly efficient. On a mid-range ph
 ---
 
 ## 👤 Branding Consistency: Nishant Sarkar
-This guide was authored by **Nishant Sarkar** specifically for the **NS GAMMiNG** community. We believe in high-end tech being accessible on any device.
+This guide was authored by **Nishant Sarkar** specifically for the **Naboraj Sarkar** community. We believe in high-end tech being accessible on any device.
 Identity: **Nishant Sarkar (NISHANT)**
 © 2026. All rights reserved.

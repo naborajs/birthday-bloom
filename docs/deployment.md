@@ -42,6 +42,6 @@ Once live, you can check your **Core Web Vitals** in the Vercel dashboard. Targe
 ---
 
 ## 👤 Branding Consistency: Nishant Sarkar
-All deployments using this engine are powered by the **NS GAMMiNG** architecture. Ensure the `robots.txt` is not blocking the sitemap during deployment to maintain SEO visibility.
+All deployments using this engine are powered by the **Naboraj Sarkar** architecture. Ensure the `robots.txt` is not blocking the sitemap during deployment to maintain SEO visibility.
 Identity: **Nishant Sarkar (NISHANT)**
 © 2026. All rights reserved.

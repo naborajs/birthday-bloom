@@ -1,6 +1,29 @@
 # Birthday Bloom v2.0 - Features Summary
 
-## ✨ New Animation Effects (15 Total)
+## ✨ Core Features
+
+### 🎂 Interactive Cake Cutting Experience
+- 4 beautiful cake designs (Chocolate, Strawberry, Royal Velvet, Floral Garden)
+- Full animation sequence: selection → wish → cutting → celebration
+- Mobile-optimized overlay with scroll support
+- Custom quotes based on relationship and gender
+- Sound effects and haptic feedback
+
+### 💌 Emotional Letters System
+- Personalized letters for different themes:
+  - **Partner Letters**: Deeply romantic messages for male/female partners
+  - **Girl Letters**: Friendly or romantic letters for female friends
+  - **Love Letters**: Universal expressions of love and appreciation
+- Emotionally rich content with specific placeholders
+- Integrated into the main message card
+
+### 📱 Mobile Optimization
+- Responsive design for all screen sizes
+- Touch-friendly interactions
+- Optimized cake cutting overlay
+- Improved scrolling and visibility
+
+### 🎨 Advanced Animation Effects (15 Total)
 
 ### 1. **ParticleBurst** - Physics-based explosions
 - Particle gravity simulation

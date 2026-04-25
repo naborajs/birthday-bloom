@@ -1,4 +1,4 @@
-# 🎨 NS CODEX: Master Customization & Theme Tuning
+# 🎨 Naboraj Sarkar: Master Customization & Theme Tuning
 
 Birthday Bloom is built to be a canvas for your creativity. This guide explains how to push the "Cinematic Engine" to its limits through configuration and code.
 
@@ -18,7 +18,7 @@ The `VITE_BIRTHDAY_RELATIONSHIP` variable is the "Soul" of the site. It doesn't 
 
 ## 🎨 2. Advanced Theme Tuning
 
-The engine generates a full UI palette based on a single `VITE_BIRTHDAY_COLOR`. If you want to achieve a specific "NS CODEX" look, use these curated hex codes:
+The engine generates a full UI palette based on a single `VITE_BIRTHDAY_COLOR`. If you want to achieve a specific "Naboraj Sarkar" look, use these curated hex codes:
 
 - **"Midnight Bloom"**: `#00C2FF` (Vibrant Cyan)
 - **"Rose Quartz"**: `#FF6B6B` (Soft Coral)
@@ -63,7 +63,7 @@ const romanticLines = [
 
 To keep the 60fps cinematic flow, your media MUST be optimized.
 
-### NS CODEX Media Standards:
+### Naboraj Sarkar Media Standards:
 - **Format**: Always use `.webp` if possible, otherwise `.jpg`. Avoid `.png` as it's too heavy.
 - **Size**: Keep every image under **500KB**.
 - **Dimensions**: Use **16:9** aspect ratio for the gallery to avoid "black bars" in the 3D tilt view.
@@ -89,4 +89,4 @@ To change the "Cakes" available for selection, open `src/components/birthday/Cak
 3. The 3D engine will automatically map your new colors to the SVG geometry.
 
 ---
-*Identity: Naboraj Sarkar | Brand: NS CODEX* 🚀
+*Identity: Naboraj Sarkar | Brand: Naboraj Sarkar* 🚀

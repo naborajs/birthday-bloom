@@ -1,6 +1,12 @@
+/**
+ * 🌸 BIRTHDAY BLOOM - CONFIGURATION STORE
+ * -----------------------------------------
+ * Authored by: NABORAJ SARKAR (https://github.com/naborajs)
+ */
+
 import { create } from 'zustand';
 
-export type RelationshipType = 'partner' | 'friend' | 'family';
+export type RelationshipType = 'partner' | 'friend' | 'family' | 'sibling' | 'colleague' | 'mentor';
 export type GenderType = 'male' | 'female' | 'other';
 
 export interface BirthdayConfig {
@@ -14,6 +20,11 @@ export interface BirthdayConfig {
   birthdayDate: Date | null;
   animationSpeed?: 'slow' | 'moderate' | 'fast';
   particleCount?: number;
+  videos?: string[];
+  letterTitle?: string;
+  letterOverride?: string;
+  showCakeSection?: boolean;
+  showVideoSection?: boolean;
 }
 
 interface BirthdayStore {
@@ -31,7 +42,10 @@ const envName = import.meta.env.VITE_BIRTHDAY_NAME || '';
 const rawRel = (import.meta.env.VITE_BIRTHDAY_RELATIONSHIP || '').toLowerCase();
 const envRelationship: RelationshipType = 
   rawRel.includes('partner') || rawRel.includes('love') ? 'partner' :
-  rawRel.includes('friend') || rawRel.includes('bestie') || rawRel.includes('frined') ? 'friend' :
+  rawRel.includes('friend') || rawRel.includes('bestie') ? 'friend' :
+  rawRel.includes('sibling') || rawRel.includes('brother') || rawRel.includes('sister') ? 'sibling' :
+  rawRel.includes('colleague') || rawRel.includes('work') ? 'colleague' :
+  rawRel.includes('mentor') || rawRel.includes('teacher') ? 'mentor' :
   'family';
 
 const envColor = import.meta.env.VITE_BIRTHDAY_COLOR || import.meta.env.VITE_FAVORITE_COLOR || '#FF6B6B';
@@ -55,6 +69,17 @@ const envItems = import.meta.env.VITE_BIRTHDAY_INTERESTS || import.meta.env.VITE
   ? (import.meta.env.VITE_BIRTHDAY_INTERESTS || import.meta.env.VITE_FAVORITE_ITEMS).split(',').map((s: string) => s.trim()) 
   : [];
 
+const envVideos = [
+  import.meta.env.VITE_VIDEO_1,
+  import.meta.env.VITE_VIDEO_2,
+  import.meta.env.VITE_VIDEO_3,
+].filter(Boolean) as string[];
+
+const envLetterTitle = import.meta.env.VITE_BIRTHDAY_LETTER_TITLE || '';
+const envLetterOverride = import.meta.env.VITE_BIRTHDAY_LETTER_OVERRIDE || '';
+const envShowCake = import.meta.env.VITE_SHOW_CAKE_SECTION !== 'false';
+const envShowVideo = import.meta.env.VITE_SHOW_VIDEO_SECTION !== 'false';
+
 export const useBirthdayStore = create<BirthdayStore>((set, get) => ({
   config: {
     name: envName,
@@ -67,6 +92,11 @@ export const useBirthdayStore = create<BirthdayStore>((set, get) => ({
     birthdayDate: envDate,
     animationSpeed: (import.meta.env.VITE_ANIMATION_SPEED as any) || null,
     particleCount: import.meta.env.VITE_PARTICLE_COUNT ? parseInt(import.meta.env.VITE_PARTICLE_COUNT, 10) : 25,
+    videos: envVideos,
+    letterTitle: envLetterTitle,
+    letterOverride: envLetterOverride,
+    showCakeSection: envShowCake,
+    showVideoSection: envShowVideo,
   },
   isConfigured: !!envName,
   setConfig: (newConfig) =>

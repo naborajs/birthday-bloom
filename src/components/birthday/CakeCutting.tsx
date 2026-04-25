@@ -129,7 +129,7 @@ const MagicDust = ({ count }: { count: number }) => {
   );
 };
 
-const CakeSVG = ({ cake, split, candlesLit }: { cake: CakeOption; split: boolean; candlesLit: boolean }) => (
+const CakeSVG = ({ cake, split, candlesLit, name }: { cake: CakeOption; split: boolean; candlesLit: boolean; name: string }) => (
   <motion.div 
     animate={{ rotateX: split ? 20 : 5, rotateY: split ? 3 : 0, scale: split ? 1.1 : 1 }}
     transition={{ type: "spring", stiffness: 100, damping: 15 }}
@@ -196,7 +196,7 @@ const CakeSVG = ({ cake, split, candlesLit }: { cake: CakeOption; split: boolean
 
       {/* Candles */}
       {[75, 100, 125].map((cx, i) => (
-        <g key={i}>
+        <g key={i} style={{ transform: split ? (cx < 100 ? "translateX(-15px)" : cx > 100 ? "translateX(15px)" : "none") : "none", transition: "all 1s ease" }}>
           <rect x={cx - 2} y="5" width="4" height="28" rx="2" fill={`hsl(${i * 40 + 200}, 80%, 65%)`} />
           {candlesLit ? (
             <g className="animate-flame-premium" filter="url(#candleGlow)">
@@ -213,6 +213,31 @@ const CakeSVG = ({ cake, split, candlesLit }: { cake: CakeOption; split: boolean
             />
           )}
         </g>
+      ))}
+
+      {/* Name Plaque on Cake */}
+      <g style={{ transform: split ? "translateY(20px) opacity(0)" : "none", transition: "all 0.8s ease" }}>
+        <rect x="60" y="45" width="80" height="20" rx="10" fill="rgba(255,255,255,0.2)" backdropFilter="blur(5px)" />
+        <text 
+          x="100" y="59" 
+          textAnchor="middle" 
+          fill="white" 
+          className="font-display font-black" 
+          style={{ fontSize: '10px', textShadow: '0 2px 4px rgba(0,0,0,0.5)', letterSpacing: '1px' }}
+        >
+          {name?.toUpperCase()}
+        </text>
+      </g>
+
+      {/* Decorative Swirls (Creams) */}
+      {[55, 80, 105, 130].map((cx, i) => (
+        <circle 
+          key={`cream-${i}`}
+          cx={cx + (split ? (cx < 100 ? -20 : 20) : 0)} 
+          cy="32" r="6" 
+          fill="white" opacity="0.9" 
+          style={{ filter: "url(#cakeDepth)", transition: "all 1s ease" }} 
+        />
       ))}
 
       {/* Cutting Line Effect */}
@@ -333,6 +358,14 @@ export const CakeCutting = () => {
     setSelectedCake(cake);
     playPop();
     setPhase("blow-intro");
+    
+    // Auto-scroll to top of section for better mobile focus
+    setTimeout(() => {
+      const element = document.getElementById('cake-section');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   }, [playPop]);
 
   const handleBlow = useCallback(() => {
@@ -348,6 +381,15 @@ export const CakeCutting = () => {
     setTimeout(() => { fireCannon(); setPhase("burst"); playReveal(); }, 7000);
     setTimeout(() => { setPhase("quotes"); setQuoteIndex(0); }, 8500);
   }, [phase, fireCannon, playBoom, playReveal, playWhoosh]);
+
+  useEffect(() => {
+    if (phase !== "select") {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [phase]);
 
   useEffect(() => {
     if (phase !== "quotes" || quoteIndex < 0 || quoteIndex >= quotes.length) return;
@@ -367,8 +409,10 @@ export const CakeCutting = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 flex items-center justify-center backdrop-blur-3xl"
-            style={{ background: "radial-gradient(circle, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.95) 100%)" }}
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-start md:justify-center backdrop-blur-3xl overflow-y-auto overscroll-none py-10 md:py-8"
+            style={{ 
+              background: "radial-gradient(circle at center, rgba(0,0,0,0.92) 0%, rgba(0,0,0,1) 100%)"
+            }}
           >
             <MagicDust count={40} />
             
@@ -383,7 +427,7 @@ export const CakeCutting = () => {
                   <h2 className="font-display text-3xl sm:text-4xl text-white font-black text-center tracking-tighter animate-glow-pulse">
                     ✨ MAKE A WISH & BLOW ✨
                   </h2>
-                  <CakeSVG cake={cake} split={false} candlesLit={candlesLit} />
+                  <CakeSVG cake={cake} split={false} candlesLit={candlesLit} name={name} />
                   {phase === "blow-intro" && (
                     <motion.button
                       whileHover={{ scale: 1.1 }}
@@ -406,7 +450,7 @@ export const CakeCutting = () => {
                   className="flex flex-col items-center gap-12"
                 >
                   <div className="relative">
-                    <CakeSVG cake={cake} split={false} candlesLit={false} />
+                    <CakeSVG cake={cake} split={false} candlesLit={false} name={name} />
                     <motion.div 
                       animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
                       transition={{ duration: 2, repeat: Infinity }}
@@ -426,7 +470,7 @@ export const CakeCutting = () => {
                 <div className="relative flex flex-col items-center">
                   <KnifeSVG phase={phase} />
                   {phase === "cutting" && <CutSparks count={30} color={cake.accent} />}
-                  <CakeSVG cake={cake} split={phase === "burst"} candlesLit={false} />
+                  <CakeSVG cake={cake} split={phase === "burst"} candlesLit={false} name={name} />
                   {phase === "burst" && (
                     <motion.div 
                       initial={{ scale: 0, opacity: 0 }}
@@ -479,26 +523,26 @@ export const CakeCutting = () => {
         )}
       </AnimatePresence>
 
-      <section className="relative z-20 py-32 px-4">
+      <div id="cake-section" className="relative z-20 py-16 sm:py-32 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <motion.h3 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="font-display text-5xl sm:text-7xl md:text-9xl font-black mb-6 bg-gradient-to-b from-white to-white/20 bg-clip-text text-transparent"
+            className="font-display text-4xl sm:text-6xl md:text-8xl font-black mb-6 bg-gradient-to-b from-white to-white/20 bg-clip-text text-transparent"
           >
             CHOOSE YOUR CAKE
           </motion.h3>
-          <p className="text-white/40 text-xl mb-20 max-w-2xl mx-auto font-light tracking-widest uppercase">
+          <p className="text-white/40 text-lg sm:text-xl mb-12 sm:mb-20 max-w-2xl mx-auto font-light tracking-widest uppercase">
             A Masterpiece for every Masterpiece
           </p>
 
-          <div className="flex flex-wrap justify-center gap-10">
+          <div className="flex flex-wrap justify-center gap-6 sm:gap-10">
             {CAKE_OPTIONS.map((c, i) => (
               <CakeCard key={c.id} cake={c} index={i} onSelect={() => handleSelectCake(c)} />
             ))}
           </div>
         </div>
-      </section>
+      </div>
     </>
   );
 };

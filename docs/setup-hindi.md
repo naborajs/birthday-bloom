@@ -60,5 +60,5 @@ npm run dev
 
 ---
 
-**Naboraj Sarkar (NS CODEX)** द्वारा निर्मित।
+**Naboraj Sarkar (Naboraj Sarkar)** द्वारा निर्मित।
 मदद के लिए संपर्क करें: [nishant.ns.business@gmail.com](mailto:nishant.ns.business@gmail.com)

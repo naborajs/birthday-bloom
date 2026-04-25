@@ -60,5 +60,5 @@ npm run dev
 
 ---
 
-**নবরাজ সরকার (Naboraj Sarkar - NS CODEX)** দ্বারা নির্মিত।
+**নবরাজ সরকার (Naboraj Sarkar - Naboraj Sarkar)** দ্বারা নির্মিত।
 সাহায্যের জন্য যোগাযোগ করুন: [nishant.ns.business@gmail.com](mailto:nishant.ns.business@gmail.com)

@@ -1,5 +1,6 @@
 /**
- * This is the beginning of a great Birthday Bloom by Nishant Sarkar.
+ * 🌸 BIRTHDAY BLOOM - MAIN ENTRY
+ * Authored by: NABORAJ SARKAR
  */
 import { createRoot } from "react-dom/client";
 import App from "./App";

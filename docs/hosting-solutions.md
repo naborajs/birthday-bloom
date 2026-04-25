@@ -58,5 +58,5 @@ GitHub Pages is a bit more manual but free forever.
 
 ---
 
-**Naboraj Sarkar (NS CODEX)**
+**Naboraj Sarkar (Naboraj Sarkar)**
 *Deployment Team* 🚀

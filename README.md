@@ -1,27 +1,39 @@
-# 🌸 Birthday Bloom — Advanced Animated Birthday Website Generator
+# 🌸 Birthday Bloom — Cinematic Birthday Engine v2.1
 
 <div align="center">
 
-> **"A premium digital experience crafted by Naboraj Sarkar."**
+> **"A premium digital experience crafted for the world by Naboraj Sarkar."**
 
-![Birthday Bloom Banner](https://raw.githubusercontent.com/naborajs/birthday-bloom/main/public/favicon.png)
+![Birthday Bloom Banner](https://raw.githubusercontent.com/naborajs/birthday-bloom-main/main/public/favicon.png)
 
-<h3>✨ The Ultimate Open-Source Birthday Surprise Engine ✨</h3>
+<h3>✨ The Ultimate Open-Source Cinematic Birthday Surprise ✨</h3>
 
 <p align="center">
   <a href="https://github.com/naborajs/birthday-bloom/stargazers"><img src="https://img.shields.io/github/stars/naborajs/birthday-bloom?style=for-the-badge&color=ff69b4&logo=github" alt="Stars"></a>
-  <a href="https://github.com/naborajs/birthday-bloom/network/members"><img src="https://img.shields.io/github/forks/naborajs/birthday-bloom?style=for-the-badge&color=8a2be2&logo=github" alt="Forks"></a>
   <a href="https://github.com/naborajs/birthday-bloom/blob/main/LICENSE"><img src="https://img.shields.io/github/license/naborajs/birthday-bloom?style=for-the-badge&color=4169e1" alt="License"></a>
   <a href="https://vercel.com"><img src="https://img.shields.io/badge/Deploy-Vercel-black?style=for-the-badge&logo=vercel" alt="Deploy"></a>
-  <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-18.x-blue?style=for-the-badge&logo=react" alt="React"></a>
-  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind-3.x-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind"></a>
-  <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/Vite-5.x-646CFF?style=for-the-badge&logo=vite" alt="Vite"></a>
-- **Hyper-Personalization Engine**: Automatically adjusts narratives, titles, and icons based on gender (`male` | `female` | `other`) and relationship (`partner` | `friend` | `family`).
-- **Dynamic Narrative Branching**: Different "vibe" for each template—Funny/Sassy for friends, Romantic/Deep for partners, and Warm/Iconic for family.
-- **Cinematic Finite State Machine**: A phase-based orchestrator that ensures every transition is 100% frame-perfect.
-- **Sound Design Layer**: Integrated audio feedback for typing, whooshes, booms, and reveals.
-- **Zero-Config Deployment**: Fully operational via `.env` variables.
-- **60fps Performance**: Optimized SVG animations and Framer Motion spring physics.
+</p>
+
+---
+
+## 🚀 Experience the Magic
+**Birthday Bloom** is a high-end, premium animated birthday surprise platform designed to capture and create unforgettable digital moments. Developed fundamentally with **React 18**, **Framer Motion**, and **Tailwind CSS**, it establishes a physics-based, emotional narrative layout.
+
+### 🌟 New in v2.1 (Performance & Personalization)
+- **Advanced Personalization**: Full control over emotional letters via ENV variables. [Read the Guide →](./docs/advanced-customization.md)
+- **Mobile Kinetic Engine**: Smooth, automatic scrolling for interactive sections like Cake Cutting.
+- **"Super OP" Content**: Hand-crafted emotional templates for Partners, Friends, Family, and Colleagues.
+- **Interactive Easter Eggs**: Hidden surprises triggered by user interaction with the UI.
+
+---
+
+## 🔥 Why Birthday Bloom?
+Developed by **Naboraj Sarkar**, Birthday Bloom is an open-source gift to the community. Anyone can fork this project and create a world-class surprise for their loved ones in minutes.
+
+*   **Zero-Config Deployment**: Launch instantly via Vercel with just a few ENV variables.
+*   **60fps Cinematography**: Optimized for buttery-smooth animations on both Desktop and Mobile.
+*   **Emotionally Driven**: From the fake chat interface to the growing Heart Tree, every element is designed to move the recipient.
+.
 
 ---
 
@@ -72,7 +84,7 @@
 
 Whether you're celebrating a close friend, a loved one, or simply sending positive vibes, this project provides a 60fps cinematic journey guaranteed to leave a strong emotional impact. **This version is fully secret-config driven**, allowing you to bypass setup wizards and launch a perfectly personalized surprise instantly via environment variables.
 
-Developed by **Naboraj Sarkar** (NS CODEX), Birthday Bloom pushes the boundaries of web-based celebrations, transforming a static "Happy Birthday" text into an interactive, digital masterpiece. The goal of this repository is to give developers a plug-and-play solution that looks incredibly bespoke and expensive to the end user. Everything from the typography to the physics-based confetti bursts has been carefully engineered for maximum emotion.
+Developed by **Naboraj Sarkar** (Naboraj Sarkar), Birthday Bloom pushes the boundaries of web-based celebrations, transforming a static "Happy Birthday" text into an interactive, digital masterpiece. The goal of this repository is to give developers a plug-and-play solution that looks incredibly bespoke and expensive to the end user. Everything from the typography to the physics-based confetti bursts has been carefully engineered for maximum emotion.
 
 ---
 
@@ -272,6 +284,7 @@ The entire initialization process is controlled securely via the `.env` paradigm
 | `VITE_FAVORITE_ITEMS` | NO | `""` | Comma-separated list of interests/items to customize ambient particles. |
 | `VITE_CUSTOM_MESSAGE` | NO | `""` | A heartfelt, custom message to reveal with kinetic typography right before the grand cake reveal. |
 | `VITE_ALLOW_AUDIO` | NO | `true` | Allows default autoplay of background audio and SFX popping noises. |
+| `VITE_VIDEO_1`, `VITE_VIDEO_2`, `VITE_VIDEO_3` | NO | `""` | Adds video links (YouTube or MP4) to the final cinematic Video Gallery at the bottom of the page. |
 
 **How to set this up locally:**
 In the root of your project, create a file named `.env`. Add the following:
@@ -284,6 +297,7 @@ VITE_BIRTHDAY_RELATIONSHIP="partner"
 VITE_FAVORITE_COLOR="#00C2FF"
 VITE_FAVORITE_ITEMS="coffee, stars, music"
 VITE_CUSTOM_MESSAGE="You mean the universe to me."
+VITE_VIDEO_1="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 ```
 
 ### 🌍 Vercel Deployment Guide (Secret Surprise)
@@ -469,6 +483,13 @@ Located inside `index.html`, these tags ensure the surprise looks amazing when s
 
 ## 📜 Version History & Changelog
 
+### v2.1 (Current)
+- **"Super OP" Emotional Letters**: Deeply poetic and specific letters for Partner, Girl, Friend, and Family.
+- **Kinetic Scroll Bridge**: Fixed mobile "out of place" cake cutting with automatic smooth-scrolling.
+- **Advanced Visibility ENVs**: Toggle sections like Cake or Video directly from your environment variables.
+- **Vercel SPA Fix**: Optimized routing with `vercel.json` for zero-404 deployments.
+- **Mobile Polish**: Optimized heading sizes and vertical rhythm for better device compatibility.
+
 ### v3.5.0 (Latest)
 - **3D Engine Update**: Integrated perspective tilt in `PhotoGallery` and `CakeCutting`.
 - **Cinematic Overlays**: Added Filmic Grain and Vignette effects.
@@ -516,7 +537,7 @@ A: Use the `gh-pages` package or a GitHub Action. Note that client-side routing 
 **Q: Vercel build failed?**
 A: Ensure your Node version is 18+. Check for case-sensitive file imports (e.g., `Component.tsx` vs `component.tsx`).
 
-**Q: How do I remove the "NS CODEX" branding?**
+**Q: How do I remove the "Naboraj Sarkar" branding?**
 A: You are free to modify the footer in `MainBirthday.tsx`, but keeping a small "Powered by Birthday Bloom" is appreciated!
 
 ---
@@ -542,8 +563,8 @@ A: You are free to modify the footer in `MainBirthday.tsx`, but keeping a small 
 ## 👤 Author & Brand Identity
 
 - **Developer**: Naboraj Sarkar (Naboraj)
-- **Brand**: NS CODEX
-- **YouTube**: [NS CODEX](https://youtube.com/@nsgamming)
+- **Brand**: Naboraj Sarkar
+- **YouTube**: [Naboraj Sarkar](https://youtube.com/@nsgamming)
 - **GitHub**: [naborajs](https://github.com/naborajs)
 
 ---
@@ -711,7 +732,7 @@ A: Use the `gh-pages` package or a GitHub Action. Note that client-side routing 
 **Q: Vercel build failed?**
 A: Ensure your Node version is 18+. Check for case-sensitive file imports (e.g., `Component.tsx` vs `component.tsx`).
 
-**Q: How do I remove the "NS CODEX" branding?**
+**Q: How do I remove the "Naboraj Sarkar" branding?**
 A: You are free to modify the footer in `MainBirthday.tsx`, but keeping a small "Powered by Birthday Bloom" is appreciated!
 
 ---
@@ -737,8 +758,8 @@ A: You are free to modify the footer in `MainBirthday.tsx`, but keeping a small 
 ## 👤 Author & Brand Identity
 
 - **Developer**: Naboraj Sarkar (Naboraj)
-- **Brand**: NS CODEX
-- **YouTube**: [NS CODEX](https://youtube.com/@nsgamming)
+- **Brand**: Naboraj Sarkar
+- **YouTube**: [Naboraj Sarkar](https://youtube.com/@nsgamming)
 - **GitHub**: [naborajs](https://github.com/naborajs)
 
 ---
@@ -869,7 +890,7 @@ We want to make Birthday Bloom the #1 choice for developers making personalized 
 
 ## 📜 Full License Text (MIT)
 
-Copyright (c) 2026 Naboraj Sarkar (NS CODEX)
+Copyright (c) 2026 Naboraj Sarkar (Naboraj Sarkar)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -881,10 +902,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## 🏛️ Brand & Vision
 
-**NS CODEX** is dedicated to creating high-end digital experiences. Birthday Bloom is a testament to our commitment to quality, performance, and emotion in web development.
+**Naboraj Sarkar** is dedicated to creating high-end digital experiences. Birthday Bloom is a testament to our commitment to quality, performance, and emotion in web development.
 
 - **Developer**: Naboraj Sarkar
-- **Brand**: NS CODEX
+- **Brand**: Naboraj Sarkar
 - **Vision**: "Tech with a Soul"
 
 ---
@@ -1014,9 +1035,9 @@ We are constantly improving Birthday Bloom. Here is what's coming:
 
 ---
 
-## 🏛️ Brand Identity: NS CODEX
+## 🏛️ Brand Identity: Naboraj Sarkar
 
-**NS CODEX** isn't just a YouTube channel; it's a creative laboratory. We believe that the web should be as immersive as a AAA video game. Birthday Bloom is our gift to the community.
+**Naboraj Sarkar** isn't just a YouTube channel; it's a creative laboratory. We believe that the web should be as immersive as a AAA video game. Birthday Bloom is our gift to the community.
 
 - **Founder**: Naboraj Sarkar
 - **Lead Designer**: Naboraj Sarkar
@@ -1067,14 +1088,14 @@ Social platforms cache images. If you change your banner, it might not show up i
 | **Customization** | Zero-Config (.env) | Manual Code Edits |
 | **3D Effects** | Interactive & Tilting | Static Images |
 | **Narrative** | Finite State Machine | Single Scroll Page |
-| **Branding** | NS CODEX Premium | Generic / Watermarked |
+| **Branding** | Naboraj Sarkar Premium | Generic / Watermarked |
 
 ---
 
 ## 🏆 Project Credits & Acknowledgements (Extended)
 
 This project is a labor of love. We would like to thank:
-- **The NS CODEX Community**: For testing early alphas and providing feedback on the 3D physics.
+- **The Naboraj Sarkar Community**: For testing early alphas and providing feedback on the 3D physics.
 - **Vite Team**: For making development feel like magic.
 - **Framer Motion Team**: For giving us the power of physics in the browser.
 - **Every Developer**: Who has ever sent a digital birthday card.
@@ -1093,9 +1114,9 @@ This project is a labor of love. We would like to thank:
 
 ---
 
-## 👤 About NS CODEX
+## 👤 About Naboraj Sarkar
 
-**NS CODEX** is a lifestyle. We believe that technology should be fun, beautiful, and accessible. Founded by Naboraj Sarkar, we have grown into a hub for creative developers who want to push the boundaries of what is possible.
+**Naboraj Sarkar** is a lifestyle. We believe that technology should be fun, beautiful, and accessible. Founded by Naboraj Sarkar, we have grown into a hub for creative developers who want to push the boundaries of what is possible.
 
 - **YouTube**: 100k+ subscribers watching our development journeys.
 - **GitHub**: Home to 50+ open-source projects.
@@ -1110,7 +1131,7 @@ Birthday Bloom is more than just a website; it's a memory. We hope you use it to
 *Happy Coding!* 🚀🌸
 
 ---
-*Generated by the NS CODEX Cinematic Engine.*
+*Generated by the Naboraj Sarkar Cinematic Engine.*
 
 ---
 
@@ -1179,11 +1200,11 @@ Developing for Birthday Bloom means thinking in **Keyframes**. Every component y
 
 ---
 
-## 👤 NS CODEX — The Studio Behind the Magic
+## 👤 Naboraj Sarkar — The Studio Behind the Magic
 
 > ✨ Building experiences, not just websites.
 
-**Naboraj Sarkar** is the creator behind **NS CODEX** — a creative development studio focused on crafting cinematic, interactive, and emotionally engaging web experiences.
+**Naboraj Sarkar** is the creator behind **Naboraj Sarkar** — a creative development studio focused on crafting cinematic, interactive, and emotionally engaging web experiences.
 
 What started as a solo vision is now growing into a community-driven movement to:
 
@@ -1295,7 +1316,7 @@ The following developers and creators have contributed to the "Bloom Ecosystem".
 
 1. **Naboraj Sarkar** - Original Concept & Lead Architecture.
 2. **Naboraj Sarkar** - Advanced 3D Engine & Cinematography.
-3. **NS CODEX Fans** - Beta Testing & Feature Requests.
+3. **Naboraj Sarkar Fans** - Beta Testing & Feature Requests.
 4. **The React Community** - For the foundational libraries.
 5. **YOU** - For downloading and using this project!
 
@@ -1319,7 +1340,7 @@ We believe that code is a gift. That's why we made Birthday Bloom open-source an
 
 ### Ways to Give Back if you want to:
 - Write a blog post about how you used Birthday Bloom.
-- Record a video tutorial for the NS CODEX community.
+- Record a video tutorial for the Naboraj Sarkar community.
 - Donate to an open-source library that we depend on (like Framer Motion).
 
 ---
@@ -1328,7 +1349,7 @@ We believe that code is a gift. That's why we made Birthday Bloom open-source an
 
 As we reach the conclusion of this master documentation, we want to remind you that the most important part of this project isn't the code, the 3D effects, or the 60fps performance—it's the smile on the person's face when they see their surprise.
 
-**Naboraj Sarkar & the NS CODEX Team**
+**Naboraj Sarkar & the Naboraj Sarkar Team**
 *April 24, 2026*
 
 ---
@@ -1374,7 +1395,7 @@ If you encounter any specific issues with sound, animations, or deployment, plea
 ---
 
 <div align="center">
-  <sub>Built with ❤️ by Naboraj Sarkar. © 2024 NS CODEX.</sub>
+  <sub>Built with ❤️ by Naboraj Sarkar. © 2024 Naboraj Sarkar.</sub>
 </div>
 
 **[Back to Top ↑](#-birthday-bloom--advanced-animated-birthday-website-generator)**
