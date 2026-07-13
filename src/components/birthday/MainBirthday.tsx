@@ -230,70 +230,12 @@ export const MainBirthday = () => {
         </motion.h2>
 
         
-    return (<div onMouseMove={shouldAnimate ? handleMouseMove : undefined} className={`min-h-screen transition-opacity duration-1000 w-full max-w-[100vw] overflow-x-hidden ${visible ? "opacity-100" : "opacity-0"} ${megaSurprise ? "animate-screen-shake" : ""}`} style={{ background: 'transparent' }}>
-      <Balloons count={balloonCount}/>
-      <Sparkles count={sparkleCount}/>
-
-      
-      {megaSurprise && (<div className="fixed inset-0 z-[100] bg-white/20 backdrop-blur-sm pointer-events-none animate-flash flex items-center justify-center">
-          <h1 className="text-6xl md:text-9xl font-black text-white drop-shadow-2xl animate-bounce">MEGA SURPRISE! 🎊</h1>
-        </div>)}
-
-      <AnimatePresence>
-        {emojis.map((e) => (<motion.div key={e.id} initial={{ opacity: 0, y: 100, x: `${e.x}%` }} animate={{ opacity: 1, y: -600, rotate: 360 }} exit={{ opacity: 0 }} transition={{ duration: 2.5, ease: "easeOut" }} className="fixed z-50 text-5xl pointer-events-none">
-            {e.emoji}
-          </motion.div>))}
-      </AnimatePresence>
-
-      
-      <motion.section variants={containerVariants} initial="hidden" animate={visible ? "visible" : "hidden"} className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 py-20 overflow-hidden">
-        <motion.div style={{ x: springX, y: springY }} className="absolute inset-0 pointer-events-none flex items-center justify-center">
-          <div className="w-[150%] h-[150%] bg-[radial-gradient(circle,var(--color-primary)_0%,transparent_70%)] opacity-[0.05]"/>
-        </motion.div>
-
-        <motion.div variants={itemVariants} className="mb-6 relative z-10">
-          <div className="flex justify-center mb-8"><HeartProgression stage={4}/></div>
-          <motion.div whileHover={shouldAnimate ? { scale: 1.2, rotate: relationship === 'friend' ? [0, -10, 10, 0] : [0, -5, 5, 0] } : undefined} whileTap={{ scale: 0.9 }} className="text-8xl md:text-[10rem] mb-6 cursor-pointer drop-shadow-[0_0_50px_var(--color-primary)]" onClick={handleCakeClick}>
-            🎂
-          </motion.div>
-          {cakeClicks > 0 && cakeClicks < 7 && (<p className="text-primary font-bold animate-pulse">Click 🎂 {7 - cakeClicks} more times!</p>)}
-        </motion.div>
-
-        <motion.h1 variants={itemVariants} className="font-display text-4xl sm:text-5xl md:text-8xl lg:text-9xl font-black mb-4 break-words leading-tight px-2">
-          <span className="bg-gradient-to-r from-[var(--color-primary)] via-[hsl(45,100%,75%)] to-[hsl(200,80%,70%)] bg-clip-text text-transparent animate-gradient-shift drop-shadow-[0_4px_30px_rgba(255,255,255,0.3)]">
-            {age ? `Happy ${age}th Birthday` : "Happy Birthday"}
-          </span>
-        </motion.h1>
-
-        <motion.h2 variants={itemVariants} className="font-display text-5xl sm:text-7xl md:text-[10rem] lg:text-[13rem] font-black text-foreground animate-glow-pulse mb-10 break-words leading-none px-2">
-          <TypeWriter text={`${name}!`} speed={120} delay={1500} cursor={false}/>
-        </motion.h2>
-
-        
       </motion.section>
 
       
       
 
       {config.showPhotoSection && <PhotoGallery />}
-
-      {config.showCakeSection && (<section id="cake-section" className="relative z-20 px-4 pb-16 sm:pb-32">
-        <motion.div initial={{ opacity: 0, y: 100 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "0px" }} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }} className="text-center">
-          <h3 className="font-display text-4xl sm:text-6xl md:text-7xl font-black mb-8 sm:mb-12 drop-shadow-xl" style={{ color: primaryColor }}>
-            Time to Cut the Cake! 🎂
-          </h3>
-          <p className="text-xl sm:text-2xl md:text-3xl text-foreground/80 mb-10 sm:mb-12 max-w-2xl mx-auto">
-            Ready for the sweetest moment? Let's make some magic happen! ✨
-          </p>
-          <motion.button whileHover={shouldAnimate ? { scale: 1.05 } : undefined} whileTap={{ scale: 0.95 }} onClick={() => { addEmoji(); scrollToCake(); }} className="px-10 py-5 sm:px-12 sm:py-6 rounded-full text-xl sm:text-2xl font-black text-white shadow-2xl mb-12 sm:mb-20" style={{
-                background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}dd)`,
-                boxShadow: `0 15px 45px -10px ${primaryColor}60`
-            }}>
-            🎂 Start Cake Cutting
-          </motion.button>
-          <CakeCutting />
-        </motion.div>
-      </section>)}
 
       
       <section className="relative z-20 flex justify-center px-4 pb-32 pt-16">
@@ -429,6 +371,32 @@ export const MainBirthday = () => {
         ].map((btn, i) => (<motion.button key={i} whileHover={shouldAnimate ? { scale: 1.15, rotate: i % 2 === 0 ? 3 : -3 } : undefined} whileTap={{ scale: 0.9 }} onClick={() => { btn.action(); addEmoji(); }} className="px-12 py-6 rounded-full text-2xl font-black text-white shadow-2xl transition-all" style={{
                 background: `linear-gradient(135deg, ${btn.color}, ${btn.color}dd)`,
                 boxShadow: `0 15px 45px -10px ${btn.color}60`
+            }}>
+            {btn.label}
+          </motion.button>))}
+      </section>
+
+      {config.showHeartTreeSection && <HeartTree delay={500}/>}
+      
+      {config.showVideoSection && <VideoGallery />}
+
+      
+      {config.showCakeSection && (<section id="cake-section" className="relative z-20 px-4 pb-16 sm:pb-32">
+        <motion.div initial={{ opacity: 0, y: 100 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "0px" }} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }} className="text-center">
+          <h3 className="font-display text-4xl sm:text-6xl md:text-7xl font-black mb-8 sm:mb-12 drop-shadow-xl" style={{ color: primaryColor }}>
+            Time to Cut the Cake! 🎂
+          </h3>
+          <p className="text-xl sm:text-2xl md:text-3xl text-foreground/80 mb-10 sm:mb-12 max-w-2xl mx-auto">
+            Ready for the sweetest moment? Let's make some magic happen! ✨
+          </p>
+          <motion.button whileHover={shouldAnimate ? { scale: 1.05 } : undefined} whileTap={{ scale: 0.95 }} onClick={() => { addEmoji(); scrollToCake(); }} className="px-10 py-5 sm:px-12 sm:py-6 rounded-full text-xl sm:text-2xl font-black text-white shadow-2xl mb-12 sm:mb-20" style={{
+                background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}dd)`,
+                boxShadow: `0 15px 45px -10px ${primaryColor}60`
+            }}>
+            🎂 Start Cake Cutting
+          </motion.button>
+          <CakeCutting />
+        </motion.div>
       </section>)}
 
       {config.showFinalSurprise && <FinalSurprise />}
