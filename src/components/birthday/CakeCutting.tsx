@@ -8,7 +8,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 import { Phase, CakeOption, CAKE_OPTIONS } from "./CakeTypes";
-import { CakeSVG, CutSparks, MagicDust } from "./CakeVisuals";
+import { CutSparks, MagicDust } from "./CakeVisuals";
+import { Cake3D } from "./Cake3D";
 import { CakeKnife } from "./CakeKnife";
 
 const CakeCard = ({ cake, index, onSelect }: {
@@ -31,11 +32,12 @@ const CakeCard = ({ cake, index, onSelect }: {
             }}
         >
             <div className="relative w-full aspect-square rounded-2xl overflow-hidden mb-2">
-                <img src={cake.image} alt={cake.name} className={`w-full h-full object-cover transition-transform duration-700 ${!isMobile ? "group-hover:scale-110" : ""}`} />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
-                <div className="absolute bottom-3 right-3 text-3xl drop-shadow-2xl">
-                    {cake.emoji}
+                <div className="w-full h-full flex items-center justify-center bg-white/5" style={{ backgroundColor: cake.config.spongeColor }}>
+                    <div className="text-7xl drop-shadow-2xl transition-transform duration-700 group-hover:scale-125">
+                        {cake.emoji}
+                    </div>
                 </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
             </div>
 
             <div className="px-2 pb-3 text-center">
@@ -202,7 +204,7 @@ export const CakeCutting = () => {
                                         <h2 className="font-display text-3xl sm:text-4xl text-white font-black text-center tracking-tighter animate-glow-pulse">
                                             ✨ MAKE A WISH & BLOW ✨
                                         </h2>
-                                        <CakeSVG cake={cake} split={false} candlesLit={candlesLit} name={name} springConfig={cakeSpring} />
+                                        <Cake3D cake={cake} phase={phase} />
                                         
                                         {phase === "blow-intro" && (
                                             <motion.button 
@@ -223,7 +225,7 @@ export const CakeCutting = () => {
                                 {phase === "wish" && (
                                     <motion.div initial={{ opacity: 0, scale: 1.5 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center gap-12">
                                         <div className="relative">
-                                            <CakeSVG cake={cake} split={false} candlesLit={false} name={name} springConfig={cakeSpring} />
+                                            <Cake3D cake={cake} phase={phase} />
                                             <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity }} className="absolute inset-0 rounded-full bg-white/10 blur-3xl" />
                                         </div>
                                         <div className="text-center">
@@ -238,7 +240,7 @@ export const CakeCutting = () => {
                                 {/* Countdown */}
                                 {phase === "countdown" && (
                                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center gap-12">
-                                        <CakeSVG cake={cake} split={false} candlesLit={false} name={name} springConfig={cakeSpring} />
+                                        <Cake3D cake={cake} phase={phase} />
                                         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm z-50 rounded-[2.5rem]">
                                             <motion.span initial={{ opacity: 0, y: -10 }} animate={{ opacity: 0.5, y: 0 }} className="text-white/40 text-xs md:text-sm tracking-[0.3em] uppercase mb-4 font-bold">
                                                 Prepare to cut...
@@ -279,7 +281,7 @@ export const CakeCutting = () => {
                                 {/* Quotes Sequence */}
                                 {phase === "quotes" && (
                                     <div className="flex flex-col items-center gap-12 w-full mt-10">
-                                        <CakeSVG cake={cake} split={true} candlesLit={false} name={name} springConfig={cakeSpring} />
+                                            <Cake3D cake={cake} phase={phase} />
                                         <div className="text-center min-h-[150px] w-full max-w-2xl">
                                             <AnimatePresence mode="wait">
                                                 {quoteIndex >= 0 && (
