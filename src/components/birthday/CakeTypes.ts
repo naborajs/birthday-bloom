@@ -1,5 +1,10 @@
 export type Phase = "select" | "blow-intro" | "blowing" | "wish" | "countdown" | "knife-enter" | "cutting" | "burst" | "quotes";
 
+import chocolateCake from "@/assets/birthday/cake-maroon.png";
+import strawberryCake from "@/assets/birthday/cake-pink.png";
+import royalCake from "@/assets/birthday/birthday-gold.png";
+import natureCake from "@/assets/birthday/cake-green.png";
+
 export interface Cake3DConfig {
     spongeColor: string;
     fillingColor: string;
@@ -24,7 +29,7 @@ export const CAKE_OPTIONS: CakeOption[] = [
         id: "chocolate",
         name: "Chocolate Dream",
         emoji: "🍫",
-        image: "/assets/birthday/cake-maroon.png",
+        image: chocolateCake,
         layers: ["hsl(15,60%,30%)", "hsl(15,50%,40%)", "hsl(20,40%,50%)"],
         accent: "hsl(45,100%,60%)",
         config: {
@@ -39,7 +44,7 @@ export const CAKE_OPTIONS: CakeOption[] = [
         id: "strawberry",
         name: "Strawberry Bliss",
         emoji: "🍓",
-        image: "/assets/birthday/cake-pink.png",
+        image: strawberryCake,
         layers: ["hsl(340,60%,55%)", "hsl(330,55%,65%)", "hsl(340,50%,75%)"],
         accent: "hsl(340,80%,60%)",
         config: {
@@ -54,7 +59,7 @@ export const CAKE_OPTIONS: CakeOption[] = [
         id: "royal",
         name: "Royal Velvet",
         emoji: "👑",
-        image: "/assets/birthday/birthday-gold.png",
+        image: royalCake,
         layers: ["hsl(270,50%,35%)", "hsl(280,45%,50%)", "hsl(290,40%,60%)"],
         accent: "hsl(45,100%,60%)",
         config: {
@@ -69,7 +74,7 @@ export const CAKE_OPTIONS: CakeOption[] = [
         id: "nature",
         name: "Floral Garden",
         emoji: "🌸",
-        image: "/assets/birthday/cake-green.png",
+        image: natureCake,
         layers: ["hsl(120,40%,30%)", "hsl(100,30%,40%)", "hsl(140,40%,50%)"],
         accent: "hsl(140,60%,50%)",
         config: {
