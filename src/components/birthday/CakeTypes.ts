@@ -1,66 +1,73 @@
 export type Phase = "select" | "blow-intro" | "blowing" | "wish" | "countdown" | "knife-enter" | "cutting" | "burst" | "quotes";
 
+export interface Cake3DConfig {
+    spongeColor: string;
+    fillingColor: string;
+    frostingColor: string;
+    dripColor: string;
+    plateColor: string;
+    cherryColor?: string;
+}
+
 export interface CakeOption {
     id: string;
     name: string;
-    layers: string[];
-    frosting: string;
-    accent: string;
     emoji: string;
-    image: string;
-    // New design properties
-    drizzle?: string;
-    sprinkles?: string[];
-    plate: string;
+    accent: string; // Used for UI accents and candle flames
+    config: Cake3DConfig;
 }
 
 export const CAKE_OPTIONS: CakeOption[] = [
     {
         id: "chocolate",
         name: "Chocolate Dream",
-        layers: ["hsl(15,60%,20%)", "hsl(15,50%,30%)", "hsl(20,40%,40%)"],
-        frosting: "hsl(30,70%,65%)",
-        accent: "hsl(45,100%,60%)",
-        drizzle: "hsl(10,50%,15%)",
-        sprinkles: ["hsl(45,100%,60%)", "hsl(0,0%,90%)", "hsl(20,40%,40%)"],
-        plate: "hsl(0,0%,15%)",
         emoji: "🍫",
-        image: "/assets/birthday/cake-maroon.png",
+        accent: "hsl(45,100%,60%)",
+        config: {
+            spongeColor: "#3e2723",
+            fillingColor: "#4e342e",
+            frostingColor: "#3e2723",
+            dripColor: "#21100a",
+            plateColor: "#e0e0e0"
+        }
     },
     {
         id: "strawberry",
         name: "Strawberry Bliss",
-        layers: ["hsl(340,60%,45%)", "hsl(330,55%,55%)", "hsl(340,50%,65%)"],
-        frosting: "hsl(350,80%,88%)",
-        accent: "hsl(340,80%,60%)",
-        drizzle: "hsl(330,70%,40%)",
-        sprinkles: ["hsl(0,80%,60%)", "hsl(340,60%,45%)", "white"],
-        plate: "hsl(350,20%,95%)",
         emoji: "🍓",
-        image: "/assets/birthday/cake-pink.png",
+        accent: "hsl(340,80%,60%)",
+        config: {
+            spongeColor: "#fce4ec",
+            fillingColor: "#f8bbd0",
+            frostingColor: "#ffccd5",
+            dripColor: "#ff4d6d",
+            plateColor: "#e0e0e0"
+        }
     },
     {
         id: "royal",
         name: "Royal Velvet",
-        layers: ["hsl(270,50%,25%)", "hsl(280,45%,40%)", "hsl(290,40%,50%)"],
-        frosting: "hsl(45,90%,75%)",
-        accent: "hsl(45,100%,60%)",
-        drizzle: "hsl(45,100%,40%)",
-        sprinkles: ["hsl(45,100%,60%)", "white", "hsl(280,45%,40%)"],
-        plate: "hsl(270,20%,15%)",
         emoji: "👑",
-        image: "/assets/birthday/birthday-gold.png",
+        accent: "hsl(45,100%,60%)",
+        config: {
+            spongeColor: "#b71c1c",
+            fillingColor: "#ffffff",
+            frostingColor: "#ffffff",
+            dripColor: "#ffb300",
+            plateColor: "#e0e0e0"
+        }
     },
     {
         id: "nature",
         name: "Floral Garden",
-        layers: ["hsl(120,40%,25%)", "hsl(100,30%,35%)", "hsl(140,40%,45%)"],
-        frosting: "hsl(80,40%,75%)",
-        accent: "hsl(330,85%,65%)",
-        drizzle: "hsl(100,40%,25%)",
-        sprinkles: ["hsl(330,85%,65%)", "hsl(120,40%,25%)", "white"],
-        plate: "hsl(80,20%,90%)",
         emoji: "🌸",
-        image: "/assets/birthday/cake-green.png",
-    },
+        accent: "hsl(140,60%,50%)",
+        config: {
+            spongeColor: "#e8f5e9",
+            fillingColor: "#c8e6c9",
+            frostingColor: "#ffffff",
+            dripColor: "#81c784",
+            plateColor: "#e0e0e0"
+        }
+    }
 ];

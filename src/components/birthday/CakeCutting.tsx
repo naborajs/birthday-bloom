@@ -42,11 +42,6 @@ const CakeCard = ({ cake, index, onSelect }: {
                 <span className="font-display text-sm font-black tracking-widest uppercase text-white/70 group-hover:text-primary transition-colors">
                     {cake.name}
                 </span>
-                <div className="flex gap-2 justify-center mt-3">
-                    {cake.layers.map((l, idx) => (
-                        <div key={idx} className="w-3 h-3 rounded-full border border-white/20 shadow-lg" style={{ backgroundColor: l }} />
-                    ))}
-                </div>
             </div>
             
             <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
