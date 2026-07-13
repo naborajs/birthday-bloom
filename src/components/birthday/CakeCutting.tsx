@@ -202,50 +202,33 @@ export const CakeCutting = () => {
                             
                             <div className="relative w-full max-w-4xl px-4 flex flex-col items-center">
                                 
-                                {/* Blow Sequence */}
-                                {(phase === "blow-intro" || phase === "blowing") && (
-                                    <motion.div initial={{ scale: 0.8, opacity: 0, rotateX: 45 }} animate={{ scale: 1, opacity: 1, rotateX: 0 }} className="flex flex-col items-center gap-12">
-                                        <h2 className="font-display text-3xl sm:text-4xl text-white font-black text-center tracking-tighter animate-glow-pulse">
-                                            ✨ MAKE A WISH & BLOW ✨
-                                        </h2>
-                                        <Cake3D cake={cake} phase={phase} />
-                                        
-                                        {phase === "blow-intro" && (
-                                            <motion.button 
-                                                whileHover={!lowMotion ? { scale: 1.1 } : undefined} 
-                                                whileTap={{ scale: 0.9 }} 
-                                                onClick={handleBlow} 
-                                                className="group relative px-12 py-5 rounded-full text-xl font-black text-white overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.2)]" 
-                                                style={{ background: "linear-gradient(90deg, #ff0080, #7928ca)" }}
-                                            >
-                                                <span className="relative z-10">🌬️ BLOW NOW</span>
-                                                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                                            </motion.button>
-                                        )}
-                                    </motion.div>
-                                )}
-
-                                {/* Wish Sent */}
-                                {phase === "wish" && (
-                                    <motion.div initial={{ opacity: 0, scale: 1.5 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center gap-12">
-                                        <div className="relative">
-                                            <Cake3D cake={cake} phase={phase} />
-                                            <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity }} className="absolute inset-0 rounded-full bg-white/10 blur-3xl" />
+                                {/* The 3D Cake is ALWAYS rendered here so it never unmounts */}
+                                <div className="relative w-full h-[50vh] min-h-[400px] flex justify-center items-center mt-10">
+                                    <Cake3D cake={cake} phase={phase} />
+                                    
+                                    {/* Overlays on top of the Cake */}
+                                    
+                                    {/* Knife Overlay */}
+                                    {(phase === "knife-enter" || phase === "cutting" || phase === "burst") && (
+                                        <div className="absolute inset-0 z-50 pointer-events-none">
+                                            <CakeKnife phase={phase} />
                                         </div>
-                                        <div className="text-center">
-                                            <h2 className="font-display text-4xl sm:text-6xl font-black bg-gradient-to-r from-yellow-200 via-white to-yellow-200 bg-clip-text text-transparent drop-shadow-2xl">
-                                                WISH SENT TO THE STARS
-                                            </h2>
-                                            <p className="text-white/60 text-xl mt-4 font-light italic">Wait for the magical cut...</p>
-                                        </div>
-                                    </motion.div>
-                                )}
-
-                                {/* Countdown */}
-                                {phase === "countdown" && (
-                                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center gap-12">
-                                        <Cake3D cake={cake} phase={phase} />
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm z-50 rounded-[2.5rem]">
+                                    )}
+                                    
+                                    {/* Sparks and Burst */}
+                                    <AnimatePresence>
+                                        {phase === "cutting" && <CutSparks count={sparkCount} color={cake.accent} />}
+                                        {phase === "burst" && <MagicDust count={60} />}
+                                    </AnimatePresence>
+                                    
+                                    {/* Wish Overlay Glow */}
+                                    {phase === "wish" && (
+                                        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity }} className="absolute inset-0 rounded-full bg-white/10 blur-3xl pointer-events-none" />
+                                    )}
+                                    
+                                    {/* Countdown Overlay */}
+                                    {phase === "countdown" && (
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm z-50 rounded-[2.5rem] pointer-events-none">
                                             <motion.span initial={{ opacity: 0, y: -10 }} animate={{ opacity: 0.5, y: 0 }} className="text-white/40 text-xs md:text-sm tracking-[0.3em] uppercase mb-4 font-bold">
                                                 Prepare to cut...
                                             </motion.span>
@@ -267,29 +250,48 @@ export const CakeCutting = () => {
                                                 </motion.h1>
                                             </AnimatePresence>
                                         </div>
-                                    </motion.div>
-                                )}
+                                    )}
+                                </div>
 
-                                {/* Cutting Sequence */}
-                                {(phase === "knife-enter" || phase === "cutting" || phase === "burst") && (
-                                    <div className="relative flex flex-col items-center mt-10">
-                                        <CakeKnife phase={phase} />
-                                        {phase === "cutting" && <CutSparks count={sparkCount} color={cake.accent} />}
-                                        <CakeSVG cake={cake} split={phase === "burst"} candlesLit={false} name={name} springConfig={cakeSpring} />
-                                        {phase === "burst" && (
-                                            <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 4, opacity: 1 }} className="absolute inset-0 bg-white/40 rounded-full blur-[100px] pointer-events-none" />
-                                        )}
-                                    </div>
-                                )}
+                                {/* Text Content Below the Cake */}
+                                <div className="w-full flex flex-col items-center mt-8 min-h-[150px]">
+                                    {/* Blow Sequence Text */}
+                                    {(phase === "blow-intro" || phase === "blowing") && (
+                                        <motion.div initial={{ scale: 0.8, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} className="flex flex-col items-center gap-6">
+                                            <h2 className="font-display text-3xl sm:text-4xl text-white font-black text-center tracking-tighter animate-glow-pulse">
+                                                ✨ MAKE A WISH & BLOW ✨
+                                            </h2>
+                                            {phase === "blow-intro" && (
+                                                <motion.button 
+                                                    whileHover={!lowMotion ? { scale: 1.1 } : undefined} 
+                                                    whileTap={{ scale: 0.9 }} 
+                                                    onClick={handleBlow} 
+                                                    className="group relative px-12 py-5 rounded-full text-xl font-black text-white overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.2)]" 
+                                                    style={{ background: "linear-gradient(90deg, #ff0080, #7928ca)" }}
+                                                >
+                                                    <span className="relative z-10">🌬️ BLOW NOW</span>
+                                                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                                                </motion.button>
+                                            )}
+                                        </motion.div>
+                                    )}
 
-                                {/* Quotes Sequence */}
-                                {phase === "quotes" && (
-                                    <div className="flex flex-col items-center gap-12 w-full mt-10">
-                                            <Cake3D cake={cake} phase={phase} />
-                                        <div className="text-center min-h-[150px] w-full max-w-2xl">
+                                    {/* Wish Sent Text */}
+                                    {phase === "wish" && (
+                                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+                                            <h2 className="font-display text-4xl sm:text-6xl font-black bg-gradient-to-r from-yellow-200 via-white to-yellow-200 bg-clip-text text-transparent drop-shadow-2xl">
+                                                WISH SENT TO THE STARS
+                                            </h2>
+                                            <p className="text-white/60 text-xl mt-4 font-light italic">Wait for the magical cut...</p>
+                                        </motion.div>
+                                    )}
+                                    
+                                    {/* Quotes Sequence Text */}
+                                    {phase === "quotes" && (
+                                        <div className="text-center w-full max-w-2xl">
                                             <AnimatePresence mode="wait">
                                                 {quoteIndex >= 0 && (
-                                                    <motion.div key={quoteIndex} initial={{ y: 20, opacity: 0, filter: "blur(10px)" }} animate={{ y: 0, opacity: 1, filter: "blur(0px)" }} exit={{ y: -20, opacity: 0, filter: "blur(10px)" }} transition={{ duration: 0.8 }} className="flex items-center justify-center h-full">
+                                                    <motion.div key={quoteIndex} initial={{ y: 20, opacity: 0, filter: "blur(10px)" }} animate={{ y: 0, opacity: 1, filter: "blur(0px)" }} exit={{ y: -20, opacity: 0, filter: "blur(10px)" }} transition={{ duration: 0.8 }} className="flex items-center justify-center">
                                                         <p className={`text-3xl sm:text-4xl md:text-6xl font-display font-black leading-tight ${
                                                             quoteIndex === quotes.length - 1 
                                                                 ? "bg-gradient-to-r from-primary via-white to-primary bg-clip-text text-transparent animate-gradient-shift drop-shadow-[0_0_30px_var(--color-primary)]" 
@@ -301,8 +303,8 @@ export const CakeCutting = () => {
                                                 )}
                                             </AnimatePresence>
                                         </div>
-                                    </div>
-                                )}
+                                    )}
+                                </div>
 
                                 {/* End Button */}
                                 {phase === "quotes" && quoteIndex >= quotes.length - 1 && (
