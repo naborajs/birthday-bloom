@@ -32,18 +32,22 @@ const CakeCard = ({ cake, index, onSelect }: {
             }}
         >
             <div className="relative w-full aspect-square rounded-2xl overflow-hidden mb-2">
-                <div className="w-full h-full flex items-center justify-center bg-white/5" style={{ backgroundColor: cake.config.spongeColor }}>
-                    <div className="text-7xl drop-shadow-2xl transition-transform duration-700 group-hover:scale-125">
-                        {cake.emoji}
-                    </div>
-                </div>
+                <img src={cake.image} alt={cake.name} className={`w-full h-full object-cover transition-transform duration-700 ${!isMobile ? "group-hover:scale-110" : ""}`} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
+                <div className="absolute bottom-3 right-3 text-3xl drop-shadow-2xl">
+                    {cake.emoji}
+                </div>
             </div>
 
             <div className="px-2 pb-3 text-center">
                 <span className="font-display text-sm font-black tracking-widest uppercase text-white/70 group-hover:text-primary transition-colors">
                     {cake.name}
                 </span>
+                <div className="flex gap-2 justify-center mt-3">
+                    {cake.layers.map((l, idx) => (
+                        <div key={idx} className="w-3 h-3 rounded-full border border-white/20 shadow-lg" style={{ backgroundColor: l }} />
+                    ))}
+                </div>
             </div>
             
             <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />

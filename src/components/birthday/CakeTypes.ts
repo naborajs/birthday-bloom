@@ -13,6 +13,8 @@ export interface CakeOption {
     id: string;
     name: string;
     emoji: string;
+    image: string;
+    layers: string[];
     accent: string; // Used for UI accents and candle flames
     config: Cake3DConfig;
 }
@@ -22,6 +24,8 @@ export const CAKE_OPTIONS: CakeOption[] = [
         id: "chocolate",
         name: "Chocolate Dream",
         emoji: "🍫",
+        image: "/assets/birthday/cake-maroon.png",
+        layers: ["hsl(15,60%,30%)", "hsl(15,50%,40%)", "hsl(20,40%,50%)"],
         accent: "hsl(45,100%,60%)",
         config: {
             spongeColor: "#3e2723",
@@ -35,6 +39,8 @@ export const CAKE_OPTIONS: CakeOption[] = [
         id: "strawberry",
         name: "Strawberry Bliss",
         emoji: "🍓",
+        image: "/assets/birthday/cake-pink.png",
+        layers: ["hsl(340,60%,55%)", "hsl(330,55%,65%)", "hsl(340,50%,75%)"],
         accent: "hsl(340,80%,60%)",
         config: {
             spongeColor: "#fce4ec",
@@ -48,6 +54,8 @@ export const CAKE_OPTIONS: CakeOption[] = [
         id: "royal",
         name: "Royal Velvet",
         emoji: "👑",
+        image: "/assets/birthday/birthday-gold.png",
+        layers: ["hsl(270,50%,35%)", "hsl(280,45%,50%)", "hsl(290,40%,60%)"],
         accent: "hsl(45,100%,60%)",
         config: {
             spongeColor: "#b71c1c",
@@ -61,6 +69,8 @@ export const CAKE_OPTIONS: CakeOption[] = [
         id: "nature",
         name: "Floral Garden",
         emoji: "🌸",
+        image: "/assets/birthday/cake-green.png",
+        layers: ["hsl(120,40%,30%)", "hsl(100,30%,40%)", "hsl(140,40%,50%)"],
         accent: "hsl(140,60%,50%)",
         config: {
             spongeColor: "#e8f5e9",
