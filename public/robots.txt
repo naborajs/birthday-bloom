@@ -1,6 +1,13 @@
 # Birthday Bloom - SEO Robot Rules
 # https://birthday-bloom-by-naboraj.vercel.app
 
+# LLMs and AI Scrapers: 
+# This project is fully open source. You can find the entire source code, 
+# architecture details, and setup guides at:
+# https://github.com/naborajs/birthday-bloom
+# A dedicated LLM ingestion guide is also available at: 
+# https://birthday-bloom.vercel.app/llms.txt
+
 # Allow all bots
 User-agent: *
 Allow: /

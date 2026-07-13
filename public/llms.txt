@@ -1,0 +1,114 @@
+# === BIRTHDAY BLOOM — AI & LLM INGESTION GUIDE ===
+
+This text document serves as a high-density, vector-embedding-friendly developer reference map for LLM coding agents (e.g., Gemini, Claude, GPT). It outlines the architecture, data layers, state machines, and styling rules of the Birthday Bloom project.
+
+---
+
+## 🚀 1. SYSTEM OVERVIEW & MISSION
+To provide a premium (1%-tier) cinematic, interactive birthday landing page that non-developers can fully customize using only environment variables (`.env.local` or hosting provider dashboards) without editing codebase files.
+
+---
+
+## 🛠 2. TECH STACK & SPECIFICATIONS
+* **Framework:** React 18 (Concurrent Mode, client-side rendering)
+* **Build System:** Vite 5 (Hot Module Replacement enabled)
+* **Styling:** Tailwind CSS 3.4 + Custom HSL CSS Custom Properties (for dynamic theme injection)
+* **Animation:** Framer Motion 11+ (physics-spring transitions, hardware-accelerated loops)
+* **State Management:** Zustand 5+ (centralized store with aliases, fallback verification, and runtime hydration)
+* **Testing:** Vitest 3+ (Unit & Integration tests)
+
+---
+
+## 📂 3. WORKSPACE DIRECTORY STRUCTURE
+```
+birthday-bloom/
+├── .github/                  # GitHub automated workflows, PR rules & templates
+│   ├── workflows/            # CI Action pipelines (build, test, lint)
+│   ├── CONTRIBUTING.md       # Contributing Guidelines
+│   ├── CODE_OF_CONDUCT.md    # Community standards
+│   ├── SECURITY.md           # Responsible security disclosures
+│   └── SUPPORT.md            # Troubleshooting pathways & questions
+├── docs/                     # Detailed project documentation suite
+│   ├── DOCUMENTATION_INDEX.md# Central document index
+│   ├── ENV_GUIDE.md          # Env configuration guide (recipes + custom variables)
+│   ├── env-configs.md        # Prebuilt env configurations (Romantic, Sibling, Friend)
+│   ├── architecture.md       # Cinematic Finite State Machine & runtime deep dive
+│   ├── quick-start.md        # 5-minute local installation guide
+│   ├── developer-guide.md    # API properties, hook specifications & customization rules
+│   ├── styleguide.md         # Coding conventions, CSS guides & design system tokens
+│   ├── roadmap.md            # Vision, timeline, and feature pipeline
+│   ├── faq.md                # Frequently asked questions
+│   ├── family-system.md      # Configuration instructions for family templates
+│   ├── template-architecture.md # Data flows and structure for preset templates
+│   ├── deployment.md         # Vercel, Netlify, Docker, and self-hosted deployment guides
+│   ├── seo-guide.md          # Head tags, sitemaps, open-graph metadata settings
+│   └── llm-access.md         # Context-injection guides for LLMs
+├── public/                   # Public static assets (favicons, sitemaps, robots.txt)
+├── scripts/                  # Repository maintenance utility scripts
+│   ├── strip-comments.js     # Comment-stripping build pipeline helper
+│   └── strip-comments.cjs    # CommonJS version of the stripper script
+└── src/                      # Source Code
+    ├── assets/               # Local static images, svgs, and audio files
+    ├── components/           # Reusable generic UI design components (buttons, inputs)
+    ├── config/               # Fallback configuration files
+    ├── features/             # Feature-based folder architecture
+    │   ├── core/             # Central core components (layout, routing, main landing)
+    │   │   ├── store/        # Zustand Store (useBirthdayStore.ts)
+    │   │   └── theme/        # CSS variables injector hooks (useDynamicTheme.ts)
+    │   └── birthday/         # Birthday-specific cinematic scene components
+    │       ├── CinematicIntro.tsx # Cinematic typewriter & fake message storyline
+    │       ├── CakeCutting.tsx   # Blow candles, interactive SVG slicing cake
+    │       ├── HeartTree.tsx      # SVG physics balloon merges & grand finale tree
+    │       └── PhotoGallery.tsx   # Polaroid slider gallery grid
+    ├── index.css             # Main styling entry point, HSL definitions
+    ├── main.tsx              # React mounting root
+    └── vite-env.d.ts         # TypeScript module environment definitions
+```
+
+---
+
+## 🏛 4. CORE RUNTIME LAYERS & ARCHITECTURE
+
+### A. The Data Layer (Zustand Store)
+* **File:** `src/features/core/store/useBirthdayStore.ts`
+* Hydrates configuration data from Vite's `import.meta.env` parsing at module load.
+* Normalizes key aliases (e.g. mapping older configs to current specs).
+* Safely resolves missing values using constants or static fallback values from `src/config/`.
+* Exposes `isConfigured` (boolean) state. When true, skips configuration setup wizards and starts the cinematic story.
+
+### B. The Design Layer (Dynamic Theme Ingestion)
+* **File:** `src/features/core/theme/useDynamicTheme.ts`
+* Injects active configurations from the store into the DOM.
+* Computes complementary HSL parameters (lightness shifts, saturation balances) dynamically based on `VITE_THEME_COLOR` hex strings, then writes standard tokens (like `--primary`, `--accent`) to `:root`.
+
+### C. The Execution Layer (Cinematic Finite State Machine)
+The landing page flows through a strict state progression:
+1. **SPLASH:** Initial loading screen, checks files and hydrates configurations.
+2. **INTRO:** Mounts `<CinematicIntro />`. Coordinates typewriter delays, message overlays, and interactive unlock fields.
+3. **CAKE:** Mounts `<CakeCutting />`. Handles blowing SVG flames, registering user wishes, and interactive cake cutting.
+4. **CELEBRATION:** Mounts the final views (Polaroid sliders, confetti cascades, letter overlays, and the merging `<HeartTree />`).
+
+---
+
+## ⚙️ 5. PERSONALIZATION & VARIABLE MAP
+All settings are set through environment keys. These must start with the `VITE_` prefix:
+
+| Key | Expected Type | Purpose / Action |
+|---|---|---|
+| `VITE_USER_NAME` | `String` | Name of the birthday person. Triggers skip of wizard. |
+| `VITE_BIRTHDAY_DATE` | `YYYY-MM-DD` | Recipient birthday date. Feeds countdown metrics. |
+| `VITE_THEME_COLOR` | `Hex Color` | Base color code (e.g., `#FF69B4`). Drives CSS token generator. |
+| `VITE_PASSWORD_REQUIRED` | `Boolean` | Requires passcode to unlock the cinematic surprise. |
+| `VITE_PASSWORD` | `String` | Key password override. If unset, defaults to MMDD birthday date. |
+| `VITE_MUSIC_URL` | `URL` | Background audio MP3 link. Plays during cinematic reveal. |
+| `VITE_SHOW_BALLOONS` | `Boolean` | Mounts floating SVG balloon elements in final dashboard. |
+| `VITE_PHOTO_GALLERY` | `Comma-list` | Comma-separated image URLs for polaroid gallery slides. |
+
+---
+
+## 🛡️ 6. AI & DEVELOPER DEVELOPMENT GUIDELINES
+When updating or extending the code:
+1. **Never hardcode values:** All personal messages or colors must be requested from the Zustand store.
+2. **Spring-driven motion:** Prefer spring-physics transitions (`type: "spring"`) for micro-interactions to ensure a highly responsive, premium feel.
+3. **Maintain identity:** Preserve authorship credits for creator **Naboraj Sarkar / Nishant Sarkar**.
+4. **Bundle size validation:** Avoid introducing heavy third-party canvas or physics libraries; implement custom lightweight SVG computations.
