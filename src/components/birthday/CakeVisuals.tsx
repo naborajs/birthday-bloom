@@ -87,7 +87,7 @@ export const CakeSVG = ({ cake, split, candlesLit, name, springConfig }: {
         >
             {/* The pre-rendered photorealistic cake layer */}
             <img 
-                src={cake.assets.whole} 
+                src={cake.image} 
                 alt={cake.name} 
                 className="w-full h-full object-contain drop-shadow-[0_40px_80px_rgba(0,0,0,0.8)]"
             />

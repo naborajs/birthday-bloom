@@ -229,7 +229,7 @@ const Scene = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
             <ambientLight intensity={0.6} />
             <directionalLight position={[5, 10, 5]} intensity={1.2} castShadow shadow-mapSize={[2048, 2048]} shadow-bias={-0.001} />
             <directionalLight position={[-5, 5, -5]} intensity={0.6} />
-            <hemisphereLight skyColor="#ffffff" groundColor="#444444" intensity={0.5} />
+            <hemisphereLight args={["#ffffff", "#444444", 0.5]} />
             {/* Top light to keep cake illuminated even when candle goes out */}
             <pointLight position={[0, 4, 0]} intensity={0.6} />
 

@@ -7,7 +7,7 @@ export const CakeKnife = ({ phase }: { phase: Phase }) => {
     
     // Smooth cinematic curve for the slice
     const sliceTransition = { 
-        type: "spring", 
+        type: "spring" as const, 
         stiffness: isMobile ? 120 : 200, 
         damping: isMobile ? 18 : 20 
     };

@@ -185,7 +185,7 @@ export const MainBirthday = () => {
     };
     const itemVariants = {
         hidden: { y: 30, opacity: 0, filter: "blur(10px)" },
-        visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.8, ease: "easeOut" } },
+        visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.8, ease: "easeOut" as const } },
     };
     const heroMotionStyle = shouldAnimate ? { x: springX, y: springY } : { x: 0, y: 0 };
     const sparkleCount = isMobile ? 8 : 15;
