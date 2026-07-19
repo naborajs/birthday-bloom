@@ -96,11 +96,11 @@ const Scene = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
 
     return (
         <>
-            <ambientLight intensity={0.5} />
+            <ambientLight intensity={0.6} />
             <directionalLight position={[5, 10, 5]} intensity={1.5} castShadow shadow-mapSize={[1024, 1024]} />
-            <directionalLight position={[-5, 5, -5]} intensity={0.5} />
-            
-            <Environment preset="city" />
+            <directionalLight position={[-5, 5, -5]} intensity={0.8} />
+            <hemisphereLight skyColor="#ffffff" groundColor="#444444" intensity={0.6} />
+            <pointLight position={[0, 2, 5]} intensity={0.5} />
 
             <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.2}>
                 <group position={[0, -1, 0]}>

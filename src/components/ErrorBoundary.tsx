@@ -22,20 +22,27 @@ export class ErrorBoundary extends React.Component<Props, State> {
     render() {
         if (this.state.hasError) {
             // Never leak internal error details to end users in production.
-            // Detailed errors are still available in the browser console.
-            const showDetails = import.meta.env.DEV;
-            const detailMessage = showDetails
-                ? this.state.error?.message
-                : "An unexpected error occurred while loading this page.";
-            return (this.props.fallback || (<motion.div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 to-black text-white" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-            <motion.div className="text-center p-8 rounded-lg bg-white/5 backdrop-blur-xl border border-white/10" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.6, delay: 0.2 }}>
-              <h1 className="text-3xl font-bold mb-4">Oops! Something went wrong 😔</h1>
-              <p className="text-white/70 mb-6">{detailMessage}</p>
-              <button onClick={() => window.location.reload()} className="px-6 py-3 bg-gradient-to-r from-red-500 to-pink-500 rounded-full text-white font-semibold hover:shadow-lg transition-all">
-                Reload Page
-              </button>
-            </motion.div>
-          </motion.div>));
+            return this.props.fallback || (
+        <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a] p-4 text-center">
+          <div className="bg-[#1a1a1a] p-8 rounded-2xl max-w-2xl w-full border border-white/10 shadow-2xl">
+            <h2 className="text-2xl font-bold text-white mb-2">Oops! Something went wrong 😔</h2>
+            <p className="text-white/60 mb-6">An unexpected error occurred while loading this page.</p>
+            
+            <div className="bg-black/50 p-4 rounded text-left overflow-auto mb-6 text-red-400 font-mono text-sm max-h-[300px]">
+              {this.state.error && this.state.error.toString()}
+              <br/><br/>
+              {this.state.error && this.state.error.stack}
+            </div>
+
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-primary hover:bg-primary/90 text-white font-semibold py-2 px-6 rounded-full transition-colors"
+            >
+              Reload Page
+            </button>
+          </div>
+        </div>
+      );
         }
         return this.props.children;
     }
