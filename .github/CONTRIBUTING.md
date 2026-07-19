@@ -36,7 +36,7 @@ We have created two animated walkthrough guides to help you contribute to Birthd
 ---
 
 > [!IMPORTANT]
-> **Before writing code:** Please read [architecture.md](file:///d:/Projects/Website/birthday-bloom-main/docs/architecture.md) and [styleguide.md](file:///d:/Projects/Website/birthday-bloom-main/docs/styleguide.md) to understand how the project is structured.
+> **Before writing code:** Please read [architecture.md](https://github.com/naborajs/birthday-bloom/blob/main/docs/architecture.md) and [styleguide.md](https://github.com/naborajs/birthday-bloom/blob/main/docs/styleguide.md) to understand how the project is structured.
 
 ---
 

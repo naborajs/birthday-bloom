@@ -134,7 +134,7 @@ export const MainBirthday = () => {
             sport: ["⚽", "🏀", "🎾", "⛳", "🏆", "🏃"],
             space: ["🚀", "🪐", "🛸", "☄️", "🌌", "👽"]
         };
-        if (config.favoriteEmojis.length > 0) {
+        if (config.favoriteEmojis?.length > 0) {
             emojiList = [...emojiList, ...config.favoriteEmojis];
         }
         if (config.interests && config.interests.length > 0) {

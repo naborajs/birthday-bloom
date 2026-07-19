@@ -1,0 +1,34 @@
+name: Triage PRs
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  statuses: read
+  checks: write
+
+jobs:
+  triage-pr:
+    name: Auto Triage & Dashboard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Base Repository
+        uses: actions/checkout@v4
+        with:
+          # pull_request_target implicitly checks out the base branch, which is safe.
+          # We do not want to checkout the untrusted head code.
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run PR Triage Script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node .github/scripts/pr-triage.js

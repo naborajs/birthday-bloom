@@ -1,0 +1,144 @@
+name: Repository Health
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Run once a day at midnight UTC
+  pull_request:
+    types: [closed]
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  health-checks:
+    name: Maintain Repository Health
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository (for config)
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/automation.config.json
+          sparse-checkout-cone-mode: false
+
+      - name: Health Scripts
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let config;
+            try {
+              config = JSON.parse(fs.readFileSync('.github/automation.config.json', 'utf8'));
+            } catch (err) {
+              console.error("Failed to read config:", err);
+              return;
+            }
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            // 1. CELEBRATIONS (Event: PR closed/merged)
+            if (context.eventName === 'pull_request') {
+              const pr = context.payload.pull_request;
+              if (pr.merged && config.metrics?.enableMilestoneCelebrations) {
+                const author = pr.user.login;
+                const milestones = config.metrics.milestones || [1, 5, 10, 50];
+                
+                try {
+                  const searchResult = await github.rest.search.issuesAndPullRequests({
+                    q: `repo:${owner}/${repo} is:pr is:merged author:${author}`
+                  });
+                  const mergeCount = searchResult.data.total_count;
+                  
+                  if (milestones.includes(mergeCount)) {
+                    let celebMsg = `### 🎉 Congratulations @${author}! 🎉\n\nYou just got your **${mergeCount}** PR merged! Thank you so much for your awesome contributions to Birthday Bloom. We appreciate you! 🌸✨`;
+                    if (mergeCount === 1) {
+                      celebMsg = `### 🥳 Welcome to the Contributors Team, @${author}! 🎉\n\nYour first PR just got merged! Thank you for taking the time to improve Birthday Bloom. We hope to see more of your work! 🌸`;
+                    }
+                    
+                    await github.rest.issues.createComment({
+                      owner, repo, issue_number: pr.number, body: celebMsg
+                    });
+                  }
+                } catch (e) {
+                  console.error("Failed to process milestone celebration:", e);
+                }
+              }
+              return;
+            }
+
+            // 2. STALE SWEEPS (Event: schedule)
+            if (context.eventName === 'schedule') {
+              const issueStaleDays = config.issues?.staleDays || 14;
+              const prReminderDays = config.prs?.reminderDays || 3;
+              
+              const now = new Date();
+              const issueStaleDate = new Date(now.getTime() - (issueStaleDays * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
+              const prReminderDate = new Date(now.getTime() - (prReminderDays * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
+
+              console.log("Running Stale Sweep & Reminders...");
+              console.log(`Issue Stale Date: < ${issueStaleDate}`);
+              console.log(`PR Reminder Date: < ${prReminderDate}`);
+
+              // A. STALE ISSUES
+              try {
+                const staleIssuesQuery = `repo:${owner}/${repo} is:issue is:open updated:<${issueStaleDate} -label:status:stale`;
+                const staleIssuesResult = await github.rest.search.issuesAndPullRequests({ q: staleIssuesQuery });
+                
+                for (const item of staleIssuesResult.data.items) {
+                  console.log(`Marking issue #${item.number} as stale.`);
+                  await github.rest.issues.createComment({
+                    owner, repo, issue_number: item.number,
+                    body: `This issue has been automatically marked as stale because it has not had recent activity in ${issueStaleDays} days. It will be closed if no further activity occurs. Thank you for your contributions!`
+                  });
+                  await github.rest.issues.addLabels({
+                    owner, repo, issue_number: item.number, labels: ['status:stale']
+                  });
+                }
+              } catch (e) {
+                console.error("Error fetching stale issues:", e);
+              }
+
+              // B. PR REMINDERS
+              try {
+                const stalePRsQuery = `repo:${owner}/${repo} is:pr is:open updated:<${prReminderDate}`;
+                const stalePRsResult = await github.rest.search.issuesAndPullRequests({ q: stalePRsQuery });
+                
+                for (const item of stalePRsResult.data.items) {
+                  // To avoid spamming, we check if the last comment was by our bot containing 'stale-ping'.
+                  // We do this by listing comments.
+                  const comments = await github.rest.issues.listComments({
+                    owner, repo, issue_number: item.number, per_page: 50
+                  });
+                  
+                  // Sort descending by date
+                  const sortedComments = comments.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                  const lastComment = sortedComments.length > 0 ? sortedComments[0] : null;
+                  
+                  const isBotLastComment = lastComment && lastComment.user && lastComment.user.type === 'Bot' && lastComment.body.includes('stale-ping');
+                  
+                  if (!isBotLastComment) {
+                    console.log(`Sending reminder for PR #${item.number}`);
+                    
+                    const labels = item.labels.map(l => l.name);
+                    const author = item.user.login;
+                    let reminderMsg = `<!-- stale-ping -->\n### 😴 Inactivity Notice\n\nFriendly reminder: this PR has had no activity in ${prReminderDays} days.`;
+                    
+                    if (labels.includes('status:changes-requested')) {
+                      reminderMsg += `\n\nHi @${author}, it looks like this PR needs updates based on review feedback. Let us know if you need help!`;
+                    } else if (labels.includes('status:needs-review')) {
+                      reminderMsg += `\n\nHi maintainers! This PR has been waiting for review for a while. Could someone take a look?`;
+                    } else {
+                      reminderMsg += `\n\nLet's work together to complete the review and merge these changes!`;
+                    }
+                    
+                    await github.rest.issues.createComment({
+                      owner, repo, issue_number: item.number, body: reminderMsg
+                    });
+                  }
+                }
+              } catch (e) {
+                console.error("Error fetching stale PRs:", e);
+              }
+            }

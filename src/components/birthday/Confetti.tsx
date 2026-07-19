@@ -48,6 +48,17 @@ export const useConfetti = () => {
             scalar: isMobile ? 1 : 1.5,
         });
     }, [isMobile]);
+    const firePop = useCallback(() => {
+        confetti({
+            particleCount: isMobile ? 18 : 40,
+            spread: isMobile ? 50 : 70,
+            startVelocity: isMobile ? 25 : 35,
+            origin: { y: 0.7 },
+            scalar: isMobile ? 0.8 : 1,
+            ticks: isMobile ? 80 : 120,
+            colors: ["#e84393", "#a855f7", "#f59e0b", "#38bdf8", "#f97316", "#34d399"],
+        });
+    }, [isMobile]);
     const fireCinematicCelebration = useCallback(() => {
         confetti({
             particleCount: isMobile ? 60 : 125,
@@ -106,5 +117,5 @@ export const useConfetti = () => {
         };
         setTimeout(glitterRain, 150);
     }, [isMobile]);
-    return { fireConfetti, fireCannon, fireStars, fireCinematicCelebration };
+    return { fireConfetti, fireCannon, fireStars, firePop, fireCinematicCelebration };
 };

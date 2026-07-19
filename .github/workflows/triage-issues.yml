@@ -1,0 +1,164 @@
+name: Triage Issues
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+  contents: read
+
+concurrency:
+  group: issue-triage-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  triage:
+    name: Auto Triage & Onboard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository (for config)
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/automation.config.json
+          sparse-checkout-cone-mode: false
+
+      - name: Process Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let config;
+            try {
+              config = JSON.parse(fs.readFileSync('.github/automation.config.json', 'utf8'));
+            } catch (err) {
+              console.error("Failed to read config:", err);
+              return;
+            }
+
+            const issue = context.payload.issue;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issueNo = issue.number;
+            const opener = issue.user.login;
+            const body = issue.body || '';
+
+            // 1. Check Exemptions
+            const exemptions = config.exemptions || {};
+            const exemptedUsers = exemptions.users || [];
+            const exemptedRoles = exemptions.roles || [];
+
+            if (issue.user.type === 'Bot' || exemptedUsers.includes(opener)) {
+              console.log('User is a bot or in exemption list. Proceeding to label triage only.');
+            }
+
+            let isExempt = false;
+            try {
+              const { data: perm } = await github.rest.repos.getCollaboratorPermissionLevel({
+                owner, repo, username: opener
+              });
+              if (exemptedRoles.includes(perm.permission)) {
+                isExempt = true;
+              }
+            } catch (err) {}
+
+            // 2. Parse and Label Difficulty
+            let detectedLevel = null;
+            const match = body.match(/level:\s*(beginner|intermediate|advanced)/i);
+            if (match) {
+              const levelVal = match[1].toLowerCase();
+              detectedLevel = `level:${levelVal}`;
+              console.log(`Found level selection: ${detectedLevel}`);
+              
+              const currentLabels = issue.labels.map(l => l.name);
+              const labelsToRemove = currentLabels.filter(name => (name.startsWith('difficulty: ') || name.startsWith('level:')) && name !== detectedLevel);
+              
+              for (const oldLabel of labelsToRemove) {
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner, repo, issue_number: issueNo, name: oldLabel
+                  });
+                } catch (e) {}
+              }
+              
+              if (!currentLabels.includes(detectedLevel)) {
+                await github.rest.issues.addLabels({
+                  owner, repo, issue_number: issueNo, labels: [detectedLevel]
+                });
+              }
+            }
+
+            // Only run assignment and limits on 'opened' event
+            if (context.payload.action !== 'opened' || isExempt) return;
+
+            // 3. Auto-assign
+            try {
+              await github.rest.issues.addAssignees({
+                owner, repo, issue_number: issueNo, assignees: [opener]
+              });
+              console.log(`Assigned #${issueNo} to @${opener}`);
+            } catch (err) {
+              console.log(`Could not assign @${opener}:`, err);
+            }
+
+            // 4. Check Limits
+            const maxOpenWithoutPR = config.issues?.maxOpenWithoutPR || 3;
+            const assigned = await github.rest.issues.listForRepo({
+              owner, repo, assignee: opener, state: 'open', per_page: 100
+            });
+            const activeIssues = assigned.data.filter(i => !i.pull_request && i.number !== issueNo);
+
+            const prsList = await github.paginate(github.rest.pulls.list, {
+              owner, repo, state: 'open', per_page: 100
+            });
+            const openerPRs = prsList.filter(pr => pr.user && pr.user.login === opener);
+
+            const activeIssuesWithoutPR = [];
+            for (const activeIssue of activeIssues) {
+              const hasPR = openerPRs.some(pr => {
+                const prBody = pr.body || '';
+                const prTitle = pr.title || '';
+                const issueRefRegex = new RegExp('(?:#|issues/)' + activeIssue.number + '\\b', 'i');
+                return issueRefRegex.test(prBody) || issueRefRegex.test(prTitle);
+              });
+              if (!hasPR) {
+                activeIssuesWithoutPR.push(activeIssue);
+              }
+            }
+
+            if (activeIssuesWithoutPR.length >= maxOpenWithoutPR) {
+              const capMsg = `### ⚠️ Issue Limit Warning\n\nHi @${opener}! You currently have **${activeIssuesWithoutPR.length}** open issues assigned to you without an active Pull Request.\n\nTo ensure everyone has a chance to contribute and tasks don't pile up, we kindly ask you to submit PRs for your existing tasks or unassign yourself from them before taking on new ones.\n\nPlease address this soon. A maintainer will review this issue shortly.`;
+              
+              await github.rest.issues.createComment({
+                owner, repo, issue_number: issueNo, body: capMsg
+              });
+              
+              await github.rest.issues.addLabels({
+                owner, repo, issue_number: issueNo, labels: ['status:action-required']
+              });
+              console.log(`User exceeded issue limit. Warning posted.`);
+              return; // Do not post the welcome comment if they are over the limit.
+            }
+
+            // 5. Smart Onboarding Comment
+            let maxDays = 3;
+            if (detectedLevel === 'level:beginner') maxDays = 2;
+            else if (detectedLevel === 'level:advanced') maxDays = 5;
+            
+            const searchURL = `https://github.com/${owner}/${repo}/issues?q=is%3Aissue+is%3Aopen`;
+            
+            const lines = [
+              `### 🌸 Welcome to Birthday Bloom!`,
+              `Hello @${opener}, you have been assigned to this issue! We're thrilled to have your contribution.`,
+              '',
+              `**Getting Started:**`,
+              `- Please [search for similar issues](${searchURL}) before coding to avoid duplicate work.`,
+              `- We generally expect a PR or a progress update within **${maxDays} days**.`,
+              `- To keep your assignment active, post a progress comment or open a linked Draft PR.`,
+              '',
+              `If you need any help, feel free to ask in this thread. Happy coding! 🚀`
+            ];
+
+            await github.rest.issues.createComment({
+              owner, repo, issue_number: issueNo, body: lines.join('\n')
+            });

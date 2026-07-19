@@ -21,10 +21,16 @@ export class ErrorBoundary extends React.Component<Props, State> {
     }
     render() {
         if (this.state.hasError) {
+            // Never leak internal error details to end users in production.
+            // Detailed errors are still available in the browser console.
+            const showDetails = import.meta.env.DEV;
+            const detailMessage = showDetails
+                ? this.state.error?.message
+                : "An unexpected error occurred while loading this page.";
             return (this.props.fallback || (<motion.div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 to-black text-white" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <motion.div className="text-center p-8 rounded-lg bg-white/5 backdrop-blur-xl border border-white/10" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.6, delay: 0.2 }}>
               <h1 className="text-3xl font-bold mb-4">Oops! Something went wrong 😔</h1>
-              <p className="text-white/70 mb-6">{this.state.error?.message}</p>
+              <p className="text-white/70 mb-6">{detailMessage}</p>
               <button onClick={() => window.location.reload()} className="px-6 py-3 bg-gradient-to-r from-red-500 to-pink-500 rounded-full text-white font-semibold hover:shadow-lg transition-all">
                 Reload Page
               </button>

@@ -13,7 +13,7 @@ To provide a premium (1%-tier) cinematic, interactive birthday landing page that
 * **Framework:** React 18 (Concurrent Mode, client-side rendering)
 * **Build System:** Vite 5 (Hot Module Replacement enabled)
 * **Styling:** Tailwind CSS 3.4 + Custom HSL CSS Custom Properties (for dynamic theme injection)
-* **Animation:** Framer Motion 11+ (physics-spring transitions, hardware-accelerated loops)
+* **Animation:** Framer Motion 12+ (physics-spring transitions, hardware-accelerated loops)
 * **State Management:** Zustand 5+ (centralized store with aliases, fallback verification, and runtime hydration)
 * **Testing:** Vitest 3+ (Unit & Integration tests)
 

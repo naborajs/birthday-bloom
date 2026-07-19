@@ -62,7 +62,9 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
             playWhoosh();
             onComplete();
         };
-        runSequence();
+        runSequence().catch((err) => {
+            console.error("FakeChatScene sequence failed:", err);
+        });
         return () => { isMounted = false; };
     }, [onComplete, playType, playWhoosh, playReveal, retypeFullText]);
     const theme = useMemo(() => {

@@ -3,6 +3,16 @@
   "private": true,
   "version": "3.1.0",
   "type": "module",
+  "license": "MIT",
+  "author": "Naboraj Sarkar",
+  "homepage": "https://github.com/naborajs/birthday-bloom#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naborajs/birthday-bloom.git"
+  },
+  "bugs": {
+    "url": "https://github.com/naborajs/birthday-bloom/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",

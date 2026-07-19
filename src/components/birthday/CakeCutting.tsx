@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { createPortal } from "react-dom";
+import { Cake as CakeIcon, Flame, Sparkles } from "lucide-react";
 import { useConfetti } from "./Confetti";
 import { useSoundManager } from "./SoundManager";
 import { KineticText } from "./KineticText";

@@ -22,11 +22,11 @@ npm run dev      # macOS/Linux
 npm.cmd run dev  # PowerShell
 ```
 
-**All `VITE_` values are public** â€” they ship to the browser. Keep passwords, tokens, and secrets out of env values.
+**All `VITE_` values are public** — they ship to the browser. Keep passwords, tokens, and secrets out of env values.
 
 ### Hydration & Verification
 
-On boot, `useBirthdayStore` parses all env variables starting with `VITE_BIRTHDAY_*`, stores them in a reactive **Zustand** store, and auto-sets `isConfigured: true` when `VITE_BIRTHDAY_NAME` is present â€” this skips the setup wizard and triggers the cinematic intro immediately.
+On boot, `useBirthdayStore` parses all env variables starting with `VITE_BIRTHDAY_*`, stores them in a reactive **Zustand** store, and auto-sets `isConfigured: true` when `VITE_BIRTHDAY_NAME` is present — this skips the setup wizard and triggers the cinematic intro immediately.
 
 To verify env is loaded:
 1. Ensure `.env` or `.env.local` exists in the project root.
@@ -48,7 +48,7 @@ To verify env is loaded:
 
 **Supported relationship values**: `partner`, `friend`, `family`, `sibling`, `brother`, `sister`, `father`, `mother`, `grandfather`, `grandmother`, `uncle`, `aunt`, `cousin`, `son`, `daughter`, `guardian`, `colleague`, `mentor`, `custom`.
 
-The store normalizes aliases: e.g., `"love"` â†’ `partner`, `"mom"` â†’ `mother`, `"bestie"` â†’ `friend`, `"work"` â†’ `colleague`.
+The store normalizes aliases: e.g., `"love"` → `partner`, `"mom"` → `mother`, `"bestie"` → `friend`, `"work"` → `colleague`.
 
 ---
 
@@ -65,7 +65,7 @@ The store normalizes aliases: e.g., `"love"` â†’ `partner`, `"mom"` â†�
 | `VITE_FAVORITE_EMOJIS` | CSV/list | `""` | Custom burst emojis when tapping interactive elements. Also accepted as `VITE_BIRTHDAY_EMOJIS`. |
 | `VITE_CUSTOM_MESSAGE` | string | `""` | Backward-compatible alias for `VITE_BIRTHDAY_CUSTOM_MESSAGE`. |
 
-**Supported interests**: `car`, `music`, `art`, `coding`, `gaming`, `nature`, `travel`, `food`, `sport`, `space` â€” each maps to a lucide-react icon and interest-specific emojis.
+**Supported interests**: `car`, `music`, `art`, `coding`, `gaming`, `nature`, `travel`, `food`, `sport`, `space` — each maps to a lucide-react icon and interest-specific emojis.
 
 ### Curated Theme Palettes
 
@@ -100,7 +100,7 @@ For manual CSS overrides in `index.css`:
 
 ## Photos
 
-Two modes â€” `VITE_PHOTOS` (unlimited, pipe-separated) wins when set:
+Two modes — `VITE_PHOTOS` (unlimited, pipe-separated) wins when set:
 
 ```env
 VITE_PHOTOS=https://example.com/one.jpg|https://example.com/two.jpg|https://example.com/three.jpg
@@ -123,7 +123,7 @@ The store builds the photos array: if `VITE_PHOTOS` is set, it splits on `|`. Ot
 
 To maintain 60fps cinematic flow:
 
-- **Format**: Prefer `.webp`, then `.jpg`. Avoid `.png` â€” too heavy.
+- **Format**: Prefer `.webp`, then `.jpg`. Avoid `.png` — too heavy.
 - **Size**: Keep each image under **500KB**.
 - **Dimensions**: Use **16:9** aspect ratio for the gallery to avoid black bars in the 3D tilt view.
 - **Mobile**: The gallery auto-disables tilt on phones and uses smoother transitions.
@@ -161,7 +161,7 @@ The photo gallery supports lazy loading and falls back gracefully if a memory im
 - Always use HTTPS URLs for audio/video sources.
 - Ensure CORS is enabled on your audio host.
 - For YouTube final videos, use the `/embed/` link format for the best cinematic experience.
-- Browser autoplay policies require user interaction before audio plays â€” clicking "Start" triggers it.
+- Browser autoplay policies require user interaction before audio plays — clicking "Start" triggers it.
 
 ---
 
@@ -232,21 +232,21 @@ Also accepted: `VITE_SHOW_PHOTOS_SECTION` (alias for photo section).
 
 The engine includes 15 distinct animation effects tuned through env variables:
 
-1. **ParticleBurst** â€” Physics-based explosions on cake clicks
-2. **MorphingElements** â€” Fluid background shapes (4 animated orbs)
-3. **EnhancedFloatingElements** â€” Floating emoji elements
-4. **SparkleRain** â€” Cascading sparkle effect
-5. **FireflyEffect** â€” Glowing flying lights (15 configurable fireflies)
-6. **FloatingOrbs** â€” Blurred color orbs (8 spheres)
-7. **ShootingStars** â€” Streaking stars with comet trails
-8. **AnimatedGradient** â€” Rotating conic gradient layers
-9. **RibbonEffect** â€” Banner animation with bouncing motion
-10. **WaveEffect** â€” Expanding concentric rings
-11. **LiquidSwirl** â€” Organic fluid SVG shape
-12. **DigitalRain** â€” Matrix-style falling character columns
-13. **GlitchEffect** â€” RGB offset glitch
-14. **TextRevealEffect** â€” Staggered character reveal with spring physics
-15. **TunnelEffect** â€” Zooming tunnel with depth
+1. **ParticleBurst** — Physics-based explosions on cake clicks
+2. **MorphingElements** — Fluid background shapes (4 animated orbs)
+3. **EnhancedFloatingElements** — Floating emoji elements
+4. **SparkleRain** — Cascading sparkle effect
+5. **FireflyEffect** — Glowing flying lights (15 configurable fireflies)
+6. **FloatingOrbs** — Blurred color orbs (8 spheres)
+7. **ShootingStars** — Streaking stars with comet trails
+8. **AnimatedGradient** — Rotating conic gradient layers
+9. **RibbonEffect** — Banner animation with bouncing motion
+10. **WaveEffect** — Expanding concentric rings
+11. **LiquidSwirl** — Organic fluid SVG shape
+12. **DigitalRain** — Matrix-style falling character columns
+13. **GlitchEffect** — RGB offset glitch
+14. **TextRevealEffect** — Staggered character reveal with spring physics
+15. **TunnelEffect** — Zooming tunnel with depth
 
 ---
 
@@ -258,7 +258,7 @@ Format for the FinalSurprise component's memory grid:
 VITE_SPECIAL_MEMORIES=First celebration;https://example.com/one.jpg|Favorite trip;https://example.com/two.jpg
 ```
 
-Each item is `text;imageUrl`. Separate multiple memories with `|`. Images are optional â€” without a URL, a camera placeholder icon is shown.
+Each item is `text;imageUrl`. Separate multiple memories with `|`. Images are optional — without a URL, a camera placeholder icon is shown.
 
 ---
 
@@ -309,13 +309,13 @@ Protect the surprise with a frosted-glass passcode screen:
 | `VITE_PASSWORD_FORMAT` | enum | `MMDD` | Format to generate password from `VITE_BIRTHDAY_DATE` when `VITE_PASSWORD` is not set. |
 
 **Supported formats**:
-- `MMDD` (default) â€” e.g., `0424` for April 24th
-- `DDMM` â€” e.g., `2404`
-- `YYYYMMDD` â€” e.g., `20010424`
-- `YYYY-MM-DD` â€” e.g., `2001-04-24`
-- `MM-DD` â€” e.g., `04-24`
-- `DD-MM` â€” e.g., `24-04`
-- `YYYY` â€” e.g., `2001`
+- `MMDD` (default) — e.g., `0424` for April 24th
+- `DDMM` — e.g., `2404`
+- `YYYYMMDD` — e.g., `20010424`
+- `YYYY-MM-DD` — e.g., `2001-04-24`
+- `MM-DD` — e.g., `04-24`
+- `DD-MM` — e.g., `24-04`
+- `YYYY` — e.g., `2001`
 
 **Password resolution** (`getEffectivePassword` in `src/utils/password.ts`):
 1. If `VITE_PASSWORD` is set and non-empty, use it
@@ -361,7 +361,7 @@ The cake system in `src/components/birthday/CakeCutting.tsx` includes:
 - **Kinetic Splitting**: The cake splits with physics-based cut sparks and 3D depth filters.
 - **Auto-Scroll Interaction**: Smooth-scrolls the "Blow & Cut" UI into view on mobile.
 
-Customize cake options by editing the `CAKE_OPTIONS` array in `src/components/birthday/CakeCutting.tsx` â€” update `name`, `flavorColor`, and `description`.
+Customize cake options by editing the `CAKE_OPTIONS` array in `src/components/birthday/CakeCutting.tsx` — update `name`, `flavorColor`, and `description`.
 
 Four default designs: Chocolate, Strawberry, Royal Velvet, Floral Garden.
 
@@ -393,11 +393,11 @@ const romanticLines = [
 
 The engine auto-detects mobile devices and applies these adjustments:
 
-- **Reduced animation intensity** â€” confetti, spark effects, and glow effects are quieter.
-- **Photo gallery tilt disabled** â€” smoother scrolling on touch devices.
-- **Cake cutting interactions** â€” tuned for responsive touch.
-- **Lower particle counts** â€” mobile gets 10-15 vs desktop 25-60.
-- **Simplified hover states** â€” no persistent hover effects.
+- **Reduced animation intensity** — confetti, spark effects, and glow effects are quieter.
+- **Photo gallery tilt disabled** — smoother scrolling on touch devices.
+- **Cake cutting interactions** — tuned for responsive touch.
+- **Lower particle counts** — mobile gets 10-15 vs desktop 25-60.
+- **Simplified hover states** — no persistent hover effects.
 
 ### Build Optimization
 
@@ -686,7 +686,7 @@ VITE_ANIMATION_INTENSITY=medium
 - Prefix all custom variables with `VITE_`.
 
 **DON'T:**
-- Store sensitive info (passwords, API keys, tokens) in `VITE_` variables â€” they ship to the browser.
+- Store sensitive info (passwords, API keys, tokens) in `VITE_` variables — they ship to the browser.
 - Commit `.env` or `.env.local` files to version control.
 - Forget to add variables to hosting after deployment.
 
@@ -743,13 +743,13 @@ VITE_ANIMATION_SPEED=fast
 ### Vercel
 1. Push code to GitHub.
 2. Import repo in Vercel.
-3. Project Settings â†’ Environment Variables â€” add every `VITE_` key from your `.env.local`.
+3. Project Settings → Environment Variables — add every `VITE_` key from your `.env.local`.
 4. Redeploy after changing values.
 
 ### Netlify
 1. Build command: `npm run build`
 2. Publish directory: `dist`
-3. Site configuration â†’ Environment variables â€” add the same keys.
+3. Site configuration → Environment variables — add the same keys.
 4. Trigger a fresh deploy.
 
 ### AWS S3 + CloudFront
@@ -799,12 +799,12 @@ docker run -p 8080:8080 birthday-bloom
 | Photos do not load | Use direct image URLs (`.jpg`, `.png`, `.webp`) or CDN URLs |
 | Too much motion | Set `VITE_ANIMATION_INTENSITY=low`, `VITE_PARTICLE_COUNT=8` (note: `VITE_REDUCED_MOTION` is reserved for future support) |
 | Relationship mood looks wrong | Use a supported relationship value; `VITE_THEME` is reserved for future manual override |
-| JSON family profile fails | Validate JSON â€” all keys and strings must be in double quotes |
+| JSON family profile fails | Validate JSON — all keys and strings must be in double quotes |
 | Blank screen | Check console (F12), verify `VITE_BIRTHDAY_NAME` is set, ensure `.env` is in root, restart dev server |
 | Animations stutter on mobile | Set `VITE_ANIMATION_INTENSITY=low`, `VITE_PARTICLE_COUNT=5` (note: `VITE_REDUCED_MOTION` is reserved for future support) |
 | Audio does not play | Verify `VITE_SOUND_URL` is valid HTTPS, CORS enabled on host, browser allows autoplay (click Start first) |
 | Build error: "Cannot find module" | Run `rm -rf node_modules && npm install && npm run build` |
-| Old version showing after deploy | Clear CDN cache â€” Vercel uses content hashes automatically |
+| Old version showing after deploy | Clear CDN cache — Vercel uses content hashes automatically |
 | Animations lag | Lower `VITE_PARTICLE_COUNT`, set `VITE_ANIMATION_INTENSITY=low` |
 
 ---
@@ -812,28 +812,28 @@ docker run -p 8080:8080 birthday-bloom
 ## FAQ
 
 **Q: Can I use this for non-birthday celebrations?**  
-A: Yes â€” set `VITE_BIRTHDAY_RELATIONSHIP=custom` and customize the message.
+A: Yes — set `VITE_BIRTHDAY_RELATIONSHIP=custom` and customize the message.
 
 **Q: What is the maximum image file size?**  
 A: Recommended: < 500KB. Maximum: 5MB.
 
 **Q: Can I add custom video content?**  
-A: Yes â€” provide MP4/WebM URLs via `VITE_VIDEO_1`, `VITE_VIDEO_2`, `VITE_VIDEO_3`.
+A: Yes — provide MP4/WebM URLs via `VITE_VIDEO_1`, `VITE_VIDEO_2`, `VITE_VIDEO_3`.
 
 **Q: Is there a mobile version?**  
-A: Yes â€” Birthday Bloom is fully responsive with mobile-specific optimizations.
+A: Yes — Birthday Bloom is fully responsive with mobile-specific optimizations.
 
 **Q: Can I customize the emojis?**  
-A: Yes â€” set `VITE_FAVORITE_EMOJIS` with comma-separated emoji keywords.
+A: Yes — set `VITE_FAVORITE_EMOJIS` with comma-separated emoji keywords.
 
 **Q: How do I add multiple recipients?**  
 A: Deploy multiple instances with different env variable sets.
 
 **Q: Is data saved to a backend?**  
-A: No â€” it is fully client-side. No backend or database required.
+A: No — it is fully client-side. No backend or database required.
 
 **Q: Can I use custom fonts?**  
-A: Yes â€” modify `index.css` and import custom font files.
+A: Yes — modify `index.css` and import custom font files.
 
 **Q: What video formats are supported for memory videos?**  
 A: YouTube URLs (watch, embed, short) and direct MP4/WebM files.
@@ -857,17 +857,17 @@ All `VITE_` values are public in the browser bundle. Do not store actual passwor
 
 ## See Also
 
-- [QUICK_START.md](../QUICK_START.md) â€” Quick start
-- [docs/developer-guide.md](./developer-guide.md) â€” Adding new env variables
-- [docs/family-system.md](./family-system.md) â€” Family profile configuration
-- [docs/template-architecture.md](./template-architecture.md) â€” Template system
-- [docs/troubleshooting.md](./troubleshooting.md) â€” Troubleshooting guide
-- [docs/deployment.md](./deployment.md) â€” Deployment guide
-- [docs/configuration-examples.md](./configuration-examples.md) â€” Pre-built configs
-- [src/features/core/store/useBirthdayStore.ts](../src/features/core/store/useBirthdayStore.ts) â€” Env parsing logic
-- [src/config/birthday.ts](../src/config/birthday.ts) â€” Audio defaults and fallback config
-- [src/utils/password.ts](../src/utils/password.ts) â€” Password generation logic
-- [src/components/birthday/CinematicIntro.tsx](../src/components/birthday/CinematicIntro.tsx) â€” Intro script customization
-- [src/components/birthday/CakeCutting.tsx](../src/components/birthday/CakeCutting.tsx) â€” Cake options customization
-- [src/features/core/models/familyTemplates.ts](../src/features/core/models/familyTemplates.ts) â€” Family profile factory functions
-- [src/features/core/models/dataModels.ts](../src/features/core/models/dataModels.ts) â€” ConfigValidator and DataValidator
+- [QUICK_START.md](../QUICK_START.md) — Quick start
+- [docs/developer-guide.md](./developer-guide.md) — Adding new env variables
+- [docs/family-system.md](./family-system.md) — Family profile configuration
+- [docs/template-architecture.md](./template-architecture.md) — Template system
+- [docs/troubleshooting.md](./troubleshooting.md) — Troubleshooting guide
+- [docs/deployment.md](./deployment.md) — Deployment guide
+- [docs/configuration-examples.md](./configuration-examples.md) — Pre-built configs
+- [src/features/core/store/useBirthdayStore.ts](../src/features/core/store/useBirthdayStore.ts) — Env parsing logic
+- [src/config/birthday.ts](../src/config/birthday.ts) — Audio defaults and fallback config
+- [src/utils/password.ts](../src/utils/password.ts) — Password generation logic
+- [src/components/birthday/CinematicIntro.tsx](../src/components/birthday/CinematicIntro.tsx) — Intro script customization
+- [src/components/birthday/CakeCutting.tsx](../src/components/birthday/CakeCutting.tsx) — Cake options customization
+- [src/features/core/models/familyTemplates.ts](../src/features/core/models/familyTemplates.ts) — Family profile factory functions
+- [src/features/core/models/dataModels.ts](../src/features/core/models/dataModels.ts) — ConfigValidator and DataValidator
