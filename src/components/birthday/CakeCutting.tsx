@@ -103,8 +103,18 @@ export const CakeCutting = () => {
         if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(30);
         setSelectedCake(cake);
         playPop();
-        setPhase("blow-intro");
+        setPhase("baking"); // Start baking sequence
     }, [playPop]);
+
+    // Handle baking loading screen
+    useEffect(() => {
+        if (phase === "baking") {
+            const t = setTimeout(() => {
+                setPhase("blow-intro");
+            }, 2500); // Give 3D assets time to compile shaders and render
+            return () => clearTimeout(t);
+        }
+    }, [phase]);
 
     const handleBlow = useCallback(() => {
         if (phase !== "blow-intro") return;
@@ -201,9 +211,42 @@ export const CakeCutting = () => {
                         >
                             <MagicDust count={dustCount} />
                             
-                            <div className="relative w-full max-w-4xl px-4 flex flex-col items-center">
-                                
-                                {/* The 3D Cake is ALWAYS rendered here so it never unmounts */}
+                            <AnimatePresence mode="wait">
+                                {phase === "baking" && (
+                                    <motion.div 
+                                        key="baking"
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
+                                        transition={{ duration: 0.5 }}
+                                        className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-xl"
+                                    >
+                                        <div className="relative flex flex-col items-center gap-6">
+                                            <div className="relative">
+                                                <div className="absolute inset-0 bg-primary/30 blur-2xl rounded-full animate-pulse" />
+                                                <CakeIcon className="w-16 h-16 text-primary animate-bounce relative z-10" />
+                                            </div>
+                                            <div className="flex flex-col items-center gap-2">
+                                                <h2 className="text-3xl md:text-4xl font-display font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-primary to-white uppercase">
+                                                    Baking Your Cake...
+                                                </h2>
+                                                <div className="flex gap-1 mt-2">
+                                                    {[1, 2, 3].map((i) => (
+                                                        <motion.div
+                                                            key={i}
+                                                            animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }}
+                                                            transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
+                                                            className="w-2 h-2 rounded-full bg-primary"
+                                                        />
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                            
+                            <div className="w-full max-w-4xl mx-auto flex flex-col items-center justify-center min-h-[100dvh]">
                                 <div className="relative w-full h-[50vh] min-h-[400px] flex justify-center items-center mt-10">
                                     <Cake3D cake={cake} phase={phase} />
                                     

@@ -174,7 +174,7 @@ const Candle = ({ lit, accent }: { lit: boolean; accent: string }) => {
     });
 
     return (
-        <group position={[0, height + 0.6, 0]}>
+        <group position={[0, height, 0]}>
             {/* Candle Body */}
             <mesh castShadow position={[0, 0.4, 0]}>
                 <cylinderGeometry args={[0.06, 0.07, 0.8, 16]} />

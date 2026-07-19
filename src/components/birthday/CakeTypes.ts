@@ -1,4 +1,4 @@
-export type Phase = "select" | "blow-intro" | "blowing" | "wish" | "countdown" | "knife-enter" | "cutting" | "burst" | "quotes";
+export type Phase = "select" | "baking" | "blow-intro" | "blowing" | "wish" | "countdown" | "knife-enter" | "cutting" | "burst" | "quotes";
 
 import chocolateCake from "@/assets/birthday/cake-maroon.png";
 import strawberryCake from "@/assets/birthday/cake-pink.png";
