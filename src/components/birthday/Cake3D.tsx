@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, Suspense } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Environment, ContactShadows, Float } from "@react-three/drei";
@@ -133,7 +133,9 @@ export const Cake3D = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
     return (
         <div className="w-full h-full min-h-[400px] cursor-grab active:cursor-grabbing">
             <Canvas shadows camera={{ position: [0, 3, 6], fov: 50 }}>
-                <Scene cake={cake} phase={phase} />
+                <Suspense fallback={null}>
+                    <Scene cake={cake} phase={phase} />
+                </Suspense>
             </Canvas>
         </div>
     );
