@@ -239,18 +239,6 @@ export const MainBirthday = () => {
 
       {config.showCakeSection && (<section id="cake-section" className="relative z-20 px-4 pb-16 sm:pb-32">
         <motion.div initial={{ opacity: 0, y: 100 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "0px" }} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }} className="text-center">
-          <h3 className="font-display text-4xl sm:text-6xl md:text-7xl font-black mb-8 sm:mb-12 drop-shadow-xl" style={{ color: primaryColor }}>
-            Time to Cut the Cake! 🎂
-          </h3>
-          <p className="text-xl sm:text-2xl md:text-3xl text-foreground/80 mb-10 sm:mb-12 max-w-2xl mx-auto">
-            Ready for the sweetest moment? Let's make some magic happen! ✨
-          </p>
-          <motion.button whileHover={shouldAnimate ? { scale: 1.05 } : undefined} whileTap={{ scale: 0.95 }} onClick={() => { addEmoji(); scrollToCake(); }} className="px-10 py-5 sm:px-12 sm:py-6 rounded-full text-xl sm:text-2xl font-black text-white shadow-2xl mb-12 sm:mb-20" style={{
-                background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}dd)`,
-                boxShadow: `0 15px 45px -10px ${primaryColor}60`
-            }}>
-            🎂 Start Cake Cutting
-          </motion.button>
           <CakeCutting />
         </motion.div>
       </section>)}
