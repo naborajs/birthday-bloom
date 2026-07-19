@@ -28,12 +28,16 @@ const Drips = ({ config, isSlice }: { config: CakeOption["config"]; isSlice?: bo
 
     return (
         <group>
-            {drips.map((d, idx) => (
-                <mesh key={idx} position={[Math.cos(d.angle) * (radius + 0.02), Math.sin(d.angle) * (radius + 0.02), height - d.length / 2]} rotation={[Math.PI / 2, 0, d.angle]}>
-                    <capsuleGeometry args={[0.08, d.length, 8, 8]} />
-                    <meshPhysicalMaterial color={config.dripColor} roughness={0.05} clearcoat={1} clearcoatRoughness={0.1} />
-                </mesh>
-            ))}
+            {drips.map((d, idx) => {
+                // To make the capsule point straight down (vertical), we don't need any Z-rotation on the mesh itself.
+                // It just sits at the edge and we orient it perfectly downwards.
+                return (
+                    <mesh key={idx} position={[Math.cos(d.angle) * (radius + 0.02), Math.sin(d.angle) * (radius + 0.02), height - d.length / 2]} rotation={[Math.PI / 2, 0, 0]}>
+                        <capsuleGeometry args={[0.08, d.length, 8, 8]} />
+                        <meshPhysicalMaterial color={config.dripColor} roughness={0.05} clearcoat={1} clearcoatRoughness={0.1} />
+                    </mesh>
+                );
+            })}
         </group>
     );
 };
@@ -121,7 +125,7 @@ const CakeBody = ({ cake, isSlice }: { cake: CakeOption; isSlice?: boolean }) =>
     const layerHeight = height / 3;
 
     return (
-        <group rotation={[-Math.PI / 2, 0, 0]} position={[0, height / 2, 0]}>
+        <group rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
             {/* Sponge Layer 1 */}
             <mesh castShadow receiveShadow position={[0, 0, 0]}>
                 <extrudeGeometry args={[shape, getExtrudeSettings(layerHeight)]} />
@@ -182,10 +186,12 @@ const Candle = ({ lit, accent }: { lit: boolean; accent: string }) => {
                 <meshStandardMaterial color={accent} />
             </mesh>
             {/* Wick */}
-            <mesh position={[0, 0.85, 0]}>
-                <cylinderGeometry args={[0.01, 0.01, 0.1]} />
-                <meshStandardMaterial color="#222" />
-            </mesh>
+            {lit && (
+                <mesh position={[0, 0.85, 0]}>
+                    <cylinderGeometry args={[0.01, 0.01, 0.1]} />
+                    <meshStandardMaterial color="#222" />
+                </mesh>
+            )}
 
             {/* Flame */}
             {lit && (
@@ -210,18 +216,22 @@ const Scene = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
     const candlesLit = phase === "select" || phase === "blow-intro" || phase === "blowing" || phase === "wish";
 
     // Animate the slice separating
+    // Slice is at angle ~333 deg in local space.
+    // Movement vector: X = ~0.89, Y(local) = ~-0.45.
+    // In global space (rotated -90 on X): X = 0.89, Z = 0.45
     const { slicePos } = useSpring({
-        slicePos: isCut ? [1.2, 0.2, -0.6] : [0, 0, 0], // Pull slice out further
+        slicePos: isCut ? [1.2, 0.0, 0.6] : [0, 0, 0], // Pull slice out in correct direction
         config: { mass: 1, tension: 120, friction: 14 }
     });
 
     return (
         <>
-            <ambientLight intensity={0.5} />
+            <ambientLight intensity={0.6} />
             <directionalLight position={[5, 10, 5]} intensity={1.2} castShadow shadow-mapSize={[2048, 2048]} shadow-bias={-0.001} />
             <directionalLight position={[-5, 5, -5]} intensity={0.6} />
             <hemisphereLight skyColor="#ffffff" groundColor="#444444" intensity={0.5} />
-            <pointLight position={[0, 3, 4]} intensity={0.8} />
+            {/* Top light to keep cake illuminated even when candle goes out */}
+            <pointLight position={[0, 4, 0]} intensity={0.6} />
 
             <Float speed={1.2} rotationIntensity={0.05} floatIntensity={0.1}>
                 <group position={[0, -1, 0]}>
