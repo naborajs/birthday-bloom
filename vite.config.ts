@@ -12,6 +12,7 @@ export default defineConfig(({ mode }: ConfigEnv) => ({
     // Ensure fresh builds - no cache
     outDir: 'dist',
     emptyOutDir: true,
+    chunkSizeWarningLimit: 1000,
     // Add cache busting with content hashes.
     rollupOptions: {
       output: {
