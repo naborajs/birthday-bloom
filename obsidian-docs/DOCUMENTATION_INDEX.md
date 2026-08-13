@@ -1,3 +1,8 @@
+---
+tags: [index, home, overview]
+aliases: [DOCUMENTATION_INDEX]
+---
+
 # Birthday Bloom v3.0 — Documentation Index
 
 **Complete documentation guide for Birthday Bloom**, an env-first cinematic birthday surprise engine built with React, Framer Motion, and Tailwind CSS.
@@ -12,17 +17,17 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 
 | Document | Purpose | Read Time |
 |---|---|---|
-| [quick-start.md](./quick-start.md) | Get running in 5 minutes | 5 min |
-| [ENV_GUIDE.md](./ENV_GUIDE.md) | Full env customization reference with 15+ recipes | 15 min |
-| [architecture.md](./architecture.md) | System architecture overview | 10 min |
-| [developer-guide.md](./developer-guide.md) | Component API reference and extension patterns | 15 min |
-| [family-system.md](./family-system.md) | Family template system | 10 min |
-| [template-architecture.md](./template-architecture.md) | Template and config architecture | 8 min |
-| [troubleshooting.md](./troubleshooting.md) | Common issues and solutions | 10 min |
-| [migration-guide.md](./migration-guide.md) | Version-by-version migration v1→v2→v3 | 8 min |
-| [deployment.md](./deployment.md) | All deployment options + testing checklists | 10 min |
-| [seo-guide.md](./seo-guide.md) | SEO, sitemap, meta tags optimization | 5 min |
-| [llm-access.md](./llm-access.md) | AI-first documentation guide | 5 min |
+| [[quick-start|quick-start.md]] | Get running in 5 minutes | 5 min |
+| [[ENV_GUIDE|ENV_GUIDE.md]] | Full env customization reference with 15+ recipes | 15 min |
+| [[architecture|architecture.md]] | System architecture overview | 10 min |
+| [[developer-guide|developer-guide.md]] | Component API reference and extension patterns | 15 min |
+| [[family-system|family-system.md]] | Family template system | 10 min |
+| [[template-architecture|template-architecture.md]] | Template and config architecture | 8 min |
+| [[troubleshooting|troubleshooting.md]] | Common issues and solutions | 10 min |
+| [[migration-guide|migration-guide.md]] | Version-by-version migration v1→v2→v3 | 8 min |
+| [[deployment|deployment.md]] | All deployment options + testing checklists | 10 min |
+| [[seo-guide|seo-guide.md]] | SEO, sitemap, meta tags optimization | 5 min |
+| [[llm-access|llm-access.md]] | AI-first documentation guide | 5 min |
 
 ---
 
@@ -30,37 +35,37 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 
 ### New to Birthday Bloom?
 
-1. [quick-start.md](./quick-start.md) — Install and run locally
-2. [ENV_GUIDE.md](./ENV_GUIDE.md) — Learn what you can customize
-3. [faq.md](./faq.md) — Common questions
+1. [[quick-start|quick-start.md]] — Install and run locally
+2. [[ENV_GUIDE|ENV_GUIDE.md]] — Learn what you can customize
+3. [[faq|faq.md]] — Common questions
 4. Customize `.env.local` and restart
 
 ### Customizing for Someone
 
-1. [ENV_GUIDE.md](./ENV_GUIDE.md) — Full env reference with situation recipes
-2. [family-system.md](./family-system.md) — Family profile setup
-3. [template-architecture.md](./template-architecture.md) — How templates work
-4. [SUPPORT.md](../.github/SUPPORT.md) — Getting help
+1. [[ENV_GUIDE|ENV_GUIDE.md]] — Full env reference with situation recipes
+2. [[family-system|family-system.md]] — Family profile setup
+3. [[template-architecture|template-architecture.md]] — How templates work
+4. [[./.github/SUPPORT|SUPPORT.md]] — Getting help
 
 ### Contributing Code
 
-1. [CONTRIBUTING.md](../.github/CONTRIBUTING.md) — Contribution workflow
-2. [styleguide.md](./styleguide.md) — Code conventions
-3. [architecture.md](./architecture.md) — System architecture
-4. [developer-guide.md](./developer-guide.md) — Developer reference
-5. [roadmap.md](./roadmap.md) — Planned features
+1. [[./.github/CONTRIBUTING|CONTRIBUTING.md]] — Contribution workflow
+2. [[styleguide|styleguide.md]] — Code conventions
+3. [[architecture|architecture.md]] — System architecture
+4. [[developer-guide|developer-guide.md]] — Developer reference
+5. [[roadmap|roadmap.md]] — Planned features
 
 ### Deploying to Production
 
-1. [deployment.md](./deployment.md) — Deployment guide (Vercel, Netlify, AWS, mobile)
-2. [ENV_GUIDE.md](./ENV_GUIDE.md) — Environment variable setup
-3. [troubleshooting.md](./troubleshooting.md) — Deployment troubleshooting
+1. [[deployment|deployment.md]] — Deployment guide (Vercel, Netlify, AWS, mobile)
+2. [[ENV_GUIDE|ENV_GUIDE.md]] — Environment variable setup
+3. [[troubleshooting|troubleshooting.md]] — Deployment troubleshooting
 
 ### Troubleshooting
 
-1. [troubleshooting.md](./troubleshooting.md) — Common issues
-2. [ENV_GUIDE.md](./ENV_GUIDE.md) — Env configuration help
-3. [faq.md](./faq.md) — Frequently asked questions
+1. [[troubleshooting|troubleshooting.md]] — Common issues
+2. [[ENV_GUIDE|ENV_GUIDE.md]] — Env configuration help
+3. [[faq|faq.md]] — Frequently asked questions
 4. [GitHub Issues](https://github.com/naborajs/birthday-bloom/issues) — Report bugs
 
 ---
@@ -71,60 +76,60 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 
 | File | Purpose |
 |---|---|
-| [CHANGELOG.md](../CHANGELOG.md) | Version history |
-| [PULL_REQUEST_POLICY.md](../.github/PULL_REQUEST_POLICY.md) | Strict PR review and merge policy |
+| [[./CHANGELOG|CHANGELOG.md]] | Version history |
+| [[./.github/PULL_REQUEST_POLICY|PULL_REQUEST_POLICY.md]] | Strict PR review and merge policy |
 | [LICENSE](../LICENSE) | MIT License |
 
 ### Docs (Configuration & Customization)
 
 | File | Purpose |
 |---|---|
-| [ENV_GUIDE.md](./ENV_GUIDE.md) | Complete environment variable reference with 15+ recipes |
-| [env-configs.md](./env-configs.md) | Ready-to-use configuration recipes |
-| [family-system.md](./family-system.md) | Family template system |
-| [template-architecture.md](./template-architecture.md) | Template data flow and types |
-| [migration-guide.md](./migration-guide.md) | v1→v2→v3 migration |
+| [[ENV_GUIDE|ENV_GUIDE.md]] | Complete environment variable reference with 15+ recipes |
+| [[env-configs|env-configs.md]] | Ready-to-use configuration recipes |
+| [[family-system|family-system.md]] | Family template system |
+| [[template-architecture|template-architecture.md]] | Template data flow and types |
+| [[migration-guide|migration-guide.md]] | v1→v2→v3 migration |
 
 ### Docs (Development & Operations)
 
 | File | Purpose |
 |---|---|
-| [quick-start.md](./quick-start.md) | 5-minute setup guide |
-| [architecture.md](./architecture.md) | Architecture overview |
-| [developer-guide.md](./developer-guide.md) | Component API reference and extension patterns |
-| [styleguide.md](./styleguide.md) | Code, docs, and design conventions |
-| [roadmap.md](./roadmap.md) | Planned features |
-| [faq.md](./faq.md) | Frequently asked questions |
-| [troubleshooting.md](./troubleshooting.md) | Common issues and solutions |
+| [[quick-start|quick-start.md]] | 5-minute setup guide |
+| [[architecture|architecture.md]] | Architecture overview |
+| [[developer-guide|developer-guide.md]] | Component API reference and extension patterns |
+| [[styleguide|styleguide.md]] | Code, docs, and design conventions |
+| [[roadmap|roadmap.md]] | Planned features |
+| [[faq|faq.md]] | Frequently asked questions |
+| [[troubleshooting|troubleshooting.md]] | Common issues and solutions |
 
 ### Docs (Deployment)
 
 | File | Purpose |
 |---|---|
-| [deployment.md](./deployment.md) | All deployment options + testing checklists |
+| [[deployment|deployment.md]] | All deployment options + testing checklists |
 
 ### Docs (SEO & LLM)
 
 | File | Purpose |
 |---|---|
-| [seo-guide.md](./seo-guide.md) | SEO, sitemap, meta tags optimization |
-| [llm-access.md](./llm-access.md) | AI-first documentation guide |
+| [[seo-guide|seo-guide.md]] | SEO, sitemap, meta tags optimization |
+| [[llm-access|llm-access.md]] | AI-first documentation guide |
 
 ### Docs (Localized)
 
 | File | Language |
 |---|---|
-| [setup-hindi.md](./setup-hindi.md) | हिंदी (Hindi) |
-| [setup-bengali.md](./setup-bengali.md) | বাংলা (Bengali) |
+| [[setup-hindi|setup-hindi.md]] | हिंदी (Hindi) |
+| [[setup-bengali|setup-bengali.md]] | বাংলা (Bengali) |
 
 ### GitHub & Community Docs
 
 | File | Purpose |
 |---|---|
-| [CONTRIBUTING.md](../.github/CONTRIBUTING.md) | Contribution workflow |
-| [CODE_OF_CONDUCT.md](../.github/CODE_OF_CONDUCT.md) | Community standards |
-| [SECURITY.md](../.github/SECURITY.md) | Security policy |
-| [SUPPORT.md](../.github/SUPPORT.md) | Support and contact |
+| [[./.github/CONTRIBUTING|CONTRIBUTING.md]] | Contribution workflow |
+| [[./.github/CODE_OF_CONDUCT|CODE_OF_CONDUCT.md]] | Community standards |
+| [[./.github/SECURITY|SECURITY.md]] | Security policy |
+| [[./.github/SUPPORT|SUPPORT.md]] | Support and contact |
 
 ---
 
@@ -220,3 +225,6 @@ The following files have been consolidated or removed:
 
 **Made with ❤️ by Naboraj Sarkar**
 *In the garden of the internet, may your digital memories always bloom.*
+
+
+#obsidian #documentation #birthday-bloom #vault

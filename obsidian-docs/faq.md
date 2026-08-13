@@ -1,3 +1,8 @@
+---
+tags: [faq, help, questions]
+aliases: [faq]
+---
+
 # Frequently Asked Questions
 
 ## General
@@ -21,7 +26,7 @@ Yes. Birthday Bloom is MIT-licensed. Free to use, modify, and distribute.
 
 ### How do I change the birthday person's name?
 Set `VITE_BIRTHDAY_NAME` in `.env.local` or your hosting dashboard. No code edits needed.
-See the [ENV_GUIDE.md](./docs/ENV_GUIDE.md).
+See the [[docs/ENV_GUIDE|ENV_GUIDE.md]].
 
 ### How do I add my own photos?
 Set `VITE_PHOTO_1`, `VITE_PHOTO_2`, `VITE_PHOTO_3` (or use `VITE_PHOTOS` for unlimited)
@@ -75,7 +80,7 @@ npm run preview
 3. Add environment variables in Vercel dashboard
 4. Deploy
 
-See the [Deployment Guide](./docs/deployment.md).
+See the [[docs/deployment|Deployment Guide]].
 
 ### Environment variables work locally but not on Vercel?
 You must add them in the Vercel project dashboard under Settings → Environment Variables.
@@ -84,7 +89,7 @@ Redeploy after adding them.
 ## Contributing
 
 ### How do I contribute?
-See [CONTRIBUTING.md](./CONTRIBUTING.md). Bug fixes, documentation, UI polish,
+See [[CONTRIBUTING|CONTRIBUTING.md]]. Bug fixes, documentation, UI polish,
 accessibility improvements, and feature ideas are all welcome.
 
 ### I have an idea but I'm not a developer — can I still help?
@@ -110,4 +115,7 @@ This is usually a timer issue. Check for env date formatting errors and ensure
 
 ## Still have questions?
 Open a [question issue](https://github.com/naborajs/birthday-bloom/issues/new?template=question.yml)
-or check the [Support Guide](./SUPPORT.md).
+or check the [[SUPPORT|Support Guide]].
+
+
+#obsidian #documentation #birthday-bloom #vault

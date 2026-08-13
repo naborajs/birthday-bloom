@@ -1,3 +1,8 @@
+---
+tags: [seo, meta, search]
+aliases: [seo-guide]
+---
+
 # 🔍 SEO & Search Engine Optimization Guide
 
 ## Sitemap Configuration
@@ -495,3 +500,6 @@ Birthday Bloom is fully optimized for search engines with:
 - Ready for search engine indexing
 
 Next step: Submit to Google Search Console and Bing Webmaster Tools
+
+
+#obsidian #documentation #birthday-bloom #vault

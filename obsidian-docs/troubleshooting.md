@@ -1,3 +1,8 @@
+---
+tags: [troubleshooting, errors, fixes]
+aliases: [troubleshooting]
+---
+
 # Troubleshooting Guide
 
 Common issues and solutions for Birthday Bloom.
@@ -60,7 +65,7 @@ Supported values: `true`, `false`, `1`, `0`, `yes`, `no`, `on`, `off`, `enabled`
 
 ### Relationship mood looks wrong
 
-- Use a supported relationship value (see [ENV_GUIDE.md](./ENV_GUIDE.md))
+- Use a supported relationship value (see [[ENV_GUIDE|ENV_GUIDE.md]])
 - `VITE_THEME` is reserved for future manual theme override and is not currently consumed by the runtime.
 
 ### JSON family profile fails
@@ -155,7 +160,7 @@ Use `VITE_PHOTOS` with pipe-separated URLs for unlimited photos, or use the numb
 
 ### How do I remove sections?
 
-Set the corresponding `VITE_SHOW_*` variable to `false`. See [ENV_GUIDE.md](./ENV_GUIDE.md) for the full list.
+Set the corresponding `VITE_SHOW_*` variable to `false`. See [[ENV_GUIDE|ENV_GUIDE.md]] for the full list.
 
 ### How do I change theme colors?
 
@@ -182,14 +187,17 @@ Birthday Bloom is designed to never show a blank screen:
 ## Still Stuck?
 
 - Open a [GitHub issue](https://github.com/naborajs/birthday-bloom/issues)
-- Check [FAQ.md](../FAQ.md)
-- Read the [ENV_GUIDE.md](./ENV_GUIDE.md) for environment variable details
-- See [SUPPORT.md](../SUPPORT.md) for contact options
+- Check [[./FAQ|FAQ.md]]
+- Read the [[ENV_GUIDE|ENV_GUIDE.md]] for environment variable details
+- See [[./SUPPORT|SUPPORT.md]] for contact options
 
 ---
 
 ## See Also
 
-- [ENV_GUIDE.md](./ENV_GUIDE.md) — Environment variable reference
-- [deployment.md](./deployment.md) — Deployment guide (includes expanded troubleshooting section)
-- [developer-guide.md](./developer-guide.md) — Developer reference
+- [[ENV_GUIDE|ENV_GUIDE.md]] — Environment variable reference
+- [[deployment|deployment.md]] — Deployment guide (includes expanded troubleshooting section)
+- [[developer-guide|developer-guide.md]] — Developer reference
+
+
+#obsidian #documentation #birthday-bloom #vault

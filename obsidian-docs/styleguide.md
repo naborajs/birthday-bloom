@@ -1,3 +1,8 @@
+---
+tags: [styleguide, conventions, formatting]
+aliases: [styleguide]
+---
+
 # Birthday Bloom Style Guide
 
 This document defines code, documentation, and design conventions for the
@@ -147,3 +152,6 @@ chore: update dependencies
 - Include screenshots for UI changes
 - Update docs when behavior changes
 - Ensure the build passes before requesting review
+
+
+#obsidian #documentation #birthday-bloom #vault

@@ -1,3 +1,8 @@
+---
+tags: [developer, api, components]
+aliases: [developer-guide]
+---
+
 # Developer Guide
 
 This guide explains how Birthday Bloom is wired so a new contributor can make changes confidently. Read this before modifying source code.
@@ -950,10 +955,13 @@ The `ErrorBoundary` component at `src/components/ErrorBoundary.tsx` wraps the ap
 
 ## Cross-References
 
-- [ARCHITECTURE.md](../ARCHITECTURE.md) -- System architecture overview, rendering pipeline, data flow diagram
-- [docs/ENV_GUIDE.md](./ENV_GUIDE.md) -- Complete environment variable reference with all options
-- [docs/family-system.md](./family-system.md) -- Family template system, member types, registry, factories
-- [docs/template-architecture.md](./template-architecture.md) -- Template architecture, presets, emotional content
-- [STYLEGUIDE.md](../STYLEGUIDE.md) -- Code conventions, naming, formatting rules
-- [CONTRIBUTING.md](../CONTRIBUTING.md) -- Contribution workflow, PR process, code review guidelines
-- [QUICK_START.md](../QUICK_START.md) -- 5-minute setup with minimal configuration
+- [[./ARCHITECTURE|ARCHITECTURE.md]] -- System architecture overview, rendering pipeline, data flow diagram
+- [[ENV_GUIDE|docs/ENV_GUIDE.md]] -- Complete environment variable reference with all options
+- [[family-system|docs/family-system.md]] -- Family template system, member types, registry, factories
+- [[template-architecture|docs/template-architecture.md]] -- Template architecture, presets, emotional content
+- [[./STYLEGUIDE|STYLEGUIDE.md]] -- Code conventions, naming, formatting rules
+- [[./CONTRIBUTING|CONTRIBUTING.md]] -- Contribution workflow, PR process, code review guidelines
+- [[./QUICK_START|QUICK_START.md]] -- 5-minute setup with minimal configuration
+
+
+#obsidian #documentation #birthday-bloom #vault

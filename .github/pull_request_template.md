@@ -2,15 +2,15 @@
   Thank you for contributing to Birthday Bloom! 🌸
   
   Before submitting your Pull Request, please ensure you have:
-  1. Read the CONTRIBUTING.md (https://github.com/naborajs/birthday-bloom/blob/main/CONTRIBUTING.md)
-  2. Read the ARCHITECTURE.md (https://github.com/naborajs/birthday-bloom/blob/main/docs/ARCHITECTURE.md)
+  1. Read the CONTRIBUTING.md (https://github.com/naborajs/birthday-bloom/blob/main/.github/CONTRIBUTING.md)
+  2. Read the Obsidian Documentation Vault (https://github.com/naborajs/birthday-bloom/tree/main/obsidian-docs)
   3. Checked that all tests, linting, and type-checks pass.
   4. Followed the Conventional Commits style for your commit messages.
 -->
 
 ## 📝 Pull Request Summary
 
-<!-- A clear, concise, and detailed description of the changes introduced by this pull request. -->
+<!-- A clear, concise, and highly detailed description of the changes introduced by this pull request. -->
 
 ---
 
@@ -31,20 +31,20 @@
 ### 1. Problem / Motivation
 <!-- Describe the problem you are solving, or the motivation behind this feature. Provide context for why this change is necessary. -->
 
-### 2. Solution / Implementation
-<!-- Explain the approach you took to solve the problem or implement the feature. Highlight key architectural changes, algorithms, or design patterns used. -->
+### 2. Architectural Solution / Implementation Details
+<!-- Explain the exact approach you took. Describe any new Zustand store modifications, React Three Fiber additions, or complex Framer Motion logic. Be extremely detailed. -->
 
-### 3. File-by-File Changes (Key Changes Only)
-<!-- Briefly list the primary files modified and the purpose of the change in each. -->
-* `path/to/file.tsx`: <!-- Explanation of change -->
-* `path/to/file.css`: <!-- Explanation of change -->
+### 3. File-by-File Changes (Detailed)
+<!-- List the primary files modified and the exhaustive purpose of the change in each. -->
+* `path/to/file.tsx`: <!-- Exhaustive explanation of change -->
+* `path/to/file.css`: <!-- Exhaustive explanation of change -->
 
 ---
 
-## 🎨 UI/UX & Visual Changes (if applicable)
+## 🎨 UI/UX & Visual Changes (Required if applicable)
 
 > [!IMPORTANT]
-> If your changes affect the user interface (UI), user experience (UX), layouts, colors, or animations, you **MUST** provide visual evidence. Please provide side-by-side before/after comparisons using the tables below.
+> If your changes affect the user interface (UI), user experience (UX), layouts, colors, or animations, you **MUST** provide visual evidence. Please provide side-by-side before/after comparisons, and upload a screen recording (Video/MP4) for animations.
 
 ### Visual Comparison Table
 
@@ -60,6 +60,7 @@
 
 ### 🎬 Interactive Demos / Screen Recordings
 <!-- For animations, transitions, or complex interactive flows, please link a screen recording (GIF/MP4) here. -->
+**Video Upload**: <!-- Drop video here -->
 
 ---
 
@@ -67,7 +68,7 @@
 
 ### Step-by-Step Testing Guide
 <!--
-  Provide detailed instructions so that reviewers can verify your changes locally.
+  Provide exhaustive instructions so that reviewers can verify your changes locally.
   Include any setup steps, specific environment configurations, or inputs to try.
 -->
 1. Run `npm install` and ensure all dependencies are resolved.
@@ -86,15 +87,8 @@
 - [ ] Ran ESLint and formatting checks (`npm run lint` passes without errors)
 - [ ] Ran existing test suites (`npm test` or `npm run test` passes)
 - [ ] Tested responsiveness on multiple screen sizes (Mobile, Tablet, Desktop)
-- [ ] Checked console logs to verify no unexpected warnings or errors are thrown
-
-### Relationship Types Tested (For UI changes)
-<!-- Since features must work across all relationships, check which ones you tested: -->
-- [ ] Partner / Spouse
-- [ ] Friend
-- [ ] Sibling
-- [ ] Parent / Grandparent
-- [ ] Other: `________`
+- [ ] Checked console logs to verify no unexpected warnings or memory leaks in animations
+- [ ] Verified that GitHub Actions CI passes locally if possible
 
 ---
 
@@ -106,16 +100,15 @@
 
 ## 📚 Documentation Updates
 
-- [ ] I have updated the relevant documentation (e.g., `README.md`, `ARCHITECTURE.md`, `FAQ.md`, `ENV_GUIDE.md`)
+- [ ] I have updated the relevant documentation in the Obsidian Vault (`obsidian-docs/`)
 - [ ] The change is minor and does not require documentation updates
 
 ---
 
 ## ✅ Contributor Checklist
 
-- [ ] My code adheres to the project's style guidelines defined in `STYLEGUIDE.md`.
-- [ ] I have cleaned up my code (removed unused imports, commented-out code, and temporary debugging console logs).
-- [ ] I have added/updated unit tests where applicable.
+- [ ] My code adheres to the project's style guidelines defined in `obsidian-docs/styleguide.md`.
+- [ ] I have cleaned up my code (removed unused imports, commented-out code, and temporary debugging logs).
 - [ ] My commit messages follow the Conventional Commits specification.
 - [ ] There are no merge conflicts with the `main` branch.
 

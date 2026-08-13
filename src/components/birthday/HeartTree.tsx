@@ -86,24 +86,25 @@ export const HeartTree = ({ delay = 1000 }: HeartTreeProps) => {
 
     useEffect(() => {
         if (stage < 3) return;
-        rafRefs.current.forEach(cancelAnimationFrame);
+        const refs = rafRefs.current;
+        refs.forEach(cancelAnimationFrame);
         LEAVES.forEach((leaf, i) => {
             const target = leaf.s;
             const startTime = performance.now() + leaf.d;
             const dur = 700;
             const tick = (now: number) => {
-                if (now < startTime) { rafRefs.current[i] = requestAnimationFrame(tick); return; }
+                if (now < startTime) { refs[i] = requestAnimationFrame(tick); return; }
                 const t = Math.min((now - startTime) / dur, 1);
                 const ease = 1 - Math.pow(1 - t, 3);
                 const overshoot = t < 0.7 ? 0 : Math.sin((t - 0.7) / 0.3 * Math.PI) * 0.12;
                 const sc = (ease + overshoot) * target;
                 setScales(prev => { const n = [...prev]; n[i] = sc; return n; });
-                if (t < 1) rafRefs.current[i] = requestAnimationFrame(tick);
+                if (t < 1) refs[i] = requestAnimationFrame(tick);
                 else setScales(prev => { const n = [...prev]; n[i] = target; return n; });
             };
-            rafRefs.current[i] = requestAnimationFrame(tick);
+            refs[i] = requestAnimationFrame(tick);
         });
-        return () => rafRefs.current.forEach(cancelAnimationFrame);
+        return () => refs.forEach(cancelAnimationFrame);
     }, [stage]);
 
     const clickHeart = (e: React.MouseEvent<SVGGElement>, i: number) => {
@@ -128,8 +129,8 @@ export const HeartTree = ({ delay = 1000 }: HeartTreeProps) => {
             }}>
                 <div style={{ position: "relative", width: "100%", aspectRatio: "1/1" }}>
 
-                    <div className="absolute inset-0 pointer-events-none rounded-full blur-[100px] transition-opacity duration-[2000ms]"
-                        style={{ background: `radial-gradient(circle at 50% 40%, ${primaryColor}40, transparent 70%)`, opacity: stage === 4 ? 1 : 0 }} />
+                    <div className="absolute inset-0 pointer-events-none rounded-full blur-[100px] transition-opacity"
+                        style={{ transitionDuration: '2000ms', background: `radial-gradient(circle at 50% 40%, ${primaryColor}40, transparent 70%)`, opacity: stage === 4 ? 1 : 0 }} />
 
                     {stage >= 3 && <TreeSparks count={20} color={primaryColor} />}
 

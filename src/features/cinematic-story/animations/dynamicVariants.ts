@@ -1,9 +1,9 @@
 import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
 export const useStoryVariants = () => {
     const pacing = useBirthdayStore(state => state.getAnimationPacing());
-    const springConfig = pacing === 'fast' ? { type: "spring", stiffness: 400, damping: 15 } :
-        pacing === 'slow' ? { type: "spring", stiffness: 50, damping: 20 } :
-            { type: "spring", stiffness: 100, damping: 20 };
+    const springConfig = pacing === 'fast' ? { type: "spring" as const, stiffness: 400, damping: 15 } :
+        pacing === 'slow' ? { type: "spring" as const, stiffness: 50, damping: 20 } :
+            { type: "spring" as const, stiffness: 100, damping: 20 };
     return {
         container: {
             hidden: { opacity: 0 },

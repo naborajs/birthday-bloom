@@ -1,3 +1,8 @@
+---
+tags: [environment, configuration, setup]
+aliases: [ENV_GUIDE]
+---
+
 ﻿# Complete Env Customization Guide
 
 Birthday Bloom is **env-first**. Names, relationship type, messages, colors, photos, videos, audio, visible sections, animation behavior, accessibility, and family-template metadata are all controlled through environment variables.
@@ -264,7 +269,7 @@ Each item is `text;imageUrl`. Separate multiple memories with `|`. Images are op
 
 ## Family Template Env
 
-See [family-system.md](./family-system.md) for the full schema. Env bootstrap:
+See [[family-system|family-system.md]] for the full schema. Env bootstrap:
 
 | Variable | Type | Example | Purpose |
 |---|---|---|---|
@@ -857,13 +862,13 @@ All `VITE_` values are public in the browser bundle. Do not store actual passwor
 
 ## See Also
 
-- [QUICK_START.md](../QUICK_START.md) — Quick start
-- [docs/developer-guide.md](./developer-guide.md) — Adding new env variables
-- [docs/family-system.md](./family-system.md) — Family profile configuration
-- [docs/template-architecture.md](./template-architecture.md) — Template system
-- [docs/troubleshooting.md](./troubleshooting.md) — Troubleshooting guide
-- [docs/deployment.md](./deployment.md) — Deployment guide
-- [docs/configuration-examples.md](./configuration-examples.md) — Pre-built configs
+- [[./QUICK_START|QUICK_START.md]] — Quick start
+- [[developer-guide|docs/developer-guide.md]] — Adding new env variables
+- [[family-system|docs/family-system.md]] — Family profile configuration
+- [[template-architecture|docs/template-architecture.md]] — Template system
+- [[troubleshooting|docs/troubleshooting.md]] — Troubleshooting guide
+- [[deployment|docs/deployment.md]] — Deployment guide
+- [[configuration-examples|docs/configuration-examples.md]] — Pre-built configs
 - [src/features/core/store/useBirthdayStore.ts](../src/features/core/store/useBirthdayStore.ts) — Env parsing logic
 - [src/config/birthday.ts](../src/config/birthday.ts) — Audio defaults and fallback config
 - [src/utils/password.ts](../src/utils/password.ts) — Password generation logic
@@ -871,3 +876,6 @@ All `VITE_` values are public in the browser bundle. Do not store actual passwor
 - [src/components/birthday/CakeCutting.tsx](../src/components/birthday/CakeCutting.tsx) — Cake options customization
 - [src/features/core/models/familyTemplates.ts](../src/features/core/models/familyTemplates.ts) — Family profile factory functions
 - [src/features/core/models/dataModels.ts](../src/features/core/models/dataModels.ts) — ConfigValidator and DataValidator
+
+
+#obsidian #documentation #birthday-bloom #vault

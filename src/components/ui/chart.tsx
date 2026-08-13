@@ -69,7 +69,8 @@ const ChartTooltipContent = React.forwardRef<HTMLDivElement, React.ComponentProp
     indicator?: "line" | "dot" | "dashed";
     nameKey?: string;
     labelKey?: string;
-}>(({ active, payload, className, indicator = "dot", hideLabel = false, hideIndicator = false, label, labelFormatter, labelClassName, formatter, color, nameKey, labelKey, }, ref) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+}>(({ active, payload, className, indicator = "dot", hideLabel = false, hideIndicator = false, label, labelFormatter, labelClassName, formatter, color, nameKey, labelKey, } : any, ref) => {
     const { config } = useChart();
     const tooltipLabel = React.useMemo(() => {
         if (hideLabel || !payload?.length) {
@@ -128,7 +129,8 @@ const ChartTooltipContent = React.forwardRef<HTMLDivElement, React.ComponentProp
 });
 ChartTooltipContent.displayName = "ChartTooltip";
 const ChartLegend = RechartsPrimitive.Legend;
-const ChartLegendContent = React.forwardRef<HTMLDivElement, React.ComponentProps<"div"> & Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ChartLegendContent = React.forwardRef<HTMLDivElement, React.ComponentProps<"div"> & { payload?: any[]; verticalAlign?: any } & {
     hideIcon?: boolean;
     nameKey?: string;
 }>(({ className, hideIcon = false, payload, verticalAlign = "bottom", nameKey }, ref) => {

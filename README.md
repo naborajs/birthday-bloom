@@ -859,7 +859,19 @@ We have created two animated walkthrough guides to help you contribute to Birthd
   Learn how to contribute to <strong>Birthday Bloom</strong> from start to finish. This step-by-step guide covers GitHub Issues, feature requests, bug reporting, forking the repository, cloning the project, creating branches, writing meaningful commit messages, opening Pull Requests, the review process, and open-source best practices. Whether you're making your first contribution or you're an experienced developer, this guide will help you confidently contribute to the project.
 </p>
 
-### Quick Start for Contributors
+#### 🧠 Complete System Documentation
+
+**New!** The entire documentation has been rebuilt as an interconnected **Obsidian Vault**. 
+To access the full depth of system architecture, UI components, and animations:
+1. Open the [Obsidian App](https://obsidian.md/).
+2. Select "Open folder as vault" and choose the `obsidian-docs/` folder in this repository.
+3. Start exploring from `obsidian-docs/DOCUMENTATION_INDEX.md` (or simply open the Graph View)!
+
+If you don't use Obsidian, you can still read all the Markdown files in the `obsidian-docs/` folder directly on GitHub!
+
+---
+
+## ⚡ Quick Start for Contributors
 
 1. **Read [CONTRIBUTING.md](./.github/CONTRIBUTING.md)** for the full workflow
 2. **Read [styleguide.md](./docs/styleguide.md)** for code conventions

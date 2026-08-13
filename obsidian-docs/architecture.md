@@ -1,3 +1,8 @@
+---
+tags: [architecture, system, structure]
+aliases: [architecture]
+---
+
 # 🏛️ Birthday Bloom Architecture
 
 Birthday Bloom is a **Cinematic Finite State Machine (CFSM)** — a React application designed for high-performance visual storytelling with env-driven personalization.
@@ -192,3 +197,6 @@ The `ErrorBoundary` at `src/components/ErrorBoundary.tsx` wraps the entire app. 
 4. **Timer ref pattern** — All `setTimeout` IDs stored in `useRef` arrays for cleanup
 5. **Centralized env parsing** — One function per type (`parseEnvString`, `parseEnvBoolean`, etc.) in `useBirthdayStore.ts`
 6. **Relationship-driven everything** — Mood, pacing, colors, emojis, text content, and chat messages all branch on `VITE_BIRTHDAY_RELATIONSHIP`
+
+
+#obsidian #documentation #birthday-bloom #vault

@@ -120,8 +120,15 @@ The dev server runs on `http://localhost:5000` by default.
 - **Feature requests**: [feature_request template](https://github.com/naborajs/birthday-bloom/issues/new?template=feature_request.yml)
 - **Bug fixes**: [bug_report template](https://github.com/naborajs/birthday-bloom/issues/new?template=bug_report.yml)
 
-If you want to work on something, comment on the issue first so others know it's claimed.
+If you want to work on something, comment on the issue first so others know it's claimed. You can comment `/assign` or "can I take this" to trigger the auto-assignment bot.
 
+### 🕒 The 48-Hour Assignment Rule
+
+To keep issues moving quickly and ensure the project remains active:
+1. When you are assigned an issue, you have **48 hours** to show activity (e.g., commenting on your progress, or linking a Draft PR).
+2. If there is no activity for 48 hours, our bot will ping you to check your status.
+3. If another **24 hours** pass (72 hours total) with no response, the bot will automatically **unassign** you.
+4. Don't worry! If you were just busy, you can always comment `/assign` again to take it back if no one else has claimed it.
 ---
 
 ## Making Changes

@@ -1,0 +1,49 @@
+name: 💡 Something Different / Custom Request
+description: A completely custom request that doesn't fit our standard templates.
+title: "[Custom]: "
+labels: ["enhancement", "status: triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Custom Request 🚀
+        Use this template if you have an idea, issue, or request that doesn't fit into our standard bug or feature categories.
+        Please provide as much detail as possible!
+  
+  - type: textarea
+    id: description
+    attributes:
+      label: Detailed Description
+      description: Explain what you want to achieve, report, or discuss.
+      placeholder: I was thinking about adding...
+    validations:
+      required: true
+
+  - type: textarea
+    id: media
+    attributes:
+      label: Screenshots, Videos, or Links
+      description: Provide any visual aids, screen recordings, or external links that help explain your request. You can drag and drop images or videos directly into this box!
+      placeholder: "Drop your videos/images here..."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: difficulty
+    attributes:
+      label: Estimated Difficulty (if you want to implement this)
+      options:
+        - "level:beginner"
+        - "level:intermediate"
+        - "level:advanced"
+        - "I don't plan to implement this myself"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

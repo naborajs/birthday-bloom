@@ -1,3 +1,8 @@
+---
+tags: [environment, recipes, configuration]
+aliases: [env-configs]
+---
+
 # Ready-to-Use Environment Configurations
 
 Copy and paste these directly into your `.env.local` or your platform's environment variables dashboard!
@@ -518,3 +523,6 @@ After deploying with a configuration:
 **Pick a config, deploy, and celebrate! 🎉**
 
 Remember: Each person is special - customize the message and colors to match their personality!
+
+
+#obsidian #documentation #birthday-bloom #vault
