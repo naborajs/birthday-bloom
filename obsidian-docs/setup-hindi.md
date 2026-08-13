@@ -1,3 +1,8 @@
+---
+tags: [setup, localization, hindi]
+aliases: [setup-hindi]
+---
+
 # 🇮🇳 Birthday Bloom - सेटअप गाइड (Setup Guide)
 
 स्वागत है! **Birthday Bloom** को सेटअप करना बहुत आसान है। इस गाइड का पालन करें और अपना खुद का बर्थडे सरप्राइज बनाएं।
@@ -62,3 +67,6 @@ npm run dev
 
 **Naboraj Sarkar (Naboraj Sarkar)** द्वारा निर्मित।
 मदद के लिए संपर्क करें: [nishant.ns.business@gmail.com](mailto:nishant.ns.business@gmail.com)
+
+
+#obsidian #documentation #birthday-bloom #vault
