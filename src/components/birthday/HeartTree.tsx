@@ -129,8 +129,8 @@ export const HeartTree = ({ delay = 1000 }: HeartTreeProps) => {
             }}>
                 <div style={{ position: "relative", width: "100%", aspectRatio: "1/1" }}>
 
-                    <div className="absolute inset-0 pointer-events-none rounded-full blur-[100px] transition-opacity duration-[2000ms]"
-                        style={{ background: `radial-gradient(circle at 50% 40%, ${primaryColor}40, transparent 70%)`, opacity: stage === 4 ? 1 : 0 }} />
+                    <div className="absolute inset-0 pointer-events-none rounded-full blur-[100px] transition-opacity"
+                        style={{ transitionDuration: '2000ms', background: `radial-gradient(circle at 50% 40%, ${primaryColor}40, transparent 70%)`, opacity: stage === 4 ? 1 : 0 }} />
 
                     {stage >= 3 && <TreeSparks count={20} color={primaryColor} />}
 
