@@ -1,3 +1,8 @@
+---
+tags: [roadmap, future, planning]
+aliases: [roadmap]
+---
+
 # 🌸 Birthday Bloom — Detailed Project Roadmap
 
 Welcome to the official roadmap for **Birthday Bloom**. This document details our planned future, ongoing work, and ultimate vision for this interactive birthday landing page platform.
@@ -116,3 +121,6 @@ We prioritize features that align with our core values:
 * **Upvote:** Add a 👍 reaction to existing feature requests.
 * **Discuss:** Start a discussion thread to brainstorm new ideas.
 * **Submit:** Pull Requests are always welcome! Check [CONTRIBUTING.md](file:///d:/Projects/Website/birthday-bloom-main/.github/CONTRIBUTING.md) to get started.
+
+
+#obsidian #documentation #birthday-bloom #vault
