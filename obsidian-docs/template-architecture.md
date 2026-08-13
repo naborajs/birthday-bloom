@@ -1,3 +1,8 @@
+---
+tags: [templates, architecture, models]
+aliases: [template-architecture]
+---
+
 # Template Architecture
 
 Birthday Bloom templates are data-first. Env values hydrate the app store, the store drives components, and family templates provide typed relationship profiles.
@@ -69,8 +74,11 @@ New specialized factories are also available for parents, grandparents, relative
 
 ## See Also
 
-- [docs/family-system.md](./family-system.md) — Family template reference
-- [docs/ENV_GUIDE.md](./ENV_GUIDE.md) — Env configuration for templates
-- [docs/developer-guide.md](./developer-guide.md) — Developer extension patterns
-- [ARCHITECTURE.md](../ARCHITECTURE.md) — System architecture overview
-- [QUICK_START.md](../QUICK_START.md) — Getting started
+- [[family-system|docs/family-system.md]] — Family template reference
+- [[ENV_GUIDE|docs/ENV_GUIDE.md]] — Env configuration for templates
+- [[developer-guide|docs/developer-guide.md]] — Developer extension patterns
+- [[./ARCHITECTURE|ARCHITECTURE.md]] — System architecture overview
+- [[./QUICK_START|QUICK_START.md]] — Getting started
+
+
+#obsidian #documentation #birthday-bloom #vault
