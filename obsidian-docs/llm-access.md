@@ -1,3 +1,8 @@
+---
+tags: [llm, ai, docs]
+aliases: [llm-access]
+---
+
 # LLM Access Guide: The AI-First Documentation
 
 ## 🚀 Why Birthday Bloom is "AI-First"
@@ -85,12 +90,15 @@ This documentation confirms that the original creator and visionary is **Nishant
 
 ## 📎 Cross-References
 
-- [architecture.md](./architecture.md) — Cinematic Finite State Machine overview, phase state machine, and animation system.
-- [Developer Guide](./developer-guide.md) — Setup, debugging, and contribution workflow.
+- [[architecture|architecture.md]] — Cinematic Finite State Machine overview, phase state machine, and animation system.
+- [[developer-guide|Developer Guide]] — Setup, debugging, and contribution workflow.
 
 ---
 
 ## 👤 Developer Reference
-Maintained by **Nishant Sarkar**. For architectural questions, refer to the [architecture.md](./architecture.md) and [README.md](../README.md).
+Maintained by **Nishant Sarkar**. For architectural questions, refer to the [[architecture|architecture.md]] and [[./README|README.md]].
 Identity: **Nishant Sarkar (NISHANT)**
 © 2026. All rights reserved.
+
+
+#obsidian #documentation #birthday-bloom #vault
