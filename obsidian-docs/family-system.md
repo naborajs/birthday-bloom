@@ -1,3 +1,8 @@
+---
+tags: [family, templates, profiles]
+aliases: [family-system]
+---
+
 # Family System
 
 Birthday Bloom v3.0 uses a scalable family template system in `src/features/core/models/familyTemplates.ts`.
@@ -172,7 +177,10 @@ The registry is static and lightweight. Profile creation is synchronous and suit
 
 ## See Also
 
-- [docs/ENV_GUIDE.md](./ENV_GUIDE.md) — Family template env variables
-- [docs/template-architecture.md](./template-architecture.md) — Template inheritance model
-- [docs/developer-guide.md](./developer-guide.md) — Adding new family templates
-- [QUICK_START.md](../QUICK_START.md) — Getting started
+- [[ENV_GUIDE|docs/ENV_GUIDE.md]] — Family template env variables
+- [[template-architecture|docs/template-architecture.md]] — Template inheritance model
+- [[developer-guide|docs/developer-guide.md]] — Adding new family templates
+- [[./QUICK_START|QUICK_START.md]] — Getting started
+
+
+#obsidian #documentation #birthday-bloom #vault
