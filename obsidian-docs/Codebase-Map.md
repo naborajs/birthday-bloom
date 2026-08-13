@@ -23,12 +23,8 @@ See [[GitHub-Automation]] for a deep dive.
 The core React application. See [[Website-Architecture]].
 
 ### `src/components/`
-- **`birthday/`**: All cinematic and visual components. See [[Animation-System]].
-  - [[Cake3D]]: Renders the 3D birthday cake using React Three Fiber.
-  - [[HeartTree]]: Complex blooming tree finale animation.
-  - [[ParticleBurst]]: Click effects and celebrations.
-  - [[MainBirthday]]: The orchestrator component that switches phases.
-- **`ui/`**: Reusable generic components (buttons, dialogs, charts) based on Shadcn UI.
+- **`birthday/`**: All cinematic and visual components. See [[Birthday-Components]] for an exhaustive list of all 43 files (e.g. [[Cake3D]], [[HeartTree]], [[MainBirthday]]).
+- **`ui/`**: Reusable generic components based on Shadcn UI. See [[UI-Components]] for an exhaustive list of all 49 files (e.g. [[button.tsx]], [[dialog.tsx]], [[form.tsx]]).
 
 ### `src/features/`
 Domain-specific logic.
