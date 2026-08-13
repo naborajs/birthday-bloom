@@ -249,6 +249,7 @@ const Scene = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
                     <CakeBody cake={cake} />
 
                     {/* Slice Wedge */}
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                     <animated.group position={slicePos as any}>
                         <CakeBody cake={cake} isSlice />
                     </animated.group>

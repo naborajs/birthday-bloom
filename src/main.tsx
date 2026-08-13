@@ -3,10 +3,10 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-class GlobalErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean, error: any }> {
+class GlobalErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean, error: Error | null }> {
   state = { hasError: false, error: null };
-  static getDerivedStateFromError(error: any) { return { hasError: true, error }; }
-  componentDidCatch(error: any, errorInfo: any) { console.error("Global Error:", error, errorInfo); }
+  static getDerivedStateFromError(error: Error) { return { hasError: true, error }; }
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) { console.error("Global Error:", error, errorInfo); }
   render() {
     if (this.state.hasError) {
       return (

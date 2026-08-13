@@ -75,6 +75,7 @@ export const CakeSVG = ({ cake, split, candlesLit, name, springConfig }: {
     split: boolean;
     candlesLit: boolean;
     name: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     springConfig?: any;
 }) => {
     // Note: Kept the component name "CakeSVG" to avoid breaking CakeCutting.tsx 

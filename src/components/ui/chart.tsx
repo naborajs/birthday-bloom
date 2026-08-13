@@ -69,6 +69,7 @@ const ChartTooltipContent = React.forwardRef<HTMLDivElement, React.ComponentProp
     indicator?: "line" | "dot" | "dashed";
     nameKey?: string;
     labelKey?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }>(({ active, payload, className, indicator = "dot", hideLabel = false, hideIndicator = false, label, labelFormatter, labelClassName, formatter, color, nameKey, labelKey, } : any, ref) => {
     const { config } = useChart();
     const tooltipLabel = React.useMemo(() => {
@@ -128,6 +129,7 @@ const ChartTooltipContent = React.forwardRef<HTMLDivElement, React.ComponentProp
 });
 ChartTooltipContent.displayName = "ChartTooltip";
 const ChartLegend = RechartsPrimitive.Legend;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ChartLegendContent = React.forwardRef<HTMLDivElement, React.ComponentProps<"div"> & { payload?: any[]; verticalAlign?: any } & {
     hideIcon?: boolean;
     nameKey?: string;
