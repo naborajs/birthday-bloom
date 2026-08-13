@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Pull request template with contributor checklist
 - Dependabot configuration for npm and GitHub Actions
 
+### Fixed
+- Resolved all strict TypeScript errors regarding implicit `any` types in main.tsx, chart.tsx, Cake3D.tsx, and CakeVisuals.tsx
+- Fixed React hooks exhaustive-deps warning in HeartTree component
+- Removed ambiguous Tailwind class to resolve build warnings
+- Configured ESLint to appropriately ignore `react-refresh/only-export-components` for UI components
+
 ### Changed
 - README restructured for clarity: slimmed down, better navigation, removed duplication
 - CONTRIBUTING.md improved with clearer workflows
