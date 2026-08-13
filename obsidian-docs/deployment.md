@@ -1,3 +1,8 @@
+---
+tags: [deployment, hosting, devops]
+aliases: [deployment]
+---
+
 # Deployment Guide
 
 ## 🚀 Deployment Guide
@@ -296,7 +301,7 @@ Termux uses a Linux sub-system that is surprisingly efficient. On a mid-range ph
 
 ## Environment Variable Setup
 
-All `VITE_*` variables must be set in the hosting platform's dashboard under Environment Variables. See [ENV_GUIDE.md](./ENV_GUIDE.md) for the complete list.
+All `VITE_*` variables must be set in the hosting platform's dashboard under Environment Variables. See [[ENV_GUIDE|ENV_GUIDE.md]] for the complete list.
 
 **Minimum required for a working experience**:
 ```env
@@ -800,7 +805,10 @@ npm audit
 
 ## See Also
 
-- [ENV_GUIDE.md](./ENV_GUIDE.md) — Environment variable reference
-- [troubleshooting.md](./troubleshooting.md) — Common issues
-- [QUICK_START.md](../QUICK_START.md) — 5-minute setup
-- [developer-guide.md](./developer-guide.md) — Development workflow
+- [[ENV_GUIDE|ENV_GUIDE.md]] — Environment variable reference
+- [[troubleshooting|troubleshooting.md]] — Common issues
+- [[./QUICK_START|QUICK_START.md]] — 5-minute setup
+- [[developer-guide|developer-guide.md]] — Development workflow
+
+
+#obsidian #documentation #birthday-bloom #vault
