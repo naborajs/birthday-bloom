@@ -141,4 +141,61 @@ jobs:
               } catch (e) {
                 console.error("Error fetching stale PRs:", e);
               }
+
+              // C. ASSIGNMENT 48-HOUR ACTIVITY TRACKER
+              try {
+                const nowMs = now.getTime();
+                const allOpenIssues = await github.paginate(github.rest.issues.listForRepo, {
+                  owner, repo, state: 'open'
+                });
+                
+                for (const issue of allOpenIssues) {
+                  // Skip PRs or unassigned issues
+                  if (issue.pull_request || !issue.assignee) continue;
+                  
+                  // Get comments to determine activity
+                  const comments = await github.rest.issues.listComments({
+                    owner, repo, issue_number: issue.number, per_page: 100
+                  });
+                  
+                  const assignee = issue.assignee.login;
+                  // Look for recent activity by the assignee
+                  const assigneeComments = comments.data.filter(c => c.user.login === assignee);
+                  
+                  let lastActivityDate = new Date(issue.updated_at);
+                  if (assigneeComments.length > 0) {
+                    const lastCommentDate = new Date(assigneeComments[assigneeComments.length - 1].created_at);
+                    if (lastCommentDate > lastActivityDate) {
+                      lastActivityDate = lastCommentDate;
+                    }
+                  }
+                  
+                  const hoursSinceActivity = (nowMs - lastActivityDate.getTime()) / (1000 * 60 * 60);
+                  
+                  // Check if bot already warned them
+                  const botWarnings = comments.data.filter(c => c.user.type === 'Bot' && c.body.includes('48-hour-warning'));
+                  const hasBeenWarned = botWarnings.length > 0;
+                  
+                  if (hoursSinceActivity >= 72 && hasBeenWarned) {
+                    // Unassign
+                    console.log(`Unassigning @${assignee} from #${issue.number} due to 72h inactivity.`);
+                    await github.rest.issues.removeAssignees({
+                      owner, repo, issue_number: issue.number, assignees: [assignee]
+                    });
+                    await github.rest.issues.createComment({
+                      owner, repo, issue_number: issue.number, 
+                      body: `### 🕒 Automatic Unassignment\n\n@${assignee}, as there has been no activity on this issue for over 72 hours, you have been automatically unassigned to allow others to contribute.\n\nIf you are still working on this, feel free to comment \`/assign\` to take it back!`
+                    });
+                  } else if (hoursSinceActivity >= 48 && !hasBeenWarned) {
+                    // Warn
+                    console.log(`Warning @${assignee} on #${issue.number} for 48h inactivity.`);
+                    await github.rest.issues.createComment({
+                      owner, repo, issue_number: issue.number, 
+                      body: `<!-- 48-hour-warning -->\n### 🕒 Activity Check\n\nHi @${assignee}! You were assigned to this issue over **48 hours** ago. \n\nAre you still working on this? If so, please provide a quick status update comment.\n\n*If we don't hear back within the next 24 hours, you will be automatically unassigned.*`
+                    });
+                  }
+                }
+              } catch (e) {
+                console.error("Error running 48-hour assignment tracker:", e);
+              }
             }
