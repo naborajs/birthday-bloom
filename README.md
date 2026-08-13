@@ -580,80 +580,6 @@ For developers wanting to run this locally, clone, and fork:
 
 ---
 
-## 🔌 Component API Reference
-
-This section provides a technical breakdown of every major component in the engine.
-
-### `<TypeWriter />` API
-| Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `text` | `string` | **required** | The sentence to type out. |
-| `speed` | `number` | `45` | Speed in milliseconds between keystrokes. |
-| `delay` | `number` | `0` | Delay in milliseconds before typing begins. |
-| `cursor`| `boolean`| `true` | Whether to show the blinking cursor. |
-| `onComplete`| `() => void` | `undefined` | Callback fired when typing ends. |
-| `className` | `string` | `""` | Custom Tailwind classes for the text container. |
-
-### `<HeartTree />` API (UNDER DEVELOPMENT)
-| Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `delay` | `number` | `1000` | Minimum delay before the trunk begins to grow. |
-| `color` | `string` | `primary` | The color of the hearts (defaults to config). |
-
-### `<CakeCutting />` API
-- **Internal Logic**: Uses a 4-phase state machine (`select` -> `wish` -> `cut` -> `quotes`).
-- **SVG Structure**: 100% vector-based, responsive to all screen sizes.
-- **Haptics**: Triggers `navigator.vibrate` during the "burst" phase.
-
-### `<PhotoGallery />` API
-- **Auto-Advance**: Slides change every 6 seconds by default.
-- **3D Tilt**: Follows mouse position using Framer Motion `useMotionValue`.
-- **Lightbox**: Uses `AnimatePresence` for a cinematic blur transition.
-
-### `<CinematicIntro />` API
-| Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `onComplete` | `() => void` | **required** | Triggered when the final scene finishes. |
-| `speedMultiplier`| `number` | `1.0` | Global multiplier for all scene timings. |
-
----
-
-## 🪝 Custom Hooks Documentation
-
-Birthday Bloom utilizes several custom hooks to offload imperative side effects from pure UI components.
-
-### `useBirthdayStore()`
-Our central state manager built with **Zustand**. 
-- `config`: The full `BirthdayConfig` object hydrated from ENV.
-- `getMood()`: Returns `'romantic' | 'energetic' | 'warm'` based on relationship.
-- `getAnimationPacing()`: Returns `'slow' | 'fast' | 'moderate'`.
-
-### `useDynamicTheme()`
-Injects HSL variables into the `:root` element.
-- Automatically calculates hover states and glow colors.
-- Syncs the browser's `theme-color` meta tag with the user's favorite color.
-
-### `useConfetti()`
-A robust hook that wraps `canvas-confetti`.
-- `fireConfetti(config)`: Triggers a localized burst with custom spread arrays.
-- `fireCannon()`: Triggers a massive, multi-directional burst utilized primarily for the Cake Cutting finale.
-- `fireStars()`: Interjects an SVG star-polygon shape into the physics engine for premium emotional moments.
-
-### `useSoundManager()`
-Handles HTML5 Audio instances without cluttering the DOM with invisible `<audio>` tags.
-- Provides `playWhoosh()`, `playType()`, `playBoom()` closures.
-- Respects the `.env` `VITE_ALLOW_AUDIO` boolean automatically. 
-
----
-
-## 🔐 Security & Data Integrity
-
-1. **Client-Side Safety**: All `VITE_` variables are public. Do not store sensitive passwords in the environment variables.
-2. **Input Sanitization**: The name and message fields are sanitized before being injected into the DOM to prevent basic XSS attempts.
-3. **Audio Permissions**: We respect browser autoplay policies by requiring a "Splash" interaction; audio is never forced without user consent.
-
----
-
 <div align="center">
   <figure>
     <img src="src/assets/faq.png" alt="Birthday Bloom troubleshooting guide" style="max-width:100%;height:auto;border-radius:18px;box-shadow:0 24px 72px rgba(0,0,0,0.24);" />
@@ -695,19 +621,6 @@ A: Ensure your Node version is 18+. Check for case-sensitive file imports (e.g.,
 
 **Q: How do I remove the "Naboraj Sarkar" branding?**
 A: You are free to modify the footer in `MainBirthday.tsx`, but keeping a small "Powered by Birthday Bloom" is appreciated!
-
----
-
-## ⚡ Performance Profiling & GPU Acceleration
-
-Despite the visual complexity, this repository maintains an incredibly lightweight footprint.
-- **No Heavy Physics Libraries**: Rather than including `matter.js` or `three.js` which parse 500kb-1MB of JS memory chunks, we use `requestAnimationFrame` hooks and native CSS for sparkles, balloons, and typing.
-- **SVG Over Images**: The Interactive Cake and Heart Tree are 100% vector SVG geometries.
-- **GPU Offloading**: Animations (`translate3d`) utilize hardware acceleration, shifting work from the CPU to the GPU rendering pipeline. This secures 60 frames per second on both desktop and mobile iOS/Android browsers.
-- **Lighthouse Goals**:
-  - **LCP (Largest Contentful Paint)**: < 1.2s
-  - **FID (First Input Delay)**: < 100ms
-  - **CLS (Cumulative Layout Shift)**: 0.00
 
 ---
 <div align="center">
@@ -833,16 +746,6 @@ While not used extensively yet, our engine supports path morphing. You can trans
 | **3D Effects** | Interactive & Tilting | Static Images |
 | **Narrative** | Finite State Machine | Single Scroll Page |
 | **Branding** | Naboraj Sarkar Premium | Generic / Watermarked |
-
----
-
-## 🏆 Project Credits & Acknowledgements (Extended)
-
-This project is a labor of love. We would like to thank:
-- **The Naboraj Sarkar Community**: For testing early alphas and providing feedback on the 3D physics.
-- **Vite Team**: For making development feel like magic.
-- **Framer Motion Team**: For giving us the power of physics in the browser.
-- **Every Developer**: Who has ever sent a digital birthday card.
 
 ---
 
@@ -1076,24 +979,25 @@ Developed by Naboraj Sarkar. Contributions and improvements are welcome.
 
 > Need help, collab, or just want to connect? 👇
 
-- 📧 **Email** → [nishant.ns.business@gmail.com](mailto:nishant.ns.business@gmail.com)  
-- 💬 **WhatsApp** → [Message Me now](https://wa.me/918900653250?text=Hey%20I%20am%20coming%20from%20your%20Birthday%20Boom%20project%20on%20GitHub%2C%20I%20want%20to%20talk%20about%20it)
+- 📧 **Email** → [msg@naborajs.me](mailto:msg@naborajs.me)  
+- 💬 **WhatsApp** → [Message Me now](https://wa.me/918900653250?text=Hey%20I%20am%20coming%20from%20your%20Birthday%20Bloom%20project%20on%20GitHub%2C%20I%20want%20to%20talk%20about%20it)
 - 💬 **Telegram** → [@Nishantsarkar10k](https://t.me/Nishantsarkar10k)  
-- 🐦 **Twitter (X)** → [@NSGAMMING699](https://x.com/NSGAMMING699)
+- 🐦 **Twitter (X)** → [@ItsNaborajs](https://x.com/ItsNaborajs)
 - 📸 **Instagram** → [@naborajs](https://instagram.com/naborajs)
-- 🌐 **Website** → [naborajs.com](https://naborajs.com)  
-- 📧 **Support / Business** → [nishant.ns.business@gmail.com](mailto:nishant.ns.business@gmail.com)
+- 🌐 **Website** → [naborajs.com](https://naborajs.me)  
 - 🐙 **GitHub** → [github.com/naborajs]
 - 🎥 **YouTube** → [Naboraj Sarkar Channel](https://youtube.com/@nishant_sarkar)
 
 
 ---
 
-### ⚡ Quick Actions
+## 👥 Contributors
 
-- 🚀 **Report Issue** → [Open GitHub Issue](../../issues)  
-- 💡 **Suggest Feature** → [Create Request](../../issues/new)  
-- ⭐ **Support Project** → Star this repo  
+Thank you to all the incredible people who have contributed to making Birthday Bloom a reality! 🙌
+
+<a href="https://github.com/naborajs/birthday-bloom/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=naborajs/birthday-bloom" alt="Birthday Bloom Contributors" />
+</a>
 
 ---
 
