@@ -19,7 +19,7 @@ export const BirthdayQuiz = () => {
     const [showResult, setShowResult] = useState(false);
     const [selected, setSelected] = useState<number | null>(null);
     const questions: Question[] = useMemo(() => {
-        const { name, interests, relationship, gender } = config;
+        const { name, interests, relationship } = config;
         const base: Question[] = [
             {
                 q: `Who is the most legendary person born on this day?`,
