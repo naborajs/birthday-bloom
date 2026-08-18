@@ -6,7 +6,7 @@ import { useSoundManager } from "./SoundManager";
 import { KineticText } from "./KineticText";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { Phase, CakeOption, CAKE_OPTIONS } from "./CakeTypes";
 import { CutSparks, MagicDust } from "./CakeVisuals";
@@ -63,7 +63,6 @@ const CakeCard = ({ cake, onSelect }: {
 
 export const CakeCutting = () => {
     const isMobile = useIsMobile();
-    const reduceMotion = useReducedMotion();
     const [phase, setPhase] = useState<Phase>("select");
     const [selectedCake, setSelectedCake] = useState<CakeOption | null>(null);
     const [quoteIndex, setQuoteIndex] = useState(-1);
