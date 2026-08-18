@@ -1,5 +1,21 @@
 import { useEffect } from 'react';
 import { useBirthdayStore } from '../store/useBirthdayStore';
+
+const hexToRGB = (hex: string) => {
+    let r = 0, g = 0, b = 0;
+    if (hex.length === 4) {
+        r = parseInt("0x" + hex[1] + hex[1]);
+        g = parseInt("0x" + hex[2] + hex[2]);
+        b = parseInt("0x" + hex[3] + hex[3]);
+    }
+    else if (hex.length === 7) {
+        r = parseInt("0x" + hex[1] + hex[2]);
+        g = parseInt("0x" + hex[3] + hex[4]);
+        b = parseInt("0x" + hex[5] + hex[6]);
+    }
+    return { r, g, b };
+};
+
 const hexToHSL = (hex: string) => {
     let r = 0, g = 0, b = 0;
     if (hex.length === 4) {
@@ -36,17 +52,20 @@ const hexToHSL = (hex: string) => {
     l = +(l * 100).toFixed(1);
     return { h, s, l };
 };
+
 export const useDynamicTheme = () => {
     const { favoriteColor, relationship, gender } = useBirthdayStore((state) => state.config);
     useEffect(() => {
         const root = document.documentElement;
         const { h, s, l } = hexToHSL(favoriteColor);
+        const { r, g, b } = hexToRGB(favoriteColor);
         root.style.setProperty('--color-primary', `hsl(${h}, ${s}%, ${l}%)`);
+        root.style.setProperty('--color-primary-rgb', `${r}, ${g}, ${b}`);
         root.style.setProperty('--color-primary-low', `hsl(${h}, ${s}%, ${l * 0.5}%)`);
-        root.style.setProperty('--color-primary-glow', `hsl(${h}, ${s}%, ${l}%, 0.3)`);
+        root.style.setProperty('--color-primary-glow', `hsla(${h}, ${s}%, ${l}%, 0.3)`);
         if (relationship === 'partner') {
             root.style.setProperty('--bg-gradient', `radial-gradient(circle at 50% 50%, hsl(${h}, 40%, 12%) 0%, #050505 100%)`);
-            root.style.setProperty('--glow-effect', `0 0 50px hsl(${h}, 60%, 45%, 0.6)`);
+            root.style.setProperty('--glow-effect', `0 0 50px hsla(${h}, 60%, 45%, 0.6)`);
             root.style.setProperty('--glass-opacity', '0.08');
             root.style.setProperty('--font-display', '"Playfair Display", "Times New Roman", serif');
             root.style.setProperty('--animation-pacing', '2s');
@@ -55,7 +74,7 @@ export const useDynamicTheme = () => {
         }
         else if (relationship === 'friend') {
             root.style.setProperty('--bg-gradient', `linear-gradient(135deg, hsl(${h}, 70%, 15%) 0%, #111111 100%)`);
-            root.style.setProperty('--glow-effect', `0 8px 30px hsl(${h}, 90%, 55%, 0.4)`);
+            root.style.setProperty('--glow-effect', `0 8px 30px hsla(${h}, 90%, 55%, 0.4)`);
             root.style.setProperty('--glass-opacity', '0.15');
             root.style.setProperty('--font-display', '"Inter", "Impact", sans-serif');
             root.style.setProperty('--animation-pacing', '0.8s');
@@ -64,7 +83,7 @@ export const useDynamicTheme = () => {
         }
         else {
             root.style.setProperty('--bg-gradient', `linear-gradient(to bottom, hsl(${h}, 25%, 15%), #0a0a0a)`);
-            root.style.setProperty('--glow-effect', `0 0 30px hsl(${h}, 40%, 40%, 0.4)`);
+            root.style.setProperty('--glow-effect', `0 0 30px hsla(${h}, 40%, 40%, 0.4)`);
             root.style.setProperty('--glass-opacity', '0.1');
             root.style.setProperty('--font-display', '"Outfit", sans-serif');
             root.style.setProperty('--animation-pacing', '1.2s');
