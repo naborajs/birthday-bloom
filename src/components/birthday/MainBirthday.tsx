@@ -15,7 +15,7 @@ import { FinalSurprise } from "./FinalSurprise";
 import { VideoGallery } from "./VideoGallery";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { getHighlySpecificLetter, getBigWishes } from "@/features/core/store/SuperPersonalizedLogic";
-import { Car, Music, Code, Palmtree, Camera, Pizza, Dumbbell, Rocket, Trophy, Star } from "lucide-react";
+import { Car, Trophy, Star } from "lucide-react";
 
 export const MainBirthday = () => {
     const [visible, setVisible] = useState(false);
