@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { CakeOption } from "./CakeTypes";
 
 export const CutSparks = ({ count, color }: { count: number; color: string }) => {
     const sparks = useMemo(() => Array.from({ length: count }, (_, i) => ({
@@ -67,52 +66,5 @@ export const MagicDust = ({ count }: { count: number }) => {
                 />
             ))}
         </div>
-    );
-};
-
-export const CakeSVG = ({ cake, split, candlesLit, name, springConfig }: {
-    cake: CakeOption;
-    split: boolean;
-    candlesLit: boolean;
-    name: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    springConfig?: any;
-}) => {
-    // Note: Kept the component name "CakeSVG" to avoid breaking CakeCutting.tsx 
-    // but this is now a static DOM composite for the pre-rendered image approach.
-
-    return (
-        <motion.div 
-            className="relative w-72 sm:w-96 md:w-[32rem] aspect-square mx-auto flex items-center justify-center"
-            style={{ perspective: "1500px" }}
-        >
-            {/* The pre-rendered photorealistic cake layer */}
-            <img 
-                src={cake.image} 
-                alt={cake.name} 
-                className="w-full h-full object-contain drop-shadow-[0_40px_80px_rgba(0,0,0,0.8)]"
-            />
-            
-            {/* Overlay a simple candle for the static proof-of-concept */}
-            <div className="absolute top-[20%] left-1/2 -translate-x-1/2 pointer-events-none">
-                <div className="relative">
-                    <div className="w-2.5 h-16 rounded-sm bg-gradient-to-b from-white to-[#ffb6c1] border border-white/50 shadow-[inset_-2px_0_5px_rgba(0,0,0,0.2)]" />
-                    
-                    {candlesLit ? (
-                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center animate-flame-premium">
-                            <div className="w-5 h-12 bg-yellow-400 rounded-[50%_50%_50%_50%/60%_60%_40%_40%] blur-[1px] opacity-90 shadow-[0_0_30px_#facc15]" />
-                            <div className="w-2 h-6 bg-white absolute bottom-1 rounded-full blur-[1px]" />
-                        </div>
-                    ) : (
-                        <motion.div 
-                            initial={{ opacity: 0.8, y: 0 }} 
-                            animate={{ opacity: 0, y: -30 }} 
-                            transition={{ duration: 2 }}
-                            className="absolute -top-4 left-1/2 w-px h-10 bg-gradient-to-t from-gray-400 to-transparent blur-[1px]"
-                        />
-                    )}
-                </div>
-            </div>
-        </motion.div>
     );
 };
