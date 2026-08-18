@@ -41,9 +41,6 @@ export interface BirthdayConfig {
 }
 interface BirthdayStore {
     config: BirthdayConfig;
-    isConfigured: boolean;
-    setConfig: (config: Partial<BirthdayConfig>) => void;
-    completeConfiguration: () => void;
     getAnimationPacing: () => 'slow' | 'fast' | 'moderate';
     getMood: () => 'romantic' | 'energetic' | 'warm';
 }
@@ -136,7 +133,7 @@ try {
         envDate = new Date(cleanDate);
     }
 }
-catch (e) {
+catch (_e) {
     envDate = null;
 }
 const envItems = parseEnvList(import.meta.env.VITE_BIRTHDAY_INTERESTS, import.meta.env.VITE_FAVORITE_ITEMS);
@@ -247,9 +244,6 @@ export const useBirthdayStore = create<BirthdayStore>((set, get) => ({
         passwordFormat: envPasswordFormat,
         passwordRequired: envPasswordRequired,
     },
-    isConfigured: !!envName,
-    setConfig: (newConfig) => set((state) => ({ config: { ...state.config, ...newConfig } })),
-    completeConfiguration: () => set({ isConfigured: true }),
     getAnimationPacing: () => {
         const { relationship, animationSpeed } = get().config;
         if (animationSpeed)
