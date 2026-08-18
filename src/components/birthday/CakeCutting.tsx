@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { createPortal } from "react-dom";
-import { Cake as CakeIcon, Flame, Sparkles } from "lucide-react";
+import { Cake as CakeIcon } from "lucide-react";
 import { useConfetti } from "./Confetti";
 import { useSoundManager } from "./SoundManager";
 import { KineticText } from "./KineticText";
@@ -13,9 +13,8 @@ import { CutSparks, MagicDust } from "./CakeVisuals";
 import { Cake3D } from "./Cake3D";
 import { CakeKnife } from "./CakeKnife";
 
-const CakeCard = ({ cake, index, onSelect }: {
+const CakeCard = ({ cake, onSelect }: {
     cake: CakeOption;
-    index: number;
     onSelect: () => void;
 }) => {
     const isMobile = useIsMobile();
@@ -67,11 +66,10 @@ export const CakeCutting = () => {
     const reduceMotion = useReducedMotion();
     const [phase, setPhase] = useState<Phase>("select");
     const [selectedCake, setSelectedCake] = useState<CakeOption | null>(null);
-    const [candlesLit, setCandlesLit] = useState(true);
     const [quoteIndex, setQuoteIndex] = useState(-1);
     const [countdownVal, setCountdownVal] = useState<number | string>("");
 
-    const { fireCannon, fireCinematicCelebration } = useConfetti();
+    const { fireCinematicCelebration } = useConfetti();
     const { playBoom, playReveal, playPop, playWhoosh } = useSoundManager();
     const { name, relationship, gender, favoriteColor } = useBirthdayStore(state => state.config);
     const primaryColor = favoriteColor || '#FF6B6B';
@@ -130,7 +128,6 @@ export const CakeCutting = () => {
             setPhase("blowing");
             if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate([100, 50, 100]);
             playWhoosh();
-            setCandlesLit(false);
             
             // 2. Wish sent
             await new Promise(r => setTimeout(r, 1500));
@@ -196,10 +193,8 @@ export const CakeCutting = () => {
     }, [phase, quoteIndex, quotes.length]);
 
     const cake = selectedCake || CAKE_OPTIONS[0];
-    const lowMotion = isMobile || reduceMotion;
     const dustCount = isMobile ? 16 : 40;
     const sparkCount = isMobile ? 16 : 30;
-    const cakeSpring = { type: "spring", stiffness: isMobile ? 45 : 80, damping: isMobile ? 20 : 12 };
 
     return (
         <>
@@ -388,8 +383,8 @@ export const CakeCutting = () => {
                     </p>
 
                     <div className="flex flex-wrap justify-center gap-6 sm:gap-10">
-                        {CAKE_OPTIONS.map((c, i) => (
-                            <CakeCard key={c.id} cake={c} index={i} onSelect={() => handleSelectCake(c)} />
+                        {CAKE_OPTIONS.map((c) => (
+                            <CakeCard key={c.id} cake={c} onSelect={() => handleSelectCake(c)} />
                         ))}
                     </div>
                 </div>
