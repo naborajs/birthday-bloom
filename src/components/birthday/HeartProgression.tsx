@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
-import { Snowflake, Heart, Sparkles, Star } from "lucide-react";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 interface HeartProgressionProps {
     stage: 1 | 2 | 3 | 4;
