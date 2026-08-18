@@ -10,7 +10,6 @@ interface KineticTextProps {
 }
 export const KineticText = ({ text, animation, className = "", style, delay = 0, onComplete }: KineticTextProps) => {
     const [started, setStarted] = useState(false);
-    const [done, setDone] = useState(false);
     useEffect(() => {
         if (started)
             return;
@@ -21,7 +20,7 @@ export const KineticText = ({ text, animation, className = "", style, delay = 0,
         if (!started)
             return;
         const dur = text.length * 80 + 800;
-        const t = setTimeout(() => { setDone(true); onComplete?.(); }, dur);
+        const t = setTimeout(() => { onComplete?.(); }, dur);
         return () => clearTimeout(t);
     }, [started, text, onComplete]);
     const chars = useMemo(() => text.split(""), [text]);
