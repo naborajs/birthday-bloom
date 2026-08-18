@@ -1,13 +1,10 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
-import { useSoundManager } from "./SoundManager";
 import { Heart, Stars, Video, Sparkles, Camera } from "lucide-react";
-import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+
 export const FinalSurprise = () => {
     const { config } = useBirthdayStore();
-    const { playReveal, playBoom } = useSoundManager();
-    const [revealed, setRevealed] = useState(false);
     const isMobile = useIsMobile();
     const memories = config.specialMemories || [];
     const primaryColor = config.favoriteColor || "#ff0080";
