@@ -1,5 +1,5 @@
 import React, { ReactNode, ReactElement } from "react";
-import { motion } from "framer-motion";
+
 interface Props {
     children: ReactNode;
     fallback?: ReactElement;
@@ -28,11 +28,13 @@ export class ErrorBoundary extends React.Component<Props, State> {
             <h2 className="text-2xl font-bold text-white mb-2">Oops! Something went wrong 😔</h2>
             <p className="text-white/60 mb-6">An unexpected error occurred while loading this page.</p>
             
-            <div className="bg-black/50 p-4 rounded text-left overflow-auto mb-6 text-red-400 font-mono text-sm max-h-[300px]">
-              {this.state.error && this.state.error.toString()}
-              <br/><br/>
-              {this.state.error && this.state.error.stack}
-            </div>
+            {import.meta.env.DEV && this.state.error && (
+              <div className="bg-black/50 p-4 rounded text-left overflow-auto mb-6 text-red-400 font-mono text-sm max-h-[300px]">
+                {this.state.error.toString()}
+                <br/><br/>
+                {this.state.error.stack}
+              </div>
+            )}
 
             <button
               onClick={() => window.location.reload()}
