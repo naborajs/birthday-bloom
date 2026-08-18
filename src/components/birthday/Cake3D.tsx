@@ -42,7 +42,7 @@ const Drips = ({ config, isSlice }: { config: CakeOption["config"]; isSlice?: bo
     );
 };
 
-const Rosettes = ({ config, isSlice, bottom = false }: { config: CakeOption["config"]; isSlice?: boolean; bottom?: boolean }) => {
+const Rosettes = ({ isSlice, bottom = false }: { isSlice?: boolean; bottom?: boolean }) => {
     const rosettes = useMemo(() => {
         const arr = [];
         const numRosettes = 28;
@@ -88,8 +88,11 @@ const Sprinkles = ({ accent, isSlice }: { accent: string; isSlice?: boolean }) =
         return arr;
     }, [isSlice]);
 
+    const sprinkleMaterial = useMemo(() => new THREE.MeshStandardMaterial({ color: accent, roughness: 0.2 }), [accent]);
+    const sprinkleGeometry = useMemo(() => new THREE.CylinderGeometry(0.015, 0.015, 0.1, 8), []);
+
     return (
-        <Instances range={sprinkleData.length} material={new THREE.MeshStandardMaterial({ color: accent, roughness: 0.2 })} geometry={new THREE.CylinderGeometry(0.015, 0.015, 0.1, 8)}>
+        <Instances range={sprinkleData.length} material={sprinkleMaterial} geometry={sprinkleGeometry}>
             {sprinkleData.map((s, i) => (
                 <Instance key={i} position={s.position} rotation={s.rotation} />
             ))}
@@ -151,8 +154,8 @@ const CakeBody = ({ cake, isSlice }: { cake: CakeOption; isSlice?: boolean }) =>
             </mesh>
 
             <Drips config={config} isSlice={isSlice} />
-            <Rosettes config={config} isSlice={isSlice} bottom={true} />
-            <Rosettes config={config} isSlice={isSlice} bottom={false} />
+            <Rosettes isSlice={isSlice} bottom={true} />
+            <Rosettes isSlice={isSlice} bottom={false} />
             <Sprinkles accent={cake.accent} isSlice={isSlice} />
         </group>
     );
