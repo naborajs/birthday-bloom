@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useConfetti } from "./Confetti";
 import { Balloons } from "./Balloons";
@@ -10,31 +10,15 @@ import { TypeWriter } from "./TypeWriter";
 import { useSoundManager } from "./SoundManager";
 import { CakeCutting } from "./CakeCutting";
 import { HeartTree } from "./HeartTree";
-import { FireflyEffect } from "./FireflyEffect";
-import { FloatingOrbs } from "./FloatingOrbs";
-import { ShootingStars } from "./ShootingStars";
 import { BirthdayQuiz } from "./BirthdayQuiz";
 import { FinalSurprise } from "./FinalSurprise";
-import { GlitchEffect } from "./GlitchEffect";
 import { VideoGallery } from "./VideoGallery";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { getHighlySpecificLetter, getBigWishes } from "@/features/core/store/SuperPersonalizedLogic";
-import { Car, Music, Code, Palmtree, Camera, Pizza, Dumbbell, Rocket, Heart, Trophy, Star, LucideIcon } from "lucide-react";
-const interestIcons: Record<string, LucideIcon> = {
-    car: Car,
-    music: Music,
-    coding: Code,
-    nature: Palmtree,
-    travel: Camera,
-    food: Pizza,
-    sport: Dumbbell,
-    space: Rocket,
-};
+import { Car, Music, Code, Palmtree, Camera, Pizza, Dumbbell, Rocket, Trophy, Star } from "lucide-react";
+
 export const MainBirthday = () => {
     const [visible, setVisible] = useState(false);
-    const [heroRevealed, setHeroRevealed] = useState(false);
-    const [showName, setShowName] = useState(false);
-    const [showEmojis, setShowEmojis] = useState(false);
     const [emojis, setEmojis] = useState<{
         id: number;
         emoji: string;
@@ -45,7 +29,7 @@ export const MainBirthday = () => {
     const [giftStage, setGiftStage] = useState<'closed' | 'party' | 'open'>('closed');
     const giftTimerRef = useRef<number | null>(null);
     const { fireConfetti, fireCannon, fireStars } = useConfetti();
-    const { playReveal, playPop, playBoom, playWhoosh, setBgVolume } = useSoundManager();
+    const { playReveal, playPop, playBoom, setBgVolume } = useSoundManager();
     const { config, getMood } = useBirthdayStore();
     const { name, age, customMessage, relationship, favoriteColor, gender, senderName } = config;
     const isMobile = useIsMobile();
@@ -109,9 +93,8 @@ export const MainBirthday = () => {
     useEffect(() => {
         setBgVolume(0.4);
         setTimeout(() => setVisible(true), 100);
-        setTimeout(() => { setHeroRevealed(true); playBoom(); }, 600);
-        setTimeout(() => { setShowName(true); playReveal(); }, 1200);
-        setTimeout(() => setShowEmojis(true), 1800);
+        setTimeout(() => { playBoom(); }, 600);
+        setTimeout(() => { playReveal(); }, 1200);
         setTimeout(() => { fireCannon(); playBoom(); }, 2000);
     }, [playReveal, playBoom, setBgVolume, fireCannon]);
     const addEmoji = () => {
@@ -153,12 +136,6 @@ export const MainBirthday = () => {
         setEmojis((prev) => [...prev, newEmoji]);
         setTimeout(() => setEmojis((prev) => prev.filter((e) => e.id !== newEmoji.id)), 2000);
     };
-    const scrollToCake = () => {
-        const element = document.getElementById('cake-section');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    };
     const handleCakeClick = () => {
         addEmoji();
         const newCount = cakeClicks + 1;
@@ -176,9 +153,6 @@ export const MainBirthday = () => {
             setCakeClicks(0);
         }
     };
-    const activeInterests = useMemo(() => {
-        return (config.interests || []).map(i => i.toLowerCase().trim()).filter(i => interestIcons[i]);
-    }, [config.interests]);
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.5 } },
@@ -187,7 +161,6 @@ export const MainBirthday = () => {
         hidden: { y: 30, opacity: 0, filter: "blur(10px)" },
         visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.8, ease: "easeOut" as const } },
     };
-    const heroMotionStyle = shouldAnimate ? { x: springX, y: springY } : { x: 0, y: 0 };
     const sparkleCount = isMobile ? 8 : 15;
     const balloonCount = isMobile ? 7 : 15;
     return (<div onMouseMove={shouldAnimate ? handleMouseMove : undefined} className={`min-h-screen transition-opacity duration-1000 w-full max-w-[100vw] overflow-x-hidden ${visible ? "opacity-100" : "opacity-0"} ${megaSurprise ? "animate-screen-shake" : ""}`} style={{ background: 'transparent' }}>
