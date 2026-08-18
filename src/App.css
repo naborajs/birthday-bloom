@@ -189,23 +189,11 @@ body {
 }
 
 /* ============================================
-   DARK MODE (Default)
+   COLOR SCHEME (Cinematic Dark Experience)
    ============================================ */
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #000;
-    color: #fff;
-  }
-}
-
-/* ============================================
-   LIGHT MODE
-   ============================================ */
-@media (prefers-color-scheme: light) {
-  body {
-    background-color: #fff;
-    color: #000;
-  }
+body {
+  background-color: #000;
+  color: #fff;
 }
 
 /* ============================================
