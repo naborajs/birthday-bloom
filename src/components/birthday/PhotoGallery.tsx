@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { PHOTO_ASSETS } from "@/config/birthday";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
@@ -146,7 +146,7 @@ export const PhotoGallery = () => {
 
         
         <div className="flex justify-center mt-20 gap-8">
-          {photos.map((photo, i) => (<motion.div key={i} onClick={() => setActiveIndex(i)} whileHover={!isMobile ? { scale: 1.15, y: -10, rotate: i % 2 === 0 ? 2 : -2 } : undefined} whileTap={{ scale: 0.9 }} className={`relative cursor-pointer rounded-3xl overflow-hidden w-28 h-28 md:w-40 md:h-40 border-4 transition-all duration-700 ${i === activeIndex ? "border-primary scale-110 shadow-[0_20px_50px_rgba(var(--color-primary-rgb),0.4)]" : "border-transparent opacity-30 hover:opacity-100"}`}>
+          {photos.map((photo, i) => (<motion.div key={i} onClick={() => setActiveIndex(i)} whileHover={!isMobile ? { scale: 1.15, y: -10, rotate: i % 2 === 0 ? 2 : -2 } : undefined} whileTap={{ scale: 0.9 }} className={`relative cursor-pointer rounded-3xl overflow-hidden w-28 h-28 md:w-40 md:h-40 border-4 transition-all duration-700 ${i === activeIndex ? "border-primary scale-110 shadow-[0_20px_50px_rgba(var(--color-primary-rgb,255,107,107),0.4)]" : "border-transparent opacity-30 hover:opacity-100"}`}>
               <img src={photo.src} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = photo.fallback; }}/>
               {i === activeIndex && (<motion.div layoutId="active-thumb-glow" className="absolute inset-0 bg-primary/10 pointer-events-none"/>)}
             </motion.div>))}
