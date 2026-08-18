@@ -1,4 +1,4 @@
-import { useCallback, useRef, useEffect } from "react";
+import { useCallback, useRef } from "react";
 import { AUDIO_ASSETS } from "@/config/birthday";
 const AUDIO_URLS = {
     bgMusic: AUDIO_ASSETS.bgmUrl || "https://cdn.pixabay.com/audio/2024/09/03/audio_73147814c8.mp3",
@@ -10,7 +10,6 @@ const AUDIO_URLS = {
 };
 class AudioManager {
     private bgMusic: HTMLAudioElement | null = null;
-    private audioCache: Map<string, HTMLAudioElement[]> = new Map();
     private started = false;
     start() {
         if (this.started)
@@ -76,10 +75,6 @@ class AudioManager {
 const globalAudioManager = new AudioManager();
 export const useSoundManager = () => {
     const managerRef = useRef(globalAudioManager);
-    useEffect(() => {
-        return () => {
-        };
-    }, []);
     const startMusic = useCallback(() => {
         managerRef.current.start();
     }, []);
