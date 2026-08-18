@@ -133,7 +133,7 @@ describe("Milestone 2 Empirical Challenge Tests", () => {
   });
 
   describe("2. ErrorBoundary Behavior & Security", () => {
-    let consoleSpy: any;
+    let consoleSpy: ReturnType<typeof vi.spyOn>;
     beforeEach(() => {
       consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     });
