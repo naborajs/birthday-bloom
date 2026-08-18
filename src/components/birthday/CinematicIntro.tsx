@@ -30,10 +30,9 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
     }>>([]);
     const [ringPulse, setRingPulse] = useState(false);
     const [finalLineIndex, setFinalLineIndex] = useState(0);
-    const [heartStage, setHeartStage] = useState<1 | 2 | 3 | 4>(2);
     const [flashWhite, setFlashWhite] = useState(false);
     const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-    const { fireConfetti, fireCannon, fireStars, fireCinematicCelebration } = useConfetti();
+    const { fireConfetti, fireStars, fireCinematicCelebration } = useConfetti();
     const { playType, playWhoosh, playReveal, playPop, playBoom } = useSoundManager();
     const { config, getAnimationPacing } = useBirthdayStore();
     const { name, age, relationship, favoriteColor, gender } = config;
@@ -166,7 +165,6 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
             lines.forEach((_, i) => {
                 addTimer(() => { setStoryLine(i); playType(); }, i * 4000 * speedMultiplier);
             });
-            addTimer(() => setHeartStage(2), 5000 * speedMultiplier);
             addTimer(() => {
                 if (typeof navigator !== 'undefined' && navigator.vibrate)
                     navigator.vibrate(50);
@@ -175,7 +173,6 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
             }, lines.length * 4000 * speedMultiplier);
         }
         if (scene === "post-chat") {
-            setHeartStage(3);
             postChatLines.forEach((_, i) => {
                 addTimer(() => { setPostChatLine(i); playType(); }, i * 3500 * speedMultiplier);
             });
@@ -183,7 +180,6 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                 playReveal();
                 fireStars();
                 triggerFlash();
-                setHeartStage(4);
                 setScene("special-message");
             }, postChatLines.length * 3500 * speedMultiplier);
         }
@@ -232,7 +228,6 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
         playPop,
         playBoom,
         fireConfetti,
-        fireCannon,
         fireStars,
         fireCinematicCelebration,
         spawnEmojiBurst,
@@ -304,7 +299,21 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
           </motion.div>)}
       </AnimatePresence>
 
-      
+      <AnimatePresence>
+        {emojiBursts.map((e) => (
+          <motion.div
+            key={e.id}
+            initial={{ opacity: 0, scale: 0.5, x: `${e.x}vw`, y: `${e.y}vh` }}
+            animate={{ opacity: 1, scale: 1.5, y: `${e.y - 15}vh` }}
+            exit={{ opacity: 0, scale: 0 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="fixed z-50 text-4xl pointer-events-none"
+          >
+            {e.emoji}
+          </motion.div>
+        ))}
+      </AnimatePresence>
+
       {flashWhite && <div className="fixed inset-0 z-[60] bg-white/40 pointer-events-none animate-flash"/>}
       <Sparkles count={15}/>
       {ringPulse && (<div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
