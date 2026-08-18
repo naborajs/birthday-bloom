@@ -1,6 +1,6 @@
 import { EMOTIONAL_LETTERS } from '@/config/templates';
 import { RelationshipType, GenderType } from './useBirthdayStore';
-export const getHighlySpecificLetter = (name: string, relationship: RelationshipType, gender: GenderType, interests: string[] = []) => {
+export const getHighlySpecificLetter = (name: string, relationship: RelationshipType, gender: GenderType, _interests: string[] = []) => {
     const isFemale = gender === 'female';
     const isMale = gender === 'male';
     if (relationship === 'partner') {
@@ -28,16 +28,7 @@ export const getHighlySpecificLetter = (name: string, relationship: Relationship
         return EMOTIONAL_LETTERS.mentor(name);
     return EMOTIONAL_LETTERS.family(name);
 };
-export const getInterestBasedTheme = (interests: string[]) => {
-    const lowerInterests = interests.map(i => i.toLowerCase().trim());
-    if (lowerInterests.includes('car'))
-        return 'automotive';
-    if (lowerInterests.includes('music'))
-        return 'melodic';
-    if (lowerInterests.includes('coding'))
-        return 'matrix';
-    return 'classic';
-};
+
 export const getBigWishes = (name: string, relationship: RelationshipType, gender: GenderType, interests: string[] = []) => {
     const wishes = [
         { emoji: "🚀", wish: `May your ${name} brand reach new galaxies this year!` },
