@@ -38,17 +38,17 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 
 If you ask an AI coding agent to customize Birthday Bloom, tell it this first:
 
-> This project is already built to be customized through env values. Before editing components or templates, check `.env.example` and `docs/ENV_GUIDE.md`, then tell me which env keys to update.
+> This project is already built to be customized through env values. Before editing components or templates, check `.env.example` and `obsidian-docs/ENV_GUIDE.md`, then tell me which env keys to update.
 
 Direct docs:
 
-- [Complete env customization guide](./docs/ENV_GUIDE.md)
-- [Quick start](./docs/quick-start.md)
-- [Family system](./docs/family-system.md)
-- [Template architecture](./docs/template-architecture.md)
-- [Developer guide](./docs/developer-guide.md)
-- [Migration guide](./docs/migration-guide.md)
-- [Documentation index](./docs/DOCUMENTATION_INDEX.md)
+- [Complete env customization guide](./obsidian-docs/ENV_GUIDE.md)
+- [Quick start](./obsidian-docs/quick-start.md)
+- [Family system](./obsidian-docs/family-system.md)
+- [Template architecture](./obsidian-docs/template-architecture.md)
+- [Developer guide](./obsidian-docs/developer-guide.md)
+- [Migration guide](./obsidian-docs/migration-guide.md)
+- [Documentation index](./obsidian-docs/DOCUMENTATION_INDEX.md)
 
 Copy `.env.example` to `.env.local`, change values, restart the dev server, and the experience updates without component edits.
 
@@ -60,19 +60,19 @@ Everything you need to get the most out of Birthday Bloom:
 
 | If you want to... | Start here |
 | --- | --- |
-| Customize names, colors, photos, sections | [ENV_GUIDE.md](./docs/ENV_GUIDE.md) |
-| Run the project locally | [quick-start.md](./docs/quick-start.md) |
-| Understand the codebase | [architecture.md](./docs/architecture.md) |
-| Deploy to Vercel / Netlify / Docker | [docs/deployment.md](./docs/deployment.md) |
-| Set up family profiles (brother, sister, etc.) | [docs/family-system.md](./docs/family-system.md) |
-| Troubleshoot issues | [docs/troubleshooting.md](./docs/troubleshooting.md) |
+| Customize names, colors, photos, sections | [ENV_GUIDE.md](./obsidian-docs/ENV_GUIDE.md) |
+| Run the project locally | [quick-start.md](./obsidian-docs/quick-start.md) |
+| Understand the codebase | [architecture.md](./obsidian-docs/architecture.md) |
+| Deploy to Vercel / Netlify / Docker | [deployment.md](./obsidian-docs/deployment.md) |
+| Set up family profiles (brother, sister, etc.) | [family-system.md](./obsidian-docs/family-system.md) |
+| Troubleshoot issues | [troubleshooting.md](./obsidian-docs/troubleshooting.md) |
 | Contribute to the project | [CONTRIBUTING.md](./.github/CONTRIBUTING.md) |
-| See what's coming next | [roadmap.md](./docs/roadmap.md) |
+| See what's coming next | [roadmap.md](./obsidian-docs/roadmap.md) |
 | Browse community standards | [CODE_OF_CONDUCT.md](./.github/CODE_OF_CONDUCT.md) |
 | Report a security issue | [SECURITY.md](./.github/SECURITY.md) |
-| Get help | [SUPPORT.md](./.github/SUPPORT.md) / [faq.md](./docs/faq.md) |
+| Get help | [SUPPORT.md](./.github/SUPPORT.md) / [faq.md](./obsidian-docs/faq.md) |
 | View version history | [CHANGELOG.md](./CHANGELOG.md) |
-| Explore all docs | [docs/DOCUMENTATION_INDEX.md](./docs/DOCUMENTATION_INDEX.md) |
+| Explore all docs | [DOCUMENTATION_INDEX.md](./obsidian-docs/DOCUMENTATION_INDEX.md) |
 
 ---
 
@@ -208,7 +208,7 @@ If you prefer a visual guide, click the thumbnail below to watch the complete st
 > | `VITE_THEME_COLOR` | `#ff69b4` | The theme color (e.g. pink: `#ff69b4`, red: `#e11d48`, blue: `#2563eb`). |
 >
 > > [!TIP]
-> > For a full list of all 20+ customizable items (like custom messages, photos, and music), check the [.env.example](file:///d:/Projects/Website/birthday-bloom-main/.env.example) configuration file or the [Environment Variables Guide](#-environment-variables-guide) section below.
+> > For a full list of all 20+ customizable items (like custom messages, photos, and music), check the [.env.example](./.env.example) configuration file or the [Environment Variables Guide](#-environment-variables--secret-configuration-guide) section below.
 
 ---
 
@@ -235,37 +235,27 @@ If you prefer a visual guide, click the thumbnail below to watch the complete st
 ## 📖 Table of Contents
 
 * [🚀 Deployment Guide](#-deployment-guide)
-1. [Introduction](#-introduction)
-2. [Hyper-Personalization & Templates](#-hyper-personalization--templates)
+1. [Key Features & Interactive Elements](#-key-features--interactive-elements)
+2. [Animation & Pacing Principles](#-animation--pacing-principles)
 3. [System Architecture](#-system-architecture)
 4. [Mastering the Lifecycle](#-mastering-the-lifecycle)
-5. [Environment Variables Guide](#-environment-variables-guide)
 5. [In-Depth Code Explanation](#-in-depth-code-explanation)
     1. [The Cinematic Intro](#1-cinematic-intro-cinematicintrotsx)
     2. [The Interactive Cake](#2-the-interactive-cake-cakecuttingtsx)
     3. [Typographic Storytelling](#3-typographic-storytelling-typewritertsx)
-    4. [The Grand Finale: Heart Tree](#4-the-grand-finale-hearttreetsx)
+    4. [The Grand Finale: Heart Tree](#4-the-grand-finale-heart-tree-hearttreetsx)
     5. [Main Celebration View](#5-main-celebration-view-mainbirthdaytsx)
 6. [Personalization & Customization](#-personalization--customization)
-7. [Environment Variables Guide](#-environment-variables-guide)
+7. [Environment Variables & Configuration Guide](#-environment-variables--secret-configuration-guide)
 8. [Advanced Installation & Setup](#-advanced-installation--setup)
-9. [Component API Reference](#-component-api-reference)
-    1. [\<TypeWriter /> API](#typewriter--api)
-    2. [\<HeartTree /> API](#hearttree--api)
-    3. [\<CakeCutting /> API](#cakecutting--api)
-    4. [\<PhotoGallery /> API](#photogallery--api)
-    5. [\<CinematicIntro /> API](#cinematicintro--api)
-10. [Custom Hooks Documentation](#-custom-hooks-documentation)
-11. [Theming Engine & CSS Variables](#-theming-engine--css-variables)
-12. [Performance Profiling & GPU Acceleration](#-performance-profiling--gpu-acceleration)
-13. [Browser Compatibility Matrix](#-browser-compatibility-matrix)
-14. [Cinematography Theory](#-cinematography-theory)
-15. [SEO, Social Sharing & OG Tags](#-seo-social-sharing--og-tags)
-16. [Folder Structure Guide](#-folder-structure-guide)
-17. [Troubleshooting & Massive FAQ](#-troubleshooting--massive-faq)
-18. [Author & Brand Identity](#-author--brand-identity)
-24. [Author & Brand Identity](#-author--brand-identity)
-19. [License](#-license)
+9. [Troubleshooting & Massive FAQ](#-troubleshooting--massive-faq)
+10. [File-by-File Responsibility Map](#-file-by-file-responsibility-map)
+11. [Localized Setup](#-localized-setup)
+12. [Mastering SVG Animations](#-mastering-svg-animations-in-birthday-bloom)
+13. [Containerization & Deployment](#-containerization--orchestration-production-deployment)
+14. [Contributing Guidelines](#-contributing)
+15. [Author & Socials](#-author)
+16. [License](#-license)
 
 ---
 
@@ -674,17 +664,17 @@ graph TD
 ## 🇮🇳 Localized Setup
 For our users in India and Bangladesh, we have provided native language setup guides to make your journey smoother.
 
-- [🇮🇳 हिंदी सेटअप गाइड (Hindi Setup Guide)](./docs/setup-hindi.md)
-- [🇧🇩 বাংলা সেটআপ গাইড (Bengali Setup Guide)](./docs/setup-bengali.md)
+- [🇮🇳 हिंदी सेटअप गाइड (Hindi Setup Guide)](./obsidian-docs/setup-hindi.md)
+- [🇧🇩 বাংলা সেটআপ গাইড (Bengali Setup Guide)](./obsidian-docs/setup-bengali.md)
 
 ---
 
 ## 🛠️ Advanced Troubleshooting
 If you encounter any specific issues with sound, animations, or deployment, please refer to our master troubleshooting suite:
 
-- [🆘 Master Troubleshooting Guide](./docs/troubleshooting.md)
-- [🛠️ Advanced Fixes Masterclass](./docs/advanced-fixes.md)
-- [☁️ Hosting & Cloud Deployment](./docs/hosting-solutions.md)
+- [🆘 Master Troubleshooting Guide](./obsidian-docs/troubleshooting.md)
+- [🛠️ Advanced Fixes Masterclass](./obsidian-docs/troubleshooting.md)
+- [☁️ Hosting & Cloud Deployment](./obsidian-docs/deployment.md)
 
 
 ---
@@ -874,8 +864,8 @@ If you don't use Obsidian, you can still read all the Markdown files in the `obs
 ## ⚡ Quick Start for Contributors
 
 1. **Read [CONTRIBUTING.md](./.github/CONTRIBUTING.md)** for the full workflow
-2. **Read [styleguide.md](./docs/styleguide.md)** for code conventions
-3. **Read [architecture.md](./docs/architecture.md)** to understand the codebase
+2. **Read [styleguide.md](./obsidian-docs/styleguide.md)** for code conventions
+3. **Read [architecture.md](./obsidian-docs/architecture.md)** to understand the codebase
 4. **Check [good first issues](https://github.com/naborajs/birthday-bloom/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)** for beginner-friendly tasks
 5. **Fork, branch, commit, push, and PR** — see the [PR template](.github/pull_request_template.md)
 
@@ -1005,4 +995,4 @@ Thank you to all the incredible people who have contributed to making Birthday B
   <sub>Built with ❤️ by Naboraj Sarkar. © 2024-2026 Naboraj Sarkar.</sub>
 </div>
 
-**[Back to Top ↑](#-birthday-bloom--advanced-animated-birthday-website-generator)**
+**[Back to Top ↑](#-birthday-bloom--configurable-birthday-landing-page-v31)**
