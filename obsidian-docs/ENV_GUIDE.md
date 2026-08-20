@@ -158,9 +158,9 @@ The photo gallery supports lazy loading and falls back gracefully if a memory im
 | `VITE_BGM_URL` | URL | Backward-compatible alias for sound URL. |
 | `VITE_SONG_URL` | URL | Reserved for a future song integration; not currently consumed. |
 | `VITE_VOICE_MESSAGE_URL` | URL | Reserved for future voice message support; not currently consumed. |
-| `VITE_SOUND_EFFECTS` | `reserved` | Reserved for future sound-control support; not currently parsed. |
+| `VITE_SOUND_EFFECTS` | boolean | `true` | Enables or disables interactive UI sound effects (typing, pop, boom, whoosh) while keeping background music intact. |
 
-**Audio resolution**: `AUDIO_ASSETS.bgmUrl` in `src/config/birthday.ts` checks `VITE_BGM_URL` first, then `VITE_SOUND_URL`. The `SoundManager` uses this for background music. Individual sound effects are hosted on Pixabay CDN.
+**Audio resolution**: `AUDIO_ASSETS.bgmUrl` in `src/config/birthday.ts` checks `VITE_BGM_URL` first, then `VITE_SOUND_URL`. The `SoundManager` uses this for background music. Individual sound effects are toggled via `VITE_SOUND_EFFECTS`.
 
 **Audio best practices**:
 - Always use HTTPS URLs for audio/video sources.
@@ -183,7 +183,7 @@ Every rendered section has an env toggle:
 | `VITE_SHOW_VIDEO_SECTION` | `true` | Video gallery |
 | `VITE_SHOW_CAKE_SECTION` | `true` | Cake cutting experience |
 | `VITE_SHOW_FINAL_SURPRISE` | `true` | Final surprise (memories + video) |
-| `VITE_SHOW_SKIP_BUTTON` | `reserved` | The intro skip button is currently always shown; this env is reserved for future parsing. |
+| `VITE_SHOW_SKIP_BUTTON` | `true` | Controls visibility of the "Skip Intro ⏭" button during intro and cake phases. |
 
 Also accepted: `VITE_SHOW_PHOTOS_SECTION` (alias for photo section).
 
@@ -202,7 +202,7 @@ Also accepted: `VITE_SHOW_PHOTOS_SECTION` (alias for photo section).
 | `VITE_ANIMATION_SPEED` | `slow`, `moderate`, `fast` | based on relationship | Slow for romantic/family, fast for energetic friends |
 | `VITE_ANIMATION_INTENSITY` | `low`, `medium`, `high` | `high` | Lower for older phones or reduced motion needs |
 | `VITE_PARTICLE_COUNT` | number | `25` | Higher for desktop (`25-60`), lower for mobile (`8-15`) |
-| `VITE_REDUCED_MOTION` | `reserved` | `false` | Reserved for future reduced-motion support; not currently parsed. |
+| `VITE_REDUCED_MOTION` | boolean | `false` | Manual override to enable reduced motion mode and disable complex particle physics. |
 | `VITE_TEXT_SIZE` | `reserved` | `normal` | Reserved for future text-scaling support; not currently parsed. |
 | `VITE_HIGH_CONTRAST` | `reserved` | `false` | Reserved for future high-contrast support; not currently parsed. |
 
