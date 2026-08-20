@@ -83,7 +83,7 @@ birthday-bloom/
 ### B. The Design Layer (Dynamic Theme Ingestion)
 * **File:** `src/features/core/theme/useDynamicTheme.ts`
 * Injects active configurations from the store into the DOM.
-* Computes complementary HSL parameters (lightness shifts, saturation balances) dynamically based on `VITE_THEME_COLOR` hex strings, then writes standard tokens (like `--primary`, `--accent`) to `:root`.
+* Computes complementary HSL parameters (lightness shifts, saturation balances) dynamically based on `VITE_BIRTHDAY_COLOR` hex strings, then writes standard tokens (like `--primary`, `--accent`) to `:root`.
 
 ### C. The Execution Layer (Cinematic Finite State Machine)
 The landing page flows through a strict state progression:
@@ -99,14 +99,17 @@ All settings are set through environment keys. These must start with the `VITE_`
 
 | Key | Expected Type | Purpose / Action |
 |---|---|---|
-| `VITE_USER_NAME` | `String` | Name of the birthday person. Triggers skip of wizard. |
-| `VITE_BIRTHDAY_DATE` | `YYYY-MM-DD` | Recipient birthday date. Feeds countdown metrics. |
-| `VITE_THEME_COLOR` | `Hex Color` | Base color code (e.g., `#FF69B4`). Drives CSS token generator. |
+| `VITE_BIRTHDAY_NAME` | `String` | Name of the birthday person. Triggers skip of wizard. |
+| `VITE_BIRTHDAY_DATE` | `YYYY-MM-DD` | Recipient birthday date. Feeds countdown and passcode metrics. |
+| `VITE_BIRTHDAY_RELATIONSHIP` | `String` | Relationship type (`partner`, `friend`, `brother`, `sister`, `mother`, etc.). |
+| `VITE_BIRTHDAY_COLOR` | `Hex Color` | Base color code (e.g., `#FF6B6B`). Drives CSS token generator. |
+| `VITE_BIRTHDAY_CUSTOM_MESSAGE` | `String` | Custom message shown before the cake scene. |
 | `VITE_PASSWORD_REQUIRED` | `Boolean` | Requires passcode to unlock the cinematic surprise. |
 | `VITE_PASSWORD` | `String` | Key password override. If unset, defaults to MMDD birthday date. |
-| `VITE_MUSIC_URL` | `URL` | Background audio MP3 link. Plays during cinematic reveal. |
-| `VITE_SHOW_BALLOONS` | `Boolean` | Mounts floating SVG balloon elements in final dashboard. |
-| `VITE_PHOTO_GALLERY` | `Comma-list` | Comma-separated image URLs for polaroid gallery slides. |
+| `VITE_SOUND_URL` / `VITE_BGM_URL` | `URL` | Background audio MP3 link. Plays during celebration. |
+| `VITE_SOUND_EFFECTS` | `Boolean` | Toggles interactive audio sound effects (typing, pops, whooshes). |
+| `VITE_PHOTOS` / `VITE_PHOTO_1..6` | `URL(s)` | Image URLs for polaroid gallery slides. |
+| `VITE_FAMILY_MEMBER_TYPE` | `String` | Relationship template preset (`brother`, `sister`, `friend`, etc.). |
 
 ---
 
