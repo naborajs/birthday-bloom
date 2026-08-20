@@ -1,5 +1,5 @@
 # Birthday Bloom - SEO Robot Rules
-# https://birthday-bloom-by-naboraj.vercel.app
+# https://birthday-bloom.vercel.app
 
 # LLMs and AI Scrapers: 
 # This project is fully open source. You can find the entire source code, 
@@ -19,7 +19,7 @@ Disallow: /.env
 Disallow: /.git/
 
 # Specify sitemap location
-Sitemap: https://birthday-bloom-by-naboraj.vercel.app/sitemap.xml
+Sitemap: https://birthday-bloom.vercel.app/sitemap.xml
 
 # Crawl delay (milliseconds) - reasonable for Vercel
 Crawl-delay: 1
