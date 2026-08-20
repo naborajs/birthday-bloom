@@ -6,72 +6,49 @@ aliases: [UI Components, Shadcn Components]
 # UI Components Engine
 [[DOCUMENTATION_INDEX|Back to Home]]
 
-The Birthday Bloom repository contains a robust, reusable Design System composed of 49 distinct generic UI components. These components are strictly located in the `src/components/ui/` directory.
+The Birthday Bloom codebase employs a streamlined, tree-shaken Design System built with **Tailwind CSS**, **Lucide Icons**, and **Radix UI Primitives**. 
 
-These components are built using **[Shadcn UI](https://ui.shadcn.com/)**, which is essentially a beautifully styled wrapper around **[Radix UI Primitives](https://www.radix-ui.com/)**. This means all components are accessible (WAI-ARIA compliant), keyboard-navigable, and unstyled by default until composed with **Tailwind CSS**.
-
-Below is the exhaustive breakdown of **every single UI component** and its purpose in the repository.
+To maximize runtime performance and minimize bundle overhead, the active generic UI primitives in `src/components/ui/` are focused on essential interaction layers:
 
 ---
 
-## 1. Layout & Structure
-- **[[accordion.tsx]]**: Vertically collapsing accordion panels. Used for the FAQ section.
-- **[[aspect-ratio.tsx]]**: Maintains consistent dimensions for media (like photos in the gallery).
-- **[[breadcrumb.tsx]]**: Navigational trail for deep settings menus (if applicable).
-- **[[card.tsx]]**: The standard container for grouped content (headers, titles, content, footers).
-- **[[collapsible.tsx]]**: A simpler version of accordion for toggling visibility of content.
-- **[[drawer.tsx]]**: A slide-out panel, often used on mobile for settings or menus.
-- **[[resizable.tsx]]**: Draggable panels that can be resized by the user.
-- **[[scroll-area.tsx]]**: Custom scrollbars that look consistent across all browsers (used in long text reveals or terms).
-- **[[separator.tsx]]**: A visual divider (`<hr>` equivalent) for grouping elements.
-- **[[sheet.tsx]]**: A modal that slides in from the side of the screen (similar to a drawer, but for desktop).
-- **[[sidebar.tsx]]**: A full sidebar navigation layout (often used in admin/config views).
-- **[[tabs.tsx]]**: Tabbed interface for switching between different views (e.g., Image config vs Text config).
+## 1. Active UI Components (`src/components/ui/`)
 
-## 2. Navigation & Menus
-- **[[context-menu.tsx]]**: Right-click menus (useful for desktop interactions).
-- **[[dropdown-menu.tsx]]**: Standard click-to-open dropdowns for actions or settings.
-- **[[menubar.tsx]]**: A desktop-style horizontal menu bar.
-- **[[navigation-menu.tsx]]**: A complex Radix-powered navigation menu with dropdowns and animations.
-- **[[pagination.tsx]]**: Controls for navigating through pages of items (e.g., in a massive photo gallery).
+### A. `sonner.tsx` — Toast Notification System
+* **Implementation:** Wrapper around the `sonner` toast library integrated with theme tokens.
+* **Usage:** Provides non-blocking notifications, feedback triggers, and status messages during celebration playback and user interactions.
+* **Theme Sync:** Automatically inherits theme colors and styling rules defined in `tailwind.config.ts`.
 
-## 3. Forms & Inputs
-The backbone of configuration and customization inputs.
-- **[[button.tsx]]**: The primary interactive element. Supports variants (default, outline, ghost, link, destructive).
-- **[[checkbox.tsx]]**: Boolean toggle input.
-- **[[form.tsx]]**: A massive wrapper integrating `react-hook-form` and `zod` for strictly typed form validation.
-- **[[input.tsx]]**: Standard text input field.
-- **[[input-otp.tsx]]**: One-Time Password input field (used for the `PasswordUnlock.tsx` feature).
-- **[[label.tsx]]**: Accessible labels tied to inputs.
-- **[[radio-group.tsx]]**: A set of mutually exclusive radio buttons.
-- **[[select.tsx]]**: A custom-styled select dropdown (replacing the native `<select>`).
-- **[[slider.tsx]]**: A draggable slider for ranges (e.g., adjusting music volume).
-- **[[switch.tsx]]**: A toggle switch (iOS style) for boolean preferences.
-- **[[textarea.tsx]]**: Multi-line text input (used for custom birthday messages).
-- **[[toggle.tsx]]**: A two-state button (on/off).
-- **[[toggle-group.tsx]]**: A set of mutually exclusive toggle buttons.
+### B. `tooltip.tsx` — Accessible Tooltips
+* **Implementation:** Accessible tooltip primitive powered by `@radix-ui/react-tooltip`.
+* **Usage:** Provides hover and focus hints for interactive controls, audio toggles, and photo gallery navigation.
+* **Accessibility:** Fully WAI-ARIA compliant with animated fade/slide transitions and smooth delay timing.
 
-## 4. Feedback & Alerts
-- **[[alert.tsx]]**: Static callout boxes (info, warning, destructive) to show inline messages.
-- **[[alert-dialog.tsx]]**: A modal dialog that interrupts the user and demands an action (e.g., "Are you sure you want to reset?").
-- **[[dialog.tsx]]**: A standard modal window for presenting information or capturing input without leaving the page.
-- **[[hover-card.tsx]]**: A tooltip-like card that appears on hover to show preview information.
-- **[[popover.tsx]]**: A floating panel anchored to a trigger element (often used with date pickers or complex selects).
-- **[[progress.tsx]]**: A progress bar indicator (used in the `SplashScreen.tsx` loading phase).
-- **[[skeleton.tsx]]**: A pulsing placeholder used while images or data are loading.
-- **[[sonner.tsx]]**: An implementation of the `sonner` toast library for beautiful toast notifications.
-- **[[toast.tsx]] & [[toaster.tsx]] & [[use-toast.ts]]**: The legacy/standard toast notification system (often being replaced by sonner).
-- **[[tooltip.tsx]]**: Small text labels that appear on hover.
+---
 
-## 5. Data Display
-- **[[avatar.tsx]]**: Renders user profile pictures with fallbacks to initials.
-- **[[badge.tsx]]**: Small tag-like elements for status indicators.
-- **[[calendar.tsx]]**: A date picker component built on top of `react-day-picker` (useful for selecting the actual birthday).
-- **[[chart.tsx]]**: A complex wrapper for rendering data visualization (useful in admin analytics dashboards).
-- **[[table.tsx]]**: Responsive data tables.
+## 2. Birthday Celebration Components (`src/components/birthday/`)
 
-## 6. Utilities
-- **[[command.tsx]]**: A fast, composable command menu (Cmd+K interface) built on `cmdk`.
+The primary cinematic experiences and interactive features are located in `src/components/birthday/`:
+
+- **`CinematicIntro.tsx`**: Typewriter text sequencing, story pacing, and unlock logic.
+- **`CakeCutting.tsx`**: Interactive SVG cake with candle blowout detection, wishes, and interactive cutting physics.
+- **`HeartTree.tsx`**: Procedural physics balloon aggregation and grand finale blossoming tree.
+- **`PhotoGallery.tsx`**: Polaroid-style 3D tilt photo grid with caption reveal and lightbox support.
+- **`MainBirthday.tsx`**: Central orchestration view coordinating ambient fireworks, audio playback, countdowns, and footer.
+- **`FloatingBalloons.tsx`**: Dynamic floating balloons with pop interactions and physics drift.
+- **`ConfettiCanvas.tsx`**: High-performance canvas confetti engine.
+- **`PasswordUnlock.tsx`**: Gatekeeper passcode challenge for personalized surprise unlocks.
+
+---
+
+## 3. Extending the UI Design System
+
+Birthday Bloom is fully compatible with additional **Shadcn UI** and **Radix UI** primitives if you wish to expand functionality (such as adding custom dialogs, accordions, or drawer menus).
+
+To add new primitives to `src/components/ui/`:
+1. Use standard Radix UI primitives already installed in `package.json` (such as `@radix-ui/react-dialog`, `@radix-ui/react-popover`, `@radix-ui/react-accordion`).
+2. Compose with Tailwind CSS utility classes and `cn()` helper from `@/lib/utils`.
+3. Follow the PascalCase component convention established in the project.
 
 ---
 #obsidian #documentation #birthday-bloom #vault #ui #components
