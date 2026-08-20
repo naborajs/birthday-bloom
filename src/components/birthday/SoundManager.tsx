@@ -57,6 +57,8 @@ class AudioManager {
             this.bgMusic.volume = Math.max(0, Math.min(1, vol));
     }
     playEffect(type: "typeClick" | "whoosh" | "reveal" | "pop" | "boom", volume = 0.4) {
+        if (AUDIO_ASSETS.soundEffectsEnabled === false)
+            return;
         try {
             const audio = new Audio(AUDIO_URLS[type]);
             audio.volume = volume;
