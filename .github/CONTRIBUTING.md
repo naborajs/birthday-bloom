@@ -71,11 +71,20 @@ VITE_BIRTHDAY_NAME=Priya
 const name = "Priya";
 ```
 
-New env variables should be added to `.env.example`, parsed in `useBirthdayStore.ts`, and documented in `obsidian-docs/ENV_GUIDE.md`.
+#### 🛠 Adding a New Environment Variable (Contributor Checklist)
+When introducing a new customization option:
+1. **`.env.example`**: Add the `VITE_*` variable with clear comments, type annotations, and safe defaults.
+2. **`useBirthdayStore.ts`**:
+   - Add the property to the `BirthdayConfig` TypeScript interface.
+   - Parse the variable using `parseEnvString`, `parseEnvBoolean`, `parseEnvNumber`, or `parseEnvList` with safe fallbacks.
+   - Include it in the `config` store object.
+3. **Component Consumption**: Consume `useBirthdayStore(state => state.config.<prop>)` in relevant React components.
+4. **Unit Testing**: Add test assertions in `src/test/` verifying fallback and hydration.
+5. **Documentation**: Document the variable, type, default, and purpose in `obsidian-docs/ENV_GUIDE.md` and `README.md`.
 
 ### 2. Build for Everyone
 
-Features should work across all relationship types — partner, friend, sibling, parent, grandparent, and more. Avoid relationship-specific hardcoding. Think in systems, not one-off implementations.
+Features should work across all relationship types — partner, friend, sibling, parent, grandparent, and more. Avoid relationship-specific hardcoding. Think in systems, not one-off implementations. For extending relationship templates, see [Template-System-Deep-Dive.md](https://github.com/naborajs/birthday-bloom/blob/main/obsidian-docs/Template-System-Deep-Dive.md).
 
 ### 3. Extend Existing Systems
 
