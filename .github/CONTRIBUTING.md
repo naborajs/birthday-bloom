@@ -36,7 +36,7 @@ We have created two animated walkthrough guides to help you contribute to Birthd
 ---
 
 > [!IMPORTANT]
-> **Before writing code:** Please read [architecture.md](https://github.com/naborajs/birthday-bloom/blob/main/docs/architecture.md) and [styleguide.md](https://github.com/naborajs/birthday-bloom/blob/main/docs/styleguide.md) to understand how the project is structured.
+> **Before writing code:** Please read [architecture.md](https://github.com/naborajs/birthday-bloom/blob/main/obsidian-docs/architecture.md) and [styleguide.md](https://github.com/naborajs/birthday-bloom/blob/main/obsidian-docs/styleguide.md) to understand how the project is structured.
 
 ---
 
@@ -71,7 +71,7 @@ VITE_BIRTHDAY_NAME=Priya
 const name = "Priya";
 ```
 
-New env variables should be added to `.env.example`, parsed in `useBirthdayStore.ts`, and documented in `docs/ENV_GUIDE.md`.
+New env variables should be added to `.env.example`, parsed in `useBirthdayStore.ts`, and documented in `obsidian-docs/ENV_GUIDE.md`.
 
 ### 2. Build for Everyone
 
@@ -145,7 +145,7 @@ perf/optimize-particle-render
 
 ### Coding Standards
 
-See [styleguide.md](../docs/styleguide.md) for detailed conventions. Key points:
+See [styleguide.md](../obsidian-docs/styleguide.md) for detailed conventions. Key points:
 
 - Components: PascalCase, one per file
 - Hooks: `use` prefix, camelCase
@@ -253,7 +253,7 @@ If your change affects:
 Welcome! Here's how to get started:
 
 1. **Find a `good first issue`** — these are labeled and scoped for newcomers
-2. **Read the [architecture.md](../docs/architecture.md)** to understand the codebase
+2. **Read the [architecture.md](../obsidian-docs/architecture.md)** to understand the codebase
 3. **Set up the project** using the [Development Setup](#development-setup) section
 4. **Ask questions** — comment on the issue if something is unclear
 5. **Submit a draft PR** — we'll help you polish it
