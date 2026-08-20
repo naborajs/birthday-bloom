@@ -51,7 +51,7 @@ gantt
 
 ### 🛠️ Completed Milestones
 * **✅ Standard Community Health Files**
-  * Established standard documentation including [CODE_OF_CONDUCT.md](file:///d:/Projects/Website/birthday-bloom-main/.github/CODE_OF_CONDUCT.md) for community guidelines, [SECURITY.md](file:///d:/Projects/Website/birthday-bloom-main/.github/SECURITY.md) for vulnerability reporting, and [SUPPORT.md](file:///d:/Projects/Website/birthday-bloom-main/.github/SUPPORT.md) for user assistance.
+  * Established standard documentation including [CODE_OF_CONDUCT.md](../.github/CODE_OF_CONDUCT.md) for community guidelines, [SECURITY.md](../.github/SECURITY.md) for vulnerability reporting, and [SUPPORT.md](../.github/SUPPORT.md) for user assistance.
 * **✅ Pull Request & Issue Templates**
   * Created custom YAML-driven templates for Bug Reports, Feature Requests, and Documentation requests, as well as a markdown Pull Request template.
 * **✅ Continuous Integration (CI) Automation**
@@ -59,7 +59,7 @@ gantt
 * **✅ Automated Dependency Management**
   * Added Dependabot configuration to track node package updates and automatically submit security PRs.
 * **✅ Redesigned Documentation Suite**
-  * Created deep-dive guides: [architecture.md](file:///d:/Projects/Website/birthday-bloom-main/docs/architecture.md), [env-configs.md](file:///d:/Projects/Website/birthday-bloom-main/docs/env-configs.md), [faq.md](file:///d:/Projects/Website/birthday-bloom-main/docs/faq.md), [CHANGELOG.md](file:///d:/Projects/Website/birthday-bloom-main/CHANGELOG.md), and a comprehensive [README.md](file:///d:/Projects/Website/birthday-bloom-main/README.md).
+  * Created deep-dive guides: [architecture.md](./architecture.md), [env-configs.md](./env-configs.md), [faq.md](./faq.md), [CHANGELOG.md](../CHANGELOG.md), and a comprehensive [README.md](../README.md).
 
 ### ⏳ Current Work-in-Progress
 * **🔄 Community Discussions Hub**
@@ -114,13 +114,13 @@ gantt
 
 We prioritize features that align with our core values:
 1. **Accessibility:** Lightweight, responsive, and working smoothly on all mobile devices.
-2. **Configuration-First:** Code adjustments are secondary to setting simple variables in [.env.example](file:///d:/Projects/Website/birthday-bloom-main/.env.example).
+2. **Configuration-First:** Code adjustments are secondary to setting simple variables in [.env.example](../.env.example).
 3. **No Bloat:** Refrain from importing large library dependencies that impact rendering performance.
 
 ### Want to influence the direction?
 * **Upvote:** Add a 👍 reaction to existing feature requests.
 * **Discuss:** Start a discussion thread to brainstorm new ideas.
-* **Submit:** Pull Requests are always welcome! Check [CONTRIBUTING.md](file:///d:/Projects/Website/birthday-bloom-main/.github/CONTRIBUTING.md) to get started.
+* **Submit:** Pull Requests are always welcome! Check [CONTRIBUTING.md](../.github/CONTRIBUTING.md) to get started.
 
 
 #obsidian #documentation #birthday-bloom #vault
