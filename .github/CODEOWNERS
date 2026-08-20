@@ -19,4 +19,3 @@ tsconfig*.json @naborajs
 
 # Deployment
 vercel.json @naborajs
-Dockerfile @naborajs
