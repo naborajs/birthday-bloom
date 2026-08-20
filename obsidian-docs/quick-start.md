@@ -11,7 +11,7 @@ Get Birthday Bloom running locally in 5 minutes.
 
 ## Prerequisites
 
-- Node.js 18+ ([.nvmrc](./.nvmrc): 20)
+- Node.js 18+ ([.nvmrc](../.nvmrc): 20)
 - npm 9+
 - Git (latest)
 
@@ -67,7 +67,7 @@ guardian, partner, boyfriend, girlfriend, custom
 ```
 
 > Most customizations can be completed without editing source code.
-> Check [[docs/ENV_GUIDE|ENV_GUIDE.md]] before modifying components.
+> Check [[ENV_GUIDE|ENV_GUIDE.md]] before modifying components.
 
 ### Using Docker (Optional)
 
@@ -157,7 +157,7 @@ VITE_SHOW_VIDEO_SECTION=true
 | `VITE_PASSWORD_HINT` | string | "" | Password hint text |
 | `VITE_PASSWORD_FORMAT` | enum | "MMDD" | Auto-generate password format |
 
-For the complete list of 40+ variables, see [[docs/ENV_GUIDE|ENV_GUIDE.md]].
+For the complete list of 40+ variables, see [[ENV_GUIDE|ENV_GUIDE.md]].
 
 **Restart the dev server** after making changes for them to take effect.
 
@@ -174,7 +174,7 @@ VITE_FAMILY_PREFERRED_NAME=Pri
 VITE_FAMILY_CLOSENESS=10
 ```
 
-The family system provides 15 content sections per template, covering personality, interests, memories, sibling bond, and more. For the full reference, see [[docs/family-system|family-system.md]].
+The family system provides 15 content sections per template, covering personality, interests, memories, sibling bond, and more. For the full reference, see [[family-system|family-system.md]].
 
 ---
 
@@ -208,7 +208,7 @@ npm run build
 npm run preview
 ```
 
-The `dist/` folder is ready to deploy to any static hosting (Vercel, Netlify, AWS S3, Docker). See the [[docs/deployment|Deployment Guide]] for platform-specific instructions.
+The `dist/` folder is ready to deploy to any static hosting (Vercel, Netlify, AWS S3, Docker). See the [[deployment|Deployment Guide]] for platform-specific instructions.
 
 ---
 
@@ -256,7 +256,7 @@ Verify URLs are public and correct. Check CORS headers on the image server. Test
 
 Modern browsers block autoplay until user interaction. Click the "Start" button to trigger playback. Verify `VITE_BGM_URL` is a valid audio URL.
 
-For more help, see the full [[docs/troubleshooting|Troubleshooting Guide]].
+For more help, see the full [[troubleshooting|Troubleshooting Guide]].
 
 ---
 
@@ -264,14 +264,14 @@ For more help, see the full [[docs/troubleshooting|Troubleshooting Guide]].
 
 | Guide | What It Covers |
 |---|---|
-| [[docs/ENV_GUIDE|ENV_GUIDE.md]] | All 40+ configuration options |
-| [[docs/deployment|Deployment Guide]] | Deploy to Vercel, Netlify, AWS, Docker |
-| [[docs/family-system|Family System]] | Brother, Sister, and custom family templates |
-| [[ARCHITECTURE|ARCHITECTURE.md]] | Codebase overview and project structure |
-| [[docs/developer-guide|Developer Guide]] | Component reference, API, and extension |
-| [[docs/troubleshooting|Troubleshooting Guide]] | Common issues and solutions |
-| [[FAQ|FAQ.md]] | Frequently asked questions |
-| [[docs/COMPLETE_SETUP_GUIDE|Complete Setup Guide]] | Full reference with data models and API docs |
+| [[ENV_GUIDE|ENV_GUIDE.md]] | All 40+ configuration options |
+| [[deployment|Deployment Guide]] | Deploy to Vercel, Netlify, AWS, Docker |
+| [[family-system|Family System]] | Brother, Sister, and custom family templates |
+| [[architecture|architecture.md]] | Codebase overview and project structure |
+| [[developer-guide|Developer Guide]] | Component reference, API, and extension |
+| [[troubleshooting|Troubleshooting Guide]] | Common issues and solutions |
+| [[faq|faq.md]] | Frequently asked questions |
+| [[DOCUMENTATION_INDEX|Documentation Index]] | Full documentation index and guides |
 
 
 #obsidian #documentation #birthday-bloom #vault
