@@ -31,7 +31,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://images.unsplash.com; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://images.unsplash.com; media-src 'self' data: blob: https://cdn.pixabay.com https://assets.mixkit.co https://www.soundjay.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://cdn.pixabay.com https://assets.mixkit.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
         }
       ]
     }
