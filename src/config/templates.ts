@@ -1,27 +1,3 @@
-export type Gender = "male" | "female" | "other";
-export type Relationship = "partner" | "friend" | "family" | "colleague" | "mentor";
-export type TemplateTheme = "romantic" | "fun" | "energetic" | "elegant" | "playful" | "nostalgic";
-export type AgeGroup = "teen" | "young-adult" | "adult" | "senior";
-export interface BirthdayConfig {
-    name: string;
-    age: number;
-    gender: Gender;
-    relationship: Relationship;
-    theme: TemplateTheme;
-    customMessage: string;
-    favoriteColor: string;
-    favoriteEmoji: string[];
-    photos: string[];
-    backgroundMusic?: string;
-    soundEffects: boolean;
-    animationIntensity: "low" | "medium" | "high";
-    particleEffects: boolean;
-    showSkipButton: boolean;
-    duration: "quick" | "normal" | "extended";
-    reducedMotion: boolean;
-    textSize: "small" | "normal" | "large";
-    highContrast: boolean;
-}
 export const EMOTIONAL_LETTERS = {
     partner: {
         male: (name: string) => `My King, My Strength, My Forever ${name},
