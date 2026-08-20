@@ -20,8 +20,10 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 | [[quick-start|quick-start.md]] | Get running in 5 minutes | 5 min |
 | [[ENV_GUIDE|ENV_GUIDE.md]] | Full env customization reference with 15+ recipes | 15 min |
 | [[architecture|architecture.md]] | System architecture overview | 10 min |
+| [[architecture-env|architecture-env.md]] | Environment variable lifecycle & store flow | 8 min |
 | [[developer-guide|developer-guide.md]] | Component API reference and extension patterns | 15 min |
 | [[family-system|family-system.md]] | Family template system | 10 min |
+| [[Template-System-Deep-Dive|Template-System-Deep-Dive.md]] | Deep dive & extension guide for relationship templates | 10 min |
 | [[template-architecture|template-architecture.md]] | Template and config architecture | 8 min |
 | [[troubleshooting|troubleshooting.md]] | Common issues and solutions | 10 min |
 | [[migration-guide|migration-guide.md]] | Version-by-version migration v1→v2→v3 | 8 min |
