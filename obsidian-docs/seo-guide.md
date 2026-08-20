@@ -9,7 +9,7 @@ aliases: [seo-guide]
 
 ### Sitemap Location
 ```
-https://birthday-bloom-by-naboraj.vercel.app/sitemap.xml
+https://birthday-bloom.vercel.app/sitemap.xml
 ```
 
 ### What's Included in Sitemap
@@ -34,7 +34,7 @@ https://birthday-bloom-by-naboraj.vercel.app/sitemap.xml
 
 ### File Location
 ```
-https://birthday-bloom-by-naboraj.vercel.app/robots.txt
+https://birthday-bloom.vercel.app/robots.txt
 ```
 
 ### Current Rules
@@ -97,7 +97,7 @@ Crawl-delay: 1 second
 <meta property="og:description" content="A premium cinematic birthday surprise experience with advanced physics-based animations and interactive storytelling." />
 <meta property="og:type" content="website" />
 <meta property="og:image" content="/favicon.png" />
-<meta property="og:url" content="https://birthday-bloom-by-naboraj.vercel.app" />
+<meta property="og:url" content="https://birthday-bloom.vercel.app" />
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
@@ -155,7 +155,7 @@ These tags are injected at runtime by the SEO utility in `src/config/seo.ts`, en
   "@type": "WebApplication",
   "name": "Birthday Bloom",
   "description": "Advanced Animated Birthday Website Generator",
-  "url": "https://birthday-bloom-by-naboraj.vercel.app",
+  "url": "https://birthday-bloom.vercel.app",
   "author": {
     "@type": "Person",
     "name": "Naboraj Sarkar"
@@ -202,7 +202,7 @@ We also use a `CreativeWork` schema to tell search engines this site is a person
 
 1. **Google PageSpeed Insights**
    - URL: https://pagespeed.web.dev
-   - Input: birthday-bloom-by-naboraj.vercel.app
+   - Input: birthday-bloom.vercel.app
 
 2. **Web Vitals Dashboard**
    - URL: https://web.dev/measure
@@ -220,7 +220,7 @@ We also use a `CreativeWork` schema to tell search engines this site is a person
 
 ```
 1. Visit: https://search.google.com/search-console
-2. Add property: birthday-bloom-by-naboraj.vercel.app
+2. Add property: birthday-bloom.vercel.app
 3. Verify ownership (DNS or file)
 4. Submit sitemap
 5. Monitor search analytics
@@ -257,9 +257,9 @@ We also use a `CreativeWork` schema to tell search engines this site is a person
 ### Current
 
 ```
-https://birthday-bloom-by-naboraj.vercel.app/
-https://birthday-bloom-by-naboraj.vercel.app/?template=romantic
-https://birthday-bloom-by-naboraj.vercel.app/?relationship=friend
+https://birthday-bloom.vercel.app/
+https://birthday-bloom.vercel.app/?template=romantic
+https://birthday-bloom.vercel.app/?relationship=friend
 ```
 
 ### Future (More SEO Friendly)
@@ -267,9 +267,9 @@ https://birthday-bloom-by-naboraj.vercel.app/?relationship=friend
 **Recommendation:** Add clean URL routes if needed in v3
 
 ```
-https://birthday-bloom-by-naboraj.vercel.app/
-https://birthday-bloom-by-naboraj.vercel.app/templates/romantic
-https://birthday-bloom-by-naboraj.vercel.app/celebrate/partner
+https://birthday-bloom.vercel.app/
+https://birthday-bloom.vercel.app/templates/romantic
+https://birthday-bloom.vercel.app/celebrate/partner
 ```
 
 **Benefits:**
@@ -389,10 +389,10 @@ Our sitemap and structured data are also optimized for AI crawlers such as ChatG
 
 ```bash
 # 1. Test robots.txt
-curl https://birthday-bloom-by-naboraj.vercel.app/robots.txt
+curl https://birthday-bloom.vercel.app/robots.txt
 
 # 2. Test sitemap.xml
-curl https://birthday-bloom-by-naboraj.vercel.app/sitemap.xml
+curl https://birthday-bloom.vercel.app/sitemap.xml
 
 # 3. Check meta tags
 # Open DevTools → View Page Source
@@ -485,7 +485,7 @@ Automatically enabled for all Vercel projects
 
 ## 📎 Cross-References
 
-- [Deployment Guide](docs/deployment.md) — Vercel deployment, environment setup, and CI/CD pipeline.
+- [Deployment Guide](./deployment.md) — Vercel deployment, environment setup, and CI/CD pipeline.
 
 ---
 
