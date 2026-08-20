@@ -3,7 +3,7 @@ tags: [index, home, overview]
 aliases: [DOCUMENTATION_INDEX]
 ---
 
-# Birthday Bloom v3.0 — Documentation Index
+# Birthday Bloom v3.1 — Documentation Index
 
 **Complete documentation guide for Birthday Bloom**, an env-first cinematic birthday surprise engine built with React, Framer Motion, and Tailwind CSS.
 
@@ -148,7 +148,7 @@ birthday-bloom/
 │   ├── SUPPORT.md           # Support and contact
 │   ├── PULL_REQUEST_POLICY.md# Pull request policy
 │   └── workflows/            # CI/CD automation
-├── docs/
+├── obsidian-docs/
 │   ├── DOCUMENTATION_INDEX.md  # This file
 │   ├── ENV_GUIDE.md            # Env customization reference
 │   ├── env-configs.md          # Env configuration recipes
