@@ -201,14 +201,14 @@ If you prefer a visual guide, click the thumbnail below to watch the complete st
 >
 > | Key (Environment Variable) | Example Value | What it controls |
 > | :--- | :--- | :--- |
-> | `VITE_USER_NAME` | `Sarah` | The name of the birthday person. |
-> | `VITE_BIRTHDAY_DATE` | `2026-07-25` | The birthday date in `YYYY-MM-DD` format (sets up the countdown). |
-> | `VITE_TITLE` | `Happy Birthday, Sarah! 🌸` | The text shown on the browser tab. |
-> | `VITE_CARD_TITLE_SURPRISE` | `A Special Gift for You!` | The main title on the final letter envelope. |
-> | `VITE_THEME_COLOR` | `#ff69b4` | The theme color (e.g. pink: `#ff69b4`, red: `#e11d48`, blue: `#2563eb`). |
+> | `VITE_BIRTHDAY_NAME` | `Sarah` | The name of the birthday person (skips setup wizard automatically). |
+> | `VITE_BIRTHDAY_DATE` | `2026-07-25` | The birthday date in `YYYY-MM-DD` format (sets up countdown & passcode). |
+> | `VITE_BIRTHDAY_RELATIONSHIP` | `friend` | Relationship type (`partner`, `friend`, `sister`, `brother`, `mother`, etc.). |
+> | `VITE_BIRTHDAY_CUSTOM_MESSAGE` | `Have the most wonderful birthday!` | Heartfelt custom message shown before the cake reveal. |
+> | `VITE_BIRTHDAY_COLOR` | `#FF6B6B` | Global theme color accent (e.g. coral: `#FF6B6B`, cyan: `#00C2FF`, gold: `#FFD700`). |
 >
 > > [!TIP]
-> > For a full list of all 20+ customizable items (like custom messages, photos, and music), check the [.env.example](./.env.example) configuration file or the [Environment Variables Guide](#-environment-variables--secret-configuration-guide) section below.
+> > For a full list of all 30+ customizable items (photos, music, videos, animations, and family templates), check the [.env.example](./.env.example) configuration file or the [Environment Variables Guide](#-environment-variables--secret-configuration-guide) section below.
 
 ---
 
