@@ -2,12 +2,17 @@ import { motion } from "framer-motion";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { Heart, Stars, Video, Sparkles, Camera } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { getYouTubeEmbedUrl } from "@/lib/utils";
 
 export const FinalSurprise = () => {
     const { config } = useBirthdayStore();
     const isMobile = useIsMobile();
     const memories = config.specialMemories || [];
     const primaryColor = config.favoriteColor || "#ff0080";
+    const finalVideoEmbed = config.finalVideoUrl ? getYouTubeEmbedUrl(config.finalVideoUrl) : "";
+    const finalVideoSrc = finalVideoEmbed.includes("youtube.com/embed")
+        ? `${finalVideoEmbed}?autoplay=0&controls=1&rel=0`
+        : finalVideoEmbed;
     return (<section className="relative z-20 py-32 px-4 overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-20">
@@ -37,7 +42,7 @@ export const FinalSurprise = () => {
         
         {config.finalVideoUrl && (<motion.div initial={{ opacity: 0, scale: isMobile ? 1 : 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className={isMobile ? "relative max-w-4xl mx-auto rounded-[2rem] overflow-hidden border border-white/20 shadow-[0_0_80px_-20px_var(--color-primary)] bg-black/70 backdrop-blur-xl" : "relative max-w-4xl mx-auto rounded-[3rem] overflow-hidden border border-white/20 shadow-[0_0_100px_-20px_var(--color-primary)] bg-black/40 backdrop-blur-3xl"}>
             <div className="aspect-video w-full">
-              <iframe src={config.finalVideoUrl.includes('youtube.com') ? `${config.finalVideoUrl}?autoplay=0&controls=1&rel=0` : config.finalVideoUrl} loading="lazy" className="w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen/>
+              <iframe src={finalVideoSrc} loading="lazy" className="w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title="Final Surprise Video"/>
             </div>
             <div className="p-10 text-center bg-gradient-to-t from-black/80 to-transparent">
               <h4 className="font-display text-2xl md:text-4xl font-black mb-4">The Final Surprise 🎬</h4>
