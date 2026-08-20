@@ -64,7 +64,8 @@ const CakeCard = ({ cake, onSelect }: {
 export const CakeCutting = () => {
     const isMobile = useIsMobile();
     const prefersReducedMotion = useReducedMotion();
-    const reducedMotion = Boolean(prefersReducedMotion || isMobile);
+    const storeReducedMotion = useBirthdayStore(state => state.config.reducedMotion);
+    const reducedMotion = Boolean(storeReducedMotion || prefersReducedMotion || isMobile);
     const [phase, setPhase] = useState<Phase>("select");
     const [selectedCake, setSelectedCake] = useState<CakeOption | null>(null);
     const [quoteIndex, setQuoteIndex] = useState(-1);
