@@ -26,11 +26,11 @@ Yes. Birthday Bloom is MIT-licensed. Free to use, modify, and distribute.
 
 ### How do I change the birthday person's name?
 Set `VITE_BIRTHDAY_NAME` in `.env.local` or your hosting dashboard. No code edits needed.
-See the [[docs/ENV_GUIDE|ENV_GUIDE.md]].
+See the [[ENV_GUIDE|ENV_GUIDE.md]].
 
 ### How do I add my own photos?
 Set `VITE_PHOTO_1`, `VITE_PHOTO_2`, `VITE_PHOTO_3` (or use `VITE_PHOTOS` for unlimited)
-with direct image URLs. See the [Photos section in ENV_GUIDE.md](./docs/ENV_GUIDE.md#photos).
+with direct image URLs. See the [Photos section in ENV_GUIDE.md](./ENV_GUIDE.md#photos).
 
 ### How do I change the theme/color?
 Set `VITE_BIRTHDAY_COLOR` to any hex code and optionally `VITE_THEME` to
@@ -38,7 +38,7 @@ Set `VITE_BIRTHDAY_COLOR` to any hex code and optionally `VITE_THEME` to
 
 ### How do I hide sections I don't want?
 Use the `VITE_SHOW_*_SECTION` variables. Set any to `false` to hide that section.
-See [Sections in ENV_GUIDE.md](./docs/ENV_GUIDE.md#sections).
+See [Sections in ENV_GUIDE.md](./ENV_GUIDE.md#sections).
 
 ### How do I make it accessible for older users?
 Set `VITE_TEXT_SIZE=large`, `VITE_REDUCED_MOTION=true`,
@@ -80,7 +80,7 @@ npm run preview
 3. Add environment variables in Vercel dashboard
 4. Deploy
 
-See the [[docs/deployment|Deployment Guide]].
+See the [[deployment|Deployment Guide]].
 
 ### Environment variables work locally but not on Vercel?
 You must add them in the Vercel project dashboard under Settings → Environment Variables.
