@@ -48,7 +48,7 @@ You should read this if:
 
 ### 1. Family Templates System
 
-The family system is a registry-driven architecture in `src/features/core/models/familyTemplates.ts`. It keeps Brother and Sister support and adds Father, Mother, Grandfather, Grandmother, Uncle, Aunt, Cousin, Son, Daughter, Guardian, Friend, and Custom profiles. See [[family-system|docs/family-system.md]] and [[template-architecture|docs/template-architecture.md]].
+The family system is a registry-driven architecture in `src/features/core/models/familyTemplates.ts`. It keeps Brother and Sister support and adds Father, Mother, Grandfather, Grandmother, Uncle, Aunt, Cousin, Son, Daughter, Guardian, Friend, and Custom profiles. See [[family-system|family-system.md]] and [[template-architecture|template-architecture.md]].
 
 **Brother Template** - 15 comprehensive sections: Basic Info, Identity, Personality, Interests, Skills, Appearance, Contact, Sibling Bond, Dreams, Achievements, Media, Important Dates, Personal Notes, Preferences, Future Plans. Specialized fields include Closeness Level (1-10), Shared Memories, Childhood Recollections.
 
@@ -600,16 +600,14 @@ The following documentation files provide additional context for migration:
 
 | Document | Purpose |
 |---|---|
-| [[ENV_GUIDE|docs/ENV_GUIDE.md]] | Full environment variable reference, all 40+ options |
-| [[family-system|docs/family-system.md]] | Family template system architecture and usage |
-| [[template-architecture|docs/template-architecture.md]] | Template system internals and customization |
-| [[developer-guide|docs/developer-guide.md]] | Development setup, contributing, and architecture |
-| [[API_REFERENCE|docs/API_REFERENCE.md]] | Complete API reference for stores, components, utilities |
-| [[COMPLETE_SETUP_GUIDE|docs/COMPLETE_SETUP_GUIDE.md]] | Full setup guide with configuration examples |
-| [[./QUICK_START|QUICK_START.md]] | 5-minute quick start guide |
+| [[ENV_GUIDE|ENV_GUIDE.md]] | Full environment variable reference, all 40+ options |
+| [[family-system|family-system.md]] | Family template system architecture and usage |
+| [[template-architecture|template-architecture.md]] | Template system internals and customization |
+| [[developer-guide|developer-guide.md]] | Development setup, contributing, and architecture |
+| [[quick-start|quick-start.md]] | 5-minute quick start guide |
 | [[./CHANGELOG|CHANGELOG.md]] | Full version history and release notes |
-| [[UPGRADE_SUMMARY|docs/UPGRADE_SUMMARY.md]] | Detailed v3 upgrade summary |
-| [[v2-upgrade-guide|docs/v2-upgrade-guide.md]] | Original v2 upgrade guide |
+| [[upgrade-summary|upgrade-summary.md]] | Detailed upgrade summary |
+| [[DOCUMENTATION_INDEX|DOCUMENTATION_INDEX.md]] | Documentation index and vault navigation |
 
 ---
 
@@ -656,16 +654,14 @@ Q3 2026 planned features:
 
 ## See Also
 
-- [[ENV_GUIDE|docs/ENV_GUIDE.md]] -- Full env variable reference
-- [[family-system|docs/family-system.md]] -- Family template system
-- [[template-architecture|docs/template-architecture.md]] -- Template architecture
-- [[developer-guide|docs/developer-guide.md]] -- Developer guide
-- [[./QUICK_START|QUICK_START.md]] -- Quick start
+- [[ENV_GUIDE|ENV_GUIDE.md]] -- Full env variable reference
+- [[family-system|family-system.md]] -- Family template system
+- [[template-architecture|template-architecture.md]] -- Template architecture
+- [[developer-guide|developer-guide.md]] -- Developer guide
+- [[quick-start|quick-start.md]] -- Quick start
 - [[./CHANGELOG|CHANGELOG.md]] -- Full changelog
-- [[UPGRADE_SUMMARY|UPGRADE_SUMMARY.md]] -- Detailed v3 upgrade info
-- [[v2-upgrade-guide|docs/v2-upgrade-guide.md]] -- Original v2 upgrade guide
-- [[API_REFERENCE|docs/API_REFERENCE.md]] -- Complete API reference
-- [[COMPLETE_SETUP_GUIDE|docs/COMPLETE_SETUP_GUIDE.md]] -- Full setup guide
+- [[upgrade-summary|upgrade-summary.md]] -- Detailed upgrade info
+- [[DOCUMENTATION_INDEX|DOCUMENTATION_INDEX.md]] -- Documentation index
 
 
 #obsidian #documentation #birthday-bloom #vault
