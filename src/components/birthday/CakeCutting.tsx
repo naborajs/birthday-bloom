@@ -6,7 +6,7 @@ import { useSoundManager } from "./SoundManager";
 import { KineticText } from "./KineticText";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 import { Phase, CakeOption, CAKE_OPTIONS } from "./CakeTypes";
 import { CutSparks, MagicDust } from "./CakeVisuals";
@@ -63,6 +63,8 @@ const CakeCard = ({ cake, onSelect }: {
 
 export const CakeCutting = () => {
     const isMobile = useIsMobile();
+    const prefersReducedMotion = useReducedMotion();
+    const reducedMotion = Boolean(prefersReducedMotion || isMobile);
     const [phase, setPhase] = useState<Phase>("select");
     const [selectedCake, setSelectedCake] = useState<CakeOption | null>(null);
     const [quoteIndex, setQuoteIndex] = useState(-1);
@@ -307,7 +309,7 @@ export const CakeCutting = () => {
                                             </h2>
                                             {phase === "blow-intro" && (
                                                 <motion.button 
-                                                    whileHover={!lowMotion ? { scale: 1.1 } : undefined} 
+                                                    whileHover={!reducedMotion ? { scale: 1.1 } : undefined} 
                                                     whileTap={{ scale: 0.9 }} 
                                                     onClick={handleBlow} 
                                                     className="group relative px-12 py-5 rounded-full text-xl font-black text-white overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.2)]" 
