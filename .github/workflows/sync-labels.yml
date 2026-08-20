@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - '.github/workflows/sync-labels.yml'
+      - '.github/automation.config.json'
   workflow_dispatch:
 
 permissions:
