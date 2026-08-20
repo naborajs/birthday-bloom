@@ -5,7 +5,7 @@
   
   <!-- Main Application -->
   <url>
-    <loc>https://birthday-bloom-by-naboraj.vercel.app/</loc>
+    <loc>https://birthday-bloom.vercel.app/</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -14,7 +14,7 @@
 
   <!-- Birthday Celebration Pages (Dynamic) -->
   <url>
-    <loc>https://birthday-bloom-by-naboraj.vercel.app/?template=romantic</loc>
+    <loc>https://birthday-bloom.vercel.app/?template=romantic</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -22,7 +22,7 @@
   </url>
 
   <url>
-    <loc>https://birthday-bloom-by-naboraj.vercel.app/?template=fun</loc>
+    <loc>https://birthday-bloom.vercel.app/?template=fun</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -30,7 +30,7 @@
   </url>
 
   <url>
-    <loc>https://birthday-bloom-by-naboraj.vercel.app/?template=energetic</loc>
+    <loc>https://birthday-bloom.vercel.app/?template=energetic</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -38,7 +38,7 @@
   </url>
 
   <url>
-    <loc>https://birthday-bloom-by-naboraj.vercel.app/?template=elegant</loc>
+    <loc>https://birthday-bloom.vercel.app/?template=elegant</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -46,7 +46,7 @@
   </url>
 
   <url>
-    <loc>https://birthday-bloom-by-naboraj.vercel.app/?template=playful</loc>
+    <loc>https://birthday-bloom.vercel.app/?template=playful</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -54,7 +54,7 @@
   </url>
 
   <url>
-    <loc>https://birthday-bloom-by-naboraj.vercel.app/?template=nostalgic</loc>
+    <loc>https://birthday-bloom.vercel.app/?template=nostalgic</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -63,7 +63,7 @@
 
   <!-- Partner Birthday -->
   <url>
-    <loc>https://birthday-bloom-by-naboraj.vercel.app/?relationship=partner</loc>
+    <loc>https://birthday-bloom.vercel.app/?relationship=partner</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
@@ -72,7 +72,7 @@
 
   <!-- Friend Birthday -->
   <url>
-    <loc>https://birthday-bloom-by-naboraj.vercel.app/?relationship=friend</loc>
+    <loc>https://birthday-bloom.vercel.app/?relationship=friend</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
@@ -81,7 +81,7 @@
 
   <!-- Family Birthday -->
   <url>
-    <loc>https://birthday-bloom-by-naboraj.vercel.app/?relationship=family</loc>
+    <loc>https://birthday-bloom.vercel.app/?relationship=family</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
