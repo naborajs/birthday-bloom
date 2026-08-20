@@ -91,7 +91,7 @@ aliases: [implementation-summary]
    ├── Testing Recommendations
    └── Roadmap for v3.1
 
-✅ docs/DOCUMENTATION_INDEX.md (300+ lines)
+✅ obsidian-docs/DOCUMENTATION_INDEX.md (300+ lines)
    ├── Quick Navigation (5 main docs)
    ├── Documentation by Use Case (8 scenarios)
    ├── File Organization
@@ -403,22 +403,22 @@ Current setup will continue working as-is.
 ## Next Steps
 
 ### For Developers
-1. **Read**: [[docs/COMPLETE_SETUP_GUIDE|COMPLETE_SETUP_GUIDE.md]]
-2. **Reference**: [[docs/API_REFERENCE|API_REFERENCE.md]]
-3. **Explore**: [config.example.ts](./src/config.example.ts)
+1. **Read**: [[quick-start|quick-start.md]]
+2. **Reference**: [[developer-guide|developer-guide.md]]
+3. **Explore**: [.env.example](../.env.example)
 4. **Implement**: Use family templates or advanced config
-5. **Deploy**: Follow [[docs/deployment|deployment.md]]
+5. **Deploy**: Follow [[deployment|deployment.md]]
 
 ### For Designers
-1. **Customize**: Use [[docs/COMPLETE_SETUP_GUIDE|COMPLETE_SETUP_GUIDE.md]] - Customization section
+1. **Customize**: Use [[ENV_GUIDE|ENV_GUIDE.md]] - Customization section
 2. **Theme**: Explore theme options and color palettes
 3. **Test**: Deploy and gather feedback
 
 ### For Deployment Teams
-1. **Review**: [[docs/deployment|deployment.md]]
-2. **Choose Platform**: [[docs/hosting-solutions|hosting-solutions.md]]
+1. **Review**: [[deployment|deployment.md]]
+2. **Choose Platform**: [[deployment|deployment.md]] (Vercel, Netlify, Docker)
 3. **Configure**: Set environment variables
-4. **Test**: Use [[docs/deployment-testing|deployment-testing.md]]
+4. **Test**: Use [[troubleshooting|troubleshooting.md]]
 5. **Deploy**: Follow provider-specific guides
 
 ---
@@ -456,9 +456,9 @@ Current setup will continue working as-is.
 ## Support & Community
 
 ### Documentation
-- 📖 [[docs/COMPLETE_SETUP_GUIDE|COMPLETE_SETUP_GUIDE.md]] - Main guide
-- 📚 [[docs/API_REFERENCE|API_REFERENCE.md]] - API docs
-- 📋 [[docs/DOCUMENTATION_INDEX|DOCUMENTATION_INDEX.md]] - Navigation
+- 📖 [[quick-start|quick-start.md]] - Quick start guide
+- 📚 [[developer-guide|developer-guide.md]] - Developer & API docs
+- 📋 [[DOCUMENTATION_INDEX|DOCUMENTATION_INDEX.md]] - Navigation
 
 ### Help
 - 🐛 [GitHub Issues](https://github.com/naborajs/birthday-bloom/issues)
