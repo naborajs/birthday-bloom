@@ -13,4 +13,4 @@ To empower users with the ability to create 1%-tier premium birthday websites wi
 - **Cake Phases**: managed in `CakeCutting.tsx` (Select -> Blow -> Wish -> Cut).
 - **Styles**: Custom HSL tokens in `tailwind.config.ts`.
 
-Refer to `/docs/` for deeper granular information on specific components.
+Refer to '/obsidian-docs/' for deeper granular information on specific components.
