@@ -1,6 +1,6 @@
-const fs = require('fs');
-const path = require('path');
-const ts = require('typescript');
+import fs from 'fs';
+import path from 'path';
+import ts from 'typescript';
 
 const walk = (dir) => {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
