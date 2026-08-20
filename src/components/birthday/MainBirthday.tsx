@@ -365,7 +365,7 @@ export const MainBirthday = () => {
 
       <footer className="relative z-20 text-center py-20 bg-black/40 w-full">
         <p className="mt-4 text-white/10 text-[10px] tracking-[0.5em] uppercase">
-          Crafted by NABORAJ SARKAR — Cinematic Engine v2.5
+          Crafted by NABORAJ SARKAR — Cinematic Engine v3.1
         </p>
       </footer>
     </div>);
