@@ -263,7 +263,7 @@ src/components/
 
 ### Documentation
 ```
-docs/
+obsidian-docs/
 ├── v2-upgrade-guide.md        (Feature guide)
 ├── mobile-deployment.md       (Mobile & hosting)
 ├── configuration-examples.md  (Config templates)
@@ -642,7 +642,7 @@ Time to Market: Ready Now ✅
 
 The website is ready to go live at:
 
-**https://birthday-bloom-by-naboraj.vercel.app/**
+**https://birthday-bloom.vercel.app/**
 
 Choose your deployment method from:
 - Vercel (recommended)
@@ -651,7 +651,7 @@ Choose your deployment method from:
 - AWS
 - Docker/Self-hosted
 
-See `docs/deployment-testing.md` for complete instructions.
+See [[deployment|deployment.md]] for complete instructions.
 
 ---
 
