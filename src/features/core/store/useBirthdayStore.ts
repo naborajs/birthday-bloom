@@ -110,7 +110,7 @@ const parseEnvJson = <T>(value: unknown): T | null => {
         return null;
     }
 };
-const envName = parseEnvString(import.meta.env.VITE_BIRTHDAY_NAME);
+const envName = parseEnvString(import.meta.env.VITE_BIRTHDAY_NAME, import.meta.env.VITE_USER_NAME);
 const rawRel = (import.meta.env.VITE_BIRTHDAY_RELATIONSHIP || '').toLowerCase();
 const envRelationship: RelationshipType = rawRel.includes('partner') || rawRel.includes('love') ? 'partner' :
     rawRel.includes('friend') || rawRel.includes('bestie') ? 'friend' :
@@ -130,7 +130,7 @@ const envRelationship: RelationshipType = rawRel.includes('partner') || rawRel.i
                                                             rawRel.includes('colleague') || rawRel.includes('work') ? 'colleague' :
                                                                 rawRel.includes('mentor') || rawRel.includes('teacher') ? 'mentor' :
                                                                     'family';
-const envColor = parseEnvString(import.meta.env.VITE_BIRTHDAY_COLOR, import.meta.env.VITE_FAVORITE_COLOR) || '#FF6B6B';
+const envColor = parseEnvString(import.meta.env.VITE_BIRTHDAY_COLOR, import.meta.env.VITE_THEME_COLOR, import.meta.env.VITE_FAVORITE_COLOR) || '#FF6B6B';
 const envMessage = parseEnvString(import.meta.env.VITE_BIRTHDAY_CUSTOM_MESSAGE, import.meta.env.VITE_CUSTOM_MESSAGE);
 const envSenderName = parseEnvString(import.meta.env.VITE_BIRTHDAY_WISHER_NAME, import.meta.env.VITE_WISHER_NAME);
 const envAge = parseEnvNumber(import.meta.env.VITE_BIRTHDAY_AGE, null);
@@ -161,7 +161,7 @@ const envVideos = [
     import.meta.env.VITE_VIDEO_2,
     import.meta.env.VITE_VIDEO_3,
 ].map(parseEnvString).filter(Boolean) as string[];
-const envLetterTitle = parseEnvString(import.meta.env.VITE_BIRTHDAY_LETTER_TITLE);
+const envLetterTitle = parseEnvString(import.meta.env.VITE_BIRTHDAY_LETTER_TITLE, import.meta.env.VITE_CARD_TITLE_SURPRISE);
 const envLetterOverride = parseEnvString(import.meta.env.VITE_BIRTHDAY_LETTER_OVERRIDE).replace(/\\n/g, '\n');
 const envShowCake = parseEnvBoolean(import.meta.env.VITE_SHOW_CAKE_SECTION, true);
 const envShowPhotos = parseEnvBoolean(import.meta.env.VITE_SHOW_PHOTO_SECTION ?? import.meta.env.VITE_SHOW_PHOTOS_SECTION, true);
