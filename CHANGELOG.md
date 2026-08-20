@@ -5,27 +5,28 @@ All notable changes to Birthday Bloom are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [3.1.0] — 2026-08-20
 
 ### Added
-- Repository open-source upgrade: community health files, CI, issue templates, PR template
-- CODE_OF_CONDUCT, SECURITY, SUPPORT, CHANGELOG, ROADMAP, STYLEGUIDE, FAQ, ARCHITECTURE docs
-- GitHub Actions CI workflow (lint, typecheck, build, test)
-- Issue templates: bug report, feature request, docs improvement, performance, question
-- Pull request template with contributor checklist
-- Dependabot configuration for npm and GitHub Actions
-
-### Fixed
-- Resolved all strict TypeScript errors regarding implicit `any` types in main.tsx, chart.tsx, Cake3D.tsx, and CakeVisuals.tsx
-- Fixed React hooks exhaustive-deps warning in HeartTree component
-- Removed ambiguous Tailwind class to resolve build warnings
-- Configured ESLint to appropriately ignore `react-refresh/only-export-components` for UI components
+- Complete codebase audit, dead code cleanup, and toolchain modernization.
+- Empirical test suite for theme variables, error boundaries, SPA routing, and import integrity.
+- Persistent audit state tracking and verification logs.
 
 ### Changed
-- README restructured for clarity: slimmed down, better navigation, removed duplication
-- CONTRIBUTING.md improved with clearer workflows
-- Package name updated to `birthday-bloom`
-- Docs reorganization and internal linking improvements
+- Modernized Vite configuration to use `import.meta.dirname`.
+- Upgraded GitHub Actions workflows (`ci.yml`, `sync-labels.yml`, `repo-health.yml`) to supported action versions (`actions/checkout@v4`, `actions/setup-node@v4`, `actions/github-script@v7`).
+- Updated TypeScript configuration deprecations (`baseUrl`).
+- Modernized ESLint configuration with comprehensive `@typescript-eslint/no-unused-vars` rules.
+
+### Removed
+- Pruned orphaned and unused UI components (`toggle.tsx`, `toggle-group.tsx`, `toast.tsx`, `toaster.tsx`, `use-toast.ts`, `NavLink.tsx`).
+- Pruned obsolete services and utilities (`audioSystem.ts`, `responsiveUtils.ts`, `config.example.ts`, `dataModels.ts`).
+
+### Fixed
+- Resolved all dependency audit vulnerabilities (0 vulnerabilities reported by `npm audit`).
+- Fixed `useReducedMotion` and `useIsMobile` reference handling in `CakeCutting.tsx`.
+- Fixed React Router SPA Link navigation in `NotFound.tsx`.
+- Prevented production error stack trace leaks in `ErrorBoundary.tsx`.
 
 ## [3.0.0] — 2026-05-22
 
