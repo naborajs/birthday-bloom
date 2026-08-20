@@ -40,6 +40,9 @@ export interface BirthdayConfig {
         image?: string;
     }[];
     familyProfile?: FamilyMemberProfile;
+    reducedMotion?: boolean;
+    showSkipButton?: boolean;
+    soundEffectsEnabled?: boolean;
     password?: string;
     passwordHint?: string;
     passwordFormat?: string;
@@ -167,6 +170,13 @@ const envShowHeartTree = parseEnvBoolean(import.meta.env.VITE_SHOW_HEART_TREE_SE
 const envShowVideo = parseEnvBoolean(import.meta.env.VITE_SHOW_VIDEO_SECTION, true);
 const envShowFinalSurprise = parseEnvBoolean(import.meta.env.VITE_SHOW_FINAL_SURPRISE, true);
 const envShowGift = parseEnvBoolean(import.meta.env.VITE_SHOW_GIFT_SECTION, true);
+const envShowSkipButton = parseEnvBoolean(import.meta.env.VITE_SHOW_SKIP_BUTTON, true);
+const envReducedMotion = import.meta.env.VITE_REDUCED_MOTION !== undefined
+    ? parseEnvBoolean(import.meta.env.VITE_REDUCED_MOTION, false)
+    : undefined;
+const envSoundEffects = import.meta.env.VITE_SOUND_EFFECTS !== undefined
+    ? parseEnvBoolean(import.meta.env.VITE_SOUND_EFFECTS, true)
+    : true;
 const envFinalVideo = parseEnvString(import.meta.env.VITE_FINAL_VIDEO_URL);
 const envMemories = import.meta.env.VITE_SPECIAL_MEMORIES
     ? String(import.meta.env.VITE_SPECIAL_MEMORIES).split('|').map((m: string) => {
@@ -254,6 +264,9 @@ export const useBirthdayStore = create<BirthdayStore>((set, get) => ({
         showVideoSection: envShowVideo,
         showFinalSurprise: envShowFinalSurprise,
         showGiftSection: envShowGift,
+        showSkipButton: envShowSkipButton,
+        reducedMotion: envReducedMotion,
+        soundEffectsEnabled: envSoundEffects,
         finalVideoUrl: envFinalVideo,
         specialMemories: envMemories,
         familyProfile: envFamilyProfile,
