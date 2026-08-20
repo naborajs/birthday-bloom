@@ -27,10 +27,10 @@
 ## Milestones
 | # | Name | Scope | Dependencies | Status |
 |---|------|-------|-------------|--------|
-| M1 | Dependency Modernization & Toolchain Fixes | Resolve lockfile merge conflict, upgrade vulnerable packages, fix ESLint & TypeScript configs, resolve Vite warnings, verify clean build/lint/test | none | IN_PROGRESS |
-| M2 | Systematic Source Code Audit & Dead Code/Bug Fixes | Audit all source files under `src/`, prune unused components/utilities, clean dead code/states, fix runtime bugs and CSS issues with per-file immediate commits | M1 | PLANNED |
-| M3 | CI/CD Workflows, Docs & Cross-File Consistency | Fix GitHub workflows, update documentation links, synchronize version numbers, URLs, and metadata across all configs | M2 | PLANNED |
-| M4 | Final E2E Build, Test Verification & Summary Report | Run full verification suite across all commands, write comprehensive changelog/summary report file-by-file with reasoning | M3 | PLANNED |
+| M1 | Dependency Modernization & Toolchain Fixes | Resolve lockfile merge conflict, upgrade vulnerable packages, fix ESLint & TypeScript configs, resolve Vite warnings, verify clean build/lint/test | none | DONE |
+| M2 | Systematic Source Code Audit & Dead Code/Bug Fixes | Audit all source files under `src/`, prune unused components/utilities, clean dead code/states, fix runtime bugs and CSS issues with per-file immediate commits | M1 | DONE |
+| M3 | CI/CD Workflows, Docs & Cross-File Consistency | Fix GitHub workflows, update documentation links, synchronize version numbers, URLs, and metadata across all configs | M2 | DONE |
+| M4 | Final E2E Build, Test Verification & Summary Report | Run full verification suite across all commands, write comprehensive changelog/summary report file-by-file with reasoning | M3 | IN_PROGRESS |
 
 ## Interface Contracts & Rules
 1. **Commit Rule**: Every single file modification must be immediately committed and pushed before proceeding to the next file (e.g. `git commit -m "fix(module): clear description" && git push`).
