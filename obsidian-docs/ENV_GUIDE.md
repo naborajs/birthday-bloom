@@ -298,7 +298,7 @@ const profile = createDefaultSisterProfile("Priya", new Date('2000-07-22'));
 profile.relationshipDynamics.bondStrength = 10;
 ```
 
-See `src/features/core/models/dataModels.ts` for `ConfigValidator` (validate, sanitize, mergeWithDefaults) and `DataValidator` (isValidEmail, isValidHexColor, isValidPhoneNumber).
+See `src/features/core/models/familyTemplates.ts` for family template factory functions and helper utilities.
 
 ---
 
@@ -862,20 +862,19 @@ All `VITE_` values are public in the browser bundle. Do not store actual passwor
 
 ## See Also
 
-- [[./QUICK_START|QUICK_START.md]] — Quick start
-- [[developer-guide|docs/developer-guide.md]] — Adding new env variables
-- [[family-system|docs/family-system.md]] — Family profile configuration
-- [[template-architecture|docs/template-architecture.md]] — Template system
-- [[troubleshooting|docs/troubleshooting.md]] — Troubleshooting guide
-- [[deployment|docs/deployment.md]] — Deployment guide
-- [[configuration-examples|docs/configuration-examples.md]] — Pre-built configs
+- [[quick-start|quick-start.md]] — Quick start
+- [[developer-guide|developer-guide.md]] — Adding new env variables
+- [[family-system|family-system.md]] — Family profile configuration
+- [[template-architecture|template-architecture.md]] — Template system
+- [[troubleshooting|troubleshooting.md]] — Troubleshooting guide
+- [[deployment|deployment.md]] — Deployment guide
+- [[env-configs|env-configs.md]] — Pre-built configs
 - [src/features/core/store/useBirthdayStore.ts](../src/features/core/store/useBirthdayStore.ts) — Env parsing logic
 - [src/config/birthday.ts](../src/config/birthday.ts) — Audio defaults and fallback config
 - [src/utils/password.ts](../src/utils/password.ts) — Password generation logic
 - [src/components/birthday/CinematicIntro.tsx](../src/components/birthday/CinematicIntro.tsx) — Intro script customization
 - [src/components/birthday/CakeCutting.tsx](../src/components/birthday/CakeCutting.tsx) — Cake options customization
 - [src/features/core/models/familyTemplates.ts](../src/features/core/models/familyTemplates.ts) — Family profile factory functions
-- [src/features/core/models/dataModels.ts](../src/features/core/models/dataModels.ts) — ConfigValidator and DataValidator
 
 
 #obsidian #documentation #birthday-bloom #vault
