@@ -1,5 +1,11 @@
 import { create } from 'zustand';
-import { createFamilyMemberProfile, type FamilyMemberProfile, type FamilyMemberType, } from '../models/familyTemplates';
+import {
+    createFamilyMemberProfile,
+    type FamilyMemberProfile,
+    type FamilyMemberType,
+    type RelationshipMetadata,
+    type PrivacyLevel,
+} from '../models/familyTemplates';
 export type RelationshipType = 'partner' | 'friend' | 'family' | 'sibling' | 'brother' | 'sister' | 'father' | 'mother' | 'grandfather' | 'grandmother' | 'uncle' | 'aunt' | 'cousin' | 'son' | 'daughter' | 'guardian' | 'colleague' | 'mentor';
 export type GenderType = 'male' | 'female' | 'other';
 export interface BirthdayConfig {
@@ -192,6 +198,18 @@ const validFamilyTypes: FamilyMemberType[] = [
     'friend',
     'custom',
 ];
+const envFamilySideRaw = parseEnvString(import.meta.env.VITE_FAMILY_SIDE).toLowerCase();
+const envFamilySide: RelationshipMetadata['familySide'] =
+    envFamilySideRaw === 'maternal' || envFamilySideRaw === 'paternal' || envFamilySideRaw === 'both' || envFamilySideRaw === 'chosen' || envFamilySideRaw === 'unknown'
+        ? envFamilySideRaw
+        : undefined;
+
+const envPrivacyRaw = parseEnvString(import.meta.env.VITE_FAMILY_PRIVACY).toLowerCase();
+const envPrivacyLevel: PrivacyLevel =
+    envPrivacyRaw === 'public' || envPrivacyRaw === 'private'
+        ? envPrivacyRaw
+        : 'family';
+
 const envFamilyProfile = envFamilyProfileJson ??
     (validFamilyTypes.includes(envFamilyType)
         ? createFamilyMemberProfile(envFamilyType, envName || 'Family Member', envDate ?? undefined, {
@@ -201,10 +219,10 @@ const envFamilyProfile = envFamilyProfileJson ??
                 relationshipLabel: parseEnvString(import.meta.env.VITE_FAMILY_RELATIONSHIP_LABEL) || undefined,
                 closenessLevel: (parseEnvNumber(import.meta.env.VITE_FAMILY_CLOSENESS, 7) || 7) as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10,
                 yearsKnown: parseEnvNumber(import.meta.env.VITE_FAMILY_YEARS_KNOWN, undefined) ?? undefined,
-                familySide: parseEnvString(import.meta.env.VITE_FAMILY_SIDE) as never,
+                familySide: envFamilySide,
             },
             privacy: {
-                defaultLevel: (parseEnvString(import.meta.env.VITE_FAMILY_PRIVACY) || 'family') as never,
+                defaultLevel: envPrivacyLevel,
                 allowExport: parseEnvBoolean(import.meta.env.VITE_FAMILY_ALLOW_EXPORT, true),
             },
         })
