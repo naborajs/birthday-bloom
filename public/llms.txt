@@ -11,7 +11,7 @@ To provide a premium (1%-tier) cinematic, interactive birthday landing page that
 
 ## 🛠 2. TECH STACK & SPECIFICATIONS
 * **Framework:** React 18 (Concurrent Mode, client-side rendering)
-* **Build System:** Vite 5 (Hot Module Replacement enabled)
+* **Build System:** Vite 8 (Hot Module Replacement enabled)
 * **Styling:** Tailwind CSS 3.4 + Custom HSL CSS Custom Properties (for dynamic theme injection)
 * **Animation:** Framer Motion 12+ (physics-spring transitions, hardware-accelerated loops)
 * **State Management:** Zustand 5+ (centralized store with aliases, fallback verification, and runtime hydration)
@@ -28,7 +28,7 @@ birthday-bloom/
 │   ├── CODE_OF_CONDUCT.md    # Community standards
 │   ├── SECURITY.md           # Responsible security disclosures
 │   └── SUPPORT.md            # Troubleshooting pathways & questions
-├── docs/                     # Detailed project documentation suite
+├── obsidian-docs/            # Detailed project documentation vault
 │   ├── DOCUMENTATION_INDEX.md# Central document index
 │   ├── ENV_GUIDE.md          # Env configuration guide (recipes + custom variables)
 │   ├── env-configs.md        # Prebuilt env configurations (Romantic, Sibling, Friend)
@@ -49,17 +49,21 @@ birthday-bloom/
 │   └── strip-comments.cjs    # CommonJS version of the stripper script
 └── src/                      # Source Code
     ├── assets/               # Local static images, svgs, and audio files
-    ├── components/           # Reusable generic UI design components (buttons, inputs)
+    ├── components/           # UI and birthday scene components
+    │   ├── birthday/         # Birthday-specific cinematic scene components
+    │   │   ├── CinematicIntro.tsx # Cinematic typewriter & message storyline
+    │   │   ├── CakeCutting.tsx   # Blow candles, interactive SVG slicing cake
+    │   │   ├── HeartTree.tsx      # SVG physics balloon merges & grand finale tree
+    │   │   ├── PhotoGallery.tsx   # Polaroid slider gallery grid
+    │   │   └── MainBirthday.tsx   # Main celebration stage orchestration
+    │   └── ui/               # Reusable UI primitives (sonner.tsx, tooltip.tsx)
     ├── config/               # Fallback configuration files
     ├── features/             # Feature-based folder architecture
-    │   ├── core/             # Central core components (layout, routing, main landing)
-    │   │   ├── store/        # Zustand Store (useBirthdayStore.ts)
-    │   │   └── theme/        # CSS variables injector hooks (useDynamicTheme.ts)
-    │   └── birthday/         # Birthday-specific cinematic scene components
-    │       ├── CinematicIntro.tsx # Cinematic typewriter & fake message storyline
-    │       ├── CakeCutting.tsx   # Blow candles, interactive SVG slicing cake
-    │       ├── HeartTree.tsx      # SVG physics balloon merges & grand finale tree
-    │       └── PhotoGallery.tsx   # Polaroid slider gallery grid
+    │   └── core/             # Central core modules (layout, routing, models)
+    │       ├── models/       # Family templates and types
+    │       ├── store/        # Zustand Store (useBirthdayStore.ts)
+    │       └── theme/        # CSS variables injector hooks (useDynamicTheme.ts)
+    ├── pages/                # Top-level route pages (Index.tsx, NotFound.tsx)
     ├── index.css             # Main styling entry point, HSL definitions
     ├── main.tsx              # React mounting root
     └── vite-env.d.ts         # TypeScript module environment definitions
