@@ -318,4 +318,18 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
       expect(getYouTubeEmbedUrl(undefined)).toBe("");
     });
   });
+
+  describe("Environment Configuration & Store Wiring", () => {
+    it("provides default soundEffectsEnabled and showSkipButton in store", async () => {
+      const { useBirthdayStore } = await import("@/features/core/store/useBirthdayStore");
+      const config = useBirthdayStore.getState().config;
+      expect(typeof config.showSkipButton).toBe("boolean");
+      expect(typeof config.soundEffectsEnabled).toBe("boolean");
+    });
+
+    it("exports soundEffectsEnabled in AUDIO_ASSETS config", async () => {
+      const { AUDIO_ASSETS } = await import("@/config/birthday");
+      expect(typeof AUDIO_ASSETS.soundEffectsEnabled).toBe("boolean");
+    });
+  });
 });
