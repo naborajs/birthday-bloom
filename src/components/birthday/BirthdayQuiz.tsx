@@ -15,14 +15,61 @@ export const BirthdayQuiz = () => {
     const { config } = useBirthdayStore();
     const { playPop, playReveal, playBoom } = useSoundManager();
     const { fireCannon, fireStars } = useConfetti();
-    const { isHindi } = useTranslation();
+    const { isHindi, isBengali } = useTranslation();
     const [currentIdx, setCurrentIdx] = useState(0);
     const [score, setScore] = useState(0);
     const [showResult, setShowResult] = useState(false);
     const [selected, setSelected] = useState<number | null>(null);
     const questions: Question[] = useMemo(() => {
         const { name, interests, relationship } = config;
-        const displayName = name || (isHindi ? "हमारे बर्थडे स्टार" : "Birthday Star");
+        const displayName = name || (isBengali ? "আমাদের বার্থডে স্টার" : isHindi ? "हमारे बर्थडे स्टार" : "Birthday Star");
+        if (isBengali) {
+            const base: Question[] = [
+                {
+                    q: `আজকের দিনে জন্ম নেওয়া সবচেয়ে চমৎকার এবং লেজেন্ডারি মানুষ কে?`,
+                    options: ["আলবার্ট আইনস্টাইন", "কোনো সেলিব্রিটি", displayName, "একটি পেঙ্গুইন"],
+                    correct: 2,
+                    reason: `নিঃসন্দেহে! তিনি আর কেউ নন, শুধুই ${displayName}! আশেপাশেও কেউ নেই।`
+                },
+                {
+                    q: `আজ ${displayName}-এর মুড কেমন?`,
+                    options: ["ঘুমে কাতর", "ক্ষুধার্ত", "সুপার এনার্জেটিক ও ধামাকাদার", "বিরক্ত"],
+                    correct: 2,
+                    reason: "আজ ওনার জন্মদিন! আজ পুরো গড মোডে আছেন।"
+                }
+            ];
+            if (interests?.includes('car')) {
+                base.push({
+                    q: `যদি ${displayName}-কে আজ একটি গাড়ি বেছে নিতে বলা হয়, তবে কোনটি হবে?`,
+                    options: ["একটি সাইকেল", "একটি সুপারকার 🏎️", "একটি বাস", "একটি স্কুটার"],
+                    correct: 1,
+                    reason: "কারণ লেজেন্ডরা সবসময় গতির সাথে চলে!"
+                });
+            }
+            if (relationship === 'partner') {
+                base.push({
+                    q: `পুরো পৃথিবীতে ${displayName}-কে সবচেয়ে বেশি ভালোবাসে কে?`,
+                    options: ["বিড়াল", "প্রতিবেশী", "যে এই সুন্দর ওয়েবসাইটটি পাঠিয়েছে ❤️", "মঙ্গল গ্রহের প্রাণী"],
+                    correct: 2,
+                    reason: "যে এই ওয়েবসাইট পাঠিয়েছে, সে আকাশের তারার চেয়েও বেশি ভালোবাসে।"
+                });
+            }
+            if (interests?.includes('coding')) {
+                base.push({
+                    q: `${displayName}-এর সবচেয়ে বড় ভয় কোনটি?`,
+                    options: ["মাকড়সা", "উচ্চতা", "শুক্রবার বিকেল ৪টায় প্রোডাকশনে বাগ 🐞", "কফি শেষ হওয়া"],
+                    correct: 2,
+                    reason: "আসল কোডাররা জানে... প্রোডাকশনের বাগই সবচেয়ে বড় দুঃস্বপ্ন!"
+                });
+            }
+            base.push({
+                q: `যদি ${displayName} একজন সুপারহিরো হতেন, তবে ওনার নাম কী হতো?`,
+                options: ["ক্যাপ্টেন ঘুমকাতুরে", "দ্য প্রোক্রাস্টিনেটর", "সুপার লেজেন্ড বার্থডে স্টার 🦸‍♂️", "আয়রন কফি-ম্যান"],
+                correct: 2,
+                reason: "আজকের দিনে, আপনিই সেই সুপারহিরো যাকে আমাদের সবার প্রয়োজন!"
+            });
+            return base;
+        }
         if (isHindi) {
             const base: Question[] = [
                 {
@@ -72,95 +119,106 @@ export const BirthdayQuiz = () => {
         }
         const base: Question[] = [
             {
-                q: `Who is the most legendary person born on this day?`,
-                options: ["Albert Einstein", "A Celebrity", displayName, "A Penguin"],
+                q: `Who is undeniably the most legendary person born on this day?`,
+                options: ["Albert Einstein", "Some Celebrity", displayName, "A Penguin"],
                 correct: 2,
-                reason: `Duh! It's obviously ${displayName}! Nobody else comes close.`
+                reason: `Obviously! It's none other than ${displayName}! No one else comes close.`
             },
             {
-                q: `What is ${displayName}'s current mood today?`,
-                options: ["Sleepy", "Hungry", "Super OP & Legendary", "Bored"],
+                q: `What is ${displayName}'s vibe today?`,
+                options: ["Sleepy", "Hungry", "Unstoppable & Legendary", "Bored"],
                 correct: 2,
-                reason: "It's their birthday! They are in God Mode today."
+                reason: "It's their birthday! They are operating in full God-mode."
             }
         ];
         if (interests?.includes('car')) {
             base.push({
-                q: `If ${displayName} could have any car today, what would it be?`,
-                options: ["A Cycle", "A Supercar", "A Bus", "A Scooter"],
+                q: `If ${displayName} could drive anything today, what would it be?`,
+                options: ["A tricycle", "A roaring supercar 🏎️", "A bus", "A scooter"],
                 correct: 1,
-                reason: "Because legends drive fast!"
+                reason: "Because legends need speed, pure and simple!"
             });
         }
         if (relationship === 'partner') {
             base.push({
-                q: `Who loves ${displayName} the most in the entire universe?`,
-                options: ["The Cat", "Their Neighbor", "The Person Who Sent This Website", "A Martian"],
+                q: `Who loves ${displayName} more than anything in the entire universe?`,
+                options: ["The cat", "The neighbor", "The person who sent this ❤️", "An alien"],
                 correct: 2,
-                reason: "The person who sent this loves them more than stars in the sky."
+                reason: "The sender loves them to infinity and back!"
             });
         }
         if (interests?.includes('coding')) {
             base.push({
                 q: `What is ${displayName}'s biggest fear?`,
-                options: ["Spiders", "Heights", "A bug in production at 4 PM on a Friday", "Running out of coffee"],
+                options: ["Spiders", "Heights", "Bugs in production on Friday 🐞", "No coffee"],
                 correct: 2,
-                reason: "Real coders know... bugs are the ultimate nightmare!"
+                reason: "Real coders know... production bugs on Friday are pure nightmare fuel!"
             });
         }
         base.push({
-            q: `If ${displayName} was a superhero, what would their name be?`,
-            options: ["Captain Sleep-A-Lot", "The Procrastinator", "Super Legendary Birthday Person", "Iron Coffee-Man"],
+            q: `If ${displayName} had a superpower, what would their hero name be?`,
+            options: ["Captain Sleep", "The Procrastinator", "Super Legend Birthday Star 🦸‍♂️", "Iron Coffee"],
             correct: 2,
-            reason: "Today, you're the hero we all need!"
+            reason: "Today, they are the hero this world needs!"
         });
         return base;
-    }, [config, isHindi]);
-    const handleSelect = (idx: number) => {
+    }, [config, isHindi, isBengali]);
+    const handleSelect = (index: number) => {
         if (selected !== null)
             return;
-        setSelected(idx);
-        if (idx === questions[currentIdx].correct) {
-            setScore(s => s + 1);
-            playPop();
+        setSelected(index);
+        playPop();
+        if (index === questions[currentIdx].correct) {
+            setScore(prev => prev + 1);
+            playReveal();
         }
-
         setTimeout(() => {
-            if (currentIdx < questions.length - 1) {
-                setCurrentIdx(c => c + 1);
+            if (currentIdx + 1 < questions.length) {
+                setCurrentIdx(prev => prev + 1);
                 setSelected(null);
-                playReveal();
             }
             else {
                 setShowResult(true);
                 playBoom();
                 fireCannon();
             }
-        }, 1500);
+        }, 2200);
     };
-    return (<section className="relative z-20 px-4 py-32 flex flex-col items-center">
-      <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="max-w-2xl w-full backdrop-blur-3xl border border-white/10 rounded-[3rem] p-8 md:p-12 text-center overflow-hidden relative" style={{ background: 'rgba(20,20,20,0.8)', boxShadow: `0 30px 100px -30px ${config.favoriteColor || '#ff0080'}40` }}>
-        <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/20 blur-[80px] rounded-full"/>
-        
+    return (<section className="relative z-20 px-4 py-20 max-w-4xl mx-auto">
+      <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="p-8 md:p-12 rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-2xl shadow-2xl text-center">
         {!showResult ? (<AnimatePresence mode="wait">
-            <motion.div key={currentIdx} initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="space-y-8">
-              <div className="flex justify-center gap-2 mb-4">
-                {questions.map((_, i) => (<div key={i} className={`w-2 h-2 rounded-full transition-all duration-500 ${i === currentIdx ? 'w-8 bg-primary' : i < currentIdx ? 'bg-primary/40' : 'bg-white/10'}`}/>))}
+            <motion.div key={currentIdx} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
+              <div className="flex justify-between items-center text-sm font-bold tracking-widest text-primary uppercase">
+                <span>Question {currentIdx + 1} of {questions.length}</span>
+                <span>Score: {score}</span>
               </div>
-              
-              <h3 className="font-display text-2xl md:text-4xl font-black leading-tight">
+
+              <h3 className="font-display text-2xl md:text-4xl font-bold leading-tight min-h-[4rem] flex items-center justify-center">
                 {questions[currentIdx].q}
               </h3>
 
-              <div className="grid gap-4">
-                {questions[currentIdx].options.map((opt, i) => (<motion.button key={i} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={() => handleSelect(i)} className={`w-full p-6 rounded-2xl text-lg md:text-xl font-medium transition-all duration-300 border ${selected === i
-                    ? i === questions[currentIdx].correct ? 'bg-green-500/20 border-green-500 text-green-400' : 'bg-red-500/20 border-red-500 text-red-400'
-                    : selected !== null && i === questions[currentIdx].correct ? 'bg-green-500/20 border-green-500 text-green-400' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}>
-                    {opt}
-                  </motion.button>))}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {questions[currentIdx].options.map((opt, i) => {
+                const isSelected = selected === i;
+                const isCorrect = i === questions[currentIdx].correct;
+                let btnStyle = "bg-white/5 border-white/10 hover:bg-white/10 hover:border-primary/50 text-foreground";
+                if (selected !== null) {
+                    if (isCorrect)
+                        btnStyle = "bg-green-500/20 border-green-500 text-green-300 scale-102";
+                    else if (isSelected)
+                        btnStyle = "bg-red-500/20 border-red-500 text-red-300";
+                    else
+                        btnStyle = "bg-white/5 border-white/5 opacity-40";
+                }
+                return (<button key={i} disabled={selected !== null} onClick={() => handleSelect(i)} className={`p-5 rounded-2xl border text-lg md:text-xl font-medium transition-all duration-300 text-left flex items-center justify-between ${btnStyle}`}>
+                      <span>{opt}</span>
+                      {selected !== null && isCorrect && <CheckCircle2 className="text-green-400 shrink-0"/>}
+                      {selected !== null && isSelected && !isCorrect && <XCircle className="text-red-400 shrink-0"/>}
+                    </button>);
+            })}
               </div>
 
-              {selected !== null && (<motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-primary/80 italic text-lg">
+              {selected !== null && (<motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-muted-foreground italic text-lg pt-4 border-t border-white/5">
                   {questions[currentIdx].reason}
                 </motion.p>)}
             </motion.div>
@@ -172,11 +230,11 @@ export const BirthdayQuiz = () => {
               </div>
             </div>
             
-            <h2 className="font-display text-4xl md:text-6xl font-black">{isHindi ? "धमाकेदार स्कोर! 🏆" : "LEGENDARY SCORE!"}</h2>
+            <h2 className="font-display text-4xl md:text-6xl font-black">{isBengali ? "অসাধারণ স্কোর! 🏆" : isHindi ? "धमाकेदार स्कोर! 🏆" : "LEGENDARY SCORE!"}</h2>
             <p className="text-2xl md:text-3xl text-foreground/80">
-              {isHindi ? `आपने ${config.name || 'बर्थडे'} क्विज़ में ` : 'You scored '}
+              {isBengali ? `আপনি ${config.name || 'বার্থডে'} কুইজে ` : isHindi ? `आपने ${config.name || 'बर्थडे'} क्विज़ में ` : 'You scored '}
               <span className="text-primary font-black">{score}/{questions.length}</span>
-              {isHindi ? ' अंक हासिल किए!' : ` on the ${config.name || 'Birthday'} Trivia!`}
+              {isBengali ? ' নম্বর পেয়েছেন!' : isHindi ? ' अंक हासिल किए!' : ` on the ${config.name || 'Birthday'} Trivia!`}
             </p>
             
             <div className="flex justify-center gap-4 text-primary">
