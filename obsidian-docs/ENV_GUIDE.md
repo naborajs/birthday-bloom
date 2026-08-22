@@ -50,6 +50,7 @@ To verify env is loaded:
 | `VITE_BIRTHDAY_DATE` | date | `null` | ISO format date, e.g. `2026-10-15` or `2026-10-15T00:00:00`. Used for password generation and birthday age. Handles `TH` typo correction. |
 | `VITE_BIRTHDAY_RELATIONSHIP` | enum/string | `friend` | Drives mood, pacing, emoji kits, chat messages, letter content, theme, and color palette. |
 | `VITE_BIRTHDAY_WISHER_NAME` | string | `""` | Sender name appended to letter signoff. Also accepted as `VITE_WISHER_NAME` for backward compatibility. |
+| `VITE_LANGUAGE` | string / enum | `en` | Multi-language localization switch. Options: `en` (English - default), `hi` (Hindi). Accepts `hi`, `hindi`, `in` aliases. Also accepted as `VITE_LANG`. |
 
 **Supported relationship values**: `partner`, `friend`, `family`, `sibling`, `brother`, `sister`, `father`, `mother`, `grandfather`, `grandmother`, `uncle`, `aunt`, `cousin`, `son`, `daughter`, `guardian`, `colleague`, `mentor`, `custom`.
 
