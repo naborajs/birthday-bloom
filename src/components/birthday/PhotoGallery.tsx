@@ -15,7 +15,7 @@ export const PhotoGallery = () => {
     const [isReducedMotion, setIsReducedMotion] = useState(false);
     const isMobile = useIsMobile();
     const { config, getAnimationPacing } = useBirthdayStore();
-    const { t, isHindi } = useTranslation();
+    const { t, isHindi, isBengali } = useTranslation();
     const { relationship } = config;
     const animationPacing = getAnimationPacing();
     const reducedMotion = isReducedMotion || isMobile;
@@ -34,7 +34,19 @@ export const PhotoGallery = () => {
                 { src: PHOTO_ASSETS.photo2 || photo2Default, fallback: photo2Default, key: "p2" },
                 { src: PHOTO_ASSETS.photo3 || photo3Default, fallback: photo3Default, key: "p3" },
             ].filter(p => p.src !== null);
-        const captions = isHindi ? (relationship === 'partner' ? [
+        const captions = isBengali ? (relationship === 'partner' ? [
+            "আপনার সাথে কাটানো প্রতিটি মুহূর্ত এক অমূল্য উপহার 💖",
+            "আমাদের সুন্দর ভবিষ্যতের অপূর্ব সূচনা ✨",
+            "আমার হৃদয়ের সবচেয়ে পছন্দের ঠিকানা 🌹"
+        ] : relationship === 'friend' ? [
+            "সেরা বন্ধুর সাথে অবিস্মরণীয় মুহূর্তগুলো 🚀",
+            "একরাশ স্মৃতি আর পাগলামির গল্প! 😂",
+            "চিরকাল এমন দুর্দান্ত আর পাগল থাকিস! 🍻"
+        ] : [
+            "পরিবার সেখানেই যেখানে জীবনের শুরু ✨",
+            "প্রতিটি হাসি পরম যত্নে আগলে রাখা 💖",
+            "ভালোবাসা আর আনন্দের সুন্দর সফর 🌟"
+        ]) : isHindi ? (relationship === 'partner' ? [
             "आपके साथ बिताया हर पल एक अनमोल तोहफा है 💖",
             "हमारे सुनहरे भविष्य की खूबसूरत शुरुआत ✨",
             "मेरे दिल का सबसे पसंदीदा ठिकाना 🌹"
@@ -61,9 +73,9 @@ export const PhotoGallery = () => {
         ]);
         return base.map((p, i) => ({
             ...p,
-            caption: config.photoCaptions?.[i] || captions[i] || (isHindi ? "खूबसूरत याद" : "Beautiful memory"),
+            caption: config.photoCaptions?.[i] || captions[i] || (isBengali ? "সুন্দর স্মৃতি" : isHindi ? "खूबसूरत याद" : "Beautiful memory"),
         }));
-    }, [relationship, config.photos, config.photoCaptions, isHindi]);
+    }, [relationship, config.photos, config.photoCaptions, isHindi, isBengali]);
     const x = useMotionValue(0);
     const y = useMotionValue(0);
     const rotateX = useSpring(useTransform(y, [-100, 100], [10, -10]), { damping: 20, stiffness: 150 });
