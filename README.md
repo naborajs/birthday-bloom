@@ -43,6 +43,7 @@ If you ask an AI coding agent to customize Birthday Bloom, tell it this first:
 Direct docs:
 
 - [Complete env customization guide](./obsidian-docs/ENV_GUIDE.md)
+- [Multi-Language Localization (Bengali) guide](./obsidian-docs/setup-bengali.md)
 - [Multi-Language Localization (Hindi) guide](./obsidian-docs/setup-hindi.md)
 - [Quick start](./obsidian-docs/quick-start.md)
 - [Family system](./obsidian-docs/family-system.md)
