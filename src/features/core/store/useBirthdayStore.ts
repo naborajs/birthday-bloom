@@ -43,6 +43,7 @@ export interface BirthdayConfig {
     reducedMotion?: boolean;
     showSkipButton?: boolean;
     soundEffectsEnabled?: boolean;
+    language?: 'en' | 'hi' | string;
     password?: string;
     passwordHint?: string;
     passwordFormat?: string;
@@ -52,6 +53,7 @@ interface BirthdayStore {
     config: BirthdayConfig;
     getAnimationPacing: () => 'slow' | 'fast' | 'moderate';
     getMood: () => 'romantic' | 'energetic' | 'warm';
+    getLanguage: () => 'en' | 'hi' | string;
 }
 const parseEnvString = (...values: unknown[]): string => {
     for (const value of values) {
@@ -177,6 +179,8 @@ const envReducedMotion = import.meta.env.VITE_REDUCED_MOTION !== undefined
 const envSoundEffects = import.meta.env.VITE_SOUND_EFFECTS !== undefined
     ? parseEnvBoolean(import.meta.env.VITE_SOUND_EFFECTS, true)
     : true;
+const rawLanguage = parseEnvString(import.meta.env.VITE_LANGUAGE, import.meta.env.VITE_LANG).toLowerCase();
+const envLanguage: 'en' | 'hi' = rawLanguage === 'hi' || rawLanguage === 'hindi' || rawLanguage === 'in' ? 'hi' : 'en';
 const envFinalVideo = parseEnvString(import.meta.env.VITE_FINAL_VIDEO_URL);
 const envMemories = import.meta.env.VITE_SPECIAL_MEMORIES
     ? String(import.meta.env.VITE_SPECIAL_MEMORIES).split('|').map((m: string) => {
@@ -267,6 +271,7 @@ export const useBirthdayStore = create<BirthdayStore>((set, get) => ({
         showSkipButton: envShowSkipButton,
         reducedMotion: envReducedMotion,
         soundEffectsEnabled: envSoundEffects,
+        language: envLanguage,
         finalVideoUrl: envFinalVideo,
         specialMemories: envMemories,
         familyProfile: envFamilyProfile,
@@ -292,5 +297,8 @@ export const useBirthdayStore = create<BirthdayStore>((set, get) => ({
         if (relationship === 'friend')
             return 'energetic';
         return 'warm';
+    },
+    getLanguage: () => {
+        return get().config.language || 'en';
     }
 }));
