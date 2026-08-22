@@ -108,6 +108,7 @@ All settings are set through environment keys. These must start with the `VITE_`
 | `VITE_PASSWORD` | `String` | Key password override. If unset, defaults to MMDD birthday date. |
 | `VITE_SOUND_URL` / `VITE_BGM_URL` | `URL` | Background audio MP3 link. Plays during celebration. |
 | `VITE_SOUND_EFFECTS` | `Boolean` | Toggles interactive audio sound effects (typing, pops, whooshes). |
+| `VITE_LANGUAGE` | `String` | Localization switch (`en` for English, `hi` for Hindi). |
 | `VITE_PHOTOS` / `VITE_PHOTO_1..6` | `URL(s)` | Image URLs for polaroid gallery slides. |
 | `VITE_FAMILY_MEMBER_TYPE` | `String` | Relationship template preset (`brother`, `sister`, `friend`, etc.). |
 
