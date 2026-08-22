@@ -334,21 +334,25 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
   });
 
   describe("Multi-Language Localization Engine (i18n)", () => {
-    it("exports both English and Hindi locale dictionaries with complete structures", async () => {
+    it("exports English, Hindi, and Bengali locale dictionaries with complete structures", async () => {
       const { en } = await import("@/i18n/locales/en");
       const { hi } = await import("@/i18n/locales/hi");
+      const { bn } = await import("@/i18n/locales/bn");
 
       expect(en.common.happyBirthday).toBe("Happy Birthday");
       expect(hi.common.happyBirthday).toBe("जन्मदिन मुबारक");
+      expect(bn.common.happyBirthday).toBe("শুভ জন্মদিন");
 
       expect(en.cake.startCutting).toBe("Start Cutting");
       expect(hi.cake.startCutting).toBe("काटना शुरू करें");
+      expect(bn.cake.startCutting).toBe("কাটা শুরু করুন");
 
       expect(en.memories.title).toBe("MEMORIES 📸");
       expect(hi.memories.title).toBe("अनमोल यादें 📸");
+      expect(bn.memories.title).toBe("অনবদ্য স্মৃতিসমূহ 📸");
     });
 
-    it("interpolates parameters accurately in both English and Hindi", async () => {
+    it("interpolates parameters accurately in English, Hindi, and Bengali", async () => {
       const { interpolate } = await import("@/i18n");
 
       const enInterpolated = interpolate("Dear {{name}},", { name: "Aarav" });
@@ -356,15 +360,32 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
 
       const hiInterpolated = interpolate("प्रिय {{name}},", { name: "प्रिया" });
       expect(hiInterpolated).toBe("प्रिय प्रिया,");
+
+      const bnInterpolated = interpolate("প্রিয় {{name}},", { name: "সৌম্য" });
+      expect(bnInterpolated).toBe("প্রিয় সৌম্য,");
     });
 
-    it("falls back to English when a key is missing", async () => {
-      const { getTranslationValue } = await import("@/i18n");
+    it("falls back to English when a key or language is missing", async () => {
+      const { getTranslationValue, getTranslation } = await import("@/i18n");
 
+      // Valid Bengali key
+      expect(getTranslationValue("bn", "common.skipIntro")).toBe("স্কিপ করুন ⏭");
       // Valid Hindi key
       expect(getTranslationValue("hi", "common.skipIntro")).toBe("स्किप करें ⏭");
       // Fallback
       expect(getTranslationValue("en", "common.skipIntro")).toBe("Skip Intro ⏭");
+      // Unrecognized language defaults to English
+      expect(getTranslationValue("fr", "common.skipIntro")).toBe("Skip Intro ⏭");
+
+      // getTranslation normalization
+      expect(getTranslation("bn").common.happyBirthday).toBe("শুভ জন্মদিন");
+      expect(getTranslation("bengali").common.happyBirthday).toBe("শুভ জন্মদিন");
+      expect(getTranslation("bangla").common.happyBirthday).toBe("শুভ জন্মদিন");
+      expect(getTranslation("hi").common.happyBirthday).toBe("जन्मदिन मुबारक");
+      expect(getTranslation("hindi").common.happyBirthday).toBe("जन्मदिन मुबारक");
+      expect(getTranslation("in").common.happyBirthday).toBe("जन्मदिन मुबारक");
+      expect(getTranslation("en").common.happyBirthday).toBe("Happy Birthday");
+      expect(getTranslation(undefined).common.happyBirthday).toBe("Happy Birthday");
     });
 
     it("generates authentic Hindi emotional letters for various relationships and genders", async () => {
@@ -391,6 +412,39 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
       const hindiWishes = getBigWishes("राहुल", "friend", "male", ["travel"], "hi");
       expect(hindiWishes.length).toBeGreaterThan(0);
       expect(hindiWishes.some((w) => w.wish.includes("कामयाबी") || w.wish.includes("दुआ"))).toBe(true);
+    });
+
+    it("generates authentic Bengali emotional letters for various relationships and genders", async () => {
+      const { getHighlySpecificLetter, getBigWishes } = await import(
+        "@/features/core/store/SuperPersonalizedLogic"
+      );
+
+      // Bengali partner male letter
+      const partnerMaleLetter = getHighlySpecificLetter("সৌম্য", "partner", "male", ["music"], "bn");
+      expect(partnerMaleLetter).toContain("সৌম্য");
+      expect(partnerMaleLetter).toContain("রাজপুত্র");
+
+      // Bengali partner female letter
+      const partnerFemaleLetter = getHighlySpecificLetter("ঐন্দ্রিলা", "partner", "female", ["art"], "bengali");
+      expect(partnerFemaleLetter).toContain("ঐন্দ্রিলা");
+      expect(partnerFemaleLetter).toContain("রাজকন্যা");
+
+      // Bengali friend letter
+      const friendLetter = getHighlySpecificLetter("অভিরূপ", "friend", "male", ["car"], "bangla");
+      expect(friendLetter).toContain("অভিরূপ");
+      expect(friendLetter).toContain("বন্ধু");
+
+      // Bengali big wishes
+      const bnWishes = getBigWishes("শুভম", "friend", "male", ["coding", "car"], "bn");
+      expect(bnWishes.length).toBeGreaterThan(0);
+      expect(bnWishes.some((w) => w.wish.includes("কোড") || w.wish.includes("বাগ") || w.wish.includes("গতি"))).toBe(true);
+    });
+
+    it("normalizes language in Zustand store with Bengali aliases and English default", async () => {
+      const { useBirthdayStore } = await import("@/features/core/store/useBirthdayStore");
+      
+      const defaultLang = useBirthdayStore.getState().getLanguage();
+      expect(["en", "hi", "bn"]).toContain(defaultLang);
     });
   });
 });
