@@ -344,8 +344,8 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
       expect(en.cake.startCutting).toBe("Start Cutting");
       expect(hi.cake.startCutting).toBe("काटना शुरू करें");
 
-      expect(en.gallery.memories).toBe("MEMORIES 📸");
-      expect(hi.gallery.memories).toBe("यादें 📸");
+      expect(en.memories.title).toBe("MEMORIES 📸");
+      expect(hi.memories.title).toBe("यादें 📸");
     });
 
     it("interpolates parameters accurately in both English and Hindi", async () => {
@@ -362,7 +362,7 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
       const { getTranslationValue } = await import("@/i18n");
 
       // Valid Hindi key
-      expect(getTranslationValue("hi", "common.skipIntro")).toBe("छोड़ें ⏭");
+      expect(getTranslationValue("hi", "common.skipIntro")).toBe("स्किप करें ⏭");
       // Fallback
       expect(getTranslationValue("en", "common.skipIntro")).toBe("Skip Intro ⏭");
     });
@@ -390,7 +390,7 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
       // Hindi big wishes
       const hindiWishes = getBigWishes("राहुल", "friend", "male", ["travel"], "hi");
       expect(hindiWishes.length).toBeGreaterThan(0);
-      expect(hindiWishes.some((w) => w.wish.includes("सफलता") || w.wish.includes("खुशियां"))).toBe(true);
+      expect(hindiWishes.some((w) => w.wish.includes("कामयाबी") || w.wish.includes("दुआ"))).toBe(true);
     });
   });
 });
