@@ -1,18 +1,31 @@
 import { motion } from 'framer-motion';
 import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
 import { useStoryVariants } from '../animations/dynamicVariants';
+import { useTranslation } from '@/i18n';
+
 export const SpecialMessage = () => {
     const { customMessage, name, relationship, gender } = useBirthdayStore(state => state.config);
+    const { isHindi } = useTranslation();
     const variants = useStoryVariants();
-    const words = customMessage ? customMessage.split(' ') : ['Wishing', 'you', 'the', 'best', 'day', 'ever!'];
+    const defaultWords = isHindi
+        ? ['आपके', 'लिए', 'यह', 'दिन', 'दुनिया', 'का', 'सबसे', 'खूबसूरत', 'दिन', 'हो!']
+        : ['Wishing', 'you', 'the', 'best', 'day', 'ever!'];
+    const words = customMessage ? customMessage.split(' ') : defaultWords;
     const isMale = gender === 'male';
     const isFemale = gender === 'female';
     const typographyClass = relationship === 'partner' ? 'font-serif tracking-widest text-white/90 italic' :
         relationship === 'friend' ? 'font-sans font-black uppercase text-white tracking-tight italic' :
             'font-sans font-medium text-white/80';
+    const salutation = isHindi
+        ? (relationship === 'partner'
+            ? (isMale ? 'मेरे प्यारे राजा के लिए,' : isFemale ? 'मेरी प्यारी रानी के लिए,' : 'मेरे सब कुछ के लिए,')
+            : relationship === 'friend'
+                ? (isMale ? 'मेरे लीजेंड भाई के लिए,' : isFemale ? 'मेरी प्यारी बहना के लिए,' : 'मेरी बेस्टी के लिए,')
+                : `प्रिय ${name || 'आप'},`)
+        : `For My ${relationship === 'partner' ? (isMale ? 'Handsome King' : isFemale ? 'Beautiful Queen' : 'Everything') : relationship === 'friend' ? (isMale ? 'Legendary Brother' : isFemale ? 'Amazing Sister' : 'Bestie') : (name || 'You')},`;
     return (<motion.div className="flex flex-col items-center justify-center min-h-screen text-center px-6 relative z-10" variants={variants.container} initial="hidden" animate="visible">
       <motion.h2 className={`text-4xl md:text-6xl mb-12 ${typographyClass}`} style={{ textShadow: 'var(--glow-effect)' }} variants={variants.item}>
-        For My {relationship === 'partner' ? (isMale ? 'Handsome King' : isFemale ? 'Beautiful Queen' : 'Everything') : relationship === 'friend' ? (isMale ? 'Legendary Brother' : isFemale ? 'Amazing Sister' : 'Bestie') : (name || 'You')},
+        {salutation}
       </motion.h2>
 
       <div className="flex flex-wrap justify-center max-w-4xl gap-x-4 gap-y-3">
