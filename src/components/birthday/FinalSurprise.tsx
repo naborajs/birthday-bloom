@@ -7,7 +7,7 @@ import { useTranslation } from "@/i18n";
 
 export const FinalSurprise = () => {
     const { config } = useBirthdayStore();
-    const { t, isHindi } = useTranslation();
+    const { isHindi } = useTranslation();
     const isMobile = useIsMobile();
     const memories = config.specialMemories || [];
     const primaryColor = config.favoriteColor || "#ff0080";
