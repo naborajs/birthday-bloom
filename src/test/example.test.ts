@@ -349,7 +349,7 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
 
       expect(en.memories.title).toBe("MEMORIES 📸");
       expect(hi.memories.title).toBe("अनमोल यादें 📸");
-      expect(bn.memories.title).toBe("অনবদ্য স্মৃতিসমূহ 📸");
+      expect(bn.memories.title).toBe("অনাবিল স্মৃতি 📸");
     });
 
     it("interpolates parameters accurately in English, Hindi, and Bengali", async () => {
