@@ -3,8 +3,25 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useSoundManager } from "./SoundManager";
 import { SPECIAL_QUOTES } from "@/config/templates";
+import { HINDI_SPECIAL_QUOTES } from "@/config/hindiTemplates";
+import { useTranslation } from "@/i18n";
 
 interface HeartTreeProps { delay?: number; }
+
+const HINDI_HEART_MESSAGES = [
+    "आप हर उस खूबसूरत याद का सबसे अनमोल हिस्सा हैं जिसे दिल संभाल कर रखता है। ✨",
+    "साधारण पलों की इस दुनिया में, आप एक असाधारण जादू हैं। 🌸",
+    "हर साल आप और भी ज्यादा चमकते हैं — और यह देखकर दिल खुश हो जाता है। 🌟",
+    "आपकी मुस्कान के आगे आसमान के सितारे भी फीके पड़ जाते हैं। 🌌",
+    "आपकी मौजूदगी हर महफ़िल को प्यार और अपनेपन से भर देती है। 🧡",
+    "दोस्ती का असली मतलब हो तो तुम जैसा — यार तुम जैसा! 🔥",
+    "आपकी सादगी और अच्छाई आपकी सबसे बड़ी ताकत है। 💕",
+    "जिस खामोशी और सच्चाई से आप सबका साथ देते हैं, वो दिल को छू जाती है। 💫",
+    "आपकी मुस्कुराहट ही मेरी सबसे बड़ी खुशी का राज़ है। 🌹",
+    "आप इस बात का सबूत हैं कि ज़िंदगी के सबसे बेहतरीन तोहफे बिन मांगे मिलते हैं। ❤️",
+    "हंसी में सबसे आगे, और वफादारी में सबसे पक्के — ऐसे हैं आप। 🎉",
+    "एक और साल, आपके उसी बेमिसाल और शानदार अंदाज़ के नाम! 💖",
+];
 
 const HEART_MESSAGES = [
     "You are the centrepiece of every memory worth keeping. ✨",
@@ -64,16 +81,24 @@ export const HeartTree = ({ delay = 1000 }: HeartTreeProps) => {
     const rafRefs = useRef<number[]>([]);
     const { config } = useBirthdayStore();
     const { relationship, gender, photos = [] } = config;
+    const { isHindi } = useTranslation();
     const primaryColor = config.favoriteColor || 'hsl(330, 90%, 75%)';
     const { playPop } = useSoundManager();
 
     const quotesPool = useMemo(() => {
+        if (isHindi) {
+            if (relationship === 'partner')
+                return HINDI_SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || HINDI_SPECIAL_QUOTES.family;
+            if (relationship === 'friend')
+                return (gender === 'male' ? HINDI_SPECIAL_QUOTES.friend.legend : HINDI_SPECIAL_QUOTES.friend.friendly) || HINDI_SPECIAL_QUOTES.family;
+            return HINDI_SPECIAL_QUOTES.family;
+        }
         if (relationship === 'partner')
             return SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || SPECIAL_QUOTES.family;
         if (relationship === 'friend')
             return (gender === 'male' ? SPECIAL_QUOTES.friend.legend : SPECIAL_QUOTES.friend.friendly) || SPECIAL_QUOTES.family;
         return SPECIAL_QUOTES.family;
-    }, [relationship, gender]);
+    }, [relationship, gender, isHindi]);
     useEffect(() => {
         const timers = [
             setTimeout(() => setStage(1), delay),
@@ -110,7 +135,8 @@ export const HeartTree = ({ delay = 1000 }: HeartTreeProps) => {
     const clickHeart = (e: React.MouseEvent<SVGGElement>, i: number) => {
         e.stopPropagation();
         if (stage < 3) return;
-        setActiveMsg(HEART_MESSAGES[i] ?? quotesPool[i % quotesPool.length]);
+        const messages = isHindi ? HINDI_HEART_MESSAGES : HEART_MESSAGES;
+        setActiveMsg(messages[i] ?? quotesPool[i % quotesPool.length]);
         playPop();
         setTimeout(() => setActiveMsg(null), 5000);
     };
