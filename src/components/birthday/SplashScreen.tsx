@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useSoundManager } from "./SoundManager";
 import { HeartProgression } from "./HeartProgression";
+import { useTranslation } from "@/i18n";
 interface SplashScreenProps {
     onStart: () => void;
 }
 export const SplashScreen = ({ onStart }: SplashScreenProps) => {
     const [tapped, setTapped] = useState(false);
     const { startMusic } = useSoundManager();
+    const { t } = useTranslation();
     const handleTap = () => {
         setTapped(true);
         startMusic();
@@ -22,11 +24,11 @@ export const SplashScreen = ({ onStart }: SplashScreenProps) => {
 
       <div className="text-7xl md:text-8xl animate-cake-glow mb-6">🎂</div>
       <h2 className="font-display text-2xl md:text-4xl text-foreground animate-glow-pulse mb-10">
-        A Special Surprise Awaits...
+        {t('splash.specialSurpriseAwaits')}
       </h2>
       <div className="animate-pulse">
         <p className="text-muted-foreground text-lg md:text-xl tracking-widest uppercase">
-          ✨ Tap anywhere to begin ✨
+          {t('splash.tapAnywhereToBegin')}
         </p>
       </div>
 
