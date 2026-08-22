@@ -1,72 +1,103 @@
----
-tags: [setup, localization, hindi]
-aliases: [setup-hindi]
----
+# 🌍 Multi-Language Localization Guide: Hindi (हिन्दी) Setup
 
-# 🇮🇳 Birthday Bloom - सेटअप गाइड (Setup Guide)
-
-स्वागत है! **Birthday Bloom** को सेटअप करना बहुत आसान है। इस गाइड का पालन करें और अपना खुद का बर्थडे सरप्राइज बनाएं।
+Birthday Bloom v3.1 features full **Hindi & English Multi-Language Localization** with emotional nuance, cultural warmth, and automatic text-level adaptations across every page and component.
 
 ---
 
-## 🚀 क्विक स्टार्ट (Quick Start)
+## 🚀 Quick Setup (Enable Hindi)
 
-### 1. प्रोजेक्ट डाउनलोड करें
-सबसे पहले प्रोजेक्ट को अपने कंप्यूटर पर लाएं:
-```bash
-git clone https://github.com/naborajs/birthday-bloom.git
-cd birthday-bloom
+To switch the entire website to Hindi, set `VITE_LANGUAGE` in your `.env.local` or hosting provider environment settings:
+
+```env
+VITE_LANGUAGE=hi
 ```
 
-### 2. डिपेंडेंसी इनस्टॉल करें (Install Dependencies)
-प्रोजेक्ट चलाने के लिए ज़रूरी फाइल्स इनस्टॉल करें:
-```bash
-npm install
-```
+*(Aliases accepted: `hi`, `hindi`, `in`)*
 
-### 3. कॉन्फ़िगरेशन (Configuration)
-प्रोजेक्ट को पर्सनलाइज करने के लिए `.env.example` फाइल को कॉपी करके `.env` नाम दें:
-```bash
-cp .env.example .env
+To switch back to English (default):
+```env
+VITE_LANGUAGE=en
 ```
-अब `.env` फाइल खोलें और जानकारी भरें:
-- `VITE_BIRTHDAY_NAME`: बर्थडे किसका है?
-- `VITE_BIRTHDAY_AGE`: उम्र क्या है?
-- `VITE_BIRTHDAY_GENDER`: male या female?
-- `VITE_BIRTHDAY_RELATIONSHIP`: partner, friend, या family?
-
-### 4. प्रोजेक्ट चलाएं (Run Project)
-सब कुछ तैयार है! अब प्रोजेक्ट शुरू करें:
-```bash
-npm run dev
-```
-अब अपने ब्राउज़र में `http://localhost:5173` खोलें।
 
 ---
 
-## 🛠️ सामान्य समस्याएं और समाधान (Troubleshooting)
+## 📦 What Changes in Hindi Mode?
 
-| समस्या | समाधान |
-| :--- | :--- |
-| **Blank Screen (सफ़ेद स्क्रीन)** | चेक करें कि `.env` फाइल में `VITE_BIRTHDAY_NAME` भरा है या नहीं। |
-| **Error: npm not found** | आपको **Node.js** इनस्टॉल करना होगा। [nodejs.org](https://nodejs.org) से डाउनलोड करें। |
-| **Animations Lag (एनीमेशन अटकना)** | चेक करें कि आपका ब्राउज़र लेटेस्ट वर्जन का है। यह प्रोजेक्ट GPU का इस्तेमाल करता है। |
+When `VITE_LANGUAGE=hi` is active:
+
+1. **Splash & Welcome Screen**:
+   - Tap-to-begin prompt becomes *"सफर शुरू करने के लिए कहीं भी टैप करें ✨"*.
+   - Headline adjusts to *"जन्मदिन का एक बेहद खास और जादुई तोहफा"*.
+
+2. **Password Unlock Screen**:
+   - Unlock header changes to *"पासवर्ड से अनलॉक करें 🔐"*.
+   - Subtext changes to *"एक जादुई और बेहद खास जन्मदिन का तोहफा..."*.
+   - Dynamic date hints adapt to Hindi format (e.g. `MMDD` $\rightarrow$ *"जन्मदिन का महीना और दिन (MMDD)"*).
+   - Error messages change to *"गलत पासवर्ड! कृपया दोबारा प्रयास करें ✨"*.
+
+3. **Cinematic Storytelling & Chat**:
+   - Storylines dynamically switch to poetic Hindi narratives customized by relationship (`partner`, `friend`, `family`).
+   - Fake chat scene features emotional Hindi typing simulation (*"मेरे दिल के राजा के लिए..."*, *"अरे रुको, सिर्फ एक साधारण संदेश? वो हम नहीं! 😂"*).
+   - Reveal sequence announces *"यह सिर्फ आपके लिए है..."* and *"जन्मदिन मुबारक!"*.
+
+4. **Cake Cutting Ceremony (3D)**:
+   - "Start Cutting" $\rightarrow$ *"काटना शुरू करें"*.
+   - Baking screen $\rightarrow$ *"आपका केक तैयार हो रहा है..."*.
+   - Countdown $\rightarrow$ *"केक काटने के लिए तैयार हो जाइए..."*.
+   - Blow instruction $\rightarrow$ *"✨ एक प्यारी सी दुआ मांगें और मोमबत्ती बुझाएं ✨"*.
+   - Blow button $\rightarrow$ *"🌬️ अभी फूंक मारें"*.
+   - Wish sent $\rightarrow$ *"दुआ आसमान के तारों तक पहुँच गई ✨"*.
+   - Cake celebration quotes adapt to heartfelt Hindi wishes.
+
+5. **Emotional Letter & Big Wishes**:
+   - Deeply personalized emotional letters generated in Hindi via `HINDI_EMOTIONAL_LETTERS` based on gender, relationship, and interests.
+   - Letter title $\rightarrow$ *"आपके लिए एक खास पत्र 💌"*.
+   - Big wishes display authentic Hindi celebration cards (*"दिल से निकली ढेरों दुआएं"*, *"अपार सफलता और खुशियां"*).
+
+6. **Photo Gallery & Video Memories**:
+   - Gallery title $\rightarrow$ *"यादें 📸"*.
+   - Captions adapt to Hindi sentiments (*"आपके साथ बिताया हर पल एक अनमोल तोहफा है 💖"*, *"सच्चे यार के साथ बिताए यादगार लम्हे 🚀"*).
+   - Video memories $\rightarrow$ *"खास वीडियो यादें 🎬"*.
+
+7. **Interactive Birthday Trivia Quiz**:
+   - Questions, multiple choices, and funny explanations adapt to lively Hindi trivia with cultural humor and warmth.
+   - Victory message $\rightarrow$ *"धमाकेदार स्कोर! 🏆"*.
+   - Play again $\rightarrow$ *"फिर से खेलें 🔄"*.
+
+8. **Heart Tree of Memories**:
+   - Clicking tree leaves reveals deep, poetic Hindi sentiments from `HINDI_SPECIAL_QUOTES` and `HINDI_HEART_MESSAGES`.
+
+9. **Hidden Gift Box**:
+   - Gift description, party hype mood (*"धमाकेदार मूड एक्टिवेटेड 💥"*), and secret code reveal adapt to Hindi.
 
 ---
 
-## ☁️ डिप्लॉयमेंट (Deployment)
+## 🛠️ Developer & i18n Architecture
 
-अगर आप इसे इंटरनेट पर डालना चाहते हैं:
-1. **GitHub** पर प्रोजेक्ट अपलोड करें।
-2. **Vercel** या **Netlify** पर जाएं।
-3. अपना रेपो (Repo) कनेक्ट करें।
-4. **Environment Variables** में अपनी `.env` वाली जानकारी भरें।
-5. "Deploy" बटन दबाएं।
+The localization system is built with modularity and type-safety:
+
+- **Store**: `useBirthdayStore.getState().config.language` (parsed from `VITE_LANGUAGE`/`VITE_LANG`).
+- **Hook**: `useTranslation()` from `@/i18n`.
+  ```tsx
+  import { useTranslation } from "@/i18n";
+
+  export const MyComponent = () => {
+    const { t, isHindi, language } = useTranslation();
+    return <h1>{t('common.happyBirthday')}</h1>;
+  };
+  ```
+- **Translation Schema**: `src/i18n/types.ts`
+- **English Locale**: `src/i18n/locales/en.ts`
+- **Hindi Locale**: `src/i18n/locales/hi.ts`
+- **Hindi Templates**: `src/config/hindiTemplates.ts`
 
 ---
 
-**Naboraj Sarkar (Naboraj Sarkar)** द्वारा निर्मित।
-मदद के लिए संपर्क करें: [nishant.ns.business@gmail.com](mailto:nishant.ns.business@gmail.com)
+## 🧪 Verification & Testing
 
+Run the test suite to verify Hindi and English translation pipelines:
 
-#obsidian #documentation #birthday-bloom #vault
+```bash
+npm run test
+npm run build
+```
