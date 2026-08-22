@@ -5,7 +5,7 @@ aliases: [Env Architecture, Store Flow, Configuration Lifecycle]
 
 # Environment & Configuration Architecture
 
-[[DOCUMENTATION_INDEX|Back to Home]] | [[ENV_GUIDE|Env Customization Guide]] | [[setup-hindi|Hindi Localization]] | [[Template-System-Deep-Dive|Template System]]
+[[DOCUMENTATION_INDEX|Back to Home]] | [[ENV_GUIDE|Env Customization Guide]] | [[setup-bengali|Bengali Localization]] | [[setup-hindi|Hindi Localization]] | [[Template-System-Deep-Dive|Template System]]
 
 Birthday Bloom is built around an **Environment-First Reactive Architecture**. The application can be completely personalized without touching React components or JSX.
 
