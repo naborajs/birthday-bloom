@@ -1,8 +1,35 @@
 import { EMOTIONAL_LETTERS } from '@/config/templates';
+import { HINDI_EMOTIONAL_LETTERS, HINDI_BIG_WISHES } from '@/config/hindiTemplates';
 import { RelationshipType, GenderType } from './useBirthdayStore';
-export const getHighlySpecificLetter = (name: string, relationship: RelationshipType, gender: GenderType, _interests: string[] = []) => {
+
+export const getHighlySpecificLetter = (
+    name: string,
+    relationship: RelationshipType,
+    gender: GenderType,
+    _interests: string[] = [],
+    language: string = 'en'
+) => {
     const isFemale = gender === 'female';
     const isMale = gender === 'male';
+    const isHindi = language === 'hi' || language === 'hindi';
+
+    if (isHindi) {
+        if (relationship === 'partner') {
+            return isFemale ? HINDI_EMOTIONAL_LETTERS.partner.female(name) : HINDI_EMOTIONAL_LETTERS.partner.male(name);
+        }
+        if (relationship === 'friend') {
+            if (isFemale) return HINDI_EMOTIONAL_LETTERS.friend.friendly(name);
+            if (isMale) return HINDI_EMOTIONAL_LETTERS.friend.legend(name);
+            return HINDI_EMOTIONAL_LETTERS.friend.romantic(name);
+        }
+        if (relationship === 'sibling') return HINDI_EMOTIONAL_LETTERS.sibling(name);
+        if (relationship === 'brother') return HINDI_EMOTIONAL_LETTERS.brother(name);
+        if (relationship === 'sister') return HINDI_EMOTIONAL_LETTERS.sister(name);
+        if (relationship === 'colleague') return HINDI_EMOTIONAL_LETTERS.colleague(name);
+        if (relationship === 'mentor') return HINDI_EMOTIONAL_LETTERS.mentor(name);
+        return HINDI_EMOTIONAL_LETTERS.family(name);
+    }
+
     if (relationship === 'partner') {
         return isFemale ? EMOTIONAL_LETTERS.partner.female(name) : EMOTIONAL_LETTERS.partner.male(name);
     }
@@ -29,7 +56,18 @@ export const getHighlySpecificLetter = (name: string, relationship: Relationship
     return EMOTIONAL_LETTERS.family(name);
 };
 
-export const getBigWishes = (name: string, relationship: RelationshipType, gender: GenderType, interests: string[] = []) => {
+export const getBigWishes = (
+    name: string,
+    relationship: RelationshipType,
+    gender: GenderType,
+    interests: string[] = [],
+    language: string = 'en'
+) => {
+    const isHindi = language === 'hi' || language === 'hindi';
+    if (isHindi) {
+        return HINDI_BIG_WISHES(name, relationship, interests);
+    }
+
     const wishes = [
         { emoji: "🚀", wish: `May your ${name} brand reach new galaxies this year!` },
         { emoji: "💎", wish: `You are a diamond in the rough, ${name}. Stay precious.` }
