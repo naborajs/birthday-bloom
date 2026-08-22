@@ -15,7 +15,7 @@ export const BirthdayQuiz = () => {
     const { config } = useBirthdayStore();
     const { playPop, playReveal, playBoom } = useSoundManager();
     const { fireCannon, fireStars } = useConfetti();
-    const { t, isHindi } = useTranslation();
+    const { isHindi } = useTranslation();
     const [currentIdx, setCurrentIdx] = useState(0);
     const [score, setScore] = useState(0);
     const [showResult, setShowResult] = useState(false);
