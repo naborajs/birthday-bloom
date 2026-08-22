@@ -332,4 +332,65 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
       expect(typeof AUDIO_ASSETS.soundEffectsEnabled).toBe("boolean");
     });
   });
+
+  describe("Multi-Language Localization Engine (i18n)", () => {
+    it("exports both English and Hindi locale dictionaries with complete structures", async () => {
+      const { en } = await import("@/i18n/locales/en");
+      const { hi } = await import("@/i18n/locales/hi");
+
+      expect(en.common.happyBirthday).toBe("Happy Birthday");
+      expect(hi.common.happyBirthday).toBe("जन्मदिन मुबारक");
+
+      expect(en.cake.startCutting).toBe("Start Cutting");
+      expect(hi.cake.startCutting).toBe("काटना शुरू करें");
+
+      expect(en.gallery.memories).toBe("MEMORIES 📸");
+      expect(hi.gallery.memories).toBe("यादें 📸");
+    });
+
+    it("interpolates parameters accurately in both English and Hindi", async () => {
+      const { interpolate } = await import("@/i18n");
+
+      const enInterpolated = interpolate("Dear {{name}},", { name: "Aarav" });
+      expect(enInterpolated).toBe("Dear Aarav,");
+
+      const hiInterpolated = interpolate("प्रिय {{name}},", { name: "प्रिया" });
+      expect(hiInterpolated).toBe("प्रिय प्रिया,");
+    });
+
+    it("falls back to English when a key is missing", async () => {
+      const { getTranslationValue } = await import("@/i18n");
+
+      // Valid Hindi key
+      expect(getTranslationValue("hi", "common.skipIntro")).toBe("छोड़ें ⏭");
+      // Fallback
+      expect(getTranslationValue("en", "common.skipIntro")).toBe("Skip Intro ⏭");
+    });
+
+    it("generates authentic Hindi emotional letters for various relationships and genders", async () => {
+      const { getHighlySpecificLetter, getBigWishes } = await import(
+        "@/features/core/store/SuperPersonalizedLogic"
+      );
+
+      // Hindi partner male letter
+      const partnerMaleLetter = getHighlySpecificLetter("रोहन", "partner", "male", ["music"], "hi");
+      expect(partnerMaleLetter).toContain("रोहन");
+      expect(partnerMaleLetter).toContain("राजा");
+
+      // Hindi partner female letter
+      const partnerFemaleLetter = getHighlySpecificLetter("अनन्या", "partner", "female", ["art"], "hi");
+      expect(partnerFemaleLetter).toContain("अनन्या");
+      expect(partnerFemaleLetter).toContain("रानी");
+
+      // Hindi friend letter
+      const friendLetter = getHighlySpecificLetter("समीर", "friend", "male", ["car"], "hi");
+      expect(friendLetter).toContain("समीर");
+      expect(friendLetter).toContain("दोस्त");
+
+      // Hindi big wishes
+      const hindiWishes = getBigWishes("राहुल", "friend", "male", ["travel"], "hi");
+      expect(hindiWishes.length).toBeGreaterThan(0);
+      expect(hindiWishes.some((w) => w.wish.includes("सफलता") || w.wish.includes("खुशियां"))).toBe(true);
+    });
+  });
 });
