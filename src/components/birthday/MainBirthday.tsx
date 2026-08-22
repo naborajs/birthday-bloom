@@ -32,7 +32,7 @@ export const MainBirthday = () => {
     const { fireConfetti, fireCannon, fireStars } = useConfetti();
     const { playReveal, playPop, playBoom, setBgVolume } = useSoundManager();
     const { config, getMood } = useBirthdayStore();
-    const { t, isHindi, language } = useTranslation();
+    const { t, isHindi, isBengali, language } = useTranslation();
     const { name, age, customMessage, relationship, favoriteColor, gender, senderName } = config;
     const isMobile = useIsMobile();
     const reduceMotion = useReducedMotion();
@@ -234,13 +234,13 @@ export const MainBirthday = () => {
           <div className="space-y-10 text-center text-2xl md:text-3xl text-foreground/90 leading-relaxed">
             <p className="font-display font-black text-3xl md:text-5xl" style={{ color: primaryColor }}>{t('common.dear', { name })}</p>
             {customMessage ? (<p className="italic font-light text-3xl md:text-5xl leading-tight">"{customMessage}"</p>) : (<div className="space-y-8">
-                <p>{isHindi ? (mood === 'romantic' ? "आपकी मौजूदगी से मेरी दुनिया और भी हसीन बन गई है। आज उस सबसे खूबसूरत रूह का जश्न है जिसे मैं जानता/जानती हूँ।" : mood === 'energetic' ? "आप सिर्फ उम्र में बड़े नहीं, बल्कि और भी शानदार हो गए हैं। एक सच्चे लीजेंड का दिन यादगार होना चाहिए!" : "आज का दिन हमारे लिए खुशी और कृतज्ञता का दिन है। आप हमारे जीवन में अपार खुशियाँ लेकर आते हैं।") : (mood === 'romantic' ? "My world is infinitely brighter because you are in it. Today is a celebration of the most beautiful soul I know." : mood === 'energetic' ? "You're not just older, you're better. A true legend deserves an epic day!" : "Today is a day of joy and gratitude as we celebrate you. You bring so much light into our lives.")}</p>
-                <p className="text-xl md:text-2xl text-foreground/60">{isHindi ? "यह नया साल आपके जीवन का सबसे सुनहरा अध्याय बने। ✨" : "May this new chapter be your best one yet. ✨"}</p>
+                <p>{isBengali ? (mood === 'romantic' ? "আপনার উপস্থিতিতে আমার পৃথিবী আরও সুন্দর হয়ে উঠেছে। আজ সেই সবচেয়ে সুন্দর মনের মানুষটির উদযাপন যাকে আমি চিনি।" : mood === 'energetic' ? "আপনি শুধু বয়সে বড় হননি, আরও দারুণ হয়ে উঠেছেন। একজন আসল লেজেন্ডের দিন স্মরণীয় হওয়া উচিত!" : "আজকের দিনটি আমাদের জন্য সীমাহীন আনন্দ ও কৃতজ্ঞতার দিন। আপনি আমাদের জীবনে অফুরন্ত আলো নিয়ে এসেছেন।") : isHindi ? (mood === 'romantic' ? "आपकी मौजूदगी से मेरी दुनिया और भी हसीन बन गई है। आज उस सबसे खूबसूरत रूह का जश्न है जिसे मैं जानता/जानती हूँ।" : mood === 'energetic' ? "आप सिर्फ उम्र में बड़े नहीं, बल्कि और भी शानदार हो गए हैं। एक सच्चे लीजेंड का दिन यादगार होना चाहिए!" : "आज का दिन हमारे लिए खुशी और कृतज्ञता का दिन है। आप हमारे जीवन में अपार खुशियाँ लेकर आते हैं।") : (mood === 'romantic' ? "My world is infinitely brighter because you are in it. Today is a celebration of the most beautiful soul I know." : mood === 'energetic' ? "You're not just older, you're better. A true legend deserves an epic day!" : "Today is a day of joy and gratitude as we celebrate you. You bring so much light into our lives.")}</p>
+                <p className="text-xl md:text-2xl text-foreground/60">{isBengali ? "এই নতুন বছরটি আপনার জীবনের সবচেয়ে সোনালী অধ্যায় হোক। ✨" : isHindi ? "यह नया साल आपके जीवन का सबसे सुनहरा अध्याय बने। ✨" : "May this new chapter be your best one yet. ✨"}</p>
               </div>)}
             
             <div className="mt-12 p-8 bg-white/5 rounded-2xl border border-white/10 transition-transform duration-500 hover:scale-[1.02]">
               <h4 className="font-display text-2xl md:text-4xl font-black mb-6 text-primary cursor-pointer" onDoubleClick={() => { fireCannon(); playBoom(); }} title={t('common.doubleTapSurprise')}>
-                {config.letterTitle || (isHindi ? "आपके लिए एक खास पत्र 💌" : "A Special Letter Just for You 💌")}
+                {config.letterTitle || (isBengali ? "আপনার জন্য একটি বিশেষ চিঠি 💌" : isHindi ? "आपके लिए एक खास पत्र 💌" : "A Special Letter Just for You 💌")}
               </h4>
               <div className="text-left text-lg md:text-xl leading-relaxed whitespace-pre-line font-light">
                 {config.letterOverride
@@ -269,7 +269,7 @@ export const MainBirthday = () => {
 
       
       <section className="relative z-20 px-4 pb-32">
-        <h3 className="font-display text-5xl md:text-8xl font-black text-center mb-20 drop-shadow-xl" style={{ color: primaryColor }}>{isHindi ? "आपके लिए ढेरों दुआएं ✨" : "Wishes for You ✨"}</h3>
+        <h3 className="font-display text-5xl md:text-8xl font-black text-center mb-20 drop-shadow-xl" style={{ color: primaryColor }}>{isBengali ? "আপনার জন্য অফুরন্ত শুভকামনা ✨" : isHindi ? "आपके लिए ढेरों दुआएं ✨" : "Wishes for You ✨"}</h3>
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
           {bigWishes.map((item, i) => (<motion.div key={i} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15 }} whileHover={!isMobile ? { y: -15, scale: 1.03, rotate: i % 2 === 0 ? 1 : -1, boxShadow: `0 30px 60px -15px ${primaryColor}40` } : undefined} className="p-10 backdrop-blur-3xl border cursor-pointer group bg-gradient-to-br from-white/10 to-transparent border-white/10" style={{ borderRadius: 'var(--card-radius, 2.5rem)' }} onClick={addEmoji}>
               <div className="text-7xl mb-8 group-hover:scale-125 transition-transform duration-500">{item.emoji}</div>
@@ -308,33 +308,33 @@ export const MainBirthday = () => {
             <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.35 }} className="relative w-full max-w-3xl rounded-[2.5rem] border border-white/10 bg-black/90 p-6 sm:p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)] max-h-[calc(100vh-4rem)] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
               {giftStage === 'party' ? (<div className="flex flex-col gap-6 text-center min-h-[42vh] justify-center">
                   <div className="text-6xl">🎂🎉✨</div>
-                  <h3 className="text-4xl md:text-6xl font-black text-white">{isHindi ? "पार्टी सरप्राइज का माहौल बना रही है!" : "The party is teasing the surprise!"}</h3>
+                  <h3 className="text-4xl md:text-6xl font-black text-white">{isBengali ? "পার্টি সারপ্রাইজের আমেজ তৈরি করছে!" : isHindi ? "पार्टी सरप्राइज का माहौल बना रही है!" : "The party is teasing the surprise!"}</h3>
                   <p className="text-lg md:text-xl text-white/85 max-w-xl mx-auto leading-relaxed">
-                    {isHindi ? "भीड़ चीयर कर रही है, लाइट्स चमक रही हैं और जश्न शुरू होने वाला है। उपहार का राज खुलने से पहले पार्टी का मज़ा लें।" : "The crowd is cheering, the lights are flashing, and the celebration message is made to stay visible on every screen. Watch the party tease before the gift reveal arrives."}
+                    {isBengali ? "চারপাশে আনন্দের কোলাহল, আলো জ্বলছে এবং উদযাপন শুরু হতে যাচ্ছে। উপহার প্রকাশের আগে পার্টির আনন্দ উপভোগ করুন।" : isHindi ? "भीड़ चीयर कर रही है, लाइट्स चमक रही हैं और जश्न शुरू होने वाला है। उपहार का राज खुलने से पहले पार्टी का मज़ा लें।" : "The crowd is cheering, the lights are flashing, and the celebration message is made to stay visible on every screen. Watch the party tease before the gift reveal arrives."}
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
                     {[
-                    { icon: '🎶', label: isHindi ? 'संगीत तेज' : 'Music builds' },
-                    { icon: '🔥', label: isHindi ? 'जोश भरपूर' : 'Crowd hype' },
-                    { icon: '✨', label: isHindi ? 'तोहफे का राज' : 'Gift tease' }
+                    { icon: '🎶', label: isBengali ? 'উচ্চাঙ্গ সংগীত' : isHindi ? 'संगीत तेज' : 'Music builds' },
+                    { icon: '🔥', label: isBengali ? 'উন্মাদ আমেজ' : isHindi ? 'जोश भरपूर' : 'Crowd hype' },
+                    { icon: '✨', label: isBengali ? 'উপহারের রহস্য' : isHindi ? 'तोहफे का राज' : 'Gift tease' }
                 ].map((item) => (<div key={item.label} className="rounded-3xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/80">
                         <span className="mr-2">{item.icon}</span>{item.label}
                       </div>))}
                   </div>
                   <div className="mx-auto inline-flex rounded-full bg-white/10 px-6 py-4 text-2xl font-semibold text-white shadow-[0_20px_60px_-30px_rgba(255,255,255,0.4)]">
-                    {isHindi ? "धमाकेदार मूड एक्टिवेटेड 💥" : "Pataka mood activated."}
+                    {isBengali ? "ধামাকা মুড অ্যাক্টিভেটেড 💥" : isHindi ? "धमाकेदार मूड एक्टिवेटेड 💥" : "Pataka mood activated."}
                   </div>
                 </div>) : (<div className="flex flex-col gap-6 text-center">
                   <div className="text-5xl">🎉</div>
-                  <h3 className="text-4xl md:text-6xl font-black text-white">{isHindi ? "सरप्राइज अनलॉक हुआ!" : "Surprise Unlocked!"}</h3>
+                  <h3 className="text-4xl md:text-6xl font-black text-white">{isBengali ? "সারপ্রাইজ আনলক হয়েছে!" : isHindi ? "सरप्राइज अनलॉक हुआ!" : "Surprise Unlocked!"}</h3>
                   <p className="text-lg md:text-xl text-foreground/70 max-w-2xl mx-auto">
-                    {isHindi ? "पहले पार्टी शुरू हुई और अब तोहफा आ गया। आपका गुप्त कोड आपके रिश्ते, आपकी पसंद और ढेर सारे प्यार से बना है।" : "First the party sparkled, then the gift arrived. Your secret code is built from your relationship theme, your favorite interests, and a little playful mischief."}
+                    {isBengali ? "প্রথমে পার্টি শুরু হলো এবং এখন উপহার এলো। আপনার গোপন কোডটি আপনার সম্পর্ক এবং অনেক ভালোবাসা দিয়ে তৈরি।" : isHindi ? "पहले पार्टी शुरू हुई और अब तोहफा आ गया। आपका गुप्त कोड आपके रिश्ते, आपकी पसंद और ढेर सारे प्यार से बना है।" : "First the party sparkled, then the gift arrived. Your secret code is built from your relationship theme, your favorite interests, and a little playful mischief."}
                   </p>
                   <div className="mx-auto inline-flex rounded-full bg-primary/10 px-6 py-4 text-2xl font-semibold text-primary shadow-[0_20px_60px_-30px_rgba(255,255,255,0.4)]">
                     {specialCode}
                   </div>
                   <button type="button" onClick={() => { setGiftStage('closed'); fireConfetti(); }} className="mx-auto rounded-full bg-primary px-10 py-4 text-xl font-black text-black transition-all hover:scale-105">
-                    {isHindi ? "उपहार बंद करें" : "Close Gift"}
+                    {isBengali ? "উপহার বন্ধ করুন" : isHindi ? "उपहार बंद करें" : "Close Gift"}
                   </button>
                 </div>)}
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/90 to-transparent"/>
@@ -345,9 +345,9 @@ export const MainBirthday = () => {
       
       <section className="relative z-20 flex flex-wrap justify-center gap-8 px-4 pb-32">
         {[
-            { label: isHindi ? "🎊 तोप!" : "🎊 Cannon!", color: primaryColor, action: fireCannon },
-            { label: isHindi ? "🎈 पार्टी!" : "🎈 Party!", color: "hsl(45, 100%, 50%)", action: fireConfetti },
-            { label: isHindi ? "💫 प्यार!" : "💫 Love!", color: "hsl(200, 80%, 50%)", action: () => { for (let i = 0; i < 5; i++)
+            { label: isBengali ? "🎊 কামান!" : isHindi ? "🎊 तोप!" : "🎊 Cannon!", color: primaryColor, action: fireCannon },
+            { label: isBengali ? "🎈 পার্টি!" : isHindi ? "🎈 पार्टी!" : "🎈 Party!", color: "hsl(45, 100%, 50%)", action: fireConfetti },
+            { label: isBengali ? "💫 ভালোবাসা!" : isHindi ? "💫 प्यार!" : "💫 Love!", color: "hsl(200, 80%, 50%)", action: () => { for (let i = 0; i < 5; i++)
                     setTimeout(addEmoji, i * 200); } }
         ].map((btn, i) => (<motion.button key={i} whileHover={shouldAnimate ? { scale: 1.15, rotate: i % 2 === 0 ? 3 : -3 } : undefined} whileTap={{ scale: 0.9 }} onClick={() => { btn.action(); addEmoji(); }} className="px-12 py-6 rounded-full text-2xl font-black text-white shadow-2xl transition-all" style={{
                 background: `linear-gradient(135deg, ${btn.color}, ${btn.color}dd)`,
