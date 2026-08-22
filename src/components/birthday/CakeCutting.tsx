@@ -12,12 +12,14 @@ import { Phase, CakeOption, CAKE_OPTIONS } from "./CakeTypes";
 import { CutSparks, MagicDust } from "./CakeVisuals";
 import { Cake3D } from "./Cake3D";
 import { CakeKnife } from "./CakeKnife";
+import { useTranslation } from "@/i18n";
 
 const CakeCard = ({ cake, onSelect }: {
     cake: CakeOption;
     onSelect: () => void;
 }) => {
     const isMobile = useIsMobile();
+    const { t } = useTranslation();
     return (
         <motion.button 
             whileHover={!isMobile ? { scale: 1.05, y: -10, rotateZ: 2 } : undefined} 
@@ -52,7 +54,7 @@ const CakeCard = ({ cake, onSelect }: {
                     className="inline-flex items-center justify-center px-4 py-1.5 rounded-full text-xs font-bold text-white shadow-lg transition-transform hover:scale-105"
                     style={{ background: cake.accent }}
                 >
-                    Start Cutting
+                    {t('cake.startCutting')}
                 </div>
             </div>
             
@@ -74,12 +76,39 @@ export const CakeCutting = () => {
     const { fireCinematicCelebration } = useConfetti();
     const { playBoom, playReveal, playPop, playWhoosh } = useSoundManager();
     const { name, relationship, gender, favoriteColor } = useBirthdayStore(state => state.config);
+    const { t, isHindi } = useTranslation();
     const primaryColor = favoriteColor || '#FF6B6B';
 
     const quotes = useMemo(() => {
         const isMale = gender === 'male';
         const isFemale = gender === 'female';
         
+        if (isHindi) {
+            if (relationship === 'partner') return [
+                { text: `मेरे ${isMale ? 'राजा' : isFemale ? 'रानी' : 'हमसफ़र'}...`, animation: "zoom-in" as const },
+                { text: "हमारे खूबसूरत भविष्य के लिए एक दुआ मांगें...", animation: "float" as const },
+                { text: "मैं आपसे बेपनाह प्यार करता/करती हूँ", animation: "pop-out" as const },
+                { text: t('cake.happyBirthdayLove'), animation: "typewriter-burst" as const },
+                { text: t('cake.foreverYours'), animation: "pop-out" as const },
+            ];
+            
+            if (relationship === 'friend') return [
+                { text: `अरे ${name || 'मेरे यार'}!`, animation: "pop-out" as const },
+                { text: t('cake.readyGetOlder'), animation: "zoom-in" as const },
+                { text: t('cake.zeroHangovers'), animation: "stagger-up" as const },
+                { text: t('cake.happyBirthdayBestie'), animation: "typewriter-burst" as const },
+                { text: t('cake.makeSomeNoise'), animation: "float" as const },
+            ];
+            
+            return [
+                { text: `हमारे सबसे प्यारे ${isMale ? 'राजा' : isFemale ? 'रानी' : 'इंसान'} के लिए...`, animation: "zoom-in" as const },
+                { text: t('cake.cherishEveryDay'), animation: "pop-out" as const },
+                { text: t('cake.maySmilesBrighten'), animation: "stagger-up" as const },
+                { text: `${t('common.happyBirthday')}!`, animation: "typewriter-burst" as const },
+                { text: t('cake.celebrateYou'), animation: "float" as const },
+            ];
+        }
+
         if (relationship === 'partner') return [
             { text: `My ${isMale ? 'Prince' : isFemale ? 'Princess' : 'Everything'}...`, animation: "zoom-in" as const },
             { text: "Make a wish for our future...", animation: "float" as const },
@@ -103,7 +132,7 @@ export const CakeCutting = () => {
             { text: "Happy Birthday!", animation: "typewriter-burst" as const },
             { text: `Stay blessed always ✨`, animation: "float" as const },
         ];
-    }, [name, relationship, gender]);
+    }, [name, relationship, gender, isHindi, t]);
 
     const handleSelectCake = useCallback((cake: CakeOption) => {
         if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(30);
@@ -231,7 +260,7 @@ export const CakeCutting = () => {
                                             </div>
                                             <div className="flex flex-col items-center gap-2">
                                                 <h2 className="text-3xl md:text-4xl font-display font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-primary to-white uppercase">
-                                                    Baking Your Cake...
+                                                    {isHindi ? "आपका केक तैयार हो रहा है..." : "Baking Your Cake..."}
                                                 </h2>
                                                 <div className="flex gap-1 mt-2">
                                                     {[1, 2, 3].map((i) => (
@@ -277,7 +306,7 @@ export const CakeCutting = () => {
                                     {phase === "countdown" && (
                                         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm z-50 rounded-[2.5rem] pointer-events-none">
                                             <motion.span initial={{ opacity: 0, y: -10 }} animate={{ opacity: 0.5, y: 0 }} className="text-white/40 text-xs md:text-sm tracking-[0.3em] uppercase mb-4 font-bold">
-                                                Prepare to cut...
+                                                {t('cake.prepareToCut')}
                                             </motion.span>
                                             <AnimatePresence mode="wait">
                                                 <motion.h1 
@@ -306,7 +335,7 @@ export const CakeCutting = () => {
                                     {(phase === "blow-intro" || phase === "blowing") && (
                                         <motion.div initial={{ scale: 0.8, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} className="flex flex-col items-center gap-6">
                                             <h2 className="font-display text-3xl sm:text-4xl text-white font-black text-center tracking-tighter animate-glow-pulse">
-                                                ✨ MAKE A WISH & BLOW ✨
+                                                {t('cake.makeAWishAndBlow')}
                                             </h2>
                                             {phase === "blow-intro" && (
                                                 <motion.button 
@@ -316,7 +345,7 @@ export const CakeCutting = () => {
                                                     className="group relative px-12 py-5 rounded-full text-xl font-black text-white overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.2)]" 
                                                     style={{ background: "linear-gradient(90deg, #ff0080, #7928ca)" }}
                                                 >
-                                                    <span className="relative z-10">🌬️ BLOW NOW</span>
+                                                    <span className="relative z-10">{t('cake.blowNow')}</span>
                                                     <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                                                 </motion.button>
                                             )}
@@ -327,9 +356,9 @@ export const CakeCutting = () => {
                                     {phase === "wish" && (
                                         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
                                             <h2 className="font-display text-4xl sm:text-6xl font-black bg-gradient-to-r from-yellow-200 via-white to-yellow-200 bg-clip-text text-transparent drop-shadow-2xl">
-                                                WISH SENT TO THE STARS
+                                                {t('cake.wishSentToStars')}
                                             </h2>
-                                            <p className="text-white/60 text-xl mt-4 font-light italic">Wait for the magical cut...</p>
+                                            <p className="text-white/60 text-xl mt-4 font-light italic">{t('cake.waitForCut')}</p>
                                         </motion.div>
                                     )}
                                     
@@ -361,7 +390,7 @@ export const CakeCutting = () => {
                                         onClick={() => setPhase("select")} 
                                         className="mt-16 px-10 py-4 rounded-full text-sm font-black uppercase tracking-[0.3em] text-white/40 hover:text-white border border-white/10 hover:bg-white/5 transition-all duration-500"
                                     >
-                                        ✕ Finish Experience
+                                        {isHindi ? "✕ अनुभव समाप्त करें" : "✕ Finish Experience"}
                                     </motion.button>
                                 )}
                             </div>
@@ -378,10 +407,10 @@ export const CakeCutting = () => {
                         whileInView={{ opacity: 1, y: 0 }} 
                         className="font-display text-4xl sm:text-6xl md:text-8xl font-black mb-6 bg-gradient-to-b from-white to-white/20 bg-clip-text text-transparent"
                     >
-                        CHOOSE YOUR CAKE
+                        {t('cake.selectTitle')}
                     </motion.h3>
                     <p className="text-white/40 text-lg sm:text-xl mb-12 sm:mb-20 max-w-2xl mx-auto font-light tracking-widest uppercase">
-                        A Masterpiece for every Masterpiece
+                        {t('cake.selectSubtitle')}
                     </p>
 
                     <div className="flex flex-wrap justify-center gap-6 sm:gap-10">
