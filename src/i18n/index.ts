@@ -2,16 +2,21 @@ import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { TranslationSchema } from "./types";
 import { enTranslations } from "./locales/en";
 import { hiTranslations } from "./locales/hi";
+import { bnTranslations } from "./locales/bn";
 
-export type SupportedLanguage = 'en' | 'hi';
+export type SupportedLanguage = 'en' | 'hi' | 'bn';
 
 export const translations: Record<SupportedLanguage, TranslationSchema> = {
     en: enTranslations,
     hi: hiTranslations,
+    bn: bnTranslations,
 };
 
 export const getTranslation = (lang?: string): TranslationSchema => {
     const normalized = (lang || '').toLowerCase().trim();
+    if (normalized === 'bn' || normalized === 'bengali' || normalized === 'bangla') {
+        return bnTranslations;
+    }
     if (normalized === 'hi' || normalized === 'hindi' || normalized === 'in') {
         return hiTranslations;
     }
@@ -52,7 +57,13 @@ export const getTranslationValue = (lang: string, keyPath: string, params?: Reco
 
 export const useTranslation = () => {
     const rawLanguage = useBirthdayStore(state => state.config.language);
-    const language: SupportedLanguage = rawLanguage === 'hi' ? 'hi' : 'en';
+    const normalized = (rawLanguage || '').toLowerCase().trim();
+    const language: SupportedLanguage =
+        normalized === 'bn' || normalized === 'bengali' || normalized === 'bangla'
+            ? 'bn'
+            : normalized === 'hi' || normalized === 'hindi' || normalized === 'in'
+                ? 'hi'
+                : 'en';
     const currentTranslations = translations[language] || enTranslations;
 
     const t = (keyPath: string, params?: Record<string, string | number>): string => {
@@ -63,6 +74,7 @@ export const useTranslation = () => {
         t,
         language,
         isHindi: language === 'hi',
+        isBengali: language === 'bn',
         translations: currentTranslations,
     };
 };
