@@ -1,5 +1,6 @@
 import { EMOTIONAL_LETTERS } from '@/config/templates';
 import { HINDI_EMOTIONAL_LETTERS, HINDI_BIG_WISHES } from '@/config/hindiTemplates';
+import { BENGALI_EMOTIONAL_LETTERS, BENGALI_BIG_WISHES } from '@/config/bengaliTemplates';
 import { RelationshipType, GenderType } from './useBirthdayStore';
 
 export const getHighlySpecificLetter = (
@@ -11,7 +12,25 @@ export const getHighlySpecificLetter = (
 ) => {
     const isFemale = gender === 'female';
     const isMale = gender === 'male';
-    const isHindi = language === 'hi' || language === 'hindi';
+    const isHindi = language === 'hi' || language === 'hindi' || language === 'in';
+    const isBengali = language === 'bn' || language === 'bengali' || language === 'bangla';
+
+    if (isBengali) {
+        if (relationship === 'partner') {
+            return isFemale ? BENGALI_EMOTIONAL_LETTERS.partner.female(name) : BENGALI_EMOTIONAL_LETTERS.partner.male(name);
+        }
+        if (relationship === 'friend') {
+            if (isFemale) return BENGALI_EMOTIONAL_LETTERS.friend.friendly(name);
+            if (isMale) return BENGALI_EMOTIONAL_LETTERS.friend.legend(name);
+            return BENGALI_EMOTIONAL_LETTERS.friend.romantic(name);
+        }
+        if (relationship === 'sibling') return BENGALI_EMOTIONAL_LETTERS.sibling(name);
+        if (relationship === 'brother') return BENGALI_EMOTIONAL_LETTERS.brother(name);
+        if (relationship === 'sister') return BENGALI_EMOTIONAL_LETTERS.sister(name);
+        if (relationship === 'colleague') return BENGALI_EMOTIONAL_LETTERS.colleague(name);
+        if (relationship === 'mentor') return BENGALI_EMOTIONAL_LETTERS.mentor(name);
+        return BENGALI_EMOTIONAL_LETTERS.family(name);
+    }
 
     if (isHindi) {
         if (relationship === 'partner') {
@@ -63,7 +82,12 @@ export const getBigWishes = (
     interests: string[] = [],
     language: string = 'en'
 ) => {
-    const isHindi = language === 'hi' || language === 'hindi';
+    const isBengali = language === 'bn' || language === 'bengali' || language === 'bangla';
+    if (isBengali) {
+        return BENGALI_BIG_WISHES(name, relationship, interests);
+    }
+
+    const isHindi = language === 'hi' || language === 'hindi' || language === 'in';
     if (isHindi) {
         return HINDI_BIG_WISHES(name, relationship, interests);
     }
