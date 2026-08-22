@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from
 import { PHOTO_ASSETS } from "@/config/birthday";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useTranslation } from "@/i18n";
 import photo1Default from "@/assets/photo-1.jpg";
 import photo2Default from "@/assets/photo-2.jpg";
 import photo3Default from "@/assets/photo-3.jpg";
@@ -14,6 +15,7 @@ export const PhotoGallery = () => {
     const [isReducedMotion, setIsReducedMotion] = useState(false);
     const isMobile = useIsMobile();
     const { config, getAnimationPacing } = useBirthdayStore();
+    const { t, isHindi } = useTranslation();
     const { relationship } = config;
     const animationPacing = getAnimationPacing();
     const reducedMotion = isReducedMotion || isMobile;
@@ -32,7 +34,19 @@ export const PhotoGallery = () => {
                 { src: PHOTO_ASSETS.photo2 || photo2Default, fallback: photo2Default, key: "p2" },
                 { src: PHOTO_ASSETS.photo3 || photo3Default, fallback: photo3Default, key: "p3" },
             ].filter(p => p.src !== null);
-        const captions = relationship === 'partner' ? [
+        const captions = isHindi ? (relationship === 'partner' ? [
+            "आपके साथ बिताया हर पल एक अनमोल तोहफा है 💖",
+            "हमारे सुनहरे भविष्य की खूबसूरत शुरुआत ✨",
+            "मेरे दिल का सबसे पसंदीदा ठिकाना 🌹"
+        ] : relationship === 'friend' ? [
+            "सच्चे यार के साथ बिताए यादगार लम्हे 🚀",
+            "ढेर सारी यादें और पागलपन भरी बातें! 😂",
+            "हमेशा ऐसे ही शानदार रहो! 🍻"
+        ] : [
+            "परिवार वो जगह है जहाँ ज़िंदगी शुरू होती है ✨",
+            "हर एक मुस्कान को सहेज कर रखना 💖",
+            "प्यार और खुशियों से भरा सफर 🌟"
+        ]) : (relationship === 'partner' ? [
             "Every moment with you is a gift 💖",
             "Building our beautiful future ✨",
             "My heart's favorite place 🌹"
@@ -44,12 +58,12 @@ export const PhotoGallery = () => {
             "Family is where life begins ✨",
             "Cherishing every smile 💖",
             "A journey filled with love 🌟"
-        ];
+        ]);
         return base.map((p, i) => ({
             ...p,
-            caption: config.photoCaptions?.[i] || captions[i] || "Beautiful memory",
+            caption: config.photoCaptions?.[i] || captions[i] || (isHindi ? "खूबसूरत याद" : "Beautiful memory"),
         }));
-    }, [relationship, config.photos, config.photoCaptions]);
+    }, [relationship, config.photos, config.photoCaptions, isHindi]);
     const x = useMotionValue(0);
     const y = useMotionValue(0);
     const rotateX = useSpring(useTransform(y, [-100, 100], [10, -10]), { damping: 20, stiffness: 150 });
@@ -109,7 +123,7 @@ export const PhotoGallery = () => {
     return (<>
       <section className="relative z-20 px-4 py-32 max-w-7xl mx-auto overflow-hidden">
         <motion.h3 initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="font-display text-6xl md:text-8xl lg:text-[10rem] font-black text-center mb-24 bg-gradient-to-b from-white via-white/80 to-white/20 bg-clip-text text-transparent drop-shadow-2xl">
-          MEMORIES 📸
+          {t('gallery.memories')}
         </motion.h3>
 
         <motion.div onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ rotateX, rotateY, perspective: 1000 }} className={`relative group ${isMobile ? '' : 'cursor-none'}`}>
@@ -127,7 +141,7 @@ export const PhotoGallery = () => {
               
               <motion.div style={{ x, y }} className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white font-black uppercase tracking-widest text-xs">
-                  View Large
+                  {t('gallery.viewLarge')}
                 </div>
               </motion.div>
             </motion.div>
