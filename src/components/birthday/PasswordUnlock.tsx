@@ -5,6 +5,7 @@ import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useSoundManager } from "./SoundManager";
 import { getEffectivePassword } from "@/utils/password";
 import { useConfetti } from "./Confetti";
+import { useTranslation } from "@/i18n";
 interface PasswordUnlockProps {
     onUnlock: () => void;
 }
@@ -16,6 +17,7 @@ export const PasswordUnlock = ({ onUnlock }: PasswordUnlockProps) => {
     const [unlocked, setUnlocked] = useState(false);
     const [localFlash, setLocalFlash] = useState(false);
     const { config } = useBirthdayStore();
+    const { t, isHindi } = useTranslation();
     const { playType, playWhoosh, playReveal, playBoom } = useSoundManager();
     const { fireStars, fireConfetti } = useConfetti();
     const primaryColor = config.favoriteColor || "#FF6B6B";
@@ -60,6 +62,26 @@ export const PasswordUnlock = ({ onUnlock }: PasswordUnlockProps) => {
         if (config.passwordHint)
             return config.passwordHint;
         const format = config.passwordFormat || 'MMDD';
+        if (isHindi) {
+            switch (format.toUpperCase()) {
+                case 'MMDD':
+                    return "संकेत: आज की खास तारीख (प्रारूप: MMDD, उदा. 24 अप्रैल के लिए 0424) 📅";
+                case 'DDMM':
+                    return "संकेत: आज की खास तारीख (प्रारूप: DDMM, उदा. 24 अप्रैल के लिए 2404) 📅";
+                case 'YYYYMMDD':
+                    return "संकेत: साल सहित जन्मदिन की तारीख (प्रारूप: YYYYMMDD, उदा. 20010424) 📅";
+                case 'YYYY-MM-DD':
+                    return "संकेत: पूरा जन्मदिन (प्रारूप: YYYY-MM-DD, उदा. 2001-04-24) 📅";
+                case 'MM-DD':
+                    return "संकेत: जन्मदिन का महीना और दिन (प्रारूप: MM-DD, उदा. 04-24) 📅";
+                case 'DD-MM':
+                    return "संकेत: जन्मदिन का दिन और महीना (प्रारूप: DD-MM, उदा. 24-04) 📅";
+                case 'YYYY':
+                    return "संकेत: जन्म का साल (प्रारूप: YYYY, उदा. 2001) 📅";
+                default:
+                    return "संकेत: वह खास तारीख जिसका आज हम जश्न मना रहे हैं! 🎂";
+            }
+        }
         switch (format.toUpperCase()) {
             case 'MMDD':
                 return "Hint: Today's special date (Format: MMDD, e.g. 0424 for April 24th) 📅";
@@ -100,15 +122,15 @@ export const PasswordUnlock = ({ onUnlock }: PasswordUnlockProps) => {
         </div>
 
         <h2 className="font-display text-2xl md:text-3xl font-black text-white mb-2 uppercase tracking-wide">
-          {unlocked ? "Verification Successful" : "Unlock the Magic"}
+          {unlocked ? t('common.verificationSuccessful') : t('common.unlockMagic')}
         </h2>
         <p className="text-white/40 text-xs md:text-sm tracking-widest uppercase mb-8">
-          {unlocked ? "Preparing cinematic surprise..." : "Enter the secret passcode to begin"}
+          {unlocked ? t('common.preparingSurprise') : t('common.enterPasscode')}
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="relative">
-            <input type="text" inputMode={isNumericFormat ? "numeric" : "text"} pattern={isNumericFormat ? "[0-9]*" : undefined} value={password} onChange={handleInputChange} placeholder={isNumericFormat ? "••••" : "Enter passcode"} disabled={unlocked} className="w-full text-center py-4 px-6 bg-white/5 border border-white/10 rounded-2xl text-2xl md:text-3xl font-bold tracking-widest text-white focus:outline-none transition-all duration-300 placeholder:text-white/20 placeholder:tracking-normal placeholder:font-normal placeholder:text-base focus:bg-white/10" style={{
+            <input type="text" inputMode={isNumericFormat ? "numeric" : "text"} pattern={isNumericFormat ? "[0-9]*" : undefined} value={password} onChange={handleInputChange} placeholder={isNumericFormat ? "••••" : t('common.enterPasscodePlaceholder')} disabled={unlocked} className="w-full text-center py-4 px-6 bg-white/5 border border-white/10 rounded-2xl text-2xl md:text-3xl font-bold tracking-widest text-white focus:outline-none transition-all duration-300 placeholder:text-white/20 placeholder:tracking-normal placeholder:font-normal placeholder:text-base focus:bg-white/10" style={{
             borderColor: error ? "#EF4444" : unlocked ? primaryColor : "rgba(255,255,255,0.1)",
             boxShadow: error
                 ? "0 0 30px rgba(239, 68, 68, 0.2)"
@@ -119,20 +141,20 @@ export const PasswordUnlock = ({ onUnlock }: PasswordUnlockProps) => {
           </div>
 
           {error && (<motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-red-400 font-semibold text-sm animate-pulse">
-              Passcode Incorrect. Try again.
+              {t('common.passcodeIncorrect')}
             </motion.p>)}
 
           <div className="flex gap-4">
             <button type="button" onClick={() => setShowHint(prev => !prev)} className="flex items-center justify-center gap-2 px-4 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white/60 hover:text-white transition-all text-sm font-semibold flex-1">
               <HelpCircle className="w-4 h-4"/>
-              <span>{showHint ? "Hide Hint" : "Need Hint?"}</span>
+              <span>{showHint ? t('common.hideHint') : t('common.needHint')}</span>
             </button>
 
             <button type="submit" disabled={unlocked || !password} className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl text-black font-black uppercase text-sm tracking-widest transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:scale-100 flex-[1.5]" style={{
             background: `linear-gradient(90deg, ${primaryColor}, ${primaryColor}dd)`,
             boxShadow: `0 10px 30px -10px ${primaryColor}60`,
         }}>
-              <span>Unlock</span>
+              <span>{t('common.unlock')}</span>
               <ArrowRight className="w-4 h-4"/>
             </button>
           </div>
