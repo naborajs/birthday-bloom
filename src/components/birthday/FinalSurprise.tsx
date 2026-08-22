@@ -3,9 +3,11 @@ import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { Heart, Stars, Video, Sparkles, Camera } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getYouTubeEmbedUrl } from "@/lib/utils";
+import { useTranslation } from "@/i18n";
 
 export const FinalSurprise = () => {
     const { config } = useBirthdayStore();
+    const { t, isHindi } = useTranslation();
     const isMobile = useIsMobile();
     const memories = config.specialMemories || [];
     const primaryColor = config.favoriteColor || "#ff0080";
@@ -17,10 +19,10 @@ export const FinalSurprise = () => {
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-20">
           <h2 className="font-display text-5xl md:text-8xl font-black mb-6 bg-gradient-to-r from-primary via-white to-accent bg-clip-text text-transparent">
-            Our Special Memories 🎞️
+            {isHindi ? "हमारी खास यादें 🎞️" : "Our Special Memories 🎞️"}
           </h2>
           <p className="text-xl md:text-2xl text-foreground/60 max-w-2xl mx-auto italic">
-            "A journey of a thousand miles begins with a single step, but it's the moments we share that make it worth traveling."
+            {isHindi ? "“हजारों मीलों का सफर एक कदम से शुरू होता है, लेकिन वे खूबसूरत लम्हें ही हैं जो इस सफर को यादगार बनाते हैं।”" : "\"A journey of a thousand miles begins with a single step, but it's the moments we share that make it worth traveling.\""}
           </p>
         </motion.div>
 
@@ -45,8 +47,8 @@ export const FinalSurprise = () => {
               <iframe src={finalVideoSrc} loading="lazy" className="w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title="Final Surprise Video"/>
             </div>
             <div className="p-10 text-center bg-gradient-to-t from-black/80 to-transparent">
-              <h4 className="font-display text-2xl md:text-4xl font-black mb-4">The Final Surprise 🎬</h4>
-              <p className="text-lg md:text-xl text-white/60 font-light">A little something extra to make your heart smile.</p>
+              <h4 className="font-display text-2xl md:text-4xl font-black mb-4">{isHindi ? "आखरी सरप्राइज 🎬" : "The Final Surprise 🎬"}</h4>
+              <p className="text-lg md:text-xl text-white/60 font-light">{isHindi ? "आपके चेहरे पर एक प्यारी सी मुस्कान लाने के लिए एक छोटा सा तोहफा।" : "A little something extra to make your heart smile."}</p>
             </div>
           </motion.div>)}
 
@@ -58,12 +60,12 @@ export const FinalSurprise = () => {
           
           <div className="space-y-6">
             <h3 className="font-display text-4xl md:text-7xl font-black tracking-tight leading-tight">
-              I Hope This Made Your <br />
-              <span style={{ color: primaryColor }} className="animate-pulse">Day As Special As You Are</span>
+              {isHindi ? "उम्मीद है यह आपके दिन को " : "I Hope This Made Your "} <br />
+              <span style={{ color: primaryColor }} className="animate-pulse">{isHindi ? "उतना ही खास बनाएगा जितने आप हैं" : "Day As Special As You Are"}</span>
             </h3>
             <p className="text-xl md:text-3xl font-light text-foreground/60 max-w-3xl mx-auto leading-relaxed">
-              Every pixel, every animation, and every word was crafted with love. <br />
-              Happy Birthday once again, {config.name}. ✨
+              {isHindi ? "हर एक पिक्सल, हर एनिमेशन और हर शब्द सिर्फ और सिर्फ प्यार से सजाया गया है।" : "Every pixel, every animation, and every word was crafted with love."} <br />
+              {isHindi ? `एक बार फिर जन्मदिन की ढेर सारी शुभकामनाएं, ${config.name}। ✨` : `Happy Birthday once again, ${config.name}. ✨`}
             </p>
           </div>
 
