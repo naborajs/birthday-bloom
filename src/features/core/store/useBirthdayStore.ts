@@ -43,7 +43,7 @@ export interface BirthdayConfig {
     reducedMotion?: boolean;
     showSkipButton?: boolean;
     soundEffectsEnabled?: boolean;
-    language?: 'en' | 'hi' | string;
+    language?: 'en' | 'hi' | 'bn' | string;
     password?: string;
     passwordHint?: string;
     passwordFormat?: string;
@@ -53,7 +53,7 @@ interface BirthdayStore {
     config: BirthdayConfig;
     getAnimationPacing: () => 'slow' | 'fast' | 'moderate';
     getMood: () => 'romantic' | 'energetic' | 'warm';
-    getLanguage: () => 'en' | 'hi' | string;
+    getLanguage: () => 'en' | 'hi' | 'bn' | string;
 }
 const parseEnvString = (...values: unknown[]): string => {
     for (const value of values) {
@@ -180,7 +180,12 @@ const envSoundEffects = import.meta.env.VITE_SOUND_EFFECTS !== undefined
     ? parseEnvBoolean(import.meta.env.VITE_SOUND_EFFECTS, true)
     : true;
 const rawLanguage = parseEnvString(import.meta.env.VITE_LANGUAGE, import.meta.env.VITE_LANG).toLowerCase();
-const envLanguage: 'en' | 'hi' = rawLanguage === 'hi' || rawLanguage === 'hindi' || rawLanguage === 'in' ? 'hi' : 'en';
+const envLanguage: 'en' | 'hi' | 'bn' =
+    rawLanguage === 'hi' || rawLanguage === 'hindi' || rawLanguage === 'in'
+        ? 'hi'
+        : rawLanguage === 'bn' || rawLanguage === 'bengali' || rawLanguage === 'bangla'
+            ? 'bn'
+            : 'en';
 const envFinalVideo = parseEnvString(import.meta.env.VITE_FINAL_VIDEO_URL);
 const envMemories = import.meta.env.VITE_SPECIAL_MEMORIES
     ? String(import.meta.env.VITE_SPECIAL_MEMORIES).split('|').map((m: string) => {
