@@ -286,7 +286,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
             "May your kindness always come back to you tenfold ✨",
             "We love you so much! 💖"
         ];
-    }, [name, relationship, gender, isHindi, t]);
+    }, [name, relationship, gender, isHindi, isBengali, t]);
     const primaryColor = favoriteColor || '#FF6B6B';
     const storyLineStyles = [
         { className: `${relationship === 'partner' ? 'italic' : ''} text-lg md:text-2xl lg:text-3xl font-light`, style: { color: "hsl(280, 20%, 85%)" } },
