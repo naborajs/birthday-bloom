@@ -115,3 +115,5 @@ export const enTranslations: TranslationSchema = {
         moreMagicalSurprise: "But you deserve a much more magical surprise...",
     },
 };
+
+export const en = enTranslations;
