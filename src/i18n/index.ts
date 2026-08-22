@@ -21,8 +21,33 @@ export const getTranslation = (lang?: string): TranslationSchema => {
 export const interpolate = (text: string, params?: Record<string, string | number>): string => {
     if (!params) return text;
     return Object.entries(params).reduce((acc, [key, val]) => {
-        return acc.replace(new RegExp(`\\{${key}\\}`, 'g'), String(val));
+        return acc.replace(new RegExp(`\\{\\{?${key}\\}?\\}`, 'g'), String(val));
     }, text);
+};
+
+export const getTranslationValue = (lang: string, keyPath: string, params?: Record<string, string | number>): string => {
+    const dict = getTranslation(lang);
+    const keys = keyPath.split('.');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let current: any = dict;
+    for (const k of keys) {
+        if (current && typeof current === 'object' && k in current) {
+            current = current[k];
+        } else {
+            // Fallback to English
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            let fallbackCurrent: any = enTranslations;
+            for (const fk of keys) {
+                if (fallbackCurrent && typeof fallbackCurrent === 'object' && fk in fallbackCurrent) {
+                    fallbackCurrent = fallbackCurrent[fk];
+                } else {
+                    return keyPath;
+                }
+            }
+            return interpolate(String(fallbackCurrent), params);
+        }
+    }
+    return interpolate(String(current), params);
 };
 
 export const useTranslation = () => {
@@ -31,27 +56,7 @@ export const useTranslation = () => {
     const currentTranslations = translations[language] || enTranslations;
 
     const t = (keyPath: string, params?: Record<string, string | number>): string => {
-        const keys = keyPath.split('.');
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let current: any = currentTranslations;
-        for (const k of keys) {
-            if (current && typeof current === 'object' && k in current) {
-                current = current[k];
-            } else {
-                // Fallback to English if key missing in target language
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                let fallbackCurrent: any = enTranslations;
-                for (const fk of keys) {
-                    if (fallbackCurrent && typeof fallbackCurrent === 'object' && fk in fallbackCurrent) {
-                        fallbackCurrent = fallbackCurrent[fk];
-                    } else {
-                        return keyPath;
-                    }
-                }
-                return interpolate(String(fallbackCurrent), params);
-            }
-        }
-        return interpolate(String(current), params);
+        return getTranslationValue(language, keyPath, params);
     };
 
     return {
