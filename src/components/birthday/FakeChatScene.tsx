@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSoundManager } from "./SoundManager";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
+import { useTranslation } from "@/i18n";
 interface FakeChatSceneProps {
     onComplete: () => void;
 }
@@ -10,17 +11,25 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
     const [typedText, setTypedText] = useState("");
     const { playType, playWhoosh, playReveal } = useSoundManager();
     const { config } = useBirthdayStore();
+    const { t, isHindi } = useTranslation();
     const { name, relationship, favoriteColor, gender } = config;
     const isMale = gender === 'male';
     const isFemale = gender === 'female';
-    const fullText = "Happy Birthday";
+    const fullText = t('common.happyBirthday');
     const retypeFullText = useMemo(() => {
+        if (isHindi) {
+            if (relationship === 'partner')
+                return isMale ? "मेरे दिल के राजा के लिए..." : isFemale ? "मेरे ख्वाबों की मलिका के लिए..." : "उस इंसान के लिए जो मुझे पूरा करता है...";
+            if (relationship === 'friend')
+                return "अरे रुको, सिर्फ एक साधारण संदेश? वो हम नहीं! 😂";
+            return "कुछ बहुत ही खास आ रहा है...";
+        }
         if (relationship === 'partner')
             return isMale ? "To the man who holds my heart..." : isFemale ? "To the woman of my dreams..." : "To the soul who completes me...";
         if (relationship === 'friend')
             return "Wait, a boring text? That's not us! 😂";
         return "Something special is coming...";
-    }, [relationship, isMale, isFemale]);
+    }, [relationship, isMale, isFemale, isHindi]);
     const primaryColor = favoriteColor || '#FF6B6B';
     useEffect(() => {
         let isMounted = true;
@@ -66,7 +75,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
             console.error("FakeChatScene sequence failed:", err);
         });
         return () => { isMounted = false; };
-    }, [onComplete, playType, playWhoosh, playReveal, retypeFullText]);
+    }, [onComplete, playType, playWhoosh, playReveal, fullText, retypeFullText]);
     const theme = useMemo(() => {
         if (relationship === 'partner')
             return {
@@ -76,7 +85,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                 bubbleOther: "rgba(255, 255, 255, 0.1)",
                 bubbleMe: `${primaryColor}40`,
                 icon: "💖",
-                status: "typing love notes...",
+                status: t('chat.typingNotes'),
             };
         if (relationship === 'friend')
             return {
@@ -86,7 +95,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                 bubbleOther: "rgba(255, 255, 255, 0.08)",
                 bubbleMe: `${primaryColor}60`,
                 icon: "😎",
-                status: "setting up the vibe...",
+                status: t('chat.settingVibe'),
             };
         return {
             bg: "rgba(25, 20, 15, 0.95)",
@@ -95,9 +104,9 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
             bubbleOther: "rgba(255, 255, 255, 0.1)",
             bubbleMe: `${primaryColor}40`,
             icon: "🎈",
-            status: "sending warm vibes...",
+            status: t('chat.sendingVibes'),
         };
-    }, [relationship, primaryColor]);
+    }, [relationship, primaryColor, t]);
     return (<div className="fixed inset-0 flex items-center justify-center p-4" style={{ perspective: "1500px" }}>
       <motion.div initial={{ scale: 0.8, opacity: 0, y: 100, rotateX: 30 }} animate={{ scale: 1, opacity: 1, y: 0, rotateX: 5 }} exit={{ scale: 1.2, opacity: 0, filter: "blur(40px)", rotateX: -20 }} transition={{ type: "spring", stiffness: 100, damping: 20 }} className="w-full max-w-md preserve-3d">
         <div className="rounded-[3rem] overflow-hidden shadow-[0_60px_120px_-20px_rgba(0,0,0,0.8)] border backdrop-blur-2xl" style={{ background: theme.bg, borderColor: theme.border }}>
@@ -122,11 +131,11 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
           
           <div className="px-8 py-10 min-h-[300px] flex flex-col justify-end gap-4">
             <motion.div initial={{ opacity: 0, x: -30, scale: 0.9 }} animate={{ opacity: 1, x: 0, scale: 1 }} className="self-start max-w-[85%] px-5 py-4 rounded-[1.5rem] rounded-bl-none text-base font-medium shadow-lg" style={{ background: theme.bubbleOther, color: "rgba(255,255,255,0.9)" }}>
-              {relationship === 'partner' ? "Hey my love... ❤️" : relationship === 'friend' ? "Yoooo! 👋" : "Hi there! ✨"}
+              {relationship === 'partner' ? t('chat.heyLove') : relationship === 'friend' ? t('chat.heyFriend') : t('chat.heyGeneral')}
             </motion.div>
             
             <motion.div initial={{ opacity: 0, x: -30, scale: 0.9 }} animate={{ opacity: 1, x: 0, scale: 1 }} transition={{ delay: 0.5 }} className="self-start max-w-[85%] px-5 py-4 rounded-[1.5rem] rounded-bl-none text-base font-medium shadow-lg" style={{ background: theme.bubbleOther, color: "rgba(255,255,255,0.9)" }}>
-              {relationship === 'partner' ? "I stayed up late thinking about you... ❤️" : relationship === 'friend' ? "Prepare yourself for something epic... 🚀" : "I have a special surprise for you..."}
+              {relationship === 'partner' ? t('chat.stayedUpLate') : relationship === 'friend' ? t('chat.prepareEpic') : t('chat.specialSurpriseMsg')}
             </motion.div>
 
             
@@ -161,7 +170,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
         <AnimatePresence>
           {(phase === "special") && (<motion.div initial={{ opacity: 0, y: 30, scale: 0.8, filter: "blur(10px)" }} animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }} exit={{ opacity: 0, scale: 1.2, filter: "blur(20px)" }} className="text-center mt-16 px-6">
               <p className="text-3xl md:text-4xl font-display font-black leading-tight bg-gradient-to-r from-white via-white/80 to-white/60 bg-clip-text text-transparent">
-                {relationship === 'partner' ? `Because ${isMale ? 'a King' : isFemale ? 'a Queen' : 'someone special'} like you deserves more than just words...` : relationship === 'friend' ? "Warning: High levels of legend-ness detected! ⚠️" : "But you deserve a much more magical surprise..."}
+                {relationship === 'partner' ? (isHindi ? (isMale ? 'क्योंकि मेरे राजा के लिए सिर्फ शब्द काफी नहीं हैं...' : 'क्योंकि मेरी रानी के लिए सिर्फ शब्द काफी नहीं हैं...') : (isMale ? 'Because a King like you deserves more than just words...' : 'Because a Queen like you deserves more than just words...')) : relationship === 'friend' ? t('chat.highLegendLevel') : t('chat.moreMagicalSurprise')}
               </p>
               <motion.div animate={{
                 scale: [1, 1.3, 1],
