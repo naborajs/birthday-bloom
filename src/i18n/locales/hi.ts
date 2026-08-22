@@ -115,3 +115,5 @@ export const hiTranslations: TranslationSchema = {
         moreMagicalSurprise: "लेकिन आप इससे भी ज्यादा जादुई सरप्राइज के हकदार हैं...",
     },
 };
+
+export const hi = hiTranslations;
