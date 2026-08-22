@@ -375,12 +375,12 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
       // Hindi partner male letter
       const partnerMaleLetter = getHighlySpecificLetter("रोहन", "partner", "male", ["music"], "hi");
       expect(partnerMaleLetter).toContain("रोहन");
-      expect(partnerMaleLetter).toContain("राजा");
+      expect(partnerMaleLetter).toContain("सरताज");
 
       // Hindi partner female letter
       const partnerFemaleLetter = getHighlySpecificLetter("अनन्या", "partner", "female", ["art"], "hi");
       expect(partnerFemaleLetter).toContain("अनन्या");
-      expect(partnerFemaleLetter).toContain("रानी");
+      expect(partnerFemaleLetter).toContain("मलिका");
 
       // Hindi friend letter
       const friendLetter = getHighlySpecificLetter("समीर", "friend", "male", ["car"], "hi");
