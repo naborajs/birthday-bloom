@@ -17,7 +17,7 @@ export const PasswordUnlock = ({ onUnlock }: PasswordUnlockProps) => {
     const [unlocked, setUnlocked] = useState(false);
     const [localFlash, setLocalFlash] = useState(false);
     const { config } = useBirthdayStore();
-    const { t, isHindi } = useTranslation();
+    const { t, isHindi, isBengali } = useTranslation();
     const { playType, playWhoosh, playReveal, playBoom } = useSoundManager();
     const { fireStars, fireConfetti } = useConfetti();
     const primaryColor = config.favoriteColor || "#FF6B6B";
@@ -62,6 +62,26 @@ export const PasswordUnlock = ({ onUnlock }: PasswordUnlockProps) => {
         if (config.passwordHint)
             return config.passwordHint;
         const format = config.passwordFormat || 'MMDD';
+        if (isBengali) {
+            switch (format.toUpperCase()) {
+                case 'MMDD':
+                    return "ইঙ্গিত: আজকের বিশেষ তারিখ (ফরম্যাট: MMDD, যেমন ২৪শে এপ্রিলের জন্য 0424) 📅";
+                case 'DDMM':
+                    return "ইঙ্গিত: আজকের বিশেষ তারিখ (ফরম্যাট: DDMM, যেমন ২৪শে এপ্রিলের জন্য 2404) 📅";
+                case 'YYYYMMDD':
+                    return "ইঙ্গিত: সালসহ জন্মদিনের তারিখ (ফরম্যাট: YYYYMMDD, যেমন 20010424) 📅";
+                case 'YYYY-MM-DD':
+                    return "ইঙ্গিত: পুরো জন্মতারিখ (ফরম্যাট: YYYY-MM-DD, যেমন 2001-04-24) 📅";
+                case 'MM-DD':
+                    return "ইঙ্গিত: জন্মদিনের মাস এবং দিন (ফরম্যাট: MM-DD, যেমন 04-24) 📅";
+                case 'DD-MM':
+                    return "ইঙ্গিত: জন্মদিনের দিন এবং মাস (ফরম্যাট: DD-MM, যেমন 24-04) 📅";
+                case 'YYYY':
+                    return "ইঙ্গিত: জন্মসাল (ফরম্যাট: YYYY, যেমন 2001) 📅";
+                default:
+                    return "ইঙ্গিত: সেই বিশেষ তারিখ যা আমরা আজ উদযাপন করছি! 🎂";
+            }
+        }
         if (isHindi) {
             switch (format.toUpperCase()) {
                 case 'MMDD':
