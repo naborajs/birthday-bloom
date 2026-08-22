@@ -2,16 +2,18 @@ import { motion } from "framer-motion";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getYouTubeEmbedUrl } from "@/lib/utils";
+import { useTranslation } from "@/i18n";
 
 export const VideoGallery = () => {
     const { config } = useBirthdayStore();
+    const { isHindi } = useTranslation();
     const isMobile = useIsMobile();
     const videos = config.videos || [];
     if (!videos || videos.length === 0)
         return null;
     return (<section className="relative z-20 px-4 py-20 max-w-7xl mx-auto w-full">
       <motion.h3 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="font-display text-5xl md:text-8xl font-black text-center mb-16 drop-shadow-xl" style={{ color: config.favoriteColor || '#FF6B6B' }}>
-        SPECIAL MEMORIES 🎬
+        {isHindi ? "खास वीडियो यादें 🎬" : "SPECIAL MEMORIES 🎬"}
       </motion.h3>
 
       <div className="flex flex-col gap-12 w-full max-w-4xl mx-auto">
