@@ -251,7 +251,7 @@ export const BirthdayQuiz = () => {
                 setSelected(null);
                 fireStars();
             }} className="px-10 py-4 bg-primary text-white rounded-full font-black tracking-widest uppercase text-sm shadow-2xl shadow-primary/30">
-              {isHindi ? "फिर से खेलें 🔄" : "Play Again 🔄"}
+              {isBengali ? "আবার খেলুন 🔄" : isHindi ? "फिर से खेलें 🔄" : "Play Again 🔄"}
             </motion.button>
           </motion.div>)}
       </motion.div>
