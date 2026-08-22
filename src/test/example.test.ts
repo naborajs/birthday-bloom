@@ -345,7 +345,7 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
       expect(hi.cake.startCutting).toBe("काटना शुरू करें");
 
       expect(en.memories.title).toBe("MEMORIES 📸");
-      expect(hi.memories.title).toBe("यादें 📸");
+      expect(hi.memories.title).toBe("अनमोल यादें 📸");
     });
 
     it("interpolates parameters accurately in both English and Hindi", async () => {
