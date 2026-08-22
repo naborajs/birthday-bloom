@@ -19,6 +19,7 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 |---|---|---|
 | [[quick-start|quick-start.md]] | Get running in 5 minutes | 5 min |
 | [[ENV_GUIDE|ENV_GUIDE.md]] | Full env customization reference with 15+ recipes | 15 min |
+| [[setup-hindi|setup-hindi.md]] | Multi-Language Localization (Hindi / English) guide | 5 min |
 | [[architecture|architecture.md]] | System architecture overview | 10 min |
 | [[architecture-env|architecture-env.md]] | Environment variable lifecycle & store flow | 8 min |
 | [[developer-guide|developer-guide.md]] | Component API reference and extension patterns | 15 min |
