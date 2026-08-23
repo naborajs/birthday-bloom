@@ -73,12 +73,14 @@ const FourCornerMerge = ({ onDone }: {
     const particleIdRef = useRef(0);
     const rafRef = useRef<number>(0);
     const { name } = useBirthdayStore(state => state.config);
-    const { isHindi, isBengali } = useTranslation();
-    const loveMessage = isBengali
-        ? `আপনাকে অনেক ভালোবাসি ${name || 'প্রিয়'}`
-        : isHindi
-            ? `आपसे बहुत प्यार करते हैं ${name || 'प्रिय'}`
-            : `Love You Dear ${name || 'One'}`;
+    const { isHindi, isBengali, isFrench } = useTranslation();
+    const loveMessage = isFrench
+        ? `On t'aime tellement ${name || 'trésor'}`
+        : isBengali
+            ? `আপনাকে অনেক ভালোবাসি ${name || 'প্রিয়'}`
+            : isHindi
+                ? `आपसे बहुत प्यार करते हैं ${name || 'प्रिय'}`
+                : `Love You Dear ${name || 'One'}`;
     useEffect(() => {
         const t1 = setTimeout(() => setPhase("merging"), 100);
         const t2 = setTimeout(() => setPhase("merged"), 1800);
