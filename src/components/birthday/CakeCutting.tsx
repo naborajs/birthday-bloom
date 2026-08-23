@@ -26,11 +26,10 @@ const CakeCard = ({ cake, onSelect }: {
             whileHover={!isMobile ? { scale: 1.05, y: -10, rotateZ: 2 } : undefined} 
             whileTap={{ scale: 0.95 }} 
             onClick={onSelect} 
-            className="group relative flex flex-col items-center gap-3 p-3 border border-white/10 backdrop-blur-2xl transition-all duration-500 overflow-hidden" 
+            className="group relative flex flex-col items-center gap-3 p-3 border border-white/10 backdrop-blur-2xl transition-all duration-500 overflow-hidden w-44 sm:w-48" 
             style={{
                 background: "linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01))",
                 borderRadius: 'var(--card-radius, 2rem)',
-                width: "180px",
                 boxShadow: "0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.05)"
             }}
         >
@@ -52,7 +51,7 @@ const CakeCard = ({ cake, onSelect }: {
                     ))}
                 </div>
                 <div 
-                    className="inline-flex items-center justify-center px-4 py-1.5 rounded-full text-xs font-bold text-white shadow-lg transition-transform hover:scale-105"
+                    className="inline-flex items-center justify-center whitespace-normal px-3 py-1.5 leading-tight rounded-full text-xs font-bold text-white shadow-lg transition-transform hover:scale-105"
                     style={{ background: cake.accent }}
                 >
                     {t('cake.startCutting')}
