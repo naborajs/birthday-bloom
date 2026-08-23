@@ -1,11 +1,13 @@
 ---
-tags: [quickstart, setup, tutorial]
-aliases: [quick-start]
+tags: [quickstart, setup, tutorial, localization]
+aliases: [quick-start, quickstart]
 ---
 
 # Quick Start
 
-Get Birthday Bloom running locally in 5 minutes.
+[[DOCUMENTATION_INDEX|Back to Home]] | [[ENV_GUIDE|Env Customization Guide]] | [[setup-hindi|Hindi Setup Guide]] | [[setup-bengali|Bengali Setup Guide]] | [[deployment|Deployment Guide]]
+
+Get Birthday Bloom running locally in 5 minutes with zero code changes required.
 
 ---
 
@@ -42,16 +44,16 @@ cp .env.example .env.local
 npm run dev
 ```
 
-The app will be available at `http://localhost:5000`.
+The app will be available at `http://localhost:5173` (or `http://localhost:5000`).
 
 **PowerShell users**:
-```bash
+```powershell
 npm.cmd run dev
 ```
 
 ### Creating Your First Bloom
 
-At minimum, set the recipient's name, relationship, and theme color:
+At minimum, set the recipient's name, relationship, and theme color in `.env.local`:
 
 ```env
 VITE_BIRTHDAY_NAME="Naboraj"
@@ -62,38 +64,33 @@ VITE_BIRTHDAY_COLOR="#FF6B6B"
 Supported relationship templates include:
 
 ```
-friend, brother, sister, father, mother, grandfather, grandmother,
-guardian, partner, boyfriend, girlfriend, custom
+partner, friend, brother, sister, father, mother, grandfather, grandmother,
+uncle, aunt, cousin, son, daughter, guardian, colleague, mentor, family, custom
 ```
 
 > Most customizations can be completed without editing source code.
 > Check [[ENV_GUIDE|ENV_GUIDE.md]] before modifying components.
 
-### Using Docker (Optional)
+---
 
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-ARG VITE_BIRTHDAY_NAME=Guest
-ARG VITE_BIRTHDAY_RELATIONSHIP=friend
-ARG VITE_BIRTHDAY_COLOR=#FF6B6B
-RUN npm run build
+## 🌍 Multi-Language Localization Setup
 
-FROM node:18-alpine
-WORKDIR /app
-RUN npm install -g http-server
-COPY --from=0 /app/dist ./dist
-EXPOSE 8080
-CMD ["http-server", "dist", "-p", "8080"]
+Birthday Bloom natively supports **English (default)**, **Hindi (हिन्दी)**, and **Bengali (বাংলা)**. Switch languages instantly via `VITE_LANGUAGE` (or `VITE_LANG`):
+
+```env
+# English (Default)
+VITE_LANGUAGE=en
+
+# Hindi (हिन्दी) - Accepts 'hi', 'hindi', 'in'
+VITE_LANGUAGE=hi
+
+# Bengali (বাংলা) - Accepts 'bn', 'bengali', 'bangla'
+VITE_LANGUAGE=bn
 ```
 
-```bash
-docker build -t birthday-bloom .
-docker run -p 8080:8080 birthday-bloom
-```
+For complete localized setup guides:
+- 🇮🇳 **Hindi Guide**: See [[setup-hindi|setup-hindi.md]] for Devanagari typography, cultural nuances, and Hindi templates.
+- 🇧🇩 **Bengali Guide**: See [[setup-bengali|setup-bengali.md]] for Bengali script typography, cultural nuance, and Bengali templates.
 
 ---
 
@@ -101,9 +98,10 @@ docker run -p 8080:8080 birthday-bloom
 
 Edit `.env.local` with your own values. Here are real-world examples:
 
-### Sample .env.local for a Partner
+### Sample .env.local for a Partner (English)
 
 ```env
+VITE_LANGUAGE=en
 VITE_BIRTHDAY_NAME=Riya
 VITE_BIRTHDAY_AGE=25
 VITE_BIRTHDAY_RELATIONSHIP=partner
@@ -116,56 +114,74 @@ VITE_PHOTO_2=https://example.com/photo2.jpg
 VITE_BGM_URL=https://example.com/song.mp3
 ```
 
-### Sample .env.local for a Sibling
+### Sample .env.local for a Sibling (Hindi)
 
 ```env
-VITE_BIRTHDAY_NAME=Raj
+VITE_LANGUAGE=hi
+VITE_BIRTHDAY_NAME=राज
 VITE_BIRTHDAY_AGE=22
 VITE_BIRTHDAY_RELATIONSHIP=brother
 VITE_BIRTHDAY_COLOR=#0047AB
 VITE_BIRTHDAY_GENDER=male
 VITE_BIRTHDAY_DATE=2004-03-15
-VITE_BIRTHDAY_CUSTOM_MESSAGE=Proud of the man you've become.
-VITE_BIRTHDAY_WISHER_NAME=Your Sister
+VITE_BIRTHDAY_CUSTOM_MESSAGE=जन्मदिन की बहुत-बहुत बधाई भाई! हमेशा चमकते रहो।
+VITE_BIRTHDAY_WISHER_NAME=दीदी
 VITE_ANIMATION_INTENSITY=high
-VITE_DURATION=extended
 VITE_SHOW_CAKE_SECTION=true
 VITE_SHOW_VIDEO_SECTION=true
 ```
 
-### All Configuration Options
+### Sample .env.local for a Friend (Bengali)
+
+```env
+VITE_LANGUAGE=bn
+VITE_BIRTHDAY_NAME=সৌরভ
+VITE_BIRTHDAY_AGE=24
+VITE_BIRTHDAY_RELATIONSHIP=friend
+VITE_BIRTHDAY_COLOR=#00C2FF
+VITE_BIRTHDAY_GENDER=male
+VITE_BIRTHDAY_DATE=2002-08-10
+VITE_BIRTHDAY_CUSTOM_MESSAGE=শুভ জন্মদিন দোস্ত! জীবনে অনেক উন্নতি কর আর সবসময় এমন হাসি-খুশি থাকিস।
+VITE_BIRTHDAY_WISHER_NAME=অনির্বাণ
+VITE_ANIMATION_INTENSITY=high
+VITE_SHOW_CAKE_SECTION=true
+VITE_SHOW_PHOTO_SECTION=true
+```
+
+### Core Configuration Options
 
 | Variable | Type | Default | Purpose |
 |---|---|---|---|
-| `VITE_BIRTHDAY_NAME` | string | "YOU" | Birthday person's name |
-| `VITE_BIRTHDAY_RELATIONSHIP` | enum | "friend" | Relationship type |
-| `VITE_BIRTHDAY_COLOR` | hex | "#FF6B6B" | Primary theme color |
-| `VITE_BIRTHDAY_GENDER` | enum | "other" | Gender for personalization |
-| `VITE_BIRTHDAY_AGE` | number | -- | Age for age-specific messages |
-| `VITE_BIRTHDAY_DATE` | ISO date | -- | Date of birth |
-| `VITE_BIRTHDAY_INTERESTS` | csv | "" | Comma-separated interests |
-| `VITE_BIRTHDAY_CUSTOM_MESSAGE` | string | "" | Custom birthday message |
-| `VITE_BIRTHDAY_WISHER_NAME` | string | "" | Name of the message sender |
-| `VITE_PHOTO_1`..`VITE_PHOTO_3` | URL | -- | Photo gallery images |
-| `VITE_VIDEO_1` | URL | -- | Video gallery item |
-| `VITE_BGM_URL` | URL | -- | Background music |
-| `VITE_ANIMATION_INTENSITY` | enum | "high" | low / medium / high |
-| `VITE_DURATION` | enum | "normal" | quick / normal / extended |
-| `VITE_FINAL_VIDEO_URL` | URL | -- | Final surprise video |
-| `VITE_PASSWORD_REQUIRED` | boolean | false | Enable password lock |
-| `VITE_PASSWORD` | string | "" | Manual password override |
-| `VITE_PASSWORD_HINT` | string | "" | Password hint text |
-| `VITE_PASSWORD_FORMAT` | enum | "MMDD" | Auto-generate password format |
+| `VITE_BIRTHDAY_NAME` | string | `""` | Birthday person's name (setting this skips wizard) |
+| `VITE_LANGUAGE` / `VITE_LANG` | enum | `"en"` | Language localization (`en`, `hi`, `bn`). See [[setup-hindi]] & [[setup-bengali]]. |
+| `VITE_BIRTHDAY_RELATIONSHIP` | enum | `"friend"` | Relationship type (`partner`, `friend`, `brother`, `sister`, `father`, etc.) |
+| `VITE_BIRTHDAY_COLOR` | hex | `"#FF6B6B"` | Primary theme color accent |
+| `VITE_BIRTHDAY_GENDER` | enum | `"other"` | Gender for personalized pronouns and letters (`male`, `female`, `other`) |
+| `VITE_BIRTHDAY_AGE` | number | `null` | Age for age-specific storytelling and cards |
+| `VITE_BIRTHDAY_DATE` | ISO date | `null` | Date of birth (format: `YYYY-MM-DD`) |
+| `VITE_BIRTHDAY_INTERESTS` | csv | `""` | Comma-separated interests (`coding,music,travel,gaming`) |
+| `VITE_BIRTHDAY_CUSTOM_MESSAGE` | string | `""` | Custom birthday message before cake cutting |
+| `VITE_BIRTHDAY_WISHER_NAME` | string | `""` | Name of the message sender for letter signoff |
+| `VITE_PHOTO_1`..`VITE_PHOTO_6` | URL | `""` | Photo gallery images (or pipe-separated `VITE_PHOTOS`) |
+| `VITE_VIDEO_1`..`VITE_VIDEO_3` | URL | `""` | Video gallery links |
+| `VITE_BGM_URL` / `VITE_SOUND_URL` | URL | `""` | Background audio music |
+| `VITE_SOUND_EFFECTS` | boolean | `true` | Enable interactive sound effects |
+| `VITE_ANIMATION_INTENSITY` | enum | `"high"` | Animation particle intensity (`low`, `medium`, `high`) |
+| `VITE_FINAL_VIDEO_URL` | URL | `""` | Final surprise video URL |
+| `VITE_PASSWORD_REQUIRED` | boolean | `false` | Enable passcode lock screen |
+| `VITE_PASSWORD` | string | `""` | Manual password override |
+| `VITE_PASSWORD_HINT` | string | `""` | Custom password hint |
+| `VITE_PASSWORD_FORMAT` | enum | `"MMDD"` | Auto-generated password format from date |
 
-For the complete list of 40+ variables, see [[ENV_GUIDE|ENV_GUIDE.md]].
+For the complete reference of all 40+ variables, see [[ENV_GUIDE|ENV_GUIDE.md]].
 
-**Restart the dev server** after making changes for them to take effect.
+> **Dev Note:** Restart the development server (`npm run dev`) after modifying `.env.local` for changes to take full effect.
 
 ---
 
-## Family Templates
+## 👨‍👩‍👧‍👦 Family Templates
 
-Birthday Bloom includes dedicated templates for different relationships. Activate them via environment variables:
+Birthday Bloom includes dedicated templates for specific family members. Activate them via environment variables:
 
 ```env
 VITE_BIRTHDAY_RELATIONSHIP=sister
@@ -174,34 +190,35 @@ VITE_FAMILY_PREFERRED_NAME=Pri
 VITE_FAMILY_CLOSENESS=10
 ```
 
-The family system provides 15 content sections per template, covering personality, interests, memories, sibling bond, and more. For the full reference, see [[family-system|family-system.md]].
+The family system provides comprehensive personality, interests, memories, and tailored narrative arcs. For the full reference, see [[family-system|family-system.md]].
 
 ---
 
-## Verify It Works
+## 🔍 Verify It Works
 
-1. The splash screen appears with "A Special Surprise Awaits..."
-2. Tap anywhere -- the cinematic intro begins
-3. The intro flows through storytelling -> fake chat -> reveal sequence
-4. The main dashboard shows with hero, interest icons, message card, wishes, and sections
-5. All content reflects your env values (name, color, relationship tone)
-6. Interactive cake cutting, fireworks, music player, and memory gallery all load
-7. The final surprise video plays at the end (if configured)
+1. The splash screen appears with "A Special Surprise Awaits..." (or localized equivalent).
+2. Tap anywhere -- the cinematic intro begins.
+3. The intro flows through storytelling -> fake chat -> reveal sequence.
+4. The main dashboard renders with hero, interest icons, message card, wishes, and sections.
+5. All content reflects your env values (name, color, language, relationship tone).
+6. Interactive cake cutting, fireworks, audio, and memory gallery all load.
+7. The final surprise video plays at the end (if configured).
 
 ### Pre-Launch Checklist
 
 - [ ] Application builds successfully (`npm run build`)
 - [ ] No console errors
+- [ ] Language correctly configured (`en`, `hi`, or `bn`)
 - [ ] Photos load correctly
 - [ ] Videos play correctly
-- [ ] Mobile layout tested
-- [ ] Environment variables configured
-- [ ] Audio tested
+- [ ] Mobile and desktop layout tested
+- [ ] Environment variables verified in `.env.local`
+- [ ] Audio playback tested
 - [ ] Relationship template verified
 
 ---
 
-## Build for Production
+## 🏗️ Build for Production
 
 ```bash
 npm run build
@@ -212,66 +229,64 @@ The `dist/` folder is ready to deploy to any static hosting (Vercel, Netlify, AW
 
 ---
 
-## Test
+## 🧪 Test & Lint
 
 ```bash
+# Unit test suite
 npm run test
+
+# Type checking
+npx tsc --noEmit
+
+# ESLint validation
 npm run lint
 ```
 
 ---
 
-## Troubleshooting
+## 🛠️ Troubleshooting
 
 ### Blank Screen
-
-Check console for errors (F12). Verify `VITE_BIRTHDAY_NAME` is set and `.env.local` exists in the root directory. Restart the dev server:
-
-```bash
-npm run dev
-```
+Check browser console (F12). Verify `VITE_BIRTHDAY_NAME` is set and `.env.local` exists in the project root. Restart the dev server (`npm run dev`).
 
 ### Environment Changes Not Updating
-
-You must restart the dev server after modifying `.env.local`:
-
-```bash
-npm run dev
-```
+You must restart the dev server after modifying `.env.local`.
 
 ### Animations Stutter
-
 Reduce animation intensity:
-
 ```env
 VITE_ANIMATION_INTENSITY="low"
-VITE_DURATION="quick"
 ```
 
-### Photos Not Loading
+### Indic Characters Splitting or Broken Matras
+Ensure `VITE_LANGUAGE` is set to `hi` or `bn`. Our typography engine automatically applies font loading and CSS shirorekha protections for Hindi and Bengali.
 
-Verify URLs are public and correct. Check CORS headers on the image server. Test with simple Unsplash URLs first. Keep images under 500 KB.
+### Photos Not Loading
+Verify URLs are public and accessible. Test with simple Unsplash URLs first. Keep images under 500 KB for rapid mobile loading.
 
 ### No Sound / Audio Does Not Play
-
-Modern browsers block autoplay until user interaction. Click the "Start" button to trigger playback. Verify `VITE_BGM_URL` is a valid audio URL.
+Modern browsers block autoplay until user interaction. Click anywhere on the Splash Screen to trigger playback. Verify `VITE_BGM_URL` is a valid direct audio URL.
 
 For more help, see the full [[troubleshooting|Troubleshooting Guide]].
 
 ---
 
-## What's Next
+## 📚 What's Next
 
 | Guide | What It Covers |
 |---|---|
-| [[ENV_GUIDE|ENV_GUIDE.md]] | All 40+ configuration options |
+| [[ENV_GUIDE|ENV_GUIDE.md]] | All 40+ configuration options and situation recipes |
+| [[setup-hindi|setup-hindi.md]] | Dedicated Hindi (हिन्दी) localization and Devanagari guide |
+| [[setup-bengali|setup-bengali.md]] | Dedicated Bengali (বাংলা) localization and script guide |
 | [[deployment|Deployment Guide]] | Deploy to Vercel, Netlify, AWS, Docker |
 | [[family-system|Family System]] | Brother, Sister, and custom family templates |
-| [[architecture|architecture.md]] | Codebase overview and project structure |
+| [[architecture|architecture.md]] | Codebase overview and state machine structure |
+| [[architecture-env|architecture-env.md]] | Environment variable lifecycle & Zustand store hydration |
 | [[developer-guide|Developer Guide]] | Component reference, API, and extension |
 | [[troubleshooting|Troubleshooting Guide]] | Common issues and solutions |
 | [[faq|faq.md]] | Frequently asked questions |
-| [[DOCUMENTATION_INDEX|Documentation Index]] | Full documentation index and guides |
+| [[DOCUMENTATION_INDEX|Documentation Index]] | Complete documentation index and cross-references |
 
+---
 
-#obsidian #documentation #birthday-bloom #vault
+#obsidian #documentation #birthday-bloom #vault #quickstart #localization
