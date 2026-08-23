@@ -50,11 +50,11 @@ To verify env is loaded:
 | `VITE_BIRTHDAY_DATE` | date | `null` | ISO format date, e.g. `2026-10-15` or `2026-10-15T00:00:00`. Used for password generation and birthday age. Handles `TH` typo correction. |
 | `VITE_BIRTHDAY_RELATIONSHIP` | enum/string | `friend` | Drives mood, pacing, emoji kits, chat messages, letter content, theme, and color palette. |
 | `VITE_BIRTHDAY_WISHER_NAME` | string | `""` | Sender name appended to letter signoff. Also accepted as `VITE_WISHER_NAME` for backward compatibility. |
-| `VITE_LANGUAGE` | string / enum | `en` | Multi-language localization switch. Options: `en` (English - default), `hi` (Hindi), `bn` (Bengali). Accepts `bn`/`bengali`/`bangla` and `hi`/`hindi`/`in` aliases. Also accepted as `VITE_LANG`. See [[setup-bengali]] and [[setup-hindi]]. |
+| `VITE_LANGUAGE` | string / enum | `en` | Multi-language localization switch. Options: `en` (English - default), `hi` (Hindi), `bn` (Bengali). Normalizes `bn`/`bengali`/`bangla` and `hi`/`hindi`/`in` aliases. Also accepted as `VITE_LANG`. Includes automatic fallback to English if omitted or invalid. See [[setup-hindi|Hindi Guide]] and [[setup-bengali|Bengali Guide]]. |
 
 **Supported relationship values**: `partner`, `friend`, `family`, `sibling`, `brother`, `sister`, `father`, `mother`, `grandfather`, `grandmother`, `uncle`, `aunt`, `cousin`, `son`, `daughter`, `guardian`, `colleague`, `mentor`, `custom`.
 
-The store normalizes aliases: e.g., `"love"` → `partner`, `"mom"` → `mother`, `"bestie"` → `friend`, `"work"` → `colleague`.
+The store normalizes aliases: e.g., `"love"` → `partner`, `"mom"` → `mother`, `"dad"` → `father`, `"grandpa"` → `grandfather`, `"grandma"` → `grandmother`, `"bestie"` → `friend`, `"work"` → `colleague`, `"teacher"` → `mentor`.
 
 ---
 
@@ -678,6 +678,46 @@ VITE_BIRTHDAY_WISHER_NAME=Your Partner
 VITE_SHOW_HEART_TREE_SECTION=true
 VITE_ANIMATION_INTENSITY=medium
 ```
+
+### Hindi Celebration (हिन्दी सेटअप)
+```env
+# Multi-language configuration for Hindi
+VITE_LANGUAGE=hi
+VITE_BIRTHDAY_NAME=राहुल
+VITE_BIRTHDAY_AGE=25
+VITE_BIRTHDAY_GENDER=male
+VITE_BIRTHDAY_RELATIONSHIP=friend
+VITE_BIRTHDAY_COLOR=#FF6B6B
+VITE_BIRTHDAY_INTERESTS=coding,gaming,music
+VITE_BIRTHDAY_CUSTOM_MESSAGE=जन्मदिन की हार्दिक शुभकामनाएं मेरे भाई! हमेशा मुस्कुराते रहो।
+VITE_BIRTHDAY_WISHER_NAME=अमित
+VITE_SHOW_CAKE_SECTION=true
+VITE_SHOW_PHOTO_SECTION=true
+VITE_SHOW_QUIZ_SECTION=true
+VITE_SHOW_HEART_TREE_SECTION=true
+VITE_ANIMATION_INTENSITY=high
+```
+*See [[setup-hindi|Hindi Setup Guide]] for Devanagari typography, tone nuances, and family templates.*
+
+### Bengali Celebration (বাংলা সেটআপ)
+```env
+# Multi-language configuration for Bengali
+VITE_LANGUAGE=bn
+VITE_BIRTHDAY_NAME=সৌরভ
+VITE_BIRTHDAY_AGE=24
+VITE_BIRTHDAY_GENDER=male
+VITE_BIRTHDAY_RELATIONSHIP=friend
+VITE_BIRTHDAY_COLOR=#00C2FF
+VITE_BIRTHDAY_INTERESTS=coding,music,photography
+VITE_BIRTHDAY_CUSTOM_MESSAGE=শুভ জন্মদিন দোস্ত! তোর জীবনের প্রতিটি দিন যেন আনন্দে ভরে ওঠে।
+VITE_BIRTHDAY_WISHER_NAME=অনির্বাণ
+VITE_SHOW_CAKE_SECTION=true
+VITE_SHOW_PHOTO_SECTION=true
+VITE_SHOW_QUIZ_SECTION=true
+VITE_SHOW_HEART_TREE_SECTION=true
+VITE_ANIMATION_INTENSITY=high
+```
+*See [[setup-bengali|Bengali Setup Guide]] for Eastern Nagari typography, tone nuances, and family templates.*
 
 ---
 
