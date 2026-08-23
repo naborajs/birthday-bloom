@@ -5,7 +5,7 @@ This text document serves as a high-density, vector-embedding-friendly developer
 ---
 
 ## 🚀 1. SYSTEM OVERVIEW & MISSION
-To provide a premium (1%-tier) cinematic, interactive birthday landing page that non-developers can fully customize using only environment variables (`.env.local` or hosting provider dashboards) without editing codebase files. Supports native localization in **English (en)**, **Hindi (hi)**, and **Bengali (bn)** with authentic cultural emotion, respectful Indic honorifics, and zero layout overflow.
+To provide a premium (1%-tier) cinematic, interactive birthday landing page that non-developers can fully customize using only environment variables (`.env.local` or hosting provider dashboards) without editing codebase files. Supports native localization in **English (en)**, **French (fr)**, **Hindi (hi)**, and **Bengali (bn)** with authentic cultural emotion, respectful Indic honorifics, French poetic elegance, and zero layout overflow.
 
 ---
 
@@ -35,6 +35,7 @@ birthday-bloom/
 │   ├── DOCUMENTATION_INDEX.md# Central document index
 │   ├── ENV_GUIDE.md          # Env configuration guide (recipes + custom variables)
 │   ├── env-configs.md        # Prebuilt env configurations (Romantic, Sibling, Friend)
+│   ├── setup-french.md       # Dedicated French (Français) localization & European guide
 │   ├── setup-hindi.md        # Dedicated Hindi (हिन्दी) localization & Devanagari guide
 │   ├── setup-bengali.md      # Dedicated Bengali (বাংলা) localization & Eastern Nagari guide
 │   ├── architecture.md       # Cinematic Finite State Machine & runtime deep dive
@@ -71,12 +72,8 @@ birthday-bloom/
     │   │   ├── KineticText.tsx    # Grapheme-safe kinetic animated text
     │   │   ├── TypeWriter.tsx     # Grapheme-safe recursive typing component
     │   │   └── MainBirthday.tsx   # Main celebration stage orchestration
-    │   └── ui/               # Reusable UI primitives (sonner.tsx, tooltip.tsx)
-    ├── config/               # Fallback configuration and templates
-    │   ├── templates.ts      # English emotional letters, quotes & templates
-    │   ├── hindiTemplates.ts # Hindi emotional letters, quotes & wishes
-    │   ├── bengaliTemplates.ts # Bengali emotional letters, quotes & wishes
-    │   └── familyTemplates.ts# Family profile structures & builder functions
+    │   └── ui/               # General reusable UI elements (dialog, button, alert)
+    ├── config/               # Static configuration & fallback templates (frenchTemplates.ts, hindiTemplates.ts, bengaliTemplates.ts)
     ├── features/             # Feature-based folder architecture
     │   └── core/             # Central core modules (layout, routing, models)
     │       ├── models/       # Family templates and types
@@ -85,7 +82,7 @@ birthday-bloom/
     ├── i18n/                 # Multi-language localization engine
     │   ├── types.ts          # TranslationSchema definition
     │   ├── index.ts          # useTranslation hook, dictionary resolver & fallback
-    │   └── locales/          # Localization dictionaries (en.ts, hi.ts, bn.ts)
+    │   └── locales/          # Localization dictionaries (en.ts, fr.ts, hi.ts, bn.ts)
     ├── pages/                # Top-level route pages (Index.tsx, NotFound.tsx)
     ├── index.css             # Main styling entry point, Indic typography resets
     ├── main.tsx              # React mounting root
@@ -99,7 +96,7 @@ birthday-bloom/
 ### A. The Data Layer (Zustand Store)
 * **File:** `src/features/core/store/useBirthdayStore.ts`
 * Hydrates configuration data from Vite's `import.meta.env` parsing at module load.
-* Normalizes language (`en`, `hi`, `bn` with aliases `hindi`, `in`, `bengali`, `bangla`) and relationship aliases (`mom` $\rightarrow$ `mother`, `dad` $\rightarrow$ `father`, `bestie` $\rightarrow$ `friend`, etc.).
+* Normalizes language (`en`, `fr`, `hi`, `bn` with aliases `french`, `francais`, `hindi`, `in`, `bengali`, `bangla`) and relationship aliases (`mom` $\rightarrow$ `mother`, `dad` $\rightarrow$ `father`, `bestie` $\rightarrow$ `friend`, etc.).
 * Safely resolves missing values using static fallback defaults.
 * Exposes `isConfigured` (boolean) state. When true, skips configuration setup wizards and starts the cinematic story.
 
@@ -116,11 +113,11 @@ The landing page flows through a strict state progression:
 4. **CAKE:** Mounts `<CakeCutting />`. Handles blowing SVG flames, registering user wishes, and interactive cake cutting.
 5. **CELEBRATION:** Mounts the main dashboard (Polaroid sliders, trivia quiz, emotional letter card, and the merging `<HeartTree />`).
 
-### D. The Localization Layer (i18n & Indic Typography Engine)
-* **Files:** `src/i18n/index.ts`, `src/i18n/locales/` (`en.ts`, `hi.ts`, `bn.ts`), `src/index.css`
-* Strongly typed `TranslationSchema` guaranteeing key parity across English, Hindi, and Bengali.
-* Automatic fallback: If any translation key is missing in Hindi or Bengali, it transparently falls back to the English dictionary.
-* Indic Script Protections:
+### D. The Localization Layer (i18n & Multilingual Engine)
+* **Files:** `src/i18n/index.ts`, `src/i18n/locales/` (`en.ts`, `fr.ts`, `hi.ts`, `bn.ts`), `src/index.css`
+* Strongly typed `TranslationSchema` guaranteeing key parity across English, French, Hindi, and Bengali.
+* Automatic fallback: If any translation key is missing in French, Hindi, or Bengali, it transparently falls back to the English dictionary.
+* Typography & Script Protections:
   - Font subsets: `Noto Sans Devanagari`, `Rozha One`, `Noto Sans Bengali`, `Hind Siliguri`.
   - CSS resets: `letter-spacing: normal !important; text-transform: none !important;` for `html[lang="hi"]` and `html[lang="bn"]` to preserve shirorekha (headline) and matra continuity.
   - Grapheme cluster preservation: `KineticText.tsx` and `TypeWriter.tsx` avoid detached vowel signs (*matras/kar*) or broken conjuncts (*samyuktaksar/juktakkhor*).
@@ -133,7 +130,7 @@ All settings are set through environment keys. These must start with the `VITE_`
 | Key | Expected Type | Purpose / Action |
 |---|---|---|
 | `VITE_BIRTHDAY_NAME` | `String` | Name of the birthday person. Triggers skip of wizard. |
-| `VITE_LANGUAGE` / `VITE_LANG` | `String` | Localization switch (`en` for English, `hi` for Hindi, `bn` for Bengali). Accepts `hindi`, `in`, `bengali`, `bangla`. |
+| `VITE_LANGUAGE` / `VITE_LANG` | `String` | Localization switch (`en` for English, `fr` for French, `hi` for Hindi, `bn` for Bengali). Accepts `french`, `francais`, `hindi`, `in`, `bengali`, `bangla`. |
 | `VITE_BIRTHDAY_DATE` | `YYYY-MM-DD` | Recipient birthday date. Feeds countdown and passcode metrics. |
 | `VITE_BIRTHDAY_RELATIONSHIP` | `String` | Relationship type (`partner`, `friend`, `brother`, `sister`, `father`, `mother`, `grandfather`, `grandmother`, `uncle`, `aunt`, `cousin`, `son`, `daughter`, `guardian`, `colleague`, `mentor`, `family`). |
 | `VITE_BIRTHDAY_COLOR` | `Hex Color` | Base color code (e.g., `#FF6B6B`). Drives CSS token generator. |
