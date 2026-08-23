@@ -446,5 +446,67 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
       const defaultLang = useBirthdayStore.getState().getLanguage();
       expect(["en", "hi", "bn"]).toContain(defaultLang);
     });
+
+    it("localizes cake flavors and labels for en, hi, and bn in CakeTypes", async () => {
+      const { CAKE_OPTIONS, getCakeName } = await import("@/components/birthday/CakeTypes");
+      expect(CAKE_OPTIONS.length).toBe(4);
+      
+      const chocolate = CAKE_OPTIONS.find((c) => c.id === "chocolate")!;
+      expect(getCakeName(chocolate, false, false)).toBe("Chocolate Dream");
+      expect(getCakeName(chocolate, true, false)).toBe("चॉकलेट ड्रीम");
+      expect(getCakeName(chocolate, false, true)).toBe("চকলেট ড্রিম");
+
+      const strawberry = CAKE_OPTIONS.find((c) => c.id === "strawberry")!;
+      expect(getCakeName(strawberry, true, false)).toBe("स्ट्रॉबेरी ब्लिस");
+      expect(getCakeName(strawberry, false, true)).toBe("স্ট্রবেরি ব্লিস");
+    });
+
+    it("substitutes senderName in getHighlySpecificLetter and removes bracketed placeholders", async () => {
+      const { getHighlySpecificLetter } = await import(
+        "@/features/core/store/SuperPersonalizedLogic"
+      );
+
+      const withSender = getHighlySpecificLetter("Elena", "partner", "female", [], "en", "Alex");
+      expect(withSender).toContain("Alex");
+      expect(withSender).not.toContain("[Your Name]");
+
+      const withoutSender = getHighlySpecificLetter("Elena", "partner", "female", [], "en");
+      expect(withoutSender).not.toContain("[Your Name]");
+
+      const bnWithSender = getHighlySpecificLetter("ঐন্দ্রিলা", "partner", "female", [], "bn", "অভিরূপ");
+      expect(bnWithSender).toContain("অভিরূপ");
+      expect(bnWithSender).not.toContain("[আপনার নাম]");
+
+      const hiWithSender = getHighlySpecificLetter("अनन्या", "partner", "female", [], "hi", "समीर");
+      expect(hiWithSender).toContain("समीर");
+      expect(hiWithSender).not.toContain("[आपका नाम]");
+    });
+
+    it("verifies authentic English quotes without Roman Hindi in SPECIAL_QUOTES", async () => {
+      const { SPECIAL_QUOTES } = await import("@/config/templates");
+      const partnerMaleQuotes = SPECIAL_QUOTES.partner.male.join(" ");
+      expect(partnerMaleQuotes).not.toContain("Tere sang");
+      expect(partnerMaleQuotes).not.toContain("tishnagi");
+
+      const partnerFemaleQuotes = SPECIAL_QUOTES.partner.female.join(" ");
+      expect(partnerFemaleQuotes).not.toContain("khushi ka raaz");
+
+      const friendLegendQuotes = SPECIAL_QUOTES.friend.legend.join(" ");
+      expect(friendLegendQuotes).not.toContain("Dosti ka naam");
+    });
+
+    it("ensures memories.title and memories.viewLarge keys exist across all translation dictionaries", async () => {
+      const { getTranslation } = await import("@/i18n");
+      const en = getTranslation("en");
+      const hi = getTranslation("hi");
+      const bn = getTranslation("bn");
+
+      expect(en.memories.title).toBeTruthy();
+      expect(en.memories.viewLarge).toBeTruthy();
+      expect(hi.memories.title).toBeTruthy();
+      expect(hi.memories.viewLarge).toBeTruthy();
+      expect(bn.memories.title).toBeTruthy();
+      expect(bn.memories.viewLarge).toBeTruthy();
+    });
   });
 });
