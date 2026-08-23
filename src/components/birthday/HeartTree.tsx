@@ -5,9 +5,25 @@ import { useSoundManager } from "./SoundManager";
 import { SPECIAL_QUOTES } from "@/config/templates";
 import { HINDI_SPECIAL_QUOTES } from "@/config/hindiTemplates";
 import { BENGALI_SPECIAL_QUOTES } from "@/config/bengaliTemplates";
+import { FRENCH_SPECIAL_QUOTES } from "@/config/frenchTemplates";
 import { useTranslation } from "@/i18n";
 
 interface HeartTreeProps { delay?: number; }
+
+const FRENCH_HEART_MESSAGES = [
+    "Tu es la plus belle pièce de chaque souvenir gravé dans nos cœurs. ✨",
+    "Dans un monde de moments ordinaires, tu es une pure merveille extraordinaire. 🌸",
+    "Chaque année, tu rayonnes d'un éclat encore plus beau et inspirant. 🌟",
+    "Même les étoiles pâlissent devant la lumière de ton sourire. 🌌",
+    "Merci d'être cette présence chaleureuse qui illumine chaque instant. 🧡",
+    "La vraie amitié, c'est d'avoir quelqu'un d'aussi loyal et formidable que toi. 🔥",
+    "Tu portes la bienveillance comme un superpouvoir sans même t'en rendre compte. 💕",
+    "Cette délicatesse avec laquelle tu prends soin des autres est inoubliable. 💫",
+    "Ton sourire est le doux secret de tous mes plus grands bonheurs. 🌹",
+    "Tu es la preuve vivante que les plus beaux cadeaux de la vie sont imprévus. ❤️",
+    "Un rire contagieux et une loyauté sans faille — voilà qui tu es. 🎉",
+    "À une nouvelle année où tu continueras de briller de mille feux ! 💖",
+];
 
 const BENGALI_HEART_MESSAGES = [
     "আপনি প্রতিটি সুন্দর স্মৃতির সবচেয়ে মূল্যবান অংশ যা হৃদয় আজীবন আগলে রাখে। ✨",
@@ -90,18 +106,25 @@ const LEAVES = [
     { cx: 262, cy: 92,  s: 0.7, d: 400 },
 ];
 
-export const HeartTree = ({ delay = 1000 }: HeartTreeProps) => {
-    const [stage, setStage] = useState<0 | 1 | 2 | 3 | 4>(0);
+export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
+    const [stage, setStage] = useState(0);
     const [activeMsg, setActiveMsg] = useState<string | null>(null);
     const [scales, setScales] = useState<number[]>(Array(12).fill(0));
     const rafRefs = useRef<number[]>([]);
     const { config } = useBirthdayStore();
     const { relationship, gender, photos = [] } = config;
-    const { isHindi, isBengali } = useTranslation();
+    const { isHindi, isBengali, isFrench } = useTranslation();
     const primaryColor = config.favoriteColor || 'hsl(330, 90%, 75%)';
     const { playPop } = useSoundManager();
 
     const quotesPool = useMemo(() => {
+        if (isFrench) {
+            if (relationship === 'partner')
+                return FRENCH_SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || FRENCH_SPECIAL_QUOTES.family;
+            if (relationship === 'friend')
+                return (gender === 'male' ? FRENCH_SPECIAL_QUOTES.friend.legend : FRENCH_SPECIAL_QUOTES.friend.friendly) || FRENCH_SPECIAL_QUOTES.family;
+            return FRENCH_SPECIAL_QUOTES.family;
+        }
         if (isBengali) {
             if (relationship === 'partner')
                 return BENGALI_SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || BENGALI_SPECIAL_QUOTES.family;
@@ -121,7 +144,7 @@ export const HeartTree = ({ delay = 1000 }: HeartTreeProps) => {
         if (relationship === 'friend')
             return (gender === 'male' ? SPECIAL_QUOTES.friend.legend : SPECIAL_QUOTES.friend.friendly) || SPECIAL_QUOTES.family;
         return SPECIAL_QUOTES.family;
-    }, [relationship, gender, isHindi, isBengali]);
+    }, [relationship, gender, isHindi, isBengali, isFrench]);
     useEffect(() => {
         const timers = [
             setTimeout(() => setStage(1), delay),
@@ -158,7 +181,7 @@ export const HeartTree = ({ delay = 1000 }: HeartTreeProps) => {
     const clickHeart = (e: React.MouseEvent<SVGGElement>, i: number) => {
         e.stopPropagation();
         if (stage < 3) return;
-        const messages = isBengali ? BENGALI_HEART_MESSAGES : isHindi ? HINDI_HEART_MESSAGES : HEART_MESSAGES;
+        const messages = isFrench ? FRENCH_HEART_MESSAGES : isBengali ? BENGALI_HEART_MESSAGES : isHindi ? HINDI_HEART_MESSAGES : HEART_MESSAGES;
         setActiveMsg(messages[i] ?? quotesPool[i % quotesPool.length]);
         playPop();
         setTimeout(() => setActiveMsg(null), 5000);
