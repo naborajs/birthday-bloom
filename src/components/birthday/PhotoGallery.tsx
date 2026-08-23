@@ -15,7 +15,7 @@ export const PhotoGallery = () => {
     const [isReducedMotion, setIsReducedMotion] = useState(false);
     const isMobile = useIsMobile();
     const { config, getAnimationPacing } = useBirthdayStore();
-    const { t, isHindi, isBengali } = useTranslation();
+    const { t, isHindi, isBengali, isFrench } = useTranslation();
     const { relationship } = config;
     const animationPacing = getAnimationPacing();
     const reducedMotion = isReducedMotion || isMobile;
@@ -34,7 +34,19 @@ export const PhotoGallery = () => {
                 { src: PHOTO_ASSETS.photo2 || photo2Default, fallback: photo2Default, key: "p2" },
                 { src: PHOTO_ASSETS.photo3 || photo3Default, fallback: photo3Default, key: "p3" },
             ].filter(p => p.src !== null);
-        const captions = isBengali ? (relationship === 'partner' ? [
+        const captions = isFrench ? (relationship === 'partner' ? [
+            "Chaque moment à tes côtés est un cadeau précieux 💖",
+            "Bâtir notre merveilleux avenir ensemble ✨",
+            "Le lieu préféré de mon cœur 🌹"
+        ] : relationship === 'friend' ? [
+            "Des moments légendaires avec le boss 🚀",
+            "Mille souvenirs et des fous rires inoubliables ! 😂",
+            "Reste toujours au sommet, reste toi-même ! 🍻"
+        ] : [
+            "La famille est là où la vie commence ✨",
+            "Chérir chaque sourire et chaque éclat de rire 💖",
+            "Un voyage merveilleux rempli d'amour 🌟"
+        ]) : isBengali ? (relationship === 'partner' ? [
             "আপনার সাথে কাটানো প্রতিটি মুহূর্ত এক অমূল্য উপহার 💖",
             "আমাদের সুন্দর ভবিষ্যতের অপূর্ব সূচনা ✨",
             "আমার হৃদয়ের সবচেয়ে পছন্দের ঠিকানা 🌹"
@@ -73,9 +85,9 @@ export const PhotoGallery = () => {
         ]);
         return base.map((p, i) => ({
             ...p,
-            caption: config.photoCaptions?.[i] || captions[i] || (isBengali ? "সুন্দর স্মৃতি" : isHindi ? "खूबसूरत याद" : "Beautiful memory"),
+            caption: config.photoCaptions?.[i] || captions[i] || (isFrench ? "Doux souvenir" : isBengali ? "সুন্দর স্মৃতি" : isHindi ? "खूबसूरत याद" : "Beautiful memory"),
         }));
-    }, [relationship, config.photos, config.photoCaptions, isHindi, isBengali]);
+    }, [relationship, config.photos, config.photoCaptions, isHindi, isBengali, isFrench]);
     const x = useMotionValue(0);
     const y = useMotionValue(0);
     const rotateX = useSpring(useTransform(y, [-100, 100], [10, -10]), { damping: 20, stiffness: 150 });
