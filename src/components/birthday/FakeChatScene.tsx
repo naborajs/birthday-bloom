@@ -11,12 +11,19 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
     const [typedText, setTypedText] = useState("");
     const { playType, playWhoosh, playReveal } = useSoundManager();
     const { config } = useBirthdayStore();
-    const { t, isHindi, isBengali } = useTranslation();
+    const { t, isHindi, isBengali, isFrench } = useTranslation();
     const { name, relationship, favoriteColor, gender } = config;
     const isMale = gender === 'male';
     const isFemale = gender === 'female';
     const fullText = t('common.happyBirthday');
     const retypeFullText = useMemo(() => {
+        if (isFrench) {
+            if (relationship === 'partner')
+                return isMale ? "Pour l'homme qui fait battre mon cœur..." : isFemale ? "Pour la femme de mes rêves..." : "Pour l'âme qui me complète...";
+            if (relationship === 'friend')
+                return "Attends, un simple message texte ? Ce n'est pas notre genre ! 😂";
+            return "Une surprise exceptionnelle arrive...";
+        }
         if (isBengali) {
             if (relationship === 'partner')
                 return isMale ? "আমার মনের রাজপুত্রের জন্য..." : isFemale ? "আমার স্বপ্নের রাজকন্যার জন্য..." : "সেই বিশেষ মানুষের জন্য যে আমাকে পূর্ণ করে...";
@@ -36,7 +43,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
         if (relationship === 'friend')
             return "Wait, a boring text? That's not us! 😂";
         return "Something special is coming...";
-    }, [relationship, isMale, isFemale, isHindi, isBengali]);
+    }, [relationship, isMale, isFemale, isHindi, isBengali, isFrench]);
     const primaryColor = favoriteColor || '#FF6B6B';
     useEffect(() => {
         let isMounted = true;
@@ -177,7 +184,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
         <AnimatePresence>
           {(phase === "special") && (<motion.div initial={{ opacity: 0, y: 30, scale: 0.8, filter: "blur(10px)" }} animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }} exit={{ opacity: 0, scale: 1.2, filter: "blur(20px)" }} className="text-center mt-16 px-6">
               <p className="text-3xl md:text-4xl font-display font-black leading-tight bg-gradient-to-r from-white via-white/80 to-white/60 bg-clip-text text-transparent">
-                {relationship === 'partner' ? (isBengali ? (isMale ? 'কারণ আমার রাজপুত্রের জন্য কেবল কিছু শব্দ যথেষ্ট নয়...' : 'কারণ আমার রাজকন্যার জন্য কেবল কিছু শব্দ যথেষ্ট নয়...') : isHindi ? (isMale ? 'क्योंकि मेरे राजा के लिए सिर्फ शब्द काफी नहीं हैं...' : 'क्योंकि मेरी रानी के लिए सिर्फ शब्द काफी नहीं हैं...') : (isMale ? 'Because a King like you deserves more than just words...' : 'Because a Queen like you deserves more than just words...')) : relationship === 'friend' ? t('chat.highLegendLevel') : t('chat.moreMagicalSurprise')}
+                {relationship === 'partner' ? (isFrench ? (isMale ? "Parce qu'un prince comme toi mérite bien plus que de simples mots..." : "Parce qu'une princesse comme toi mérite bien plus que de simples mots...") : isBengali ? (isMale ? 'কারণ আমার রাজপুত্রের জন্য কেবল কিছু শব্দ যথেষ্ট নয়...' : 'কারণ আমার রাজকন্যার জন্য কেবল কিছু শব্দ যথেষ্ট নয়...') : isHindi ? (isMale ? 'क्योंकि मेरे राजा के लिए सिर्फ शब्द काफी नहीं हैं...' : 'क्योंकि मेरी रानी के लिए सिर्फ शब्द काफी नहीं हैं...') : (isMale ? 'Because a King like you deserves more than just words...' : 'Because a Queen like you deserves more than just words...')) : relationship === 'friend' ? t('chat.highLegendLevel') : t('chat.moreMagicalSurprise')}
               </p>
               <motion.div animate={{
                 scale: [1, 1.3, 1],
