@@ -43,6 +43,7 @@ If you ask an AI coding agent to customize Birthday Bloom, tell it this first:
 Direct docs:
 
 - [Complete env customization guide](./obsidian-docs/ENV_GUIDE.md)
+- [Multi-Language Localization (French) guide](./obsidian-docs/setup-french.md)
 - [Multi-Language Localization (Bengali) guide](./obsidian-docs/setup-bengali.md)
 - [Multi-Language Localization (Hindi) guide](./obsidian-docs/setup-hindi.md)
 - [Quick start](./obsidian-docs/quick-start.md)
@@ -666,13 +667,14 @@ graph TD
 
 ## 🌍 Multi-Language Localization & Setup
 
-Birthday Bloom natively supports **English (default)**, **Hindi (हिन्दी)**, and **Bengali (বাংলা)** with cultural nuance, respectful Indic honorifics, and automatic Indic typography protections (shirorekha preservation & conjunct continuity).
+Birthday Bloom natively supports **English (default)**, **French (Français)**, **Hindi (हिन्दी)**, and **Bengali (বাংলা)** with cultural nuance, emotional warmth, and authentic localized templates.
 
 - 🇬🇧 [English Quick Start Guide](./obsidian-docs/quick-start.md) — 5-minute setup with zero code changes.
+- 🇫🇷 [Guide de Configuration en Français (French Setup Guide)](./obsidian-docs/setup-french.md) — French emotional letters, quotes, cake names, and tone nuances.
 - 🇮🇳 [हिंदी सेटअप गाइड (Hindi Setup Guide)](./obsidian-docs/setup-hindi.md) — Devanagari typography, Hindi emotional letters, and tone nuances.
 - 🇧🇩 [বাংলা সেটআপ গাইড (Bengali Setup Guide)](./obsidian-docs/setup-bengali.md) — Eastern Nagari typography, Bengali emotional letters, and tone nuances.
 
-To switch languages, set `VITE_LANGUAGE=hi` (Hindi) or `VITE_LANGUAGE=bn` (Bengali) in your `.env.local` or hosting provider environment settings.
+To switch languages, set `VITE_LANGUAGE=fr` (French), `VITE_LANGUAGE=hi` (Hindi), or `VITE_LANGUAGE=bn` (Bengali) in your `.env.local` or hosting provider environment settings.
 
 ---
 
