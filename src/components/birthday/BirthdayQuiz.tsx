@@ -15,14 +15,61 @@ export const BirthdayQuiz = () => {
     const { config } = useBirthdayStore();
     const { playPop, playReveal, playBoom } = useSoundManager();
     const { fireCannon, fireStars } = useConfetti();
-    const { isHindi, isBengali } = useTranslation();
+    const { isHindi, isBengali, isFrench } = useTranslation();
     const [currentIdx, setCurrentIdx] = useState(0);
     const [score, setScore] = useState(0);
     const [showResult, setShowResult] = useState(false);
     const [selected, setSelected] = useState<number | null>(null);
     const questions: Question[] = useMemo(() => {
         const { name, interests, relationship } = config;
-        const displayName = name || (isBengali ? "আমাদের বার্থডে স্টার" : isHindi ? "हमारे बर्थडे स्टार" : "Birthday Star");
+        const displayName = name || (isFrench ? "Notre Star du Jour" : isBengali ? "আমাদের বার্থডে স্টার" : isHindi ? "हमारे बर्थडे स्टार" : "Birthday Star");
+        if (isFrench) {
+            const base: Question[] = [
+                {
+                    q: `Qui est incontestablement la personne la plus légendaire née ce jour-là ?`,
+                    options: ["Albert Einstein", "Une célébrité", displayName, "Un manchot"],
+                    correct: 2,
+                    reason: `Évidemment ! C'est nul autre que ${displayName} ! Personne ne lui arrive à la cheville.`
+                },
+                {
+                    q: `Quelle est l'ambiance de ${displayName} aujourd'hui ?`,
+                    options: ["Endormi(e)", "Affamé(e)", "Inarrêtable & Légendaire 🔥", "Blasé(e)"],
+                    correct: 2,
+                    reason: "C'est son anniversaire ! Il/Elle est en mode ultra-star."
+                }
+            ];
+            if (interests?.includes('car')) {
+                base.push({
+                    q: `Si ${displayName} pouvait conduire n'importe quel bolide aujourd'hui, ce serait :`,
+                    options: ["Un tricycle", "Une supercar rugissante 🏎️", "Un bus", "Une trottinette"],
+                    correct: 1,
+                    reason: "Parce que les légendes carburent à la pure vitesse !"
+                });
+            }
+            if (relationship === 'partner') {
+                base.push({
+                    q: `Qui aime ${displayName} plus que tout dans l'univers ?`,
+                    options: ["Le chat", "Le voisin", "La personne qui a créé ce site ❤️", "Un extraterrestre"],
+                    correct: 2,
+                    reason: "Celui/Celle qui a envoyé cette surprise l'aime jusqu'aux confins des galaxies !"
+                });
+            }
+            if (interests?.includes('coding')) {
+                base.push({
+                    q: `Quelle est la plus grande terreur de ${displayName} ?`,
+                    options: ["Les araignées", "Le vertige", "Des bugs en prod un vendredi à 17h 🐞", "La panne de café"],
+                    correct: 2,
+                    reason: "Les vrais devs savent... les bugs du vendredi en prod sont un cauchemar pur !"
+                });
+            }
+            base.push({
+                q: `Si ${displayName} avait un nom de super-héros, ce serait :`,
+                options: ["Capitaine Sieste", "Le Procrastinateur", "Super Légende Star d'Anniversaire 🦸‍♂️", "Iron Café"],
+                correct: 2,
+                reason: "Aujourd'hui, c'est le/la super-héros dont le monde entier a besoin !"
+            });
+            return base;
+        }
         if (isBengali) {
             const base: Question[] = [
                 {
@@ -111,7 +158,7 @@ export const BirthdayQuiz = () => {
             }
             base.push({
                 q: `अगर ${displayName} एक सुपरहीरो होते, तो उनका नाम क्या होता?`,
-                options: ["कैप्टन कुंभकरण", "द प्रोक्रास्टिनेटर", "सुपर लीजेंड बर्थडे स्टार 🦸‍♂️", "आयरन कॉफी-मैन"],
+                options: ["कैप्टन कुंभकरण", "द प्रोक्रास्टिनेटर", "सुपर लीजेंड बर्थडे स्टार 🦸‍♂️", "आयरन कॉफी-ম্যান"],
                 correct: 2,
                 reason: "आज के दिन, आप वही सुपरहीरो हैं जिसकी हम सबको ज़रूरत है!"
             });
@@ -162,7 +209,7 @@ export const BirthdayQuiz = () => {
             reason: "Today, they are the hero this world needs!"
         });
         return base;
-    }, [config, isHindi, isBengali]);
+    }, [config, isHindi, isBengali, isFrench]);
     const handleSelect = (index: number) => {
         if (selected !== null)
             return;
@@ -189,8 +236,8 @@ export const BirthdayQuiz = () => {
         {!showResult ? (<AnimatePresence mode="wait">
             <motion.div key={currentIdx} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
               <div className="flex justify-between items-center text-sm font-bold tracking-widest text-primary uppercase">
-                <span>{isBengali ? `প্রশ্ন ${currentIdx + 1} / ${questions.length}` : isHindi ? `प्रश्न ${currentIdx + 1} / ${questions.length}` : `Question ${currentIdx + 1} of ${questions.length}`}</span>
-                <span>{isBengali ? `স্কোর: ${score}` : isHindi ? `स्कोर: ${score}` : `Score: ${score}`}</span>
+                <span>{isFrench ? `Question ${currentIdx + 1} / ${questions.length}` : isBengali ? `প্রশ্ন ${currentIdx + 1} / ${questions.length}` : isHindi ? `प्रश्न ${currentIdx + 1} / ${questions.length}` : `Question ${currentIdx + 1} of ${questions.length}`}</span>
+                <span>{isFrench ? `Score : ${score}` : isBengali ? `স্কোর: ${score}` : isHindi ? `स्कोर: ${score}` : `Score: ${score}`}</span>
               </div>
 
               <h3 className="font-display text-2xl md:text-4xl font-bold leading-tight min-h-[4rem] flex items-center justify-center">
@@ -230,11 +277,11 @@ export const BirthdayQuiz = () => {
               </div>
             </div>
             
-            <h2 className="font-display text-4xl md:text-6xl font-black">{isBengali ? "অসাধারণ স্কোর! 🏆" : isHindi ? "धमाकेदार स्कोर! 🏆" : "LEGENDARY SCORE!"}</h2>
+            <h2 className="font-display text-4xl md:text-6xl font-black">{isFrench ? "SCORE LÉGENDAIRE ! 🏆" : isBengali ? "অসাধারণ স্কোর! 🏆" : isHindi ? "धमाकेदार स्कोर! 🏆" : "LEGENDARY SCORE!"}</h2>
             <p className="text-2xl md:text-3xl text-foreground/80">
-              {isBengali ? `আপনি ${config.name || 'বার্থডে'} কুইজে ` : isHindi ? `आपने ${config.name || 'बर्थडे'} क्विज़ में ` : 'You scored '}
+              {isFrench ? `Vous avez obtenu ` : isBengali ? `আপনি ${config.name || 'বার্থডে'} কুইজে ` : isHindi ? `आपने ${config.name || 'बर्थडे'} क्विज़ में ` : 'You scored '}
               <span className="text-primary font-black">{score}/{questions.length}</span>
-              {isBengali ? ' নম্বর পেয়েছেন!' : isHindi ? ' अंक हासिल किए!' : ` on the ${config.name || 'Birthday'} Trivia!`}
+              {isFrench ? ` au Quiz de ${config.name || 'Anniversaire'} !` : isBengali ? ' নম্বর পেয়েছেন!' : isHindi ? ' अंक हासिल किए!' : ` on the ${config.name || 'Birthday'} Trivia!`}
             </p>
             
             <div className="flex justify-center gap-4 text-primary">
@@ -251,7 +298,7 @@ export const BirthdayQuiz = () => {
                 setSelected(null);
                 fireStars();
             }} className="px-10 py-4 bg-primary text-white rounded-full font-black tracking-widest uppercase text-sm shadow-2xl shadow-primary/30">
-              {isBengali ? "আবার খেলুন 🔄" : isHindi ? "फिर से खेलें 🔄" : "Play Again 🔄"}
+              {isFrench ? "Rejouer 🔄" : isBengali ? "আবার খেলুন 🔄" : isHindi ? "फिर से खेलें 🔄" : "Play Again 🔄"}
             </motion.button>
           </motion.div>)}
       </motion.div>
