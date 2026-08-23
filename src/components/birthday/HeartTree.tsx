@@ -295,7 +295,7 @@ export const HeartTree = ({ delay = 1000 }: HeartTreeProps) => {
                                 initial={{ opacity: 0, scale: 0.5, y: 20 }}
                                 animate={{ opacity: 1, scale: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.5, y: -20 }}
-                                style={{ position: "absolute", left: "50%", bottom: "72%", transform: "translateX(-50%)", zIndex: 50, width: 280, pointerEvents: "none" }}
+                                style={{ position: "absolute", left: "50%", top: "8%", transform: "translateX(-50%)", zIndex: 50, width: "min(300px, 90%)", pointerEvents: "none" }}
                             >
                                 <div style={{
                                     background: "rgba(255,255,255,0.1)",
@@ -303,11 +303,11 @@ export const HeartTree = ({ delay = 1000 }: HeartTreeProps) => {
                                     WebkitBackdropFilter: "blur(24px)",
                                     border: "1px solid rgba(255,255,255,0.2)",
                                     borderRadius: 24,
-                                    padding: "20px 24px",
+                                    padding: "16px 20px",
                                     textAlign: "center",
                                     boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
                                 }}>
-                                    <p style={{ color: "white", fontSize: 15, lineHeight: 1.6, fontStyle: "italic", margin: 0 }}>
+                                    <p style={{ color: "white", fontSize: 14, lineHeight: 1.6, fontStyle: "italic", margin: 0 }}>
                                         "{activeMsg}"
                                     </p>
                                 </div>
