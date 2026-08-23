@@ -17,6 +17,8 @@ export interface Cake3DConfig {
 export interface CakeOption {
     id: string;
     name: string;
+    nameHi?: string;
+    nameBn?: string;
     emoji: string;
     image: string;
     layers: string[];
@@ -24,10 +26,18 @@ export interface CakeOption {
     config: Cake3DConfig;
 }
 
+export const getCakeName = (cake: CakeOption, isHindi?: boolean, isBengali?: boolean): string => {
+    if (isBengali && cake.nameBn) return cake.nameBn;
+    if (isHindi && cake.nameHi) return cake.nameHi;
+    return cake.name;
+};
+
 export const CAKE_OPTIONS: CakeOption[] = [
     {
         id: "chocolate",
         name: "Chocolate Dream",
+        nameHi: "चॉकलेट ड्रीम",
+        nameBn: "চকলেট ড্রিম",
         emoji: "🍫",
         image: chocolateCake,
         layers: ["hsl(15,60%,30%)", "hsl(15,50%,40%)", "hsl(20,40%,50%)"],
@@ -43,6 +53,8 @@ export const CAKE_OPTIONS: CakeOption[] = [
     {
         id: "strawberry",
         name: "Strawberry Bliss",
+        nameHi: "स्ट्रॉबेरी ब्लिस",
+        nameBn: "স্ট্রবেরি ব্লিস",
         emoji: "🍓",
         image: strawberryCake,
         layers: ["hsl(340,60%,55%)", "hsl(330,55%,65%)", "hsl(340,50%,75%)"],
@@ -58,6 +70,8 @@ export const CAKE_OPTIONS: CakeOption[] = [
     {
         id: "royal",
         name: "Royal Velvet",
+        nameHi: "रॉयल वेलवेट",
+        nameBn: "রয়্যাল ভেলভেট",
         emoji: "👑",
         image: royalCake,
         layers: ["hsl(270,50%,35%)", "hsl(280,45%,50%)", "hsl(290,40%,60%)"],
@@ -73,6 +87,8 @@ export const CAKE_OPTIONS: CakeOption[] = [
     {
         id: "nature",
         name: "Floral Garden",
+        nameHi: "फ्लोरल गार्डन",
+        nameBn: "ফ্লোরাল গার্ডেন",
         emoji: "🌸",
         image: natureCake,
         layers: ["hsl(120,40%,30%)", "hsl(100,30%,40%)", "hsl(140,40%,50%)"],
