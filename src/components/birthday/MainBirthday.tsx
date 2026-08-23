@@ -38,7 +38,6 @@ export const MainBirthday = () => {
     const reduceMotion = useReducedMotion();
     const shouldAnimate = !isMobile && !reduceMotion;
     const mood = getMood();
-    const letterSignoff = senderName ? `\n\n${t('common.withLove')}\n${senderName}` : '';
     const primaryColor = favoriteColor || '#FF6B6B';
     const bigWishes = useMemo(() => getBigWishes(name, relationship, gender, config.interests || [], language), [name, relationship, gender, config.interests, language]);
     const specialCode = useMemo(() => {
@@ -244,8 +243,12 @@ export const MainBirthday = () => {
               </h4>
               <div className="text-left text-lg md:text-xl leading-relaxed whitespace-pre-line font-light">
                 {config.letterOverride
-            ? `${config.letterOverride}${letterSignoff}`
-            : `${getHighlySpecificLetter(name, relationship, gender, config.interests, language)}${letterSignoff}`}
+                  ? config.letterOverride
+                      .replace(/\[Your Name\]/gi, senderName?.trim() || '')
+                      .replace(/\[आपका नाम\]/g, senderName?.trim() || '')
+                      .replace(/\[আপনার নাম\]/g, senderName?.trim() || '')
+                      .trimEnd()
+                  : getHighlySpecificLetter(name, relationship, gender, config.interests, language, senderName)}
               </div>
             </div>
           </div>
