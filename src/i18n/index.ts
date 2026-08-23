@@ -3,17 +3,22 @@ import { TranslationSchema } from "./types";
 import { enTranslations } from "./locales/en";
 import { hiTranslations } from "./locales/hi";
 import { bnTranslations } from "./locales/bn";
+import { fr as frTranslations } from "./locales/fr";
 
-export type SupportedLanguage = 'en' | 'hi' | 'bn';
+export type SupportedLanguage = 'en' | 'hi' | 'bn' | 'fr';
 
 export const translations: Record<SupportedLanguage, TranslationSchema> = {
     en: enTranslations,
     hi: hiTranslations,
     bn: bnTranslations,
+    fr: frTranslations,
 };
 
 export const getTranslation = (lang?: string): TranslationSchema => {
     const normalized = (lang || '').toLowerCase().trim();
+    if (normalized === 'fr' || normalized === 'french' || normalized === 'francais' || normalized === 'française' || normalized === 'francaise') {
+        return frTranslations;
+    }
     if (normalized === 'bn' || normalized === 'bengali' || normalized === 'bangla') {
         return bnTranslations;
     }
@@ -59,11 +64,13 @@ export const useTranslation = () => {
     const rawLanguage = useBirthdayStore(state => state.config.language);
     const normalized = (rawLanguage || '').toLowerCase().trim();
     const language: SupportedLanguage =
-        normalized === 'bn' || normalized === 'bengali' || normalized === 'bangla'
-            ? 'bn'
-            : normalized === 'hi' || normalized === 'hindi' || normalized === 'in'
-                ? 'hi'
-                : 'en';
+        normalized === 'fr' || normalized === 'french' || normalized === 'francais' || normalized === 'française' || normalized === 'francaise'
+            ? 'fr'
+            : normalized === 'bn' || normalized === 'bengali' || normalized === 'bangla'
+                ? 'bn'
+                : normalized === 'hi' || normalized === 'hindi' || normalized === 'in'
+                    ? 'hi'
+                    : 'en';
     const currentTranslations = translations[language] || enTranslations;
 
     const t = (keyPath: string, params?: Record<string, string | number>): string => {
@@ -75,6 +82,7 @@ export const useTranslation = () => {
         language,
         isHindi: language === 'hi',
         isBengali: language === 'bn',
+        isFrench: language === 'fr',
         translations: currentTranslations,
     };
 };
