@@ -4,7 +4,7 @@ import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useSoundManager } from "@/components/birthday/SoundManager";
 import { useConfetti } from "@/components/birthday/Confetti";
 import { useTranslation } from "@/i18n";
-import { Trophy, Star, Heart, Flame, Sparkles } from "lucide-react";
+import { Trophy, Star, Heart, Flame, Sparkles, CheckCircle2, XCircle } from "lucide-react";
 interface Question {
     q: string;
     options: string[];
@@ -189,8 +189,8 @@ export const BirthdayQuiz = () => {
         {!showResult ? (<AnimatePresence mode="wait">
             <motion.div key={currentIdx} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
               <div className="flex justify-between items-center text-sm font-bold tracking-widest text-primary uppercase">
-                <span>Question {currentIdx + 1} of {questions.length}</span>
-                <span>Score: {score}</span>
+                <span>{isBengali ? `প্রশ্ন ${currentIdx + 1} / ${questions.length}` : isHindi ? `प्रश्न ${currentIdx + 1} / ${questions.length}` : `Question ${currentIdx + 1} of ${questions.length}`}</span>
+                <span>{isBengali ? `স্কোর: ${score}` : isHindi ? `स्कोर: ${score}` : `Score: ${score}`}</span>
               </div>
 
               <h3 className="font-display text-2xl md:text-4xl font-bold leading-tight min-h-[4rem] flex items-center justify-center">
