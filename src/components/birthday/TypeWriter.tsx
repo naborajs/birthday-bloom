@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+
 interface TypeWriterProps {
     text: string;
     speed?: number;
@@ -7,20 +8,36 @@ interface TypeWriterProps {
     onComplete?: () => void;
     cursor?: boolean;
 }
+
+const splitGraphemes = (str: string): string[] => {
+    if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
+        const segmenter = new (Intl as any).Segmenter(undefined, { granularity: "grapheme" });
+        return Array.from(segmenter.segment(str), (s: any) => s.segment);
+    }
+    const match = str.match(/[\s\S][\u0300-\u036f\u0900-\u097f\u0980-\u09ff]*/g);
+    return match || Array.from(str);
+};
+
 export const TypeWriter = ({ text, speed = 45, delay = 0, className = "", onComplete, cursor = true, }: TypeWriterProps) => {
-    const [displayed, setDisplayed] = useState("");
+    const graphemes = useMemo(() => splitGraphemes(text), [text]);
+    const [currentIndex, setCurrentIndex] = useState(0);
     const [started, setStarted] = useState(false);
     const [done, setDone] = useState(false);
+
     useEffect(() => {
+        setCurrentIndex(0);
+        setDone(false);
+        setStarted(false);
         const delayTimer = setTimeout(() => setStarted(true), delay);
         return () => clearTimeout(delayTimer);
-    }, [delay]);
+    }, [text, delay]);
+
     useEffect(() => {
         if (!started)
             return;
-        if (displayed.length < text.length) {
+        if (currentIndex < graphemes.length) {
             const timer = setTimeout(() => {
-                setDisplayed(text.slice(0, displayed.length + 1));
+                setCurrentIndex((prev) => prev + 1);
             }, speed);
             return () => clearTimeout(timer);
         }
@@ -28,11 +45,16 @@ export const TypeWriter = ({ text, speed = 45, delay = 0, className = "", onComp
             setDone(true);
             onComplete?.();
         }
-    }, [started, displayed, text, speed, onComplete]);
+    }, [started, currentIndex, graphemes.length, speed, onComplete]);
+
     if (!started)
         return null;
+
+    const displayed = graphemes.slice(0, currentIndex).join("");
+
     return (<span className={className}>
       {displayed}
       {cursor && !done && (<span className="inline-block w-[3px] h-[1em] ml-1 bg-primary animate-blink align-middle"/>)}
     </span>);
 };
+
