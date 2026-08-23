@@ -67,7 +67,7 @@ export const useDynamicTheme = () => {
             root.style.setProperty('--bg-gradient', `radial-gradient(circle at 50% 50%, hsl(${h}, 40%, 12%) 0%, #050505 100%)`);
             root.style.setProperty('--glow-effect', `0 0 50px hsla(${h}, 60%, 45%, 0.6)`);
             root.style.setProperty('--glass-opacity', '0.08');
-            root.style.setProperty('--font-display', '"Playfair Display", "Times New Roman", serif');
+            root.style.setProperty('--font-display', '"Playfair Display", "Noto Sans Bengali", "Noto Sans Devanagari", "Hind Siliguri", "Times New Roman", serif');
             root.style.setProperty('--animation-pacing', '2s');
             root.style.setProperty('--particle-speed', '0.5');
             root.style.setProperty('--card-radius', '3rem');
@@ -76,7 +76,7 @@ export const useDynamicTheme = () => {
             root.style.setProperty('--bg-gradient', `linear-gradient(135deg, hsl(${h}, 70%, 15%) 0%, #111111 100%)`);
             root.style.setProperty('--glow-effect', `0 8px 30px hsla(${h}, 90%, 55%, 0.4)`);
             root.style.setProperty('--glass-opacity', '0.15');
-            root.style.setProperty('--font-display', '"Inter", "Impact", sans-serif');
+            root.style.setProperty('--font-display', '"Inter", "Noto Sans Bengali", "Noto Sans Devanagari", "Hind Siliguri", "Impact", sans-serif');
             root.style.setProperty('--animation-pacing', '0.8s');
             root.style.setProperty('--particle-speed', '2');
             root.style.setProperty('--card-radius', '1.5rem');
@@ -85,7 +85,7 @@ export const useDynamicTheme = () => {
             root.style.setProperty('--bg-gradient', `linear-gradient(to bottom, hsl(${h}, 25%, 15%), #0a0a0a)`);
             root.style.setProperty('--glow-effect', `0 0 30px hsla(${h}, 40%, 40%, 0.4)`);
             root.style.setProperty('--glass-opacity', '0.1');
-            root.style.setProperty('--font-display', '"Outfit", sans-serif');
+            root.style.setProperty('--font-display', '"Outfit", "Noto Sans Bengali", "Noto Sans Devanagari", "Hind Siliguri", sans-serif');
             root.style.setProperty('--animation-pacing', '1.2s');
             root.style.setProperty('--particle-speed', '1');
             root.style.setProperty('--card-radius', '2rem');
