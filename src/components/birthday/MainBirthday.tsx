@@ -32,7 +32,7 @@ export const MainBirthday = () => {
     const { fireConfetti, fireCannon, fireStars } = useConfetti();
     const { playReveal, playPop, playBoom, setBgVolume } = useSoundManager();
     const { config, getMood } = useBirthdayStore();
-    const { t, isHindi, isBengali, language } = useTranslation();
+    const { t, isHindi, isBengali, isFrench, language } = useTranslation();
     const { name, age, customMessage, relationship, favoriteColor, gender, senderName } = config;
     const isMobile = useIsMobile();
     const reduceMotion = useReducedMotion();
@@ -233,18 +233,19 @@ export const MainBirthday = () => {
           <div className="space-y-10 text-center text-2xl md:text-3xl text-foreground/90 leading-relaxed">
             <p className="font-display font-black text-3xl md:text-5xl" style={{ color: primaryColor }}>{t('common.dear', { name })}</p>
             {customMessage ? (<p className="italic font-light text-3xl md:text-5xl leading-tight">"{customMessage}"</p>) : (<div className="space-y-8">
-                <p>{isBengali ? (mood === 'romantic' ? "আপনার উপস্থিতিতে আমার পৃথিবী আরও সুন্দর হয়ে উঠেছে। আজ সেই সবচেয়ে সুন্দর মনের মানুষটির উদযাপন যাকে আমি চিনি।" : mood === 'energetic' ? "আপনি শুধু বয়সে বড় হননি, আরও দারুণ হয়ে উঠেছেন। একজন আসল লেজেন্ডের দিন স্মরণীয় হওয়া উচিত!" : "আজকের দিনটি আমাদের জন্য সীমাহীন আনন্দ ও কৃতজ্ঞতার দিন। আপনি আমাদের জীবনে অফুরন্ত আলো নিয়ে এসেছেন।") : isHindi ? (mood === 'romantic' ? "आपकी मौजूदगी से मेरी दुनिया और भी हसीन बन गई है। आज उस सबसे खूबसूरत रूह का जश्न है जिसे मैं जानता/जानती हूँ।" : mood === 'energetic' ? "आप सिर्फ उम्र में बड़े नहीं, बल्कि और भी शानदार हो गए हैं। एक सच्चे लीजेंड का दिन यादगार होना चाहिए!" : "आज का दिन हमारे लिए खुशी और कृतज्ञता का दिन है। आप हमारे जीवन में अपार खुशियाँ लेकर आते हैं।") : (mood === 'romantic' ? "My world is infinitely brighter because you are in it. Today is a celebration of the most beautiful soul I know." : mood === 'energetic' ? "You're not just older, you're better. A true legend deserves an epic day!" : "Today is a day of joy and gratitude as we celebrate you. You bring so much light into our lives.")}</p>
-                <p className="text-xl md:text-2xl text-foreground/60">{isBengali ? "এই নতুন বছরটি আপনার জীবনের সবচেয়ে সোনালী অধ্যায় হোক। ✨" : isHindi ? "यह नया साल आपके जीवन का सबसे सुनहरा अध्याय बने। ✨" : "May this new chapter be your best one yet. ✨"}</p>
+                <p>{isFrench ? (mood === 'romantic' ? "Mon monde est infiniment plus lumineux et doux grâce à ta présence. Aujourd'hui, nous célébrons la plus belle âme que je connaisse." : mood === 'energetic' ? "Tu ne prends pas seulement de l'âge, tu deviens encore plus légendaire. Une véritable légende mérite une fête grandiose !" : "Aujourd'hui est une journée remplie de joie et de gratitude. Vous apportez tant de lumière et de bonheur dans nos vies.") : isBengali ? (mood === 'romantic' ? "আপনার উপস্থিতিতে আমার পৃথিবী আরও সুন্দর হয়ে উঠেছে। আজ সেই সবচেয়ে সুন্দর মনের মানুষটির উদযাপন যাকে আমি চিনি।" : mood === 'energetic' ? "আপনি শুধু বয়সে বড় হননি, আরও দারুণ হয়ে উঠেছেন। একজন আসল লেজেন্ডের দিন স্মরণীয় হওয়া উচিত!" : "আজকের দিনটি আমাদের জন্য সীমাহীন আনন্দ ও কৃতজ্ঞতার দিন। আপনি আমাদের জীবনে অফুরন্ত আলো নিয়ে এসেছেন।") : isHindi ? (mood === 'romantic' ? "आपकी मौजूदगी से मेरी दुनिया और भी हसीन बन गई है। आज उस सबसे खूबसूरत रूह का जश्न है जिसे मैं जानता/जानती हूँ।" : mood === 'energetic' ? "आप सिर्फ उम्र में बड़े नहीं, बल्कि और भी शानदार हो गए हैं। एक सच्चे लीजेंड का दिन यादगार होना चाहिए!" : "आज का दिन हमारे लिए खुशी और कृतज्ञता का दिन है। आप हमारे जीवन में अपार खुशियाँ लेकर आते हैं।") : (mood === 'romantic' ? "My world is infinitely brighter because you are in it. Today is a celebration of the most beautiful soul I know." : mood === 'energetic' ? "You're not just older, you're better. A true legend deserves an epic day!" : "Today is a day of joy and gratitude as we celebrate you. You bring so much light into our lives.")}</p>
+                <p className="text-xl md:text-2xl text-foreground/60">{isFrench ? "Que ce nouveau chapitre soit le plus radieux et magnifique de votre vie. ✨" : isBengali ? "এই নতুন বছরটি আপনার জীবনের সবচেয়ে সোনালী অধ্যায় হোক। ✨" : isHindi ? "यह नया साल आपके जीवन का सबसे सुनहरा अध्याय बने। ✨" : "May this new chapter be your best one yet. ✨"}</p>
               </div>)}
             
             <div className="mt-12 p-8 bg-white/5 rounded-2xl border border-white/10 transition-transform duration-500 hover:scale-[1.02]">
               <h4 className="font-display text-2xl md:text-4xl font-black mb-6 text-primary cursor-pointer" onDoubleClick={() => { fireCannon(); playBoom(); }} title={t('common.doubleTapSurprise')}>
-                {config.letterTitle || (isBengali ? "আপনার জন্য একটি বিশেষ চিঠি 💌" : isHindi ? "आपके लिए एक खास पत्र 💌" : "A Special Letter Just for You 💌")}
+                {config.letterTitle || (isFrench ? "Une Lettre Spéciale Rien que pour Vous 💌" : isBengali ? "আপনার জন্য একটি বিশেষ চিঠি 💌" : isHindi ? "आपके लिए एक खास पत्र 💌" : "A Special Letter Just for You 💌")}
               </h4>
               <div className="text-left text-lg md:text-xl leading-relaxed whitespace-pre-line font-light">
                 {config.letterOverride
                   ? config.letterOverride
                       .replace(/\[Your Name\]/gi, senderName?.trim() || '')
+                      .replace(/\[Votre Nom\]/g, senderName?.trim() || '')
                       .replace(/\[आपका नाम\]/g, senderName?.trim() || '')
                       .replace(/\[আপনার নাম\]/g, senderName?.trim() || '')
                       .trimEnd()
