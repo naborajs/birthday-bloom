@@ -5,9 +5,9 @@ aliases: [Env Architecture, Store Flow, Configuration Lifecycle]
 
 # Environment & Configuration Architecture
 
-[[DOCUMENTATION_INDEX|Back to Home]] | [[ENV_GUIDE|Env Customization Guide]] | [[setup-bengali|Bengali Localization]] | [[setup-hindi|Hindi Localization]] | [[Template-System-Deep-Dive|Template System]]
+[[DOCUMENTATION_INDEX|Back to Home]] | [[ENV_GUIDE|Env Customization Guide]] | [[setup-french|French Localization]] | [[setup-bengali|Bengali Localization]] | [[setup-hindi|Hindi Localization]] | [[Template-System-Deep-Dive|Template System]]
 
-Birthday Bloom is built around an **Environment-First Reactive Architecture**. The entire application — including theme colors, relationship tones, interactive scenes, and multi-language localization (English, Hindi, Bengali) — can be completely personalized without touching React components or JSX.
+Birthday Bloom is built around an **Environment-First Reactive Architecture**. The entire application — including theme colors, relationship tones, interactive scenes, and multi-language localization (English, French, Hindi, Bengali) — can be completely personalized without touching React components or JSX.
 
 ---
 
@@ -31,7 +31,7 @@ Birthday Bloom is built around an **Environment-First Reactive Architecture**. T
 │     src/config/birthday.ts    │             │ src/features/core/store/          │
 │ - PHOTO_ASSETS (photo1..3)    │             │   useBirthdayStore.ts             │
 │ - AUDIO_ASSETS (bgmUrl, sfx)  │             │ - Type coercion & alias fallback  │
-└───────────────┬───────────────┘             │ - Language normalization (en/hi/bn│
+└───────────────┬───────────────┘             │ - Language norm (en/fr/hi/bn)     │
                 │                             │ - Family template profile merge   │
                 │                             │ - Mood & pacing resolution        │
                 │                             └─────────────────┬─────────────────┘
@@ -90,15 +90,16 @@ Localization is resolved in `src/i18n/index.ts` and `src/features/core/store/use
 
 ### A. Alias Normalization
 The raw environment string (`VITE_LANGUAGE` or `VITE_LANG`) is lowercased and trimmed:
+- `"fr"`, `"french"`, `"francais"`, `"française"`, `"francaise"` $\rightarrow$ `'fr'` (French)
 - `"bn"`, `"bengali"`, `"bangla"` $\rightarrow$ `'bn'` (Bengali)
 - `"hi"`, `"hindi"`, `"in"` $\rightarrow$ `'hi'` (Hindi)
 - All other values (or unset) $\rightarrow$ `'en'` (English default)
 
 ### B. Recursive Dictionary Lookup with Fallback
 When a component calls `t('path.to.key', params)`:
-1. The engine checks the active language dictionary (`bnTranslations`, `hiTranslations`, or `enTranslations`).
+1. The engine checks the active language dictionary (`frTranslations`, `bnTranslations`, `hiTranslations`, or `enTranslations`).
 2. If the key exists, it retrieves the string and performs regex-based placeholder interpolation (`{{name}}` $\rightarrow$ value).
-3. If the key is missing in Hindi or Bengali, the engine **transparently falls back to `enTranslations`** at runtime, ensuring the UI never displays broken blanks or throws exceptions.
+3. If the key is missing in French, Hindi, or Bengali, the engine **transparently falls back to `enTranslations`** at runtime, ensuring the UI never displays broken blanks or throws exceptions.
 4. If missing in all dictionaries, the literal `keyPath` is returned safely.
 
 ---
