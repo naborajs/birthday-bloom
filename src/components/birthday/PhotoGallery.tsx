@@ -135,7 +135,7 @@ export const PhotoGallery = () => {
     return (<>
       <section className="relative z-20 px-4 py-32 max-w-7xl mx-auto overflow-hidden">
         <motion.h3 initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="font-display text-6xl md:text-8xl lg:text-[10rem] font-black text-center mb-24 bg-gradient-to-b from-white via-white/80 to-white/20 bg-clip-text text-transparent drop-shadow-2xl">
-          {t('gallery.memories')}
+          {t('memories.title')}
         </motion.h3>
 
         <motion.div onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ rotateX, rotateY, perspective: 1000 }} className={`relative group ${isMobile ? '' : 'cursor-none'}`}>
@@ -153,7 +153,7 @@ export const PhotoGallery = () => {
               
               <motion.div style={{ x, y }} className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white font-black uppercase tracking-widest text-xs">
-                  {t('gallery.viewLarge')}
+                  {t('memories.viewLarge')}
                 </div>
               </motion.div>
             </motion.div>
