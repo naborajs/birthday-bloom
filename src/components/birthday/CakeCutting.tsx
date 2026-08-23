@@ -8,7 +8,7 @@ import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
-import { Phase, CakeOption, CAKE_OPTIONS } from "./CakeTypes";
+import { Phase, CakeOption, CAKE_OPTIONS, getCakeName } from "./CakeTypes";
 import { CutSparks, MagicDust } from "./CakeVisuals";
 import { Cake3D } from "./Cake3D";
 import { CakeKnife } from "./CakeKnife";
@@ -19,7 +19,8 @@ const CakeCard = ({ cake, onSelect }: {
     onSelect: () => void;
 }) => {
     const isMobile = useIsMobile();
-    const { t } = useTranslation();
+    const { t, isHindi, isBengali } = useTranslation();
+    const displayName = getCakeName(cake, isHindi, isBengali);
     return (
         <motion.button 
             whileHover={!isMobile ? { scale: 1.05, y: -10, rotateZ: 2 } : undefined} 
@@ -34,7 +35,7 @@ const CakeCard = ({ cake, onSelect }: {
             }}
         >
             <div className="relative w-full aspect-square rounded-2xl overflow-hidden mb-2">
-                <img src={cake.image} alt={cake.name} className={`w-full h-full object-cover transition-transform duration-700 ${!isMobile ? "group-hover:scale-110" : ""}`} />
+                <img src={cake.image} alt={displayName} className={`w-full h-full object-cover transition-transform duration-700 ${!isMobile ? "group-hover:scale-110" : ""}`} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
                 <div className="absolute bottom-3 right-3 text-3xl drop-shadow-2xl">
                     {cake.emoji}
@@ -43,7 +44,7 @@ const CakeCard = ({ cake, onSelect }: {
 
             <div className="px-2 pb-3 text-center">
                 <span className="font-display text-sm font-black tracking-widest uppercase text-white/70 group-hover:text-primary transition-colors">
-                    {cake.name}
+                    {displayName}
                 </span>
                 <div className="flex gap-2 justify-center mt-3 mb-4">
                     {cake.layers.map((l, idx) => (
