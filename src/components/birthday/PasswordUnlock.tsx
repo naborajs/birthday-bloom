@@ -127,7 +127,7 @@ export const PasswordUnlock = ({ onUnlock }: PasswordUnlockProps) => {
         {localFlash && (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.6 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[60] bg-white pointer-events-none" transition={{ duration: 0.2 }}/>)}
       </AnimatePresence>
 
-      <motion.div animate={error ? { x: [0, -10, 10, -10, 10, -5, 5, 0] } : {}} transition={{ duration: 0.5, ease: "easeInOut" }} className="w-full max-w-md backdrop-blur-2xl border border-white/10 p-8 text-center shadow-[0_30px_100px_rgba(0,0,0,0.8)] relative overflow-hidden" style={{
+      <motion.div animate={error ? { x: [0, -10, 10, -10, 10, -5, 5, 0] } : {}} transition={{ duration: 0.5, ease: "easeInOut" }} className="w-full max-w-md backdrop-blur-2xl border border-white/10 p-6 sm:p-8 text-center shadow-[0_30px_100px_rgba(0,0,0,0.8)] relative overflow-hidden" style={{
             background: "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.01) 100%)",
             borderRadius: "var(--card-radius, 2rem)",
             boxShadow: `0 30px 100px -25px ${primaryColor}20, inset 0 0 20px rgba(255,255,255,0.05)`,
@@ -164,18 +164,18 @@ export const PasswordUnlock = ({ onUnlock }: PasswordUnlockProps) => {
               {t('common.passcodeIncorrect')}
             </motion.p>)}
 
-          <div className="flex gap-4">
-            <button type="button" onClick={() => setShowHint(prev => !prev)} className="flex items-center justify-center gap-2 px-4 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white/60 hover:text-white transition-all text-sm font-semibold flex-1">
-              <HelpCircle className="w-4 h-4"/>
-              <span>{showHint ? t('common.hideHint') : t('common.needHint')}</span>
+          <div className="flex gap-2 sm:gap-4">
+            <button type="button" onClick={() => setShowHint(prev => !prev)} className="flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-3 sm:py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white/60 hover:text-white transition-all text-xs sm:text-sm font-semibold flex-1">
+              <HelpCircle className="w-4 h-4 shrink-0"/>
+              <span className="truncate">{showHint ? t('common.hideHint') : t('common.needHint')}</span>
             </button>
 
-            <button type="submit" disabled={unlocked || !password} className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl text-black font-black uppercase text-sm tracking-widest transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:scale-100 flex-[1.5]" style={{
+            <button type="submit" disabled={unlocked || !password} className="flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-3 sm:py-4 rounded-2xl text-black font-black uppercase text-xs sm:text-sm tracking-wider sm:tracking-widest transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:scale-100 flex-[1.5]" style={{
             background: `linear-gradient(90deg, ${primaryColor}, ${primaryColor}dd)`,
             boxShadow: `0 10px 30px -10px ${primaryColor}60`,
         }}>
               <span>{t('common.unlock')}</span>
-              <ArrowRight className="w-4 h-4"/>
+              <ArrowRight className="w-4 h-4 shrink-0"/>
             </button>
           </div>
         </form>
