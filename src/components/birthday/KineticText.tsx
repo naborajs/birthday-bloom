@@ -9,10 +9,18 @@ interface KineticTextProps {
     onComplete?: () => void;
 }
 
+interface GraphemeSegmenter {
+    segment(input: string): Iterable<{ segment: string }>;
+}
+
+interface IntlWithSegmenter {
+    Segmenter: new (locales?: string | string[], options?: { granularity: "grapheme" | "word" | "sentence" }) => GraphemeSegmenter;
+}
+
 const splitGraphemes = (str: string): string[] => {
     if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
-        const segmenter = new (Intl as any).Segmenter(undefined, { granularity: "grapheme" });
-        return Array.from(segmenter.segment(str), (s: any) => s.segment);
+        const segmenter = new (Intl as unknown as IntlWithSegmenter).Segmenter(undefined, { granularity: "grapheme" });
+        return Array.from(segmenter.segment(str), (s) => s.segment);
     }
     const match = str.match(/[\s\S][\u0300-\u036f\u0900-\u097f\u0980-\u09ff]*/g);
     return match || Array.from(str);
