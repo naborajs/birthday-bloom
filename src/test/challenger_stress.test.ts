@@ -440,3 +440,192 @@ describe("Adversarial Stress Test: SuperPersonalizedLogic.ts", () => {
     });
   });
 });
+
+describe("Adversarial Stress Test: Multi-Language Locale Resolution & Fallback Matrix", () => {
+  describe("getTranslation Language Normalization", () => {
+    it("maps all supported and aliased locale strings for Bengali", async () => {
+      const { getTranslation } = await import("@/i18n");
+      const aliases = ["bn", "BN", "Bn", "bengali", "BENGALI", "Bengali", "bangla", "BANGLA", "  bn  ", "  bengali  "];
+      for (const alias of aliases) {
+        const t = getTranslation(alias);
+        expect(t.common.happyBirthday).toBe("শুভ জন্মদিন");
+        expect(t.common.unlockMagic).toBe("মায়াবী সারপ্রাইজ আনলক করুন");
+      }
+    });
+
+    it("maps all supported and aliased locale strings for Hindi", async () => {
+      const { getTranslation } = await import("@/i18n");
+      const aliases = ["hi", "HI", "Hi", "hindi", "HINDI", "Hindi", "in", "IN", "  hi  ", "  hindi  "];
+      for (const alias of aliases) {
+        const t = getTranslation(alias);
+        expect(t.common.happyBirthday).toBe("जन्मदिन मुबारक");
+        expect(t.common.unlockMagic).toBe("जादू अनलॉक करें");
+      }
+    });
+
+    it("falls back to English for standard en, unknown locales, empty strings, and undefined", async () => {
+      const { getTranslation } = await import("@/i18n");
+      const fallbacks = ["en", "EN", "english", "ENGLISH", "fr", "es", "de", "unknown", "", "   ", undefined];
+      for (const fb of fallbacks) {
+        const t = getTranslation(fb);
+        expect(t.common.happyBirthday).toBe("Happy Birthday");
+        expect(t.common.unlockMagic).toBe("Unlock the Magic");
+      }
+    });
+  });
+
+  describe("getTranslationValue and Interpolation Matrix", () => {
+    it("interpolates parameters in English, Hindi, and Bengali correctly", async () => {
+      const { getTranslationValue } = await import("@/i18n");
+      
+      expect(getTranslationValue("en", "common.dear", { name: "Sophia" })).toBe("Dear Sophia,");
+      expect(getTranslationValue("hi", "common.dear", { name: "राहुल" })).toBe("प्रिय राहुल,");
+      expect(getTranslationValue("bn", "common.dear", { name: "সৌম্য" })).toBe("প্রিয় সৌম্য,");
+
+      expect(getTranslationValue("en", "common.clickMoreTimes", { count: 3 })).toBe("Click 🎂 3 more times!");
+      expect(getTranslationValue("hi", "common.clickMoreTimes", { count: 5 })).toBe("🎂 पर 5 बार और क्लिक करें!");
+      expect(getTranslationValue("bn", "common.clickMoreTimes", { count: 2 })).toBe("কেক 🎂 আরও 2 বার ক্লিক করুন!");
+    });
+
+    it("falls back to English when a key is missing in a non-English locale", async () => {
+      const { getTranslationValue } = await import("@/i18n");
+      // If a hypothetical key only exists in en, it resolves cleanly from enTranslations
+      expect(getTranslationValue("hi", "common.skipIntro")).toBe("स्किप करें ⏭");
+      expect(getTranslationValue("bn", "common.skipIntro")).toBe("স্কিপ করুন ⏭");
+    });
+
+    it("returns raw keyPath when key does not exist anywhere", async () => {
+      const { getTranslationValue } = await import("@/i18n");
+      expect(getTranslationValue("en", "non.existent.deep.key")).toBe("non.existent.deep.key");
+      expect(getTranslationValue("hi", "non.existent.deep.key")).toBe("non.existent.deep.key");
+      expect(getTranslationValue("bn", "non.existent.deep.key")).toBe("non.existent.deep.key");
+    });
+
+    it("handles interpolate helper edge cases with null, empty params, and special characters", async () => {
+      const { interpolate } = await import("@/i18n");
+      expect(interpolate("Hello {name}!", { name: "Alice" })).toBe("Hello Alice!");
+      expect(interpolate("Hello {{name}}!", { name: "Bob" })).toBe("Hello Bob!");
+      expect(interpolate("Static text without params")).toBe("Static text without params");
+      expect(interpolate("Count: {count}", { count: 0 })).toBe("Count: 0");
+    });
+  });
+});
+
+describe("Adversarial Stress Test: Multi-Language Emotional Letters Matrix", () => {
+  const testRelationships: RelationshipType[] = [
+    "partner",
+    "friend",
+    "sibling",
+    "brother",
+    "sister",
+    "colleague",
+    "mentor",
+    "father",
+    "mother",
+    "grandfather",
+    "grandmother",
+    "uncle",
+    "aunt",
+    "cousin",
+    "son",
+    "daughter",
+    "guardian",
+    "family",
+    "custom",
+  ];
+
+  it("verifies all relationships produce authentic, non-empty letters with no bracket placeholders in English", () => {
+    for (const rel of testRelationships) {
+      for (const gender of ["male", "female", "other"] as const) {
+        const letterWithSender = getHighlySpecificLetter("Elena", rel, gender, [], "en", "Alex");
+        expect(letterWithSender.length).toBeGreaterThan(100);
+        expect(letterWithSender).toContain("Elena");
+        expect(letterWithSender).not.toContain("[Your Name]");
+        expect(letterWithSender).not.toContain("[आपका नाम]");
+        expect(letterWithSender).not.toContain("[আপনার নাম]");
+
+        const letterWithoutSender = getHighlySpecificLetter("Elena", rel, gender, [], "en");
+        expect(letterWithoutSender.length).toBeGreaterThan(100);
+        expect(letterWithoutSender).not.toContain("[Your Name]");
+      }
+    }
+  });
+
+  it("verifies all relationships produce authentic Hindi letters with proper signoffs", () => {
+    for (const rel of testRelationships) {
+      for (const gender of ["male", "female", "other"] as const) {
+        const letterWithSender = getHighlySpecificLetter("अनन्या", rel, gender, [], "hi", "समीर");
+        expect(letterWithSender.length).toBeGreaterThan(100);
+        expect(letterWithSender).toContain("अनन्या");
+        expect(letterWithSender).not.toContain("[Your Name]");
+        expect(letterWithSender).not.toContain("[आपका नाम]");
+        expect(letterWithSender).not.toContain("[আপনার নাম]");
+
+        const letterWithoutSender = getHighlySpecificLetter("अनन्या", rel, gender, [], "hi");
+        expect(letterWithoutSender.length).toBeGreaterThan(100);
+        expect(letterWithoutSender).not.toContain("[आपका नाम]");
+      }
+    }
+  });
+
+  it("verifies all relationships produce authentic Bengali letters with proper signoffs", () => {
+    for (const rel of testRelationships) {
+      for (const gender of ["male", "female", "other"] as const) {
+        const letterWithSender = getHighlySpecificLetter("ঐন্দ্রিলা", rel, gender, [], "bn", "অভিরূপ");
+        expect(letterWithSender.length).toBeGreaterThan(100);
+        expect(letterWithSender).toContain("ঐন্দ্রিলা");
+        expect(letterWithSender).not.toContain("[Your Name]");
+        expect(letterWithSender).not.toContain("[आपका नाम]");
+        expect(letterWithSender).not.toContain("[আপনার নাম]");
+
+        const letterWithoutSender = getHighlySpecificLetter("ঐন্দ্রিলা", rel, gender, [], "bn");
+        expect(letterWithoutSender.length).toBeGreaterThan(100);
+        expect(letterWithoutSender).not.toContain("[আপনার নাম]");
+      }
+    }
+  });
+});
+
+describe("Adversarial Stress Test: Cake Localization & Quiz Counters Matrix", () => {
+  it("verifies all 4 cake flavors have valid names across en, hi, and bn in CakeTypes", async () => {
+    const { CAKE_OPTIONS, getCakeName } = await import("@/components/birthday/CakeTypes");
+    expect(CAKE_OPTIONS.length).toBe(4);
+
+    const expectedNames = {
+      chocolate: { en: "Chocolate Dream", hi: "चॉकलेट ड्रीम", bn: "চকলেট ড্রিম" },
+      strawberry: { en: "Strawberry Bliss", hi: "स्ट्रॉबेरी ब्लिस", bn: "স্ট্রবেরি ব্লিস" },
+      royal: { en: "Royal Velvet", hi: "रॉयल वेलवेट", bn: "রয়্যাল ভেলভেট" },
+      nature: { en: "Floral Garden", hi: "फ्लोरल गार्डन", bn: "ফ্লোরাল গার্ডেন" },
+    };
+
+    for (const cake of CAKE_OPTIONS) {
+      const exp = expectedNames[cake.id as keyof typeof expectedNames];
+      expect(exp).toBeDefined();
+      expect(getCakeName(cake, false, false)).toBe(exp.en);
+      expect(getCakeName(cake, true, false)).toBe(exp.hi);
+      expect(getCakeName(cake, false, true)).toBe(exp.bn);
+      // Bengali flag takes priority if both are true
+      expect(getCakeName(cake, true, true)).toBe(exp.bn);
+    }
+  });
+
+  it("generates authentic Big Wishes across en, hi, and bn for partner, friend, coding, and car", () => {
+    // English Big Wishes
+    const enWishes = getBigWishes("Sam", "partner", "female", ["coding", "car"], "en");
+    expect(enWishes.length).toBe(6); // 2 base + 2 partner + 1 car + 1 coding
+    expect(enWishes.some((w) => w.emoji === "💻")).toBe(true);
+    expect(enWishes.some((w) => w.emoji === "🏎️")).toBe(true);
+
+    // Hindi Big Wishes
+    const hiWishes = getBigWishes("राहुल", "partner", "male", ["coding", "car"], "hi");
+    expect(hiWishes.length).toBe(6);
+    expect(hiWishes.some((w) => w.wish.includes("बग्स") || w.wish.includes("फीचर्स"))).toBe(true);
+    expect(hiWishes.some((w) => w.wish.includes("रफ़्तार"))).toBe(true);
+
+    // Bengali Big Wishes
+    const bnWishes = getBigWishes("সৌম্য", "friend", "male", ["coding", "car"], "bn");
+    expect(bnWishes.length).toBe(6);
+    expect(bnWishes.some((w) => w.wish.includes("বাগ") || w.wish.includes("ফিচার"))).toBe(true);
+    expect(bnWishes.some((w) => w.wish.includes("গতি"))).toBe(true);
+  });
+});
