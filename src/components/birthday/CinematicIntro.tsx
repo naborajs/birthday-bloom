@@ -287,6 +287,17 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
             "We love you so much! 💖"
         ];
     }, [name, relationship, gender, isHindi, isBengali, t]);
+
+    const effectiveStoryLines = useMemo(() => {
+        if (!age) return storyLines;
+        const ageLine = isBengali
+            ? `আপনার জীবনের ${age}-তম বছর উদযাপন করতে করতে...`
+            : isHindi
+                ? `आपके जीवन के ${age}वें साल का जश्न मनाते हुए...`
+                : `As you celebrate your ${age}th year...`;
+        return [...storyLines.slice(0, -1), ageLine, storyLines[storyLines.length - 1]];
+    }, [age, storyLines, isHindi, isBengali]);
+
     const primaryColor = favoriteColor || '#FF6B6B';
     const storyLineStyles = [
         { className: `${relationship === 'partner' ? 'italic' : ''} text-lg md:text-2xl lg:text-3xl font-light`, style: { color: "hsl(280, 20%, 85%)" } },
@@ -305,8 +316,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
         if (scene === "storytelling") {
             if (typeof navigator !== 'undefined' && navigator.vibrate)
                 navigator.vibrate(30);
-            const lines = age ? [...storyLines.slice(0, -1), `As you celebrate your ${age}th year...`, storyLines[storyLines.length - 1]] : storyLines;
-            lines.forEach((_, i) => {
+            effectiveStoryLines.forEach((_, i) => {
                 addTimer(() => { setStoryLine(i); playType(); }, i * 4000 * speedMultiplier);
             });
             addTimer(() => {
@@ -314,7 +324,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                     navigator.vibrate(50);
                 playWhoosh();
                 setScene("fake-chat");
-            }, lines.length * 4000 * speedMultiplier);
+            }, effectiveStoryLines.length * 4000 * speedMultiplier);
         }
         if (scene === "post-chat") {
             postChatLines.forEach((_, i) => {
@@ -359,8 +369,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
     }, [
         scene,
         speedMultiplier,
-        age,
-        storyLines,
+        effectiveStoryLines,
         postChatLines,
         finalLines,
         onComplete,
@@ -394,7 +403,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                 ✨
               </motion.div>
             </div>
-            {(age ? [...storyLines.slice(0, -1), `As you celebrate your ${age}th year...`, storyLines[storyLines.length - 1]] : storyLines).map((line, i) => (<p key={i} className={`font-display leading-relaxed mb-6 transition-all duration-1000 ${(storyLine >= i) ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"} ${storyLineStyles[i]?.className || ''}`} style={{ ...(storyLineStyles[i]?.style || {}), color: i === storyLine ? primaryColor : (storyLineStyles[i]?.style?.color || "hsl(0,0%,90%)"), textShadow: i === storyLine ? `0 0 20px ${primaryColor}40` : "none" }}>
+            {effectiveStoryLines.map((line, i) => (<p key={i} className={`font-display leading-relaxed mb-6 transition-all duration-1000 ${(storyLine >= i) ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"} ${storyLineStyles[i]?.className || ''}`} style={{ ...(storyLineStyles[i]?.style || {}), color: i === storyLine ? primaryColor : (storyLineStyles[i]?.style?.color || "hsl(0,0%,90%)"), textShadow: i === storyLine ? `0 0 20px ${primaryColor}40` : "none" }}>
                 {storyLine >= i && (<TypeWriter text={line} speed={relationship === 'partner' ? 90 : relationship === 'friend' ? 40 : 70} delay={300} cursor={storyLine === i}/>)}
               </p>))}
           </motion.div>)}
