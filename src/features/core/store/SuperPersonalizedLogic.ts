@@ -1,6 +1,7 @@
 import { EMOTIONAL_LETTERS } from '@/config/templates';
 import { HINDI_EMOTIONAL_LETTERS, HINDI_BIG_WISHES } from '@/config/hindiTemplates';
 import { BENGALI_EMOTIONAL_LETTERS, BENGALI_BIG_WISHES } from '@/config/bengaliTemplates';
+import { FRENCH_EMOTIONAL_LETTERS, FRENCH_BIG_WISHES } from '@/config/frenchTemplates';
 import { RelationshipType, GenderType } from './useBirthdayStore';
 
 export const getHighlySpecificLetter = (
@@ -13,12 +14,35 @@ export const getHighlySpecificLetter = (
 ) => {
     const isFemale = gender === 'female';
     const isMale = gender === 'male';
+    const isFrench = language === 'fr' || language === 'french' || language === 'francais' || language === 'française' || language === 'francaise';
     const isHindi = language === 'hi' || language === 'hindi' || language === 'in';
     const isBengali = language === 'bn' || language === 'bengali' || language === 'bangla';
 
     let letter = '';
 
-    if (isBengali) {
+    if (isFrench) {
+        if (relationship === 'partner') {
+            letter = isFemale ? FRENCH_EMOTIONAL_LETTERS.partner.female(name) : FRENCH_EMOTIONAL_LETTERS.partner.male(name);
+        } else if (relationship === 'friend') {
+            if (isFemale) letter = FRENCH_EMOTIONAL_LETTERS.friend.friendly(name);
+            else if (isMale) letter = FRENCH_EMOTIONAL_LETTERS.friend.legend(name);
+            else letter = FRENCH_EMOTIONAL_LETTERS.friend.romantic(name);
+        } else if (relationship === 'brother') {
+            letter = FRENCH_EMOTIONAL_LETTERS.brother(name);
+        } else if (relationship === 'sister') {
+            letter = FRENCH_EMOTIONAL_LETTERS.sister(name);
+        } else if (relationship === 'father') {
+            letter = FRENCH_EMOTIONAL_LETTERS.father(name);
+        } else if (relationship === 'mother') {
+            letter = FRENCH_EMOTIONAL_LETTERS.mother(name);
+        } else if (relationship === 'colleague') {
+            letter = FRENCH_EMOTIONAL_LETTERS.colleague(name);
+        } else if (relationship === 'mentor') {
+            letter = FRENCH_EMOTIONAL_LETTERS.mentor(name);
+        } else {
+            letter = FRENCH_EMOTIONAL_LETTERS.family(name);
+        }
+    } else if (isBengali) {
         if (relationship === 'partner') {
             letter = isFemale ? BENGALI_EMOTIONAL_LETTERS.partner.female(name) : BENGALI_EMOTIONAL_LETTERS.partner.male(name);
         } else if (relationship === 'friend') {
@@ -83,6 +107,7 @@ export const getHighlySpecificLetter = (
     const cleanSender = senderName ? senderName.trim() : '';
     return letter
         .replace(/\[Your Name\]/g, cleanSender)
+        .replace(/\[Votre Nom\]/g, cleanSender)
         .replace(/\[आपका नाम\]/g, cleanSender)
         .replace(/\[আপনার নাম\]/g, cleanSender)
         .trimEnd();
@@ -95,6 +120,11 @@ export const getBigWishes = (
     interests: string[] = [],
     language: string = 'en'
 ) => {
+    const isFrench = language === 'fr' || language === 'french' || language === 'francais' || language === 'française' || language === 'francaise';
+    if (isFrench) {
+        return FRENCH_BIG_WISHES(name, relationship, interests);
+    }
+
     const isBengali = language === 'bn' || language === 'bengali' || language === 'bangla';
     if (isBengali) {
         return BENGALI_BIG_WISHES(name, relationship, interests);
