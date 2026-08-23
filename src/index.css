@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Quicksand:wght@400;500;600;700&family=Inter:wght@400;700;900&family=Outfit:wght@300;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Quicksand:wght@400;500;600;700&family=Inter:wght@400;700;900&family=Outfit:wght@300;500;700;900&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;900&family=Rozha+One&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -32,6 +32,13 @@
     --birthday-sky: 200 80% 60%;
     --birthday-coral: 15 85% 65%;
     --birthday-mint: 160 60% 55%;
+  }
+
+  /* Indic typography protection: preserve shirorekha & conjunct continuity */
+  html[lang="bn"] *,
+  html[lang="hi"] * {
+    letter-spacing: normal !important;
+    text-transform: none !important;
   }
 
   * {
