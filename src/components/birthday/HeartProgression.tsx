@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
+import { useTranslation } from "@/i18n";
 interface HeartProgressionProps {
     stage: 1 | 2 | 3 | 4;
     onRevealComplete?: () => void;
@@ -72,6 +73,12 @@ const FourCornerMerge = ({ onDone }: {
     const particleIdRef = useRef(0);
     const rafRef = useRef<number>(0);
     const { name } = useBirthdayStore(state => state.config);
+    const { isHindi, isBengali } = useTranslation();
+    const loveMessage = isBengali
+        ? `আপনাকে অনেক ভালোবাসি ${name || 'প্রিয়'}`
+        : isHindi
+            ? `आपसे बहुत प्यार करते हैं ${name || 'प्रिय'}`
+            : `Love You Dear ${name || 'One'}`;
     useEffect(() => {
         const t1 = setTimeout(() => setPhase("merging"), 100);
         const t2 = setTimeout(() => setPhase("merged"), 1800);
@@ -220,9 +227,9 @@ const FourCornerMerge = ({ onDone }: {
         </div>))}
 
       
-      {showText && (<div className="z-40 mt-2 animate-love-text-reveal text-center px-4">
-          <span className="font-display text-xl sm:text-2xl md:text-5xl font-black bg-gradient-to-r from-[hsl(330,85%,65%)] via-[hsl(350,90%,70%)] to-[hsl(330,85%,60%)] bg-clip-text text-transparent animate-glow-pulse whitespace-nowrap leading-normal">
-            {`Love You Dear ${name || 'One'}`}
+      {showText && (<div className="z-40 mt-2 animate-love-text-reveal text-center px-4 max-w-full">
+          <span className="font-display text-xl sm:text-2xl md:text-5xl font-black bg-gradient-to-r from-[hsl(330,85%,65%)] via-[hsl(350,90%,70%)] to-[hsl(330,85%,60%)] bg-clip-text text-transparent animate-glow-pulse break-words leading-normal">
+            {loveMessage}
           </span>
         </div>)}
     </div>);
