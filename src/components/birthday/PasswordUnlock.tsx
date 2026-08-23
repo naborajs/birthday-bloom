@@ -17,7 +17,7 @@ export const PasswordUnlock = ({ onUnlock }: PasswordUnlockProps) => {
     const [unlocked, setUnlocked] = useState(false);
     const [localFlash, setLocalFlash] = useState(false);
     const { config } = useBirthdayStore();
-    const { t, isHindi, isBengali } = useTranslation();
+    const { t, isHindi, isBengali, isFrench } = useTranslation();
     const { playType, playWhoosh, playReveal, playBoom } = useSoundManager();
     const { fireStars, fireConfetti } = useConfetti();
     const primaryColor = config.favoriteColor || "#FF6B6B";
@@ -62,6 +62,26 @@ export const PasswordUnlock = ({ onUnlock }: PasswordUnlockProps) => {
         if (config.passwordHint)
             return config.passwordHint;
         const format = config.passwordFormat || 'MMDD';
+        if (isFrench) {
+            switch (format.toUpperCase()) {
+                case 'MMDD':
+                    return "Indice : La date spéciale d'aujourd'hui (Format : MMDD, ex. 0424 pour le 24 avril) 📅";
+                case 'DDMM':
+                    return "Indice : La date spéciale d'aujourd'hui (Format : DDMM, ex. 2404 pour le 24 avril) 📅";
+                case 'YYYYMMDD':
+                    return "Indice : Date d'anniversaire complète avec l'année (Format : YYYYMMDD, ex. 20010424) 📅";
+                case 'YYYY-MM-DD':
+                    return "Indice : Date de naissance complète (Format : YYYY-MM-DD, ex. 2001-04-24) 📅";
+                case 'MM-DD':
+                    return "Indice : Mois et jour de naissance (Format : MM-DD, ex. 04-24) 📅";
+                case 'DD-MM':
+                    return "Indice : Jour et mois de naissance (Format : DD-MM, ex. 24-04) 📅";
+                case 'YYYY':
+                    return "Indice : L'année de naissance (Format : YYYY, ex. 2001) 📅";
+                default:
+                    return "Indice : Cette date magique que nous célébrons aujourd'hui ! 🎂";
+            }
+        }
         if (isBengali) {
             switch (format.toUpperCase()) {
                 case 'MMDD':
