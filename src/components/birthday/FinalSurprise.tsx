@@ -7,7 +7,7 @@ import { useTranslation } from "@/i18n";
 
 export const FinalSurprise = () => {
     const { config } = useBirthdayStore();
-    const { isHindi, isBengali } = useTranslation();
+    const { isHindi, isBengali, isFrench } = useTranslation();
     const isMobile = useIsMobile();
     const memories = config.specialMemories || [];
     const primaryColor = config.favoriteColor || "#ff0080";
@@ -19,10 +19,10 @@ export const FinalSurprise = () => {
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-20">
           <h2 className="font-display text-5xl md:text-8xl font-black mb-6 bg-gradient-to-r from-primary via-white to-accent bg-clip-text text-transparent">
-            {isBengali ? "আমাদের বিশেষ স্মৃতিগুলো 🎞️" : isHindi ? "हमारी खास यादें 🎞️" : "Our Special Memories 🎞️"}
+            {isFrench ? "Nos Souvenirs Spéciaux 🎞️" : isBengali ? "আমাদের বিশেষ স্মৃতিগুলো 🎞️" : isHindi ? "हमारी खास यादें 🎞️" : "Our Special Memories 🎞️"}
           </h2>
           <p className="text-xl md:text-2xl text-foreground/60 max-w-2xl mx-auto italic">
-            {isBengali ? "“হাজার মাইলের যাত্রা একটি পদক্ষেপ দিয়ে শুরু হয়, কিন্তু সুন্দর স্মৃতিগুলোই এই যাত্রাকে সার্থক করে তোলে।”" : isHindi ? "“हजारों मीलों का सफर एक कदम से शुरू होता है, लेकिन वे खूबसूरत लम्हें ही हैं जो इस सफर को यादगार बनाते हैं।”" : "\"A journey of a thousand miles begins with a single step, but it's the moments we share that make it worth traveling.\""}
+            {isFrench ? "« Un voyage de mille lieues commence par un premier pas, mais ce sont les moments partagés qui lui donnent tout son sens. »" : isBengali ? "“হাজার মাইলের যাত্রা একটি পদক্ষেপ দিয়ে শুরু হয়, কিন্তু সুন্দর স্মৃতিগুলোই এই যাত্রাকে সার্থক করে তোলে।”" : isHindi ? "“हजारों मीलों का सफर एक कदम से शुरू होता है, लेकिन वे खूबसूरत लम्हें ही हैं जो इस सफर को यादगार बनाते हैं।”" : "\"A journey of a thousand miles begins with a single step, but it's the moments we share that make it worth traveling.\""}
           </p>
         </motion.div>
 
@@ -47,8 +47,8 @@ export const FinalSurprise = () => {
               <iframe src={finalVideoSrc} loading="lazy" className="w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title="Final Surprise Video"/>
             </div>
             <div className="p-10 text-center bg-gradient-to-t from-black/80 to-transparent">
-              <h4 className="font-display text-2xl md:text-4xl font-black mb-4">{isBengali ? "শেষ সারপ্রাইজ 🎬" : isHindi ? "आखरी सरप्राइज 🎬" : "The Final Surprise 🎬"}</h4>
-              <p className="text-lg md:text-xl text-white/60 font-light">{isBengali ? "আপনার মুখে একটি মিষ্টি হাসি ফুটিয়ে তোলার জন্য একটি ছোট্ট উপহার।" : isHindi ? "आपके चेहरे पर एक प्यारी सी मुस्कान लाने के लिए एक छोटा सा तोहफा।" : "A little something extra to make your heart smile."}</p>
+              <h4 className="font-display text-2xl md:text-4xl font-black mb-4">{isFrench ? "L'Ultime Surprise 🎬" : isBengali ? "শেষ সারপ্রাইজ 🎬" : isHindi ? "आखरी सरप्राइज 🎬" : "The Final Surprise 🎬"}</h4>
+              <p className="text-lg md:text-xl text-white/60 font-light">{isFrench ? "Une petite touche spéciale pour illuminer votre cœur et faire sourire votre âme." : isBengali ? "আপনার মুখে একটি মিষ্টি হাসি ফুটিয়ে তোলার জন্য একটি ছোট্ট উপহার।" : isHindi ? "आपके चेहरे पर एक प्यारी सी मुस्कान लाने के लिए एक छोटा सा तोहफा।" : "A little something extra to make your heart smile."}</p>
             </div>
           </motion.div>)}
 
@@ -60,12 +60,12 @@ export const FinalSurprise = () => {
           
           <div className="space-y-6">
             <h3 className="font-display text-4xl md:text-7xl font-black tracking-tight leading-tight">
-              {isBengali ? "আশা করি এটি আপনার দিনটিকে " : isHindi ? "उम्मीद है यह आपके दिन को " : "I Hope This Made Your "} <br />
-              <span style={{ color: primaryColor }} className="animate-pulse">{isBengali ? "আপনার মতোই সুন্দর ও বিশেষ করে তুলবে" : isHindi ? "उतना ही खास बनाएगा जितने आप हैं" : "Day As Special As You Are"}</span>
+              {isFrench ? "J'espère que cette journée a été " : isBengali ? "আশা করি এটি আপনার দিনটিকে " : isHindi ? "उम्मीद है यह आपके दिन को " : "I Hope This Made Your "} <br />
+              <span style={{ color: primaryColor }} className="animate-pulse">{isFrench ? "aussi spéciale et merveilleuse que vous l'êtes" : isBengali ? "আপনার মতোই সুন্দর ও বিশেষ করে তুলবে" : isHindi ? "उतना ही खास बनाएगा जितने आप हैं" : "Day As Special As You Are"}</span>
             </h3>
             <p className="text-xl md:text-3xl font-light text-foreground/60 max-w-3xl mx-auto leading-relaxed">
-              {isBengali ? "প্রতিটি পিক্সেল, প্রতিটি অ্যানিমেশন এবং প্রতিটি শব্দ শুধু নিখাদ ভালোবাসা দিয়ে তৈরি।" : isHindi ? "हर एक पिक्सल, हर एनिमेशन और हर शब्द सिर्फ और सिर्फ प्यार से सजाया गया है।" : "Every pixel, every animation, and every word was crafted with love."} <br />
-              {isBengali ? `আরও একবার জন্মদিনের অফুরন্ত শুভেচ্ছা, ${config.name}। ✨` : isHindi ? `एक बार फिर जन्मदिन की ढेर सारी शुभकामनाएं, ${config.name}। ✨` : `Happy Birthday once again, ${config.name}. ✨`}
+              {isFrench ? "Chaque pixel, chaque animation et chaque mot a été conçu avec tout notre amour." : isBengali ? "প্রতিটি পিক্সেল, প্রতিটি অ্যানিমেশন এবং প্রতিটি শব্দ শুধু নিখাদ ভালোবাসা দিয়ে তৈরি।" : isHindi ? "हर एक पिक्सल, हर एनिमेशन और हर शब्द सिर्फ और सिर्फ प्यार से सजाया गया है।" : "Every pixel, every animation, and every word was crafted with love."} <br />
+              {isFrench ? `Encore une fois, très Joyeux Anniversaire, ${config.name}. ✨` : isBengali ? `আরও একবার জন্মদিনের অফুরন্ত শুভেচ্ছা, ${config.name}। ✨` : isHindi ? `एक बार फिर जन्मदिन की ढेर सारी शुभकामनाएं, ${config.name}। ✨` : `Happy Birthday once again, ${config.name}. ✨`}
             </p>
           </div>
 
