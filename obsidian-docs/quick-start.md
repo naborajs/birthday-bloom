@@ -5,7 +5,7 @@ aliases: [quick-start, quickstart]
 
 # Quick Start
 
-[[DOCUMENTATION_INDEX|Back to Home]] | [[ENV_GUIDE|Env Customization Guide]] | [[setup-hindi|Hindi Setup Guide]] | [[setup-bengali|Bengali Setup Guide]] | [[deployment|Deployment Guide]]
+[[DOCUMENTATION_INDEX|Back to Home]] | [[ENV_GUIDE|Env Customization Guide]] | [[setup-french|French Setup Guide]] | [[setup-hindi|Hindi Setup Guide]] | [[setup-bengali|Bengali Setup Guide]] | [[deployment|Deployment Guide]]
 
 Get Birthday Bloom running locally in 5 minutes with zero code changes required.
 
@@ -75,11 +75,14 @@ uncle, aunt, cousin, son, daughter, guardian, colleague, mentor, family, custom
 
 ## 🌍 Multi-Language Localization Setup
 
-Birthday Bloom natively supports **English (default)**, **Hindi (हिन्दी)**, and **Bengali (বাংলা)**. Switch languages instantly via `VITE_LANGUAGE` (or `VITE_LANG`):
+Birthday Bloom natively supports **English (default)**, **French (Français)**, **Hindi (हिन्दी)**, and **Bengali (বাংলা)**. Switch languages instantly via `VITE_LANGUAGE` (or `VITE_LANG`):
 
 ```env
 # English (Default)
 VITE_LANGUAGE=en
+
+# French (Français) - Accepts 'fr', 'french', 'francais'
+VITE_LANGUAGE=fr
 
 # Hindi (हिन्दी) - Accepts 'hi', 'hindi', 'in'
 VITE_LANGUAGE=hi
@@ -89,6 +92,7 @@ VITE_LANGUAGE=bn
 ```
 
 For complete localized setup guides:
+- 🇫🇷 **French Guide**: See [[setup-french|setup-french.md]] for French emotional letters, quotes, cake names, and recipes.
 - 🇮🇳 **Hindi Guide**: See [[setup-hindi|setup-hindi.md]] for Devanagari typography, cultural nuances, and Hindi templates.
 - 🇧🇩 **Bengali Guide**: See [[setup-bengali|setup-bengali.md]] for Bengali script typography, cultural nuance, and Bengali templates.
 
