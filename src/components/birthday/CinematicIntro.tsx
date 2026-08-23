@@ -36,7 +36,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
     const { fireConfetti, fireStars, fireCinematicCelebration } = useConfetti();
     const { playType, playWhoosh, playReveal, playPop, playBoom } = useSoundManager();
     const { config, getAnimationPacing } = useBirthdayStore();
-    const { t, isHindi, isBengali } = useTranslation();
+    const { t, isHindi, isBengali, isFrench } = useTranslation();
     const { name, age, relationship, favoriteColor, gender } = config;
     const pacing = getAnimationPacing();
     const speedMultiplier = pacing === 'fast' ? 0.7 : pacing === 'slow' ? 1.3 : 1;
@@ -73,6 +73,33 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
     const storyLines = useMemo(() => {
         const isMale = gender === 'male';
         const isFemale = gender === 'female';
+        if (isFrench) {
+            if (relationship === 'partner') {
+                return [
+                    "Il y a quelqu'un qui est devenu le centre de mon univers...",
+                    "Quelqu'un qui transforme chaque instant en une scène de film magique...",
+                    isMale ? "L'homme qui a donné une nouvelle force et une nouvelle signification à l'amour..." : isFemale ? "La femme dont la douceur et la grâce illuminent chaque endroit où elle passe..." : "Cette âme merveilleuse qui me fait croire à la magie chaque jour...",
+                    "J'aurais pu simplement t'envoyer un 'Je t'aime'...",
+                    "Mais un simple message ne suffirait jamais à exprimer tout ce que je ressens."
+                ];
+            }
+            if (relationship === 'friend') {
+                return [
+                    "Alerte générale ! Une véritable légende passe au niveau supérieur ! 🚀",
+                    "Attends, c'est vraiment ton anniversaire aujourd'hui ou le calendrier nous fait une blague ? 😂",
+                    isMale ? "À celui qui est responsable de 99% de mes meilleurs souvenirs..." : isFemale ? "À celle qui a pris la mission de me faire rire tous les jours..." : "À la personne la plus incroyable et authentique de ce monde...",
+                    "J'avais pensé t'offrir un cadeau classique et très sérieux...",
+                    "Mais après réflexion... ce n'est tellement pas notre style ! 😎"
+                ];
+            }
+            return [
+                "Aujourd'hui est une journée qui restera gravée dans nos cœurs...",
+                `Parce que nous célébrons l'anniversaire du membre le plus précieux de notre famille, notre ${isMale ? 'prince' : isFemale ? 'princesse' : 'étoile'} !`,
+                "Une personne d'exception dont la présence est un cadeau inestimable pour nous tous...",
+                "Nous voulions créer quelque chose d'aussi spécial que l'amour que nous vous portons...",
+                "Installez-vous confortablement et profitez de cette célébration magique ! ✨"
+            ];
+        }
         if (isBengali) {
             if (relationship === 'partner') {
                 return [
@@ -152,8 +179,30 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
             "I wanted to build something that lasts as long as the memories we share...",
             "So, sit back, relax, and enjoy the show! ✨"
         ];
-    }, [relationship, gender, isHindi, isBengali]);
+    }, [relationship, gender, isHindi, isBengali, isFrench]);
     const postChatLines = useMemo(() => {
+        if (isFrench) {
+            if (relationship === 'friend')
+                return [
+                    "Parce que tu n'es pas n'importe quel(le) ami(e)...",
+                    "Tu es la personne sur qui je peux toujours compter pour rire et refaire le monde ! ☕️",
+                    "Tu mérites une fête aussi grandiose et unique que notre amitié...",
+                    "Alors, lançons les festivités et célébrons ça comme il se doit ! 🎉",
+                ];
+            if (relationship === 'partner')
+                return [
+                    "Mais tu es tellement plus qu'un(e) simple partenaire pour moi...",
+                    "Tu es mon refuge, ma plus belle aventure et mon foyer.",
+                    "J'ai passé la nuit à perfectionner chaque détail... tout comme toi.",
+                    "Es-tu prêt(e) pour la grande révélation ? ❤️",
+                ];
+            return [
+                "Vous apportez tellement de lumière et de bonheur dans nos vies...",
+                "Vous méritez une célébration aussi éclatante que votre sourire.",
+                "Nous y avons mis tout notre cœur, spécialement pour vous...",
+                "Que la fête commence ! ✨",
+            ];
+        }
         if (isBengali) {
             if (relationship === 'friend')
                 return [
@@ -218,10 +267,32 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
             "We put our hearts into this, just for you...",
             "Let the celebration begin! ✨",
         ];
-    }, [relationship, isHindi, isBengali]);
+    }, [relationship, isHindi, isBengali, isFrench]);
     const finalLines = useMemo(() => {
         const isMale = gender === 'male';
         const isFemale = gender === 'female';
+        if (isFrench) {
+            if (relationship === 'partner')
+                return [
+                    `Mon très cher / Ma très chère ${name || (isMale ? 'Prince' : isFemale ? 'Princesse' : 'Amour')}`,
+                    t('intro.hopeYouFeltHeartbeat'),
+                    t('intro.todayTomorrowAlways'),
+                    t('intro.loveInfinitely')
+                ];
+            if (relationship === 'friend')
+                return [
+                    `Joyeux Anniversaire ${name || (isMale ? 'mon frère' : isFemale ? 'ma meilleure amie' : 'Légende')} !`,
+                    t('intro.cakeChaosNoRegrets'),
+                    t('intro.partnerInCrime'),
+                    t('intro.stayLegendary')
+                ];
+            return [
+                `Cher(ère) ${name || 'Personne Formidable'}`,
+                t('intro.yearOfPureHappiness'),
+                t('intro.kindnessReturnTenfold'),
+                t('intro.loveYouSoMuch')
+            ];
+        }
         if (isBengali) {
             if (relationship === 'partner')
                 return [
@@ -286,17 +357,19 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
             "May your kindness always come back to you tenfold ✨",
             "We love you so much! 💖"
         ];
-    }, [name, relationship, gender, isHindi, isBengali, t]);
+    }, [name, relationship, gender, isHindi, isBengali, isFrench, t]);
 
     const effectiveStoryLines = useMemo(() => {
         if (!age) return storyLines;
-        const ageLine = isBengali
-            ? `আপনার জীবনের ${age}-তম বছর উদযাপন করতে করতে...`
-            : isHindi
-                ? `आपके जीवन के ${age}वें साल का जश्न मनाते हुए...`
-                : `As you celebrate your ${age}th year...`;
+        const ageLine = isFrench
+            ? `Alors que vous célébrez votre ${age}e année de splendeur...`
+            : isBengali
+                ? `আপনার জীবনের ${age}-তম বছর উদযাপন করতে করতে...`
+                : isHindi
+                    ? `आपके जीवन के ${age}वें साल का जश्न मनाते हुए...`
+                    : `As you celebrate your ${age}th year...`;
         return [...storyLines.slice(0, -1), ageLine, storyLines[storyLines.length - 1]];
-    }, [age, storyLines, isHindi, isBengali]);
+    }, [age, storyLines, isHindi, isBengali, isFrench]);
 
     const primaryColor = favoriteColor || '#FF6B6B';
     const storyLineStyles = [
@@ -427,7 +500,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
             {revealStep === "dear-name" && (<motion.div initial={{ scale: 1.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 2, ease: "circOut" }} className="text-center px-4">
                 <p className="text-xl md:text-4xl text-muted-foreground mb-4 font-display italic">{t('intro.thisIsForYou')}</p>
                 <h2 className="font-display text-5xl sm:text-7xl md:text-9xl lg:text-[12rem] font-black animate-glow-pulse break-words leading-tight" style={{ color: primaryColor }}>
-                  <KineticText text={name || (isBengali ? 'আপনি' : isHindi ? 'आप' : 'You')} animation="zoom-in" delay={600}/>
+                  <KineticText text={name || (isFrench ? 'Vous' : isBengali ? 'আপনি' : isHindi ? 'आप' : 'You')} animation="zoom-in" delay={600}/>
                 </h2>
               </motion.div>)}
 
