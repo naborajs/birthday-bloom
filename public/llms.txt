@@ -1,20 +1,23 @@
 # === BIRTHDAY BLOOM — AI & LLM INGESTION GUIDE ===
 
-This text document serves as a high-density, vector-embedding-friendly developer reference map for LLM coding agents (e.g., Gemini, Claude, GPT). It outlines the architecture, data layers, state machines, and styling rules of the Birthday Bloom project.
+This text document serves as a high-density, vector-embedding-friendly developer reference map for LLM coding agents (e.g., Gemini, Claude, GPT). It outlines the architecture, data layers, state machines, multi-language localization pipelines, and styling rules of the Birthday Bloom project.
 
 ---
 
 ## 🚀 1. SYSTEM OVERVIEW & MISSION
-To provide a premium (1%-tier) cinematic, interactive birthday landing page that non-developers can fully customize using only environment variables (`.env.local` or hosting provider dashboards) without editing codebase files.
+To provide a premium (1%-tier) cinematic, interactive birthday landing page that non-developers can fully customize using only environment variables (`.env.local` or hosting provider dashboards) without editing codebase files. Supports native localization in **English (en)**, **Hindi (hi)**, and **Bengali (bn)** with authentic cultural emotion, respectful Indic honorifics, and zero layout overflow.
 
 ---
 
 ## 🛠 2. TECH STACK & SPECIFICATIONS
-* **Framework:** React 18 (Concurrent Mode, client-side rendering)
+* **Framework:** React 19 (Concurrent Mode, client-side rendering)
+* **Language:** TypeScript 5.8 (Strict mode)
 * **Build System:** Vite 8 (Hot Module Replacement enabled)
 * **Styling:** Tailwind CSS 3.4 + Custom HSL CSS Custom Properties (for dynamic theme injection)
-* **Animation:** Framer Motion 12+ (physics-spring transitions, hardware-accelerated loops)
+* **Animation:** Framer Motion 12+ (physics-spring transitions, hardware-accelerated loops) + Three.js
+* **Icons:** Lucide React
 * **State Management:** Zustand 5+ (centralized store with aliases, fallback verification, and runtime hydration)
+* **Internationalization:** Custom lightweight type-safe i18n engine (`useTranslation()`, `TranslationSchema`)
 * **Testing:** Vitest 3+ (Unit & Integration tests)
 
 ---
@@ -32,7 +35,10 @@ birthday-bloom/
 │   ├── DOCUMENTATION_INDEX.md# Central document index
 │   ├── ENV_GUIDE.md          # Env configuration guide (recipes + custom variables)
 │   ├── env-configs.md        # Prebuilt env configurations (Romantic, Sibling, Friend)
+│   ├── setup-hindi.md        # Dedicated Hindi (हिन्दी) localization & Devanagari guide
+│   ├── setup-bengali.md      # Dedicated Bengali (বাংলা) localization & Eastern Nagari guide
 │   ├── architecture.md       # Cinematic Finite State Machine & runtime deep dive
+│   ├── architecture-env.md   # Environment variable lifecycle & Zustand store hydration
 │   ├── quick-start.md        # 5-minute local installation guide
 │   ├── developer-guide.md    # API properties, hook specifications & customization rules
 │   ├── styleguide.md         # Coding conventions, CSS guides & design system tokens
@@ -40,10 +46,11 @@ birthday-bloom/
 │   ├── faq.md                # Frequently asked questions
 │   ├── family-system.md      # Configuration instructions for family templates
 │   ├── template-architecture.md # Data flows and structure for preset templates
+│   ├── Template-System-Deep-Dive.md # In-depth relationship and tone architecture
 │   ├── deployment.md         # Vercel, Netlify, Docker, and self-hosted deployment guides
 │   ├── seo-guide.md          # Head tags, sitemaps, open-graph metadata settings
 │   └── llm-access.md         # Context-injection guides for LLMs
-├── public/                   # Public static assets (favicons, sitemaps, robots.txt)
+├── public/                   # Public static assets (favicons, sitemaps, robots.txt, llms.txt)
 ├── scripts/                  # Repository maintenance utility scripts
 │   ├── strip-comments.js     # Comment-stripping build pipeline helper
 │   └── strip-comments.cjs    # CommonJS version of the stripper script
@@ -51,20 +58,36 @@ birthday-bloom/
     ├── assets/               # Local static images, svgs, and audio files
     ├── components/           # UI and birthday scene components
     │   ├── birthday/         # Birthday-specific cinematic scene components
+    │   │   ├── SplashScreen.tsx   # Initial tap-to-begin welcome screen
+    │   │   ├── PasswordUnlock.tsx # Security lock screen with date format hints
     │   │   ├── CinematicIntro.tsx # Cinematic typewriter & message storyline
-    │   │   ├── CakeCutting.tsx   # Blow candles, interactive SVG slicing cake
+    │   │   ├── FakeChatScene.tsx  # Dynamic simulated chat messaging
+    │   │   ├── CakeCutting.tsx    # Blow candles, interactive SVG/3D cake slicing
+    │   │   ├── BirthdayQuiz.tsx   # Interactive trivia quiz with score counters
     │   │   ├── HeartTree.tsx      # SVG physics balloon merges & grand finale tree
     │   │   ├── PhotoGallery.tsx   # Polaroid slider gallery grid
+    │   │   ├── VideoGallery.tsx   # Video memories carousel
+    │   │   ├── FinalSurprise.tsx  # Final gift reveal & special wishes
+    │   │   ├── KineticText.tsx    # Grapheme-safe kinetic animated text
+    │   │   ├── TypeWriter.tsx     # Grapheme-safe recursive typing component
     │   │   └── MainBirthday.tsx   # Main celebration stage orchestration
     │   └── ui/               # Reusable UI primitives (sonner.tsx, tooltip.tsx)
-    ├── config/               # Fallback configuration files
+    ├── config/               # Fallback configuration and templates
+    │   ├── templates.ts      # English emotional letters, quotes & templates
+    │   ├── hindiTemplates.ts # Hindi emotional letters, quotes & wishes
+    │   ├── bengaliTemplates.ts # Bengali emotional letters, quotes & wishes
+    │   └── familyTemplates.ts# Family profile structures & builder functions
     ├── features/             # Feature-based folder architecture
     │   └── core/             # Central core modules (layout, routing, models)
     │       ├── models/       # Family templates and types
-    │       ├── store/        # Zustand Store (useBirthdayStore.ts)
+    │       ├── store/        # Zustand Store (useBirthdayStore.ts, SuperPersonalizedLogic.ts)
     │       └── theme/        # CSS variables injector hooks (useDynamicTheme.ts)
+    ├── i18n/                 # Multi-language localization engine
+    │   ├── types.ts          # TranslationSchema definition
+    │   ├── index.ts          # useTranslation hook, dictionary resolver & fallback
+    │   └── locales/          # Localization dictionaries (en.ts, hi.ts, bn.ts)
     ├── pages/                # Top-level route pages (Index.tsx, NotFound.tsx)
-    ├── index.css             # Main styling entry point, HSL definitions
+    ├── index.css             # Main styling entry point, Indic typography resets
     ├── main.tsx              # React mounting root
     └── vite-env.d.ts         # TypeScript module environment definitions
 ```
@@ -76,8 +99,8 @@ birthday-bloom/
 ### A. The Data Layer (Zustand Store)
 * **File:** `src/features/core/store/useBirthdayStore.ts`
 * Hydrates configuration data from Vite's `import.meta.env` parsing at module load.
-* Normalizes key aliases (e.g. mapping older configs to current specs).
-* Safely resolves missing values using constants or static fallback values from `src/config/`.
+* Normalizes language (`en`, `hi`, `bn` with aliases `hindi`, `in`, `bengali`, `bangla`) and relationship aliases (`mom` $\rightarrow$ `mother`, `dad` $\rightarrow$ `father`, `bestie` $\rightarrow$ `friend`, etc.).
+* Safely resolves missing values using static fallback defaults.
 * Exposes `isConfigured` (boolean) state. When true, skips configuration setup wizards and starts the cinematic story.
 
 ### B. The Design Layer (Dynamic Theme Ingestion)
@@ -88,9 +111,19 @@ birthday-bloom/
 ### C. The Execution Layer (Cinematic Finite State Machine)
 The landing page flows through a strict state progression:
 1. **SPLASH:** Initial loading screen, checks files and hydrates configurations.
-2. **INTRO:** Mounts `<CinematicIntro />`. Coordinates typewriter delays, message overlays, and interactive unlock fields.
-3. **CAKE:** Mounts `<CakeCutting />`. Handles blowing SVG flames, registering user wishes, and interactive cake cutting.
-4. **CELEBRATION:** Mounts the final views (Polaroid sliders, confetti cascades, letter overlays, and the merging `<HeartTree />`).
+2. **PASSWORD:** (Optional) Passcode gate with dynamic date format hints (`MMDD`, `DDMM`).
+3. **INTRO:** Mounts `<CinematicIntro />`. Coordinates typewriter delays, message storylines, and fake chat.
+4. **CAKE:** Mounts `<CakeCutting />`. Handles blowing SVG flames, registering user wishes, and interactive cake cutting.
+5. **CELEBRATION:** Mounts the main dashboard (Polaroid sliders, trivia quiz, emotional letter card, and the merging `<HeartTree />`).
+
+### D. The Localization Layer (i18n & Indic Typography Engine)
+* **Files:** `src/i18n/index.ts`, `src/i18n/locales/` (`en.ts`, `hi.ts`, `bn.ts`), `src/index.css`
+* Strongly typed `TranslationSchema` guaranteeing key parity across English, Hindi, and Bengali.
+* Automatic fallback: If any translation key is missing in Hindi or Bengali, it transparently falls back to the English dictionary.
+* Indic Script Protections:
+  - Font subsets: `Noto Sans Devanagari`, `Rozha One`, `Noto Sans Bengali`, `Hind Siliguri`.
+  - CSS resets: `letter-spacing: normal !important; text-transform: none !important;` for `html[lang="hi"]` and `html[lang="bn"]` to preserve shirorekha (headline) and matra continuity.
+  - Grapheme cluster preservation: `KineticText.tsx` and `TypeWriter.tsx` avoid detached vowel signs (*matras/kar*) or broken conjuncts (*samyuktaksar/juktakkhor*).
 
 ---
 
@@ -100,23 +133,27 @@ All settings are set through environment keys. These must start with the `VITE_`
 | Key | Expected Type | Purpose / Action |
 |---|---|---|
 | `VITE_BIRTHDAY_NAME` | `String` | Name of the birthday person. Triggers skip of wizard. |
+| `VITE_LANGUAGE` / `VITE_LANG` | `String` | Localization switch (`en` for English, `hi` for Hindi, `bn` for Bengali). Accepts `hindi`, `in`, `bengali`, `bangla`. |
 | `VITE_BIRTHDAY_DATE` | `YYYY-MM-DD` | Recipient birthday date. Feeds countdown and passcode metrics. |
-| `VITE_BIRTHDAY_RELATIONSHIP` | `String` | Relationship type (`partner`, `friend`, `brother`, `sister`, `mother`, etc.). |
+| `VITE_BIRTHDAY_RELATIONSHIP` | `String` | Relationship type (`partner`, `friend`, `brother`, `sister`, `father`, `mother`, `grandfather`, `grandmother`, `uncle`, `aunt`, `cousin`, `son`, `daughter`, `guardian`, `colleague`, `mentor`, `family`). |
 | `VITE_BIRTHDAY_COLOR` | `Hex Color` | Base color code (e.g., `#FF6B6B`). Drives CSS token generator. |
 | `VITE_BIRTHDAY_CUSTOM_MESSAGE` | `String` | Custom message shown before the cake scene. |
+| `VITE_BIRTHDAY_WISHER_NAME` | `String` | Name of the sender, cleanly replacing `[Your Name]` in letters. |
 | `VITE_PASSWORD_REQUIRED` | `Boolean` | Requires passcode to unlock the cinematic surprise. |
 | `VITE_PASSWORD` | `String` | Key password override. If unset, defaults to MMDD birthday date. |
+| `VITE_PASSWORD_HINT` | `String` | Custom password hint displayed on unlock screen. |
 | `VITE_SOUND_URL` / `VITE_BGM_URL` | `URL` | Background audio MP3 link. Plays during celebration. |
 | `VITE_SOUND_EFFECTS` | `Boolean` | Toggles interactive audio sound effects (typing, pops, whooshes). |
-| `VITE_LANGUAGE` | `String` | Localization switch (`en` for English - default, `hi` for Hindi, `bn` for Bengali). |
 | `VITE_PHOTOS` / `VITE_PHOTO_1..6` | `URL(s)` | Image URLs for polaroid gallery slides. |
-| `VITE_FAMILY_MEMBER_TYPE` | `String` | Relationship template preset (`brother`, `sister`, `friend`, etc.). |
+| `VITE_FAMILY_MEMBER_TYPE` | `String` | Relationship template preset (`brother`, `sister`, `father`, etc.). |
 
 ---
 
 ## 🛡️ 6. AI & DEVELOPER DEVELOPMENT GUIDELINES
 When updating or extending the code:
-1. **Never hardcode values:** All personal messages or colors must be requested from the Zustand store.
-2. **Spring-driven motion:** Prefer spring-physics transitions (`type: "spring"`) for micro-interactions to ensure a highly responsive, premium feel.
-3. **Maintain identity:** Preserve authorship credits for creator **Naboraj Sarkar / Nishant Sarkar**.
-4. **Bundle size validation:** Avoid introducing heavy third-party canvas or physics libraries; implement custom lightweight SVG computations.
+1. **Never hardcode values:** All personal messages, names, or colors must be requested from the Zustand store.
+2. **Translate with cultural parity:** All relationship templates must provide the same depth of emotion, respect for elders, and playful banter in Hindi and Bengali as in English.
+3. **Preserve Indic script rules:** Never apply positive `letter-spacing` or `uppercase` transforms to Hindi or Bengali text.
+4. **Spring-driven motion:** Prefer spring-physics transitions (`type: "spring"`) for micro-interactions to ensure a highly responsive, premium feel.
+5. **Maintain identity:** Preserve authorship credits for creator **Naboraj Sarkar / Nishant Sarkar**.
+6. **Bundle size validation:** Avoid introducing heavy third-party canvas or physics libraries; implement custom lightweight SVG computations.
