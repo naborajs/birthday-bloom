@@ -188,7 +188,7 @@ export const PhotoGallery = () => {
                   {photos[lightbox].caption}
                 </p>
               </div>
-              <button onClick={() => setLightbox(null)} className="absolute -top-12 -right-12 w-20 h-20 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-2xl border border-white/10 flex items-center justify-center text-white text-3xl transition-all shadow-2xl">
+              <button onClick={() => setLightbox(null)} className="absolute top-4 right-4 md:-top-12 md:-right-12 w-12 h-12 md:w-20 md:h-20 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-2xl border border-white/10 flex items-center justify-center text-white text-xl md:text-3xl transition-all shadow-2xl z-50">
                 ✕
               </button>
             </motion.div>
