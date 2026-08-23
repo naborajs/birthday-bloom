@@ -499,7 +499,8 @@ The entire initialization process is controlled securely via the `.env` paradigm
 | `VITE_BIRTHDAY_AGE` | NO | `null` | The age they are turning. |
 | `VITE_BIRTHDAY_GENDER` | NO | `"other"` | `"male"`, `"female"`, or `"other"`. |
 | `VITE_BIRTHDAY_DATE` | NO | `null` | The specific date of the birthday. |
-| `VITE_BIRTHDAY_RELATIONSHIP` | NO | `"partner"` | Options: `"partner"`, `"friend"`, `"family"`. This fundamentally changes the UI mood, colors, storytelling text, and emoji effects! |
+| `VITE_LANGUAGE` / `VITE_LANG` | NO | `"en"` | Multi-language localization switch: `"en"` (English - default), `"hi"` (Hindi), `"bn"` (Bengali). Normalizes aliases (`hi`/`hindi`/`in`, `bn`/`bengali`/`bangla`). |
+| `VITE_BIRTHDAY_RELATIONSHIP` | NO | `"partner"` | Relationship template: `"partner"`, `"friend"`, `"brother"`, `"sister"`, `"father"`, `"mother"`, `"grandfather"`, `"grandmother"`, `"uncle"`, `"aunt"`, `"cousin"`, `"son"`, `"daughter"`, `"guardian"`, `"colleague"`, `"mentor"`, `"family"`. Fundamentally tailors mood, storytelling text, emotional letters, and emoji effects! |
 | `VITE_BIRTHDAY_WISHER_NAME` | NO | `""` | The birthday wish sender's name, shown at the end of the emotional letter. |
 | `VITE_BIRTHDAY_COLOR` / `VITE_FAVORITE_COLOR` | NO | `"#FF6B6B"` | A hex code defining the dynamic global theme, neon glows, and gradient backgrounds. |
 | `VITE_BIRTHDAY_INTERESTS` / `VITE_FAVORITE_ITEMS` | NO | `""` | Comma-separated list of interests/items to customize ambient particles. |
@@ -663,11 +664,15 @@ graph TD
 
 ---
 
-## 🇮🇳 Localized Setup
-For our users in India and Bangladesh, we have provided native language setup guides to make your journey smoother.
+## 🌍 Multi-Language Localization & Setup
 
-- [🇮🇳 हिंदी सेटअप गाइड (Hindi Setup Guide)](./obsidian-docs/setup-hindi.md)
-- [🇧🇩 বাংলা সেটআপ গাইড (Bengali Setup Guide)](./obsidian-docs/setup-bengali.md)
+Birthday Bloom natively supports **English (default)**, **Hindi (हिन्दी)**, and **Bengali (বাংলা)** with cultural nuance, respectful Indic honorifics, and automatic Indic typography protections (shirorekha preservation & conjunct continuity).
+
+- 🇬🇧 [English Quick Start Guide](./obsidian-docs/quick-start.md) — 5-minute setup with zero code changes.
+- 🇮🇳 [हिंदी सेटअप गाइड (Hindi Setup Guide)](./obsidian-docs/setup-hindi.md) — Devanagari typography, Hindi emotional letters, and tone nuances.
+- 🇧🇩 [বাংলা সেটআপ গাইড (Bengali Setup Guide)](./obsidian-docs/setup-bengali.md) — Eastern Nagari typography, Bengali emotional letters, and tone nuances.
+
+To switch languages, set `VITE_LANGUAGE=hi` (Hindi) or `VITE_LANGUAGE=bn` (Bengali) in your `.env.local` or hosting provider environment settings.
 
 ---
 
