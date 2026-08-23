@@ -5,7 +5,7 @@ aliases: [DOCUMENTATION_INDEX, index]
 
 # Birthday Bloom v3.1 — Documentation Index
 
-[[quick-start|Quick Start]] | [[ENV_GUIDE|Env Customization Guide]] | [[setup-hindi|Hindi Guide]] | [[setup-bengali|Bengali Guide]] | [[architecture-env|Env Architecture]] | [[deployment|Deployment Guide]]
+[[quick-start|Quick Start]] | [[ENV_GUIDE|Env Customization Guide]] | [[setup-french|French Guide]] | [[setup-hindi|Hindi Guide]] | [[setup-bengali|Bengali Guide]] | [[architecture-env|Env Architecture]] | [[deployment|Deployment Guide]]
 
 **Complete documentation suite for Birthday Bloom**, an env-first cinematic birthday surprise engine built with React 19, TypeScript 5.8, Framer Motion, Tailwind CSS, and Zustand.
 
@@ -19,6 +19,7 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 |---|---|---|
 | [[quick-start|quick-start.md]] | Get running locally in 5 minutes with zero code changes | 5 min |
 | [[ENV_GUIDE|ENV_GUIDE.md]] | Exhaustive environment variable reference with 15+ real-world recipes | 15 min |
+| [[setup-french|setup-french.md]] | Multi-Language Localization (French / Français) setup, European typography & recipes | 5 min |
 | [[setup-hindi|setup-hindi.md]] | Multi-Language Localization (Hindi / हिन्दी) setup, Indic typography & recipes | 5 min |
 | [[setup-bengali|setup-bengali.md]] | Multi-Language Localization (Bengali / বাংলা) setup, Indic typography & recipes | 5 min |
 | [[architecture|architecture.md]] | Finite state machine, scene timeline, and system architecture | 10 min |
@@ -46,6 +47,7 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 ### 2. Customizing for a Specific Person or Language
 1. **Language Setup**:
    - English (Default): [[quick-start|quick-start.md]]
+   - French (Français): [[setup-french|setup-french.md]]
    - Hindi (हिन्दी): [[setup-hindi|setup-hindi.md]]
    - Bengali (বাংলা): [[setup-bengali|setup-bengali.md]]
 2. **Relationships & Tone**:
