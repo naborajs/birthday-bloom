@@ -11,11 +11,14 @@ import { useSoundManager } from "./SoundManager";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { SpecialMessage } from "@/features/cinematic-story/scenes/SpecialMessage";
 import { useTranslation } from "@/i18n";
+
 interface CinematicIntroProps {
     onComplete: () => void;
 }
+
 type Scene = "storytelling" | "fake-chat" | "post-chat" | "reveal-sequence" | "special-message" | "done";
 type RevealStep = "dear-name" | "grand-reveal" | "final-message";
+
 export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
     const [scene, setScene] = useState<Scene>("storytelling");
     const [storyLine, setStoryLine] = useState(0);
@@ -33,24 +36,30 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
     const [finalLineIndex, setFinalLineIndex] = useState(0);
     const [flashWhite, setFlashWhite] = useState(false);
     const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
     const { fireConfetti, fireStars, fireCinematicCelebration } = useConfetti();
     const { playType, playWhoosh, playReveal, playPop, playBoom } = useSoundManager();
     const { config, getAnimationPacing } = useBirthdayStore();
     const { t, isHindi, isBengali, isFrench } = useTranslation();
     const { name, age, relationship, favoriteColor, gender } = config;
+
     const pacing = getAnimationPacing();
-    const speedMultiplier = pacing === 'fast' ? 0.7 : pacing === 'slow' ? 1.3 : 1;
+    const speedMultiplier = pacing === 'fast' ? 0.75 : pacing === 'slow' ? 1.2 : 1;
+
     const clearTimers = useCallback(() => {
         timersRef.current.forEach(clearTimeout);
         timersRef.current = [];
     }, []);
+
     const addTimer = useCallback((fn: () => void, ms: number) => {
         timersRef.current.push(setTimeout(fn, ms));
     }, []);
+
     const triggerShake = useCallback(() => {
         setShaking(true);
         setTimeout(() => setShaking(false), 600);
     }, []);
+
     const spawnEmojiBurst = useCallback(() => {
         const burstEmojis = relationship === 'friend' ? ["🎉", "😎", "🍻", "🍕", "⭐", "🔥", "🎈", "🥳"] : ["✨", "💫", "⭐", "🌟", "💖", "🥂", "🌹"];
         const bursts = Array.from({ length: 12 }, (_, i) => ({
@@ -62,14 +71,52 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
         setEmojiBursts(bursts);
         setTimeout(() => setEmojiBursts([]), 2000);
     }, [relationship]);
+
     const triggerRingPulse = useCallback(() => {
         setRingPulse(true);
         setTimeout(() => setRingPulse(false), 1200);
     }, []);
+
     const triggerFlash = useCallback(() => {
         setFlashWhite(true);
         setTimeout(() => setFlashWhite(false), 300);
     }, []);
+
+    // Hold all action callbacks in a ref to avoid recreating effect timers
+    const actionsRef = useRef({
+        playType,
+        playWhoosh,
+        playReveal,
+        playPop,
+        playBoom,
+        fireConfetti,
+        fireStars,
+        fireCinematicCelebration,
+        spawnEmojiBurst,
+        triggerFlash,
+        triggerRingPulse,
+        triggerShake,
+        onComplete,
+    });
+
+    useEffect(() => {
+        actionsRef.current = {
+            playType,
+            playWhoosh,
+            playReveal,
+            playPop,
+            playBoom,
+            fireConfetti,
+            fireStars,
+            fireCinematicCelebration,
+            spawnEmojiBurst,
+            triggerFlash,
+            triggerRingPulse,
+            triggerShake,
+            onComplete,
+        };
+    });
+
     const storyLines = useMemo(() => {
         const isMale = gender === 'male';
         const isFemale = gender === 'female';
@@ -180,6 +227,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
             "So, sit back, relax, and enjoy the show! ✨"
         ];
     }, [relationship, gender, isHindi, isBengali, isFrench]);
+
     const postChatLines = useMemo(() => {
         if (isFrench) {
             if (relationship === 'friend')
@@ -268,6 +316,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
             "Let the celebration begin! ✨",
         ];
     }, [relationship, isHindi, isBengali, isFrench]);
+
     const finalLines = useMemo(() => {
         const isMale = gender === 'male';
         const isFemale = gender === 'female';
@@ -383,167 +432,330 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
         { className: `${relationship === 'friend' ? 'font-black uppercase' : 'font-extrabold'} text-2xl md:text-4xl lg:text-5xl`, style: { color: primaryColor } },
         { className: "text-3xl md:text-5xl lg:text-6xl font-black bg-gradient-to-r from-[hsl(330,90%,70%)] via-[var(--color-primary)] to-[hsl(270,70%,70%)] bg-clip-text text-transparent animate-gradient-shift" },
     ];
+
+    // Cleanup on unmount
     useEffect(() => () => clearTimers(), [clearTimers]);
+
+    // Scene progression orchestrator — ONLY triggers when scene changes
     useEffect(() => {
         clearTimers();
+        const actions = actionsRef.current;
+
         if (scene === "storytelling") {
             if (typeof navigator !== 'undefined' && navigator.vibrate)
                 navigator.vibrate(30);
+
+            const lineInterval = 4200 * speedMultiplier;
             effectiveStoryLines.forEach((_, i) => {
-                addTimer(() => { setStoryLine(i); playType(); }, i * 4000 * speedMultiplier);
+                addTimer(() => {
+                    setStoryLine(i);
+                    actionsRef.current.playType();
+                }, i * lineInterval);
             });
+
             addTimer(() => {
                 if (typeof navigator !== 'undefined' && navigator.vibrate)
                     navigator.vibrate(50);
-                playWhoosh();
+                actionsRef.current.playWhoosh();
                 setScene("fake-chat");
-            }, effectiveStoryLines.length * 4000 * speedMultiplier);
+            }, effectiveStoryLines.length * lineInterval + 800);
         }
+
         if (scene === "post-chat") {
+            const chatLineInterval = 3200 * speedMultiplier;
             postChatLines.forEach((_, i) => {
-                addTimer(() => { setPostChatLine(i); playType(); }, i * 3500 * speedMultiplier);
+                addTimer(() => {
+                    setPostChatLine(i);
+                    actionsRef.current.playType();
+                }, i * chatLineInterval);
             });
+
             addTimer(() => {
-                playReveal();
-                fireStars();
-                triggerFlash();
+                actionsRef.current.playReveal();
+                actionsRef.current.fireStars();
+                actionsRef.current.triggerFlash();
                 setScene("special-message");
-            }, postChatLines.length * 3500 * speedMultiplier);
+            }, postChatLines.length * chatLineInterval + 1000);
         }
+
         if (scene === "special-message") {
             addTimer(() => {
                 setScene("reveal-sequence");
                 setRevealStep("dear-name");
-            }, 6000 * speedMultiplier);
+            }, 5500 * speedMultiplier);
         }
+
         if (scene === "reveal-sequence") {
             addTimer(() => {
                 setRevealStep("grand-reveal");
-                playBoom();
-                fireCinematicCelebration();
-                triggerShake();
-                triggerFlash();
-                spawnEmojiBurst();
-                triggerRingPulse();
-            }, 4000 * speedMultiplier);
-            addTimer(() => { playPop(); fireConfetti({ particleCount: 200, spread: 160 }); triggerShake(); }, 6000 * speedMultiplier);
-            addTimer(() => { fireStars(); spawnEmojiBurst(); }, 7500 * speedMultiplier);
-            addTimer(() => { playPop(); fireConfetti({ particleCount: 150, spread: 120, origin: { x: 0.3, y: 0.5 } }); triggerRingPulse(); }, 9000 * speedMultiplier);
-            addTimer(() => { setRevealStep("final-message"); setFinalLineIndex(0); playType(); }, 11000 * speedMultiplier);
+                actionsRef.current.playBoom();
+                actionsRef.current.fireCinematicCelebration();
+                actionsRef.current.triggerShake();
+                actionsRef.current.triggerFlash();
+                actionsRef.current.spawnEmojiBurst();
+                actionsRef.current.triggerRingPulse();
+            }, 3500 * speedMultiplier);
+
+            addTimer(() => {
+                actionsRef.current.playPop();
+                actionsRef.current.fireConfetti({ particleCount: 200, spread: 160 });
+                actionsRef.current.triggerShake();
+            }, 5500 * speedMultiplier);
+
+            addTimer(() => {
+                actionsRef.current.fireStars();
+                actionsRef.current.spawnEmojiBurst();
+            }, 7000 * speedMultiplier);
+
+            addTimer(() => {
+                actionsRef.current.playPop();
+                actionsRef.current.fireConfetti({ particleCount: 150, spread: 120, origin: { x: 0.3, y: 0.5 } });
+                actionsRef.current.triggerRingPulse();
+            }, 8500 * speedMultiplier);
+
+            addTimer(() => {
+                setRevealStep("final-message");
+                setFinalLineIndex(0);
+                actionsRef.current.playType();
+            }, 10000 * speedMultiplier);
+
             finalLines.forEach((_, i) => {
-                if (i > 0)
-                    addTimer(() => { setFinalLineIndex(i); playType(); }, (11000 + i * 3500) * speedMultiplier);
+                if (i > 0) {
+                    addTimer(() => {
+                        setFinalLineIndex(i);
+                        actionsRef.current.playType();
+                    }, (10000 + i * 3200) * speedMultiplier);
+                }
             });
-            const endTime = (11000 + finalLines.length * 3500) * speedMultiplier;
-            addTimer(() => { playBoom(); fireConfetti({ particleCount: 300, spread: 180 }); fireCinematicCelebration(); }, endTime);
+
+            const endTime = (10000 + finalLines.length * 3200) * speedMultiplier;
+            addTimer(() => {
+                actionsRef.current.playBoom();
+                actionsRef.current.fireConfetti({ particleCount: 300, spread: 180 });
+                actionsRef.current.fireCinematicCelebration();
+            }, endTime);
+
             addTimer(() => setFadeOut(true), endTime + 2000);
-            addTimer(() => { setScene("done"); onComplete(); }, endTime + 3500);
+            addTimer(() => {
+                setScene("done");
+                actionsRef.current.onComplete();
+            }, endTime + 3500);
         }
-    }, [
-        scene,
-        speedMultiplier,
-        effectiveStoryLines,
-        postChatLines,
-        finalLines,
-        onComplete,
-        addTimer,
-        clearTimers,
-        playType,
-        playWhoosh,
-        playReveal,
-        playPop,
-        playBoom,
-        fireConfetti,
-        fireStars,
-        fireCinematicCelebration,
-        spawnEmojiBurst,
-        triggerFlash,
-        triggerRingPulse,
-        triggerShake,
-    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [scene, speedMultiplier, effectiveStoryLines.length, postChatLines.length, finalLines.length, clearTimers, addTimer]);
+
     const handleChatComplete = useCallback(() => {
-        playWhoosh();
+        actionsRef.current.playWhoosh();
         setScene("post-chat");
         setPostChatLine(0);
-    }, [playWhoosh]);
+    }, []);
+
     if (scene === "done")
         return null;
-    return (<div className={`fixed inset-0 z-40 flex items-center justify-center transition-all duration-1000 ${fadeOut ? "opacity-0" : "opacity-100"} ${shaking ? "animate-screen-shake" : ""}`} style={{ background: 'transparent' }}>
-      <AnimatePresence mode="wait">
-        {scene === "storytelling" && (<motion.div key="storytelling" initial={{ scale: 1.2, filter: "blur(20px)", opacity: 0 }} animate={{ scale: 1, filter: "blur(0px)", opacity: 1 }} exit={{ scale: 0.8, filter: "blur(20px)", opacity: 0 }} transition={{ duration: 1.5, ease: "easeOut" }} className="relative z-50 text-center max-w-3xl mx-auto px-6">
-            <div className="flex justify-center mb-12">
-              <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.8, 0.4] }} transition={{ duration: 3, repeat: Infinity }} className="w-16 h-16 rounded-full border-2 border-primary/30 flex items-center justify-center text-3xl">
-                ✨
-              </motion.div>
-            </div>
-            {effectiveStoryLines.map((line, i) => (<p key={i} className={`font-display leading-relaxed mb-6 transition-all duration-1000 ${(storyLine >= i) ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"} ${storyLineStyles[i]?.className || ''}`} style={{ ...(storyLineStyles[i]?.style || {}), color: i === storyLine ? primaryColor : (storyLineStyles[i]?.style?.color || "hsl(0,0%,90%)"), textShadow: i === storyLine ? `0 0 20px ${primaryColor}40` : "none" }}>
-                {storyLine >= i && (<TypeWriter text={line} speed={relationship === 'partner' ? 90 : relationship === 'friend' ? 40 : 70} delay={300} cursor={storyLine === i}/>)}
-              </p>))}
-          </motion.div>)}
 
-        {scene === "fake-chat" && (<motion.div key="fake-chat" initial={{ y: 100, opacity: 0, rotateX: 45 }} animate={{ y: 0, opacity: 1, rotateX: 0 }} exit={{ y: -100, opacity: 0, rotateX: -45 }} transition={{ duration: 0.8, type: "spring" }}>
-            <FakeChatScene onComplete={handleChatComplete}/>
-          </motion.div>)}
+    return (
+        <div
+            className={`fixed inset-0 z-40 flex items-center justify-center transition-all duration-1000 ${
+                fadeOut ? "opacity-0" : "opacity-100"
+            } ${shaking ? "animate-screen-shake" : ""}`}
+            style={{ background: 'transparent' }}
+        >
+            <AnimatePresence mode="wait">
+                {scene === "storytelling" && (
+                    <motion.div
+                        key="storytelling"
+                        initial={{ scale: 1.1, filter: "blur(15px)", opacity: 0 }}
+                        animate={{ scale: 1, filter: "blur(0px)", opacity: 1 }}
+                        exit={{ scale: 0.85, filter: "blur(15px)", opacity: 0 }}
+                        transition={{ duration: 1.2, ease: "easeOut" }}
+                        className="relative z-50 text-center max-w-3xl mx-auto px-6"
+                    >
+                        <div className="flex justify-center mb-10">
+                            <motion.div
+                                animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.9, 0.5] }}
+                                transition={{ duration: 3, repeat: Infinity }}
+                                className="w-16 h-16 rounded-full border-2 border-primary/30 flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(255,107,107,0.3)] backdrop-blur-md bg-white/5"
+                            >
+                                ✨
+                            </motion.div>
+                        </div>
+                        {effectiveStoryLines.map((line, i) => (
+                            <p
+                                key={i}
+                                className={`font-display leading-relaxed mb-6 transition-all duration-700 ${
+                                    storyLine >= i ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+                                } ${storyLineStyles[i]?.className || ''}`}
+                                style={{
+                                    ...(storyLineStyles[i]?.style || {}),
+                                    color: i === storyLine ? primaryColor : (storyLineStyles[i]?.style?.color || "hsl(0,0%,90%)"),
+                                    textShadow: i === storyLine ? `0 0 25px ${primaryColor}60` : "none"
+                                }}
+                            >
+                                {storyLine >= i && (
+                                    <TypeWriter
+                                        text={line}
+                                        speed={relationship === 'partner' ? 45 : relationship === 'friend' ? 35 : 40}
+                                        delay={200}
+                                        cursor={storyLine === i}
+                                    />
+                                )}
+                            </p>
+                        ))}
+                    </motion.div>
+                )}
 
-        {scene === "post-chat" && (<motion.div key="post-chat" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 1.1, filter: "blur(10px)", opacity: 0 }} className="text-center max-w-3xl mx-auto px-6">
-            <div className="mb-8 flex justify-center"><HeartProgression stage={3}/></div>
-            {postChatLines.slice(0, postChatLine + 1).map((line, i) => (<p key={i} className={`font-display leading-relaxed mb-6 ${postChatStyles[i]?.className || ''}`} style={{ ...(postChatStyles[i]?.style || {}), color: i === postChatLine ? primaryColor : (postChatStyles[i]?.style?.color || "white") }}>
-                <KineticText text={line} animation={relationship === 'partner' ? 'float' : 'pop-out'} delay={300}/>
-              </p>))}
-          </motion.div>)}
+                {scene === "fake-chat" && (
+                    <motion.div
+                        key="fake-chat"
+                        initial={{ y: 80, opacity: 0, rotateX: 30 }}
+                        animate={{ y: 0, opacity: 1, rotateX: 0 }}
+                        exit={{ y: -80, opacity: 0, rotateX: -30 }}
+                        transition={{ duration: 0.7, type: "spring" }}
+                    >
+                        <FakeChatScene onComplete={handleChatComplete} />
+                    </motion.div>
+                )}
 
-        {scene === "special-message" && (<motion.div key="special-message" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <SpecialMessage />
-          </motion.div>)}
+                {scene === "post-chat" && (
+                    <motion.div
+                        key="post-chat"
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 1.05, filter: "blur(10px)", opacity: 0 }}
+                        className="text-center max-w-3xl mx-auto px-6"
+                    >
+                        <div className="mb-8 flex justify-center">
+                            <HeartProgression stage={3} />
+                        </div>
+                        {postChatLines.slice(0, postChatLine + 1).map((line, i) => (
+                            <p
+                                key={i}
+                                className={`font-display leading-relaxed mb-6 ${postChatStyles[i]?.className || ''}`}
+                                style={{
+                                    ...(postChatStyles[i]?.style || {}),
+                                    color: i === postChatLine ? primaryColor : (postChatStyles[i]?.style?.color || "white")
+                                }}
+                            >
+                                <KineticText
+                                    text={line}
+                                    animation={relationship === 'partner' ? 'float' : 'pop-out'}
+                                    delay={250}
+                                />
+                            </p>
+                        ))}
+                    </motion.div>
+                )}
 
-        {scene === "reveal-sequence" && (<motion.div key="reveal" className="w-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            {revealStep === "dear-name" && (<motion.div initial={{ scale: 1.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 2, ease: "circOut" }} className="text-center px-4">
-                <p className="text-xl md:text-4xl text-muted-foreground mb-4 font-display italic">{t('intro.thisIsForYou')}</p>
-                <h2 className="font-display text-5xl sm:text-7xl md:text-9xl lg:text-[12rem] font-black animate-glow-pulse break-words leading-tight" style={{ color: primaryColor }}>
-                  <KineticText text={name || (isFrench ? 'Vous' : isBengali ? 'আপনি' : isHindi ? 'आप' : 'You')} animation="zoom-in" delay={600}/>
-                </h2>
-              </motion.div>)}
+                {scene === "special-message" && (
+                    <motion.div
+                        key="special-message"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        <SpecialMessage />
+                    </motion.div>
+                )}
 
-            {revealStep === "grand-reveal" && (<div className="text-center px-4">
-                <Balloons count={20}/>
-                <div className="flex justify-center mb-6"><HeartProgression stage={4}/></div>
-                <h1 className="font-display text-4xl sm:text-6xl md:text-8xl lg:text-[10rem] font-black mb-4 break-words leading-tight">
-                  <span className="bg-gradient-to-r from-[var(--color-primary)] via-[hsl(45,100%,65%)] to-[hsl(200,80%,70%)] bg-clip-text text-transparent animate-gradient-shift">
-                    {t('common.happyBirthday')}
-                  </span>
-                </h1>
-                <h2 className="font-display text-5xl sm:text-7xl md:text-9xl lg:text-[12rem] font-black text-foreground animate-glow-pulse mt-4 break-words">
-                  {name}!
-                </h2>
-              </div>)}
+                {scene === "reveal-sequence" && (
+                    <motion.div
+                        key="reveal"
+                        className="w-full"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                    >
+                        {revealStep === "dear-name" && (
+                            <motion.div
+                                initial={{ scale: 1.4, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{ duration: 1.5, ease: "circOut" }}
+                                className="text-center px-4"
+                            >
+                                <p className="text-xl md:text-4xl text-muted-foreground mb-4 font-display italic">
+                                    {t('intro.thisIsForYou')}
+                                </p>
+                                <h2
+                                    className="font-display text-5xl sm:text-7xl md:text-9xl lg:text-[12rem] font-black animate-glow-pulse break-words leading-tight"
+                                    style={{ color: primaryColor }}
+                                >
+                                    <KineticText
+                                        text={name || (isFrench ? 'Vous' : isBengali ? 'আপনি' : isHindi ? 'आप' : 'You')}
+                                        animation="zoom-in"
+                                        delay={500}
+                                    />
+                                </h2>
+                            </motion.div>
+                        )}
 
-            {revealStep === "final-message" && (<div className="text-center max-w-4xl mx-auto px-6">
-                {finalLines.slice(0, finalLineIndex + 1).map((line, i) => (<p key={i} className={`font-display leading-relaxed mb-5 ${i === 0 ? "text-3xl md:text-5xl font-black text-primary" : "text-2xl md:text-4xl text-white/90"}`}>
-                    <TypeWriter text={line} speed={65} delay={400} cursor={finalLineIndex === i}/>
-                  </p>))}
-              </div>)}
-          </motion.div>)}
-      </AnimatePresence>
+                        {revealStep === "grand-reveal" && (
+                            <div className="text-center px-4">
+                                <Balloons count={12} />
+                                <div className="flex justify-center mb-6">
+                                    <HeartProgression stage={4} />
+                                </div>
+                                <h1 className="font-display text-4xl sm:text-6xl md:text-8xl lg:text-[10rem] font-black mb-4 break-words leading-tight">
+                                    <span className="bg-gradient-to-r from-[var(--color-primary)] via-[hsl(45,100%,65%)] to-[hsl(200,80%,70%)] bg-clip-text text-transparent animate-gradient-shift">
+                                        {t('common.happyBirthday')}
+                                    </span>
+                                </h1>
+                                <h2 className="font-display text-5xl sm:text-7xl md:text-9xl lg:text-[12rem] font-black text-foreground animate-glow-pulse mt-4 break-words">
+                                    {name}!
+                                </h2>
+                            </div>
+                        )}
 
-      <AnimatePresence>
-        {emojiBursts.map((e) => (
-          <motion.div
-            key={e.id}
-            initial={{ opacity: 0, scale: 0.5, x: `${e.x}vw`, y: `${e.y}vh` }}
-            animate={{ opacity: 1, scale: 1.5, y: `${e.y - 15}vh` }}
-            exit={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-            className="fixed z-50 text-4xl pointer-events-none"
-          >
-            {e.emoji}
-          </motion.div>
-        ))}
-      </AnimatePresence>
+                        {revealStep === "final-message" && (
+                            <div className="text-center max-w-4xl mx-auto px-6">
+                                {finalLines.slice(0, finalLineIndex + 1).map((line, i) => (
+                                    <p
+                                        key={i}
+                                        className={`font-display leading-relaxed mb-5 ${
+                                            i === 0
+                                                ? "text-3xl md:text-5xl font-black text-primary"
+                                                : "text-2xl md:text-4xl text-white/90"
+                                        }`}
+                                    >
+                                        <TypeWriter
+                                            text={line}
+                                            speed={45}
+                                            delay={300}
+                                            cursor={finalLineIndex === i}
+                                        />
+                                    </p>
+                                ))}
+                            </div>
+                        )}
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-      {flashWhite && <div className="fixed inset-0 z-[60] bg-white/40 pointer-events-none animate-flash"/>}
-      <Sparkles count={15}/>
-      {ringPulse && (<div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
-          <div className="w-64 h-64 rounded-full border-8 animate-ring-expand" style={{ borderColor: primaryColor }}/>
-        </div>)}
-    </div>);
+            <AnimatePresence>
+                {emojiBursts.map((e) => (
+                    <motion.div
+                        key={e.id}
+                        initial={{ opacity: 0, scale: 0.5, x: `${e.x}vw`, y: `${e.y}vh` }}
+                        animate={{ opacity: 1, scale: 1.5, y: `${e.y - 15}vh` }}
+                        exit={{ opacity: 0, scale: 0 }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
+                        className="fixed z-50 text-4xl pointer-events-none"
+                    >
+                        {e.emoji}
+                    </motion.div>
+                ))}
+            </AnimatePresence>
+
+            {flashWhite && (
+                <div className="fixed inset-0 z-[60] bg-white/40 pointer-events-none animate-flash" />
+            )}
+            <Sparkles count={8} />
+            {ringPulse && (
+                <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
+                    <div
+                        className="w-64 h-64 rounded-full border-8 animate-ring-expand"
+                        style={{ borderColor: primaryColor }}
+                    />
+                </div>
+            )}
+        </div>
+    );
 };
