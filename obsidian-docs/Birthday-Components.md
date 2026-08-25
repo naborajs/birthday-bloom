@@ -34,7 +34,7 @@ After cutting the cake, the UI transitions to a text/story-driven phase.
 - **[[GlitchEffect.tsx]]**: A stylistic, cyberpunk-style text glitch for transitions.
 
 ## 4. The Gallery & Memories
-- **[[PhotoGallery.tsx]]**: A heavily animated Masonry-style grid for showing user photos loaded via `.env` (or Unsplash fallbacks).
+- **[[PhotoGallery.tsx]]**: A 3D-tilt slider gallery for showing user photos loaded via env variables, with an automatic localized placeholder card when no custom photos are configured.
 - **[[VideoGallery.tsx]]**: Supports autoplaying/looping video memories.
 - **[[FakeChatScene.tsx]]**: A highly detailed component mimicking an iMessage/WhatsApp interface, where messages from friends (defined in templates) "type" themselves out sequentially.
 - **[[PasswordUnlock.tsx]]**: An optional lock screen component that requires a secret code (configured via env) before viewing the gallery.
