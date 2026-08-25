@@ -500,14 +500,17 @@ The entire initialization process is controlled securely via the `.env` paradigm
 | `VITE_BIRTHDAY_AGE` | NO | `null` | The age they are turning. |
 | `VITE_BIRTHDAY_GENDER` | NO | `"other"` | `"male"`, `"female"`, or `"other"`. |
 | `VITE_BIRTHDAY_DATE` | NO | `null` | The specific date of the birthday. |
-| `VITE_LANGUAGE` / `VITE_LANG` | NO | `"en"` | Multi-language localization switch: `"en"` (English - default), `"hi"` (Hindi), `"bn"` (Bengali). Normalizes aliases (`hi`/`hindi`/`in`, `bn`/`bengali`/`bangla`). |
+| `VITE_LANGUAGE` / `VITE_LANG` | NO | `"en"` | Multi-language localization switch: `"en"` (English - default), `"fr"` (French), `"hi"` (Hindi), `"bn"` (Bengali). Normalizes aliases (`fr`/`french`, `hi`/`hindi`, `bn`/`bengali`). |
 | `VITE_BIRTHDAY_RELATIONSHIP` | NO | `"partner"` | Relationship template: `"partner"`, `"friend"`, `"brother"`, `"sister"`, `"father"`, `"mother"`, `"grandfather"`, `"grandmother"`, `"uncle"`, `"aunt"`, `"cousin"`, `"son"`, `"daughter"`, `"guardian"`, `"colleague"`, `"mentor"`, `"family"`. Fundamentally tailors mood, storytelling text, emotional letters, and emoji effects! |
-| `VITE_BIRTHDAY_WISHER_NAME` | NO | `""` | The birthday wish sender's name, shown at the end of the emotional letter. |
+| `VITE_BIRTHDAY_WISHER_NAME` | NO | `""` | The birthday wish sender's name, shown in the emotional letter and in the footer. |
 | `VITE_BIRTHDAY_COLOR` / `VITE_FAVORITE_COLOR` | NO | `"#FF6B6B"` | A hex code defining the dynamic global theme, neon glows, and gradient backgrounds. |
 | `VITE_BIRTHDAY_INTERESTS` / `VITE_FAVORITE_ITEMS` | NO | `""` | Comma-separated list of interests/items to customize ambient particles. |
 | `VITE_BIRTHDAY_LETTER_TITLE` | NO | `""` | Optional heading for the emotional letter card. |
 | `VITE_BIRTHDAY_LETTER_OVERRIDE` | NO | `""` | Replace the generated letter body with your own multi-line letter. |
 | `VITE_BIRTHDAY_CUSTOM_MESSAGE` / `VITE_CUSTOM_MESSAGE` | NO | `""` | A heartfelt, custom message to reveal with kinetic typography right before the grand cake reveal. |
+| `VITE_PHOTOS` / `VITE_PHOTO_1..6` | NO | `""` | Image URLs for polaroid gallery slides. If omitted, an elegant placeholder message is automatically shown. |
+| `VITE_SPECIAL_MEMORIES` | NO | `""` | Special memories in `Title;imageUrl|Title;imageUrl` format. If omitted, the section is cleanly hidden. |
+| `VITE_FINAL_VIDEO_URL` | NO | `""` | Final surprise YouTube video URL. Cleanly hidden if omitted. |
 | `VITE_SOUND_URL` / `VITE_BGM_URL` | NO | `""` | The background music audio URL. |
 | `VITE_SOUND_EFFECTS` | NO | `true` | Enable or disable SFX audio feedback. |
 | `VITE_VIDEO_1`, `VITE_VIDEO_2`, `VITE_VIDEO_3` | NO | `""` | Adds video links (YouTube or MP4) to the final cinematic Video Gallery at the bottom of the page. |
