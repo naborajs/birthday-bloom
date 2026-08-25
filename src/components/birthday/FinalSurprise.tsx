@@ -16,6 +16,31 @@ const isRealImageUrl = (url?: string): boolean => {
     return true;
 };
 
+/** Validate whether a URL is a genuine video URL */
+const isValidVideoUrl = (url?: string): boolean => {
+    if (!url || typeof url !== "string") return false;
+    const trimmed = url.trim();
+    if (!trimmed || trimmed === "0" || trimmed === "null" || trimmed === "undefined" || trimmed === "false") return false;
+    if (/^\/?[0-9]+$/.test(trimmed)) return false;
+    if (trimmed.includes("example.com") || trimmed.includes("placeholder")) return false;
+    if (
+        trimmed.includes("youtube.com/watch") ||
+        trimmed.includes("youtu.be/") ||
+        trimmed.includes("youtube.com/embed") ||
+        trimmed.includes("youtube.com/shorts") ||
+        trimmed.endsWith(".mp4") ||
+        trimmed.endsWith(".webm")
+    ) {
+        return true;
+    }
+    try {
+        const parsed = new URL(trimmed);
+        return parsed.protocol === "http:" || parsed.protocol === "https:";
+    } catch {
+        return false;
+    }
+};
+
 export const FinalSurprise = () => {
     const { config } = useBirthdayStore();
     const { isHindi, isBengali, isFrench } = useTranslation();
@@ -24,11 +49,12 @@ export const FinalSurprise = () => {
     const memories = allMemories.filter(m => m.text && (isRealImageUrl(m.image) || !m.image));
     const hasRealMemories = memories.length > 0 && memories.some(m => isRealImageUrl(m.image));
     const primaryColor = config.favoriteColor || "#ff0080";
-    const finalVideoEmbed = config.finalVideoUrl ? getYouTubeEmbedUrl(config.finalVideoUrl) : "";
+    const isValidVideo = isValidVideoUrl(config.finalVideoUrl);
+    const finalVideoEmbed = isValidVideo && config.finalVideoUrl ? getYouTubeEmbedUrl(config.finalVideoUrl) : "";
     const finalVideoSrc = finalVideoEmbed.includes("youtube.com/embed")
         ? `${finalVideoEmbed}?autoplay=0&controls=1&rel=0`
         : finalVideoEmbed;
-    const hasValidVideo = config.finalVideoUrl && finalVideoSrc;
+    const hasValidVideo = Boolean(isValidVideo && finalVideoSrc);
 
     return (<section className="relative z-20 py-32 px-4 overflow-hidden">
       <div className="max-w-6xl mx-auto">
