@@ -28,12 +28,12 @@ export const SplashScreen = ({ onStart }: SplashScreenProps) => {
                 tapped ? "opacity-0 scale-105 filter blur-sm" : "opacity-100 scale-100"
             }`}
             style={{
-                background: "radial-gradient(ellipse at center, hsl(290, 50%, 12%) 0%, hsl(280, 60%, 6%) 70%, #000 100%)",
+                background: "var(--bg-gradient, radial-gradient(ellipse at 50% 15%, #3b0724 0%, #1a0515 100%))",
             }}
             onClick={handleTap}
         >
             {/* Ambient Background Glow */}
-            <div className="absolute w-[30rem] h-[30rem] rounded-full bg-primary/10 blur-[120px] pointer-events-none" />
+            <div className="absolute w-[35rem] h-[35rem] rounded-full bg-primary/20 blur-[140px] pointer-events-none" />
 
             {/* Central Glassmorphic Card */}
             <motion.div

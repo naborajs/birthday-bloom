@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Quicksand:wght@400;500;600;700&family=Inter:wght@400;700;900&family=Outfit:wght@300;500;700;900&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;900&family=Rozha+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Quicksand:wght@400;500;600;700&family=Inter:wght@400;700;900&family=Outfit:wght@300;500;700;900&family=Dancing+Script:wght@600;700&family=Caveat:wght@600;700&family=Cinzel:wght@600;700;900&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;900&family=Rozha+One&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,25 +6,25 @@
 
 @layer base {
   :root {
-    --background: 280 60% 8%;
-    --foreground: 45 100% 95%;
-    --card: 280 40% 12%;
-    --card-foreground: 45 100% 95%;
-    --popover: 280 40% 12%;
-    --popover-foreground: 45 100% 95%;
-    --primary: 330 85% 60%;
+    --background: 335 45% 12%;
+    --foreground: 45 100% 96%;
+    --card: 335 30% 16%;
+    --card-foreground: 45 100% 96%;
+    --popover: 335 30% 16%;
+    --popover-foreground: 45 100% 96%;
+    --primary: 335 85% 60%;
     --primary-foreground: 0 0% 100%;
     --secondary: 270 60% 55%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 280 30% 20%;
-    --muted-foreground: 280 10% 70%;
+    --muted: 335 25% 22%;
+    --muted-foreground: 335 15% 75%;
     --accent: 45 100% 60%;
-    --accent-foreground: 280 60% 8%;
+    --accent-foreground: 335 50% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 280 30% 25%;
-    --input: 280 30% 25%;
-    --ring: 330 85% 60%;
+    --border: 335 30% 28%;
+    --input: 335 30% 28%;
+    --ring: 335 85% 60%;
     --radius: 0.75rem;
     --birthday-pink: 330 85% 60%;
     --birthday-purple: 270 60% 55%;
