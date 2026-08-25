@@ -583,3 +583,44 @@
 .animate-subtle-float {
   animation: subtle-float 5s ease-in-out infinite;
 }
+
+/* ── Custom Typography & Emotional Highlighting ── */
+.font-script {
+  font-family: 'Dancing Script', 'Caveat', cursive !important;
+}
+
+.font-handwritten {
+  font-family: 'Caveat', 'Dancing Script', cursive !important;
+}
+
+.font-royal {
+  font-family: 'Cinzel', 'Playfair Display', serif !important;
+}
+
+.font-serif-luxury {
+  font-family: 'Playfair Display', serif !important;
+}
+
+.font-modern {
+  font-family: 'Outfit', 'Inter', sans-serif !important;
+}
+
+.text-glow-rose {
+  text-shadow: 0 0 20px rgba(255, 42, 109, 0.7), 0 0 45px rgba(255, 42, 109, 0.35);
+}
+
+.text-glow-gold {
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.7), 0 0 45px rgba(255, 215, 0, 0.35);
+}
+
+.text-gradient-romantic {
+  background: linear-gradient(135deg, #ffe4ec 0%, #ff6584 50%, #ff8da1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #fff8db 0%, #ffd700 50%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
