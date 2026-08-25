@@ -571,29 +571,32 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                             </motion.div>
                         </div>
 
-                        {/* Clean 1-thought-at-a-time presentation — zero overlap */}
-                        <div className="min-h-[140px] flex items-center justify-center">
-                            <AnimatePresence mode="wait">
+                        {/* Cumulative Storytelling — lines stay stacked vertically with zero collision */}
+                        <div className="space-y-5 sm:space-y-7 flex flex-col items-center justify-center w-full">
+                            {effectiveStoryLines.slice(0, storyLine + 1).map((line, i) => (
                                 <motion.div
-                                    key={storyLine}
-                                    initial={{ opacity: 0, y: 25, filter: "blur(8px)", scale: 0.96 }}
-                                    animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
-                                    exit={{ opacity: 0, y: -20, filter: "blur(8px)", scale: 1.02 }}
-                                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                                    className="py-4 px-2"
+                                    key={i}
+                                    initial={{ opacity: 0, y: 15 }}
+                                    animate={{
+                                        opacity: i === storyLine ? 1 : 0.72,
+                                        y: 0,
+                                        scale: i === storyLine ? 1.02 : 0.98,
+                                    }}
+                                    transition={{ duration: 0.6, ease: "easeOut" }}
+                                    className="w-full"
                                 >
                                     <HighlightedText
-                                        text={effectiveStoryLines[storyLine] || ""}
+                                        text={line}
                                         relationship={relationship}
-                                        typewriter={true}
-                                        speed={relationship === 'partner' ? 42 : relationship === 'friend' ? 32 : 38}
-                                        delay={150}
-                                        cursor={true}
-                                        onType={playType}
-                                        className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-light"
+                                        typewriter={i === storyLine}
+                                        speed={relationship === 'partner' ? 40 : relationship === 'friend' ? 30 : 35}
+                                        delay={i === storyLine ? 150 : 0}
+                                        cursor={i === storyLine}
+                                        onType={i === storyLine ? playType : undefined}
+                                        className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-display font-light leading-relaxed"
                                     />
                                 </motion.div>
-                            </AnimatePresence>
+                            ))}
                         </div>
                     </motion.div>
                 )}
@@ -613,7 +616,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                 {scene === "post-chat" && (
                     <motion.div
                         key="post-chat"
-                        initial={{ scale: 0.9, opacity: 0 }}
+                        initial={{ scale: 0.92, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 1.05, filter: "blur(10px)", opacity: 0 }}
                         className="text-center max-w-4xl mx-auto px-6"
@@ -622,29 +625,32 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                             <HeartProgression stage={3} />
                         </div>
 
-                        {/* Clean 1-thought-at-a-time presentation — zero overlap */}
-                        <div className="min-h-[160px] flex items-center justify-center">
-                            <AnimatePresence mode="wait">
+                        {/* Cumulative Post-Chat Lines */}
+                        <div className="space-y-5 sm:space-y-7 flex flex-col items-center justify-center w-full">
+                            {postChatLines.slice(0, postChatLine + 1).map((line, i) => (
                                 <motion.div
-                                    key={postChatLine}
-                                    initial={{ opacity: 0, y: 25, filter: "blur(8px)", scale: 0.96 }}
-                                    animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
-                                    exit={{ opacity: 0, y: -20, filter: "blur(8px)", scale: 1.02 }}
-                                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                                    className="py-4 px-2"
+                                    key={i}
+                                    initial={{ opacity: 0, y: 15 }}
+                                    animate={{
+                                        opacity: i === postChatLine ? 1 : 0.75,
+                                        y: 0,
+                                        scale: i === postChatLine ? 1.02 : 0.98,
+                                    }}
+                                    transition={{ duration: 0.6, ease: "easeOut" }}
+                                    className="w-full"
                                 >
                                     <HighlightedText
-                                        text={postChatLines[postChatLine] || ""}
+                                        text={line}
                                         relationship={relationship}
-                                        typewriter={true}
-                                        speed={relationship === 'partner' ? 38 : relationship === 'friend' ? 28 : 34}
-                                        delay={150}
-                                        cursor={true}
-                                        onType={playType}
-                                        className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold"
+                                        typewriter={i === postChatLine}
+                                        speed={relationship === 'partner' ? 36 : relationship === 'friend' ? 26 : 30}
+                                        delay={i === postChatLine ? 150 : 0}
+                                        cursor={i === postChatLine}
+                                        onType={i === postChatLine ? playType : undefined}
+                                        className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-display font-medium leading-relaxed"
                                     />
                                 </motion.div>
-                            </AnimatePresence>
+                            ))}
                         </div>
                     </motion.div>
                 )}

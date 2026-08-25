@@ -153,42 +153,33 @@ export const HighlightedText: React.FC<HighlightedTextProps> = ({
                 if (segment.isHighlight) {
                     if (relationship === "partner") {
                         return (
-                            <motion.span
+                            <span
                                 key={idx}
-                                initial={animate && !typewriter ? { scale: 0.85, opacity: 0, y: 8 } : false}
-                                animate={animate && !typewriter ? { scale: 1, opacity: 1, y: 0 } : false}
-                                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: idx * 0.1 }}
-                                className="font-script text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold italic text-gradient-romantic text-glow-rose inline-block px-1.5 mx-0.5 animate-subtle-float select-none"
+                                className="font-script text-[1.18em] font-bold italic bg-gradient-to-r from-rose-300 via-pink-200 to-amber-200 bg-clip-text text-transparent drop-shadow-[0_0_18px_rgba(255,107,130,0.5)] inline-block px-1 mx-0.5 align-baseline select-none"
                             >
                                 {displayedText}
-                            </motion.span>
+                            </span>
                         );
                     }
 
                     if (relationship === "friend") {
                         return (
-                            <motion.span
+                            <span
                                 key={idx}
-                                initial={animate && !typewriter ? { scale: 0.85, opacity: 0, y: 8 } : false}
-                                animate={animate && !typewriter ? { scale: 1, opacity: 1, y: 0 } : false}
-                                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: idx * 0.1 }}
-                                className="font-modern text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase text-gradient-gold inline-block px-1.5 mx-0.5 tracking-wider select-none"
+                                className="font-modern text-[1.08em] font-black uppercase bg-gradient-to-r from-amber-300 via-orange-200 to-yellow-300 bg-clip-text text-transparent drop-shadow-[0_0_14px_rgba(255,190,50,0.4)] inline-block px-1 mx-0.5 tracking-wide align-baseline select-none"
                             >
                                 {displayedText}
-                            </motion.span>
+                            </span>
                         );
                     }
 
                     return (
-                        <motion.span
+                        <span
                             key={idx}
-                            initial={animate && !typewriter ? { scale: 0.85, opacity: 0, y: 8 } : false}
-                            animate={animate && !typewriter ? { scale: 1, opacity: 1, y: 0 } : false}
-                            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: idx * 0.1 }}
-                            className="font-royal text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gradient-gold inline-block px-1.5 mx-0.5 select-none"
+                            className="font-royal text-[1.12em] font-bold bg-gradient-to-r from-amber-200 via-yellow-100 to-rose-200 bg-clip-text text-transparent drop-shadow-[0_0_14px_rgba(255,200,100,0.4)] inline-block px-1 mx-0.5 align-baseline select-none"
                         >
                             {displayedText}
-                        </motion.span>
+                        </span>
                     );
                 }
 
