@@ -465,7 +465,7 @@ describe("Adversarial Stress Test: Multi-Language Locale Resolution & Fallback M
 
     it("falls back to English for standard en, unknown locales, empty strings, and undefined", async () => {
       const { getTranslation } = await import("@/i18n");
-      const fallbacks = ["en", "EN", "english", "ENGLISH", "fr", "es", "de", "unknown", "", "   ", undefined];
+      const fallbacks = ["en", "EN", "english", "ENGLISH", "es", "de", "unknown", "", "   ", undefined];
       for (const fb of fallbacks) {
         const t = getTranslation(fb);
         expect(t.common.happyBirthday).toBe("Happy Birthday");

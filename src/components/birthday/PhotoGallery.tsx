@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTranslation } from "@/i18n";
-import { Camera, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 /** Check if a URL looks like a real personal photo (not a stock/placeholder) */
 const isRealImageUrl = (url?: string): boolean => {

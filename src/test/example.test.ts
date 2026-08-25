@@ -375,7 +375,7 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
       // Fallback
       expect(getTranslationValue("en", "common.skipIntro")).toBe("Skip Intro ⏭");
       // Unrecognized language defaults to English
-      expect(getTranslationValue("fr", "common.skipIntro")).toBe("Skip Intro ⏭");
+      expect(getTranslationValue("es", "common.skipIntro")).toBe("Skip Intro ⏭");
 
       // getTranslation normalization
       expect(getTranslation("bn").common.happyBirthday).toBe("শুভ জন্মদিন");
@@ -440,28 +440,62 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
       expect(bnWishes.some((w) => w.wish.includes("কোড") || w.wish.includes("বাগ") || w.wish.includes("গতি"))).toBe(true);
     });
 
-    it("normalizes language in Zustand store with Bengali aliases and English default", async () => {
+    it("generates authentic French emotional letters for various relationships and genders", async () => {
+      const { getHighlySpecificLetter, getBigWishes } = await import(
+        "@/features/core/store/SuperPersonalizedLogic"
+      );
+
+      // French partner male letter
+      const partnerMaleLetter = getHighlySpecificLetter("Julien", "partner", "male", ["music"], "fr");
+      expect(partnerMaleLetter).toContain("Julien");
+      expect(partnerMaleLetter).toContain("prince");
+
+      // French partner female letter
+      const partnerFemaleLetter = getHighlySpecificLetter("Camille", "partner", "female", ["art"], "french");
+      expect(partnerFemaleLetter).toContain("Camille");
+      expect(partnerFemaleLetter).toContain("reine");
+
+      // French friend letter
+      const friendLetter = getHighlySpecificLetter("Antoine", "friend", "male", ["car"], "francais");
+      expect(friendLetter).toContain("Antoine");
+      expect(friendLetter).toContain("légende");
+
+      // French big wishes
+      const frWishes = getBigWishes("Élodie", "friend", "female", ["coding", "car"], "fr");
+      expect(frWishes.length).toBeGreaterThan(0);
+      expect(frWishes.some((w) => w.wish.includes("succès") || w.wish.includes("bonheur") || w.wish.includes("joie"))).toBe(true);
+    });
+
+    it("normalizes language in Zustand store with French, Bengali, Hindi aliases and English default", async () => {
       const { useBirthdayStore } = await import("@/features/core/store/useBirthdayStore");
       
       const defaultLang = useBirthdayStore.getState().getLanguage();
-      expect(["en", "hi", "bn"]).toContain(defaultLang);
+      expect(["en", "hi", "bn", "fr"]).toContain(defaultLang);
     });
 
-    it("localizes cake flavors and labels for en, hi, and bn in CakeTypes", async () => {
+    it("localizes cake flavors and labels for en, hi, bn, and fr in CakeTypes", async () => {
       const { CAKE_OPTIONS, getCakeName } = await import("@/components/birthday/CakeTypes");
       expect(CAKE_OPTIONS.length).toBe(4);
       
       const chocolate = CAKE_OPTIONS.find((c) => c.id === "chocolate")!;
-      expect(getCakeName(chocolate, false, false)).toBe("Chocolate Dream");
-      expect(getCakeName(chocolate, true, false)).toBe("चॉकलेट ड्रीम");
-      expect(getCakeName(chocolate, false, true)).toBe("চকলেট ড্রিম");
+      expect(getCakeName(chocolate, false, false, false)).toBe("Chocolate Dream");
+      expect(getCakeName(chocolate, true, false, false)).toBe("चॉकलेट ड्रीम");
+      expect(getCakeName(chocolate, false, true, false)).toBe("চকলেট ড্রিম");
+      expect(getCakeName(chocolate, false, false, true)).toBe("Rêve Chocolaté");
 
       const strawberry = CAKE_OPTIONS.find((c) => c.id === "strawberry")!;
-      expect(getCakeName(strawberry, true, false)).toBe("स्ट्रॉबेरी ब्लिस");
-      expect(getCakeName(strawberry, false, true)).toBe("স্ট্রবেরি ব্লিস");
+      expect(getCakeName(strawberry, true, false, false)).toBe("स्ट्रॉबेरी ब्लिस");
+      expect(getCakeName(strawberry, false, true, false)).toBe("স্ট্রবেরি ব্লিস");
+      expect(getCakeName(strawberry, false, false, true)).toBe("Délice Fraise");
+
+      const royal = CAKE_OPTIONS.find((c) => c.id === "royal")!;
+      expect(getCakeName(royal, false, false, true)).toBe("Velours Royal");
+
+      const nature = CAKE_OPTIONS.find((c) => c.id === "nature")!;
+      expect(getCakeName(nature, false, false, true)).toBe("Jardin Floral");
     });
 
-    it("substitutes senderName in getHighlySpecificLetter and removes bracketed placeholders", async () => {
+    it("substitutes senderName in getHighlySpecificLetter and removes bracketed placeholders across all languages", async () => {
       const { getHighlySpecificLetter } = await import(
         "@/features/core/store/SuperPersonalizedLogic"
       );
@@ -480,6 +514,10 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
       const hiWithSender = getHighlySpecificLetter("अनन्या", "partner", "female", [], "hi", "समीर");
       expect(hiWithSender).toContain("समीर");
       expect(hiWithSender).not.toContain("[आपका नाम]");
+
+      const frWithSender = getHighlySpecificLetter("Camille", "partner", "female", [], "fr", "Julien");
+      expect(frWithSender).toContain("Julien");
+      expect(frWithSender).not.toContain("[Votre Nom]");
     });
 
     it("verifies authentic English quotes without Roman Hindi in SPECIAL_QUOTES", async () => {
@@ -495,11 +533,12 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
       expect(friendLegendQuotes).not.toContain("Dosti ka naam");
     });
 
-    it("ensures memories.title and memories.viewLarge keys exist across all translation dictionaries", async () => {
+    it("ensures memories.title and memories.viewLarge keys exist across all translation dictionaries including French", async () => {
       const { getTranslation } = await import("@/i18n");
       const en = getTranslation("en");
       const hi = getTranslation("hi");
       const bn = getTranslation("bn");
+      const fr = getTranslation("fr");
 
       expect(en.memories.title).toBeTruthy();
       expect(en.memories.viewLarge).toBeTruthy();
@@ -507,6 +546,8 @@ describe("UI Utilities (src/lib/utils.ts)", () => {
       expect(hi.memories.viewLarge).toBeTruthy();
       expect(bn.memories.title).toBeTruthy();
       expect(bn.memories.viewLarge).toBeTruthy();
+      expect(fr.memories.title).toBeTruthy();
+      expect(fr.memories.viewLarge).toBeTruthy();
     });
   });
 });
