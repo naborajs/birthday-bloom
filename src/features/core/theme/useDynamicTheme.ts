@@ -77,7 +77,7 @@ export const useDynamicTheme = () => {
             root.style.setProperty('--font-quote', '"Dancing Script", "Caveat", "Playfair Display", cursive');
             root.style.setProperty('--animation-pacing', '2s');
             root.style.setProperty('--particle-speed', '0.6');
-            root.style.setProperty('--card-radius', '2.5rem');
+            root.style.setProperty('--card-radius', '3rem');
         }
         else if (relationship === 'friend') {
             // Electric vibrant celebration ambient
@@ -92,7 +92,7 @@ export const useDynamicTheme = () => {
             root.style.setProperty('--font-quote', '"Outfit", sans-serif');
             root.style.setProperty('--animation-pacing', '0.8s');
             root.style.setProperty('--particle-speed', '1.8');
-            root.style.setProperty('--card-radius', '1.75rem');
+            root.style.setProperty('--card-radius', '1.5rem');
         }
         else {
             // Royal golden warmth & wine ambient
@@ -111,7 +111,7 @@ export const useDynamicTheme = () => {
         }
 
         if (gender === 'female') {
-            root.style.setProperty('--glow-intensity', '1.25');
+            root.style.setProperty('--glow-intensity', '1.2');
             root.style.setProperty('--glass-blur', '25px');
             root.style.setProperty('--color-accent-soft', `hsl(${h}, ${s * 0.85}%, ${l * 1.2}%)`);
         }
