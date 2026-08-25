@@ -162,8 +162,8 @@ export const MainBirthday = () => {
         hidden: { y: 30, opacity: 0, filter: "blur(10px)" },
         visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.8, ease: "easeOut" as const } },
     };
-    const sparkleCount = isMobile ? 8 : 15;
-    const balloonCount = isMobile ? 7 : 15;
+    const sparkleCount = isMobile ? 4 : 6;
+    const balloonCount = isMobile ? 4 : 6;
     return (<div onMouseMove={shouldAnimate ? handleMouseMove : undefined} className={`min-h-screen transition-opacity duration-1000 w-full max-w-[100vw] overflow-x-hidden ${visible ? "opacity-100" : "opacity-0"} ${megaSurprise ? "animate-screen-shake" : ""}`} style={{ background: 'transparent' }}>
       <Balloons count={balloonCount}/>
       <Sparkles count={sparkleCount}/>
@@ -369,9 +369,16 @@ export const MainBirthday = () => {
 
       {config.showFinalSurprise && <FinalSurprise />}
 
-      <footer className="relative z-20 text-center py-20 bg-black/40 w-full">
-        <p className="mt-4 text-white/10 text-[10px] tracking-[0.5em] uppercase">
-          Crafted by NABORAJ SARKAR — Cinematic Engine v3.1
+      <footer className="relative z-20 text-center py-20 bg-gradient-to-t from-black/60 to-transparent w-full">
+        <div className="flex items-center justify-center gap-2 mb-3">
+          <span className="text-white/20 text-lg">💝</span>
+        </div>
+        <p className="text-white/30 text-sm tracking-[0.15em]">
+          {isFrench ? "Avec amour de" : isBengali ? "ভালোবাসায়" : isHindi ? "प्यार से" : "With love from"}{' '}
+          <span className="text-white/50 font-semibold">{senderName || 'Someone Special'}</span>
+        </p>
+        <p className="mt-2 text-white/10 text-[10px] tracking-[0.3em] uppercase">
+          Birthday Bloom ✨
         </p>
       </footer>
     </div>);
