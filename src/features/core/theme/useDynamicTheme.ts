@@ -116,9 +116,9 @@ export const useDynamicTheme = () => {
             root.style.setProperty('--color-accent-soft', `hsl(${h}, ${s * 0.85}%, ${l * 1.2}%)`);
         }
         else if (gender === 'male') {
-            root.style.setProperty('--glow-intensity', '0.85');
-            root.style.setProperty('--glass-blur', '18px');
-            root.style.setProperty('--color-accent-soft', `hsl(${h}, ${s * 0.85}%, ${l * 0.85}%)`);
+            root.style.setProperty('--glow-intensity', '0.8');
+            root.style.setProperty('--glass-blur', '15px');
+            root.style.setProperty('--color-accent-soft', `hsl(${h}, ${s}%, ${l * 0.8}%)`);
         }
         else {
             root.style.setProperty('--glow-intensity', '1');
