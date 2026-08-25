@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { getTemplateEmojiKit } from '@/config/emojiKits';
 import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
+
 interface FloatingItem {
     id: number;
     x: number;
@@ -12,61 +13,57 @@ interface FloatingItem {
     element: string;
     depth: number;
 }
+
 export const FloatingElements = () => {
     const [items, setItems] = useState<FloatingItem[]>([]);
     const config = useBirthdayStore((state) => state.config);
     const relationship = config.relationship;
     const emojiKit = useMemo(() => getTemplateEmojiKit(config), [config]);
     const { scrollY } = useScroll();
+
     useEffect(() => {
         const particleSpeed = relationship === 'partner' ? 1.5 :
             relationship === 'friend' ? 0.5 : 1;
-        const newItems = Array.from({ length: 30 }, (_, i) => ({
+        // Reduced from 30 to 12 items for better performance
+        const newItems = Array.from({ length: 12 }, (_, i) => ({
             id: i,
             x: Math.random() * 100,
             y: Math.random() * 100,
-            size: 0.5 + Math.random() * 2.5,
-            duration: (20 + Math.random() * 40) * particleSpeed,
-            delay: Math.random() * -30,
+            size: 0.8 + Math.random() * 1.8,
+            duration: (25 + Math.random() * 35) * particleSpeed,
+            delay: Math.random() * -20,
             element: emojiKit.floating[Math.floor(Math.random() * emojiKit.floating.length)],
-            depth: 1 + Math.random() * 3,
+            depth: 1 + Math.random() * 2,
         }));
         setItems(newItems);
     }, [emojiKit.floating, relationship]);
+
     return (<div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      <div className="absolute inset-0 opacity-20 blur-[120px]">
-        <motion.div animate={{
-            x: [0, 150, 0],
-            y: [0, 80, 0],
-            scale: [1, 1.3, 1],
-            rotate: [0, 180, 360],
-        }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} className="absolute top-1/4 -left-20 w-[40rem] h-[40rem] rounded-full bg-primary"/>
-        <motion.div animate={{
-            x: [0, -150, 0],
-            y: [0, -80, 0],
-            scale: [1.3, 1, 1.3],
-            rotate: [360, 180, 0],
-        }} transition={{ duration: 35, repeat: Infinity, ease: "linear" }} className="absolute bottom-1/4 -right-20 w-[45rem] h-[45rem] rounded-full bg-secondary"/>
+      {/* Subtle ambient glow — using CSS instead of heavy animated blurred divs */}
+      <div className="absolute inset-0 opacity-[0.08]">
+        <div className="absolute top-1/4 -left-20 w-[30rem] h-[30rem] rounded-full bg-primary blur-[120px] animate-bg-shift" style={{ backgroundSize: '200% 200%' }}/>
+        <div className="absolute bottom-1/4 -right-20 w-[30rem] h-[30rem] rounded-full bg-secondary blur-[120px] animate-bg-shift" style={{ backgroundSize: '200% 200%', animationDelay: '-10s' }}/>
       </div>
 
       {items.map((item) => (<ParallaxItem key={item.id} item={item} scrollY={scrollY}/>))}
     </div>);
 };
+
 const ParallaxItem = ({ item, scrollY }: {
     item: FloatingItem;
     scrollY: MotionValue<number>;
 }) => {
-    const y = useTransform(scrollY, [0, 2000], [0, -item.depth * 400]);
+    const y = useTransform(scrollY, [0, 2000], [0, -item.depth * 300]);
     return (<motion.div style={{
             left: `${item.x}%`,
             top: `${item.y}%`,
             fontSize: `${item.size}rem`,
-            opacity: 0.15 / item.depth,
+            opacity: 0.12 / item.depth,
             filter: `blur(${item.depth - 1}px)`,
             y,
         }} initial={{ y: 0 }} animate={{
-            x: [0, 30, 0],
-            rotate: [0, 20, -20, 0],
+            x: [0, 20, 0],
+            rotate: [0, 15, -15, 0],
         }} transition={{
             duration: item.duration,
             repeat: Infinity,
