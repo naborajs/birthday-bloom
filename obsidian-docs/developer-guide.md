@@ -288,10 +288,10 @@ Main landing page after the cinematic intro. Orchestrates: hero section with int
 3D-tilt photo cards with auto-advance, lightbox with `AnimatePresence`, and keyboard navigation (ArrowLeft/ArrowRight/Escape). Auto-advance interval is derived from `getAnimationPacing()`.
 
 **Behavior notes**:
-- Falls back to `src/assets/photo-*.jpg` when no `VITE_PHOTO_*` env vars are set
+- Filters out placeholder and stock photos to only render genuine personal images
+- When no custom photos are provided, renders a warm, localized placeholder card
 - 3D tilt effect uses `useMotionValue` + `useSpring` + `useTransform`
-- Captions are relationship-aware (3 different sets)
-- Returns `null` when `photos.length === 0`
+- Captions are relationship-aware (custom sets for partner, friend, family in en, fr, hi, bn)
 
 ### `VideoGallery`
 
@@ -945,7 +945,7 @@ const theme = THEME_TYPES.ROMANTIC;              // "romantic"
 ## Error Handling
 
 The `ErrorBoundary` component at `src/components/ErrorBoundary.tsx` wraps the app and provides a cinematic fallback UI. Individual components handle their own edge cases:
-- `PhotoGallery` returns `null` when no photos are configured
+- `PhotoGallery` displays an elegant localized empty-state card when no custom photos are configured
 - `VideoGallery` returns `null` when no videos are configured
 - `CakeCutting` uses `createPortal` with cleanup for body overflow
 - `CinematicIntro` cleans up all timers on unmount via `clearTimers()`
