@@ -585,6 +585,11 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                                     <HighlightedText
                                         text={effectiveStoryLines[storyLine] || ""}
                                         relationship={relationship}
+                                        typewriter={true}
+                                        speed={relationship === 'partner' ? 42 : relationship === 'friend' ? 32 : 38}
+                                        delay={150}
+                                        cursor={true}
+                                        onType={playType}
                                         className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-light"
                                     />
                                 </motion.div>
@@ -631,6 +636,11 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                                     <HighlightedText
                                         text={postChatLines[postChatLine] || ""}
                                         relationship={relationship}
+                                        typewriter={true}
+                                        speed={relationship === 'partner' ? 38 : relationship === 'friend' ? 28 : 34}
+                                        delay={150}
+                                        cursor={true}
+                                        onType={playType}
                                         className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold"
                                     />
                                 </motion.div>
@@ -710,6 +720,11 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                                         <HighlightedText
                                             text={finalLines[finalLineIndex] || ""}
                                             relationship={relationship}
+                                            typewriter={true}
+                                            speed={35}
+                                            delay={100}
+                                            cursor={true}
+                                            onType={playType}
                                             className={
                                                 finalLineIndex === 0
                                                     ? "font-script text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-gradient-romantic text-glow-rose"
