@@ -444,11 +444,11 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                     navigator.vibrate(50);
                 actionsRef.current.playWhoosh();
                 setScene("fake-chat");
-            }, effectiveStoryLines.length * lineInterval + 800);
+            }, effectiveStoryLines.length * lineInterval + 600);
         }
 
         if (scene === "post-chat") {
-            const chatLineInterval = 3400 * speedMultiplier;
+            const chatLineInterval = 3800 * speedMultiplier;
             postChatLines.forEach((_, i) => {
                 addTimer(() => {
                     setPostChatLine(i);
@@ -461,7 +461,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                 actionsRef.current.fireStars();
                 actionsRef.current.triggerFlash();
                 setScene("special-message");
-            }, postChatLines.length * chatLineInterval + 1000);
+            }, postChatLines.length * chatLineInterval + 800);
         }
 
         if (scene === "special-message") {
@@ -510,11 +510,11 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                     addTimer(() => {
                         setFinalLineIndex(i);
                         actionsRef.current.playType();
-                    }, (10000 + i * 3400) * speedMultiplier);
+                    }, (10000 + i * 3600) * speedMultiplier);
                 }
             });
 
-            const endTime = (10000 + finalLines.length * 3400) * speedMultiplier;
+            const endTime = (10000 + finalLines.length * 3600) * speedMultiplier;
             addTimer(() => {
                 actionsRef.current.playBoom();
                 actionsRef.current.fireConfetti({ particleCount: 300, spread: 180 });
@@ -558,10 +558,10 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                         initial={{ scale: 1.08, filter: "blur(12px)", opacity: 0 }}
                         animate={{ scale: 1, filter: "blur(0px)", opacity: 1 }}
                         exit={{ scale: 0.88, filter: "blur(12px)", opacity: 0 }}
-                        transition={{ duration: 1.2, ease: "easeOut" }}
+                        transition={{ duration: 1.0, ease: "easeOut" }}
                         className="relative z-50 text-center max-w-4xl mx-auto px-6"
                     >
-                        <div className="flex justify-center mb-10">
+                        <div className="flex justify-center mb-8">
                             <motion.div
                                 animate={{ scale: [1, 1.18, 1], opacity: [0.6, 1, 0.6] }}
                                 transition={{ duration: 3, repeat: Infinity }}
@@ -570,27 +570,26 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                                 ✨
                             </motion.div>
                         </div>
-                        {effectiveStoryLines.map((line, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 15 }}
-                                animate={{
-                                    opacity: storyLine >= i ? (i === storyLine ? 1 : 0.65) : 0,
-                                    y: storyLine >= i ? 0 : 15,
-                                    scale: i === storyLine ? 1.03 : 0.98,
-                                }}
-                                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                                className={`mb-6 transition-all duration-700 ${
-                                    storyLine >= i ? "pointer-events-auto" : "pointer-events-none hidden"
-                                }`}
-                            >
-                                <HighlightedText
-                                    text={line}
-                                    relationship={relationship}
-                                    className="text-xl sm:text-2xl md:text-3xl lg:text-4xl"
-                                />
-                            </motion.div>
-                        ))}
+
+                        {/* Clean 1-thought-at-a-time presentation — zero overlap */}
+                        <div className="min-h-[140px] flex items-center justify-center">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={storyLine}
+                                    initial={{ opacity: 0, y: 25, filter: "blur(8px)", scale: 0.96 }}
+                                    animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
+                                    exit={{ opacity: 0, y: -20, filter: "blur(8px)", scale: 1.02 }}
+                                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                                    className="py-4 px-2"
+                                >
+                                    <HighlightedText
+                                        text={effectiveStoryLines[storyLine] || ""}
+                                        relationship={relationship}
+                                        className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-light"
+                                    />
+                                </motion.div>
+                            </AnimatePresence>
+                        </div>
                     </motion.div>
                 )}
 
@@ -617,21 +616,26 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                         <div className="mb-8 flex justify-center">
                             <HeartProgression stage={3} />
                         </div>
-                        {postChatLines.slice(0, postChatLine + 1).map((line, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                                className="mb-6"
-                            >
-                                <HighlightedText
-                                    text={line}
-                                    relationship={relationship}
-                                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold"
-                                />
-                            </motion.div>
-                        ))}
+
+                        {/* Clean 1-thought-at-a-time presentation — zero overlap */}
+                        <div className="min-h-[160px] flex items-center justify-center">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={postChatLine}
+                                    initial={{ opacity: 0, y: 25, filter: "blur(8px)", scale: 0.96 }}
+                                    animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
+                                    exit={{ opacity: 0, y: -20, filter: "blur(8px)", scale: 1.02 }}
+                                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                                    className="py-4 px-2"
+                                >
+                                    <HighlightedText
+                                        text={postChatLines[postChatLine] || ""}
+                                        relationship={relationship}
+                                        className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold"
+                                    />
+                                </motion.div>
+                            </AnimatePresence>
+                        </div>
                     </motion.div>
                 )}
 
@@ -693,26 +697,27 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                         )}
 
                         {revealStep === "final-message" && (
-                            <div className="text-center max-w-4xl mx-auto px-6">
-                                {finalLines.slice(0, finalLineIndex + 1).map((line, i) => (
+                            <div className="text-center max-w-4xl mx-auto px-6 min-h-[140px] flex items-center justify-center">
+                                <AnimatePresence mode="wait">
                                     <motion.div
-                                        key={i}
-                                        initial={{ opacity: 0, y: 15 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.8 }}
-                                        className="mb-5"
+                                        key={finalLineIndex}
+                                        initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
+                                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                                        exit={{ opacity: 0, y: -15, filter: "blur(6px)" }}
+                                        transition={{ duration: 0.7 }}
+                                        className="py-4 px-2"
                                     >
                                         <HighlightedText
-                                            text={line}
+                                            text={finalLines[finalLineIndex] || ""}
                                             relationship={relationship}
                                             className={
-                                                i === 0
-                                                    ? "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-primary"
-                                                    : "text-2xl sm:text-3xl md:text-4xl text-white/90"
+                                                finalLineIndex === 0
+                                                    ? "font-script text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-gradient-romantic text-glow-rose"
+                                                    : "text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-white/95 font-light"
                                             }
                                         />
                                     </motion.div>
-                                ))}
+                                </AnimatePresence>
                             </div>
                         )}
                     </motion.div>
