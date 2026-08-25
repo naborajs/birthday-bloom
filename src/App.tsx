@@ -3,16 +3,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import { SparkleEffect } from "./components/birthday/SparkleEffect";
-import { CelebrationOverlay } from "./components/birthday/CelebrationOverlay";
-import { PartyElements } from "./components/birthday/PartyElements";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+
 const App = () => (<ErrorBoundary>
     <TooltipProvider>
       <Sonner />
-      <SparkleEffect />
-      <PartyElements />
-      <CelebrationOverlay />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />}/>
@@ -21,4 +16,5 @@ const App = () => (<ErrorBoundary>
       </BrowserRouter>
     </TooltipProvider>
   </ErrorBoundary>);
+
 export default App;
