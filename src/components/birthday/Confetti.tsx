@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import confetti from "canvas-confetti";
 export const useConfetti = () => {
     const isMobile = typeof window !== "undefined" && (window.innerWidth < 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
@@ -117,5 +117,11 @@ export const useConfetti = () => {
         };
         setTimeout(glitterRain, 150);
     }, [isMobile]);
-    return { fireConfetti, fireCannon, fireStars, firePop, fireCinematicCelebration };
+    return useMemo(() => ({
+        fireConfetti,
+        fireCannon,
+        fireStars,
+        firePop,
+        fireCinematicCelebration,
+    }), [fireConfetti, fireCannon, fireStars, firePop, fireCinematicCelebration]);
 };
