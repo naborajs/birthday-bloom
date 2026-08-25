@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { AUDIO_ASSETS } from "@/config/birthday";
 const AUDIO_URLS = {
     bgMusic: AUDIO_ASSETS.bgmUrl || "https://cdn.pixabay.com/audio/2024/09/03/audio_73147814c8.mp3",
@@ -101,5 +101,14 @@ export const useSoundManager = () => {
     const setBgVolume = useCallback((vol: number) => {
         managerRef.current.setBgVolume(vol);
     }, []);
-    return { startMusic, playType, playWhoosh, playReveal, playPop, playBoom, fadeOut, setBgVolume };
+    return useMemo(() => ({
+        startMusic,
+        playType,
+        playWhoosh,
+        playReveal,
+        playPop,
+        playBoom,
+        fadeOut,
+        setBgVolume,
+    }), [startMusic, playType, playWhoosh, playReveal, playPop, playBoom, fadeOut, setBgVolume]);
 };
