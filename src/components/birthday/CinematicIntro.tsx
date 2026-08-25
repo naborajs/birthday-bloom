@@ -4,13 +4,13 @@ import { useConfetti } from "./Confetti";
 import { Balloons } from "./Balloons";
 import { Sparkles } from "./Sparkles";
 import { KineticText } from "./KineticText";
-import { TypeWriter } from "./TypeWriter";
 import { FakeChatScene } from "./FakeChatScene";
 import { HeartProgression } from "./HeartProgression";
 import { useSoundManager } from "./SoundManager";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { SpecialMessage } from "@/features/cinematic-story/scenes/SpecialMessage";
 import { useTranslation } from "@/i18n";
+import { HighlightedText } from "./HighlightedText";
 
 interface CinematicIntroProps {
     onComplete: () => void;
@@ -44,7 +44,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
     const { name, age, relationship, favoriteColor, gender } = config;
 
     const pacing = getAnimationPacing();
-    const speedMultiplier = pacing === 'fast' ? 0.75 : pacing === 'slow' ? 1.2 : 1;
+    const speedMultiplier = pacing === 'fast' ? 0.75 : pacing === 'slow' ? 1.15 : 1;
 
     const clearTimers = useCallback(() => {
         timersRef.current.forEach(clearTimeout);
@@ -123,108 +123,108 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
         if (isFrench) {
             if (relationship === 'partner') {
                 return [
-                    "Il y a quelqu'un qui est devenu le centre de mon univers...",
-                    "Quelqu'un qui transforme chaque instant en une scène de film magique...",
-                    isMale ? "L'homme qui a donné une nouvelle force et une nouvelle signification à l'amour..." : isFemale ? "La femme dont la douceur et la grâce illuminent chaque endroit où elle passe..." : "Cette âme merveilleuse qui me fait croire à la magie chaque jour...",
-                    "J'aurais pu simplement t'envoyer un 'Je t'aime'...",
-                    "Mais un simple message ne suffirait jamais à exprimer tout ce que je ressens."
+                    "Il y a quelqu'un qui est devenu le *centre de mon univers*...",
+                    "Quelqu'un qui transforme chaque instant en une *scène de film magique*... ✨",
+                    isMale ? "L'homme dont la *force et la tendresse* ont tout changé pour moi..." : isFemale ? "La femme dont la *douceur et la grâce* illuminent chaque instant..." : "Cette âme merveilleuse qui me fait croire à la *magie* chaque jour...",
+                    "J'aurais pu simplement t'envoyer un *'Je t'aime'*...",
+                    "Mais un simple message ne suffirait jamais à exprimer *tout ce que je ressens* 💖"
                 ];
             }
             if (relationship === 'friend') {
                 return [
-                    "Alerte générale ! Une véritable légende passe au niveau supérieur ! 🚀",
-                    "Attends, c'est vraiment ton anniversaire aujourd'hui ou le calendrier nous fait une blague ? 😂",
-                    isMale ? "À celui qui est responsable de 99% de mes meilleurs souvenirs..." : isFemale ? "À celle qui a pris la mission de me faire rire tous les jours..." : "À la personne la plus incroyable et authentique de ce monde...",
+                    "Alerte générale ! Une *véritable légende* passe au niveau supérieur ! 🚀",
+                    "Attends, c'est vraiment ton anniversaire ou le calendrier nous fait une *blague* ? 😂",
+                    isMale ? "À celui qui est responsable de *99% de mes meilleurs souvenirs*..." : isFemale ? "À celle qui a la mission de me *faire rire tous les jours*..." : "À la personne la plus *incroyable et iconique* de ce monde...",
                     "J'avais pensé t'offrir un cadeau classique et très sérieux...",
-                    "Mais après réflexion... ce n'est tellement pas notre style ! 😎"
+                    "Mais après réflexion... ce n'est tellement *pas notre style* ! 😎🔥"
                 ];
             }
             return [
-                "Aujourd'hui est une journée qui restera gravée dans nos cœurs...",
-                `Parce que nous célébrons l'anniversaire du membre le plus précieux de notre famille, notre ${isMale ? 'prince' : isFemale ? 'princesse' : 'étoile'} !`,
-                "Une personne d'exception dont la présence est un cadeau inestimable pour nous tous...",
-                "Nous voulions créer quelque chose d'aussi spécial que l'amour que nous vous portons...",
-                "Installez-vous confortablement et profitez de cette célébration magique ! ✨"
+                "Aujourd'hui est une journée qui restera gravée comme un *moment inoubliable*...",
+                `Parce que nous célébrons l'anniversaire de la personne la plus *précieuse et extraordinaire* !`,
+                "Une personne d'exception dont la présence est un *cadeau inestimable* pour nous tous...",
+                "Nous voulions créer quelque chose d'aussi spécial que nos *plus beaux souvenirs*...",
+                "Alors, installez-vous confortablement et *profitez de la magie* ! ✨"
             ];
         }
         if (isBengali) {
             if (relationship === 'partner') {
                 return [
-                    "এমন একজন মানুষ আছেন যিনি আমার পুরো পৃথিবীর কেন্দ্রবিন্দু...",
-                    "এমন একজন যিনি প্রতিটি মুহূর্তকে এক সুন্দর সিনেমার দৃশ্যের মতো বানিয়ে তোলেন...",
-                    isMale ? "সেই মানুষ যিনি আমার কাছে শক্তি এবং ভালোবাসার এক নতুন অর্থ এনে দিয়েছেন..." : isFemale ? "সেই মানুষ যার স্নিগ্ধতা ও সৌন্দর্য চারপাশকে আলোয় ভরিয়ে দেয়..." : "সেই মায়াবী রূহ যিনি আমাকে প্রতিটি দিন ভালোবাসার জাদুতে বিশ্বাস করান...",
-                    "আমি শুধু একটি সাধারণ 'I Love You' লিখে পাঠাতে পারতাম...",
-                    "কিন্তু একটি সাধারণ মেসেজ আমার হৃদয়ের গভীর অনুভূতি কখনোই প্রকাশ করতে পারবে না।"
+                    "এমন একজন মানুষ আছেন যিনি আমার পুরো *পৃথিবীর কেন্দ্রবিন্দু*...",
+                    "এমন একজন যিনি প্রতিটি মুহূর্তকে এক সুন্দর *সিনেমার দৃশ্যের মতো* বানিয়ে তোলেন... ✨",
+                    isMale ? "সেই মানুষ যিনি আমার কাছে *শক্তি ও ভালোবাসার* এক নতুন অর্থ এনে দিয়েছেন..." : isFemale ? "সেই মানুষ যার *স্নিগ্ধতা ও সৌন্দর্য* চারপাশকে আলোয় ভরিয়ে দেয়..." : "সেই মায়াবী রূহ যিনি আমাকে প্রতিটি দিন *ভালোবাসার জাদুতে* বিশ্বাস করান...",
+                    "আমি শুধু একটি সাধারণ *'I Love You'* লিখে পাঠাতে পারতাম...",
+                    "কিন্তু একটি সাধারণ মেসেজ আমার হৃদয়ের *গভীর অনুভূতি* কখনোই প্রকাশ করতে পারবে না 💖"
                 ];
             }
             if (relationship === 'friend') {
                 return [
-                    "সতর্কতা! একজন আসল লেজেন্ড জীবনের পরবর্তী ধাপে পা রেখেছেন! 🚀",
-                    "দাঁড়াও, সত্যিই কি আজ তোর জন্মদিন? নাকি ক্যালেন্ডার মজা করছে? 😂",
-                    isMale ? "সেই দোস্তের নামে যে আমার ৯৯% পাগলামির জন্য দায়ী..." : isFemale ? "সেই বান্ধবীর নামে যে আমাকে হাসানোর সব দায়িত্ব নিজের কাঁধে তুলে নিয়েছে..." : "সেই মানুষের নামে যে এই পুরো পৃথিবীতে সবচেয়ে বেশি কুল...",
+                    "সতর্কতা! একজন *আসল লেজেন্ড* জীবনের পরবর্তী ধাপে পা রেখেছেন! 🚀",
+                    "দাঁড়াও, সত্যিই কি আজ তোর জন্মদিন? নাকি ক্যালেন্ডার *মজা করছে*? 😂",
+                    isMale ? "সেই দোস্তের নামে যে আমার *৯৯% পাগলামির জন্য দায়ী*..." : isFemale ? "সেই বান্ধবীর নামে যে আমাকে *হাসানোর সব দায়িত্ব* নিজের কাঁধে তুলে নিয়েছে..." : "সেই মানুষের নামে যে এই পুরো পৃথিবীতে *সবচেয়ে বেশি কুল*...",
                     "আমি ভেবেছিলাম তোকে কোনো সিরিয়াস উপহার দেব...",
-                    "কিন্তু তারপর মনে পড়ল... সেটা তো আমাদের স্টাইলই না! 😎"
+                    "কিন্তু তারপর মনে পড়ল... সেটা তো *আমাদের স্টাইলই না*! 😎🔥"
                 ];
             }
             return [
-                "আজকের এই দিনটি এক অনন্য ইতিহাস হতে চলেছে...",
-                `কারণ আজ আমরা পরিবারের সবচেয়ে মূল্যবান ${isMale ? 'রাজপুত্র' : isFemale ? 'রাজকন্যা' : 'নক্ষত্র'}-এর জন্মদিন উদযাপন করছি!`,
-                "এমন একজন মানুষ যার উপস্থিতি আমাদের সবার জীবনে ঈশ্বরের সেরা উপহার...",
-                "আমরা এমন কিছু তৈরি করতে চেয়েছিলাম যা আমাদের ভালোবাসার মতো চিরকাল অম্লান থাকবে...",
-                "তাই আরাম করে বসুন এবং এই অপূর্ব উদযাপনটি উপভোগ করুন! ✨"
+                "আজকের এই দিনটি এক *অনন্য ইতিহাস* হতে চলেছে...",
+                `কারণ আজ আমরা পরিবারের সবচেয়ে *মূল্যবান নক্ষত্র*-এর জন্মদিন উদযাপন করছি!`,
+                "এমন একজন মানুষ যার উপস্থিতি আমাদের সবার জীবনে *ঈশ্বরের সেরা উপহার*...",
+                "আমরা এমন কিছু তৈরি করতে চেয়েছিলাম যা আমাদের ভালোবাসার মতো *চিরকাল অম্লান* থাকবে...",
+                "তাই আরাম করে বসুন এবং এই *অপূর্ব উদযাপনটি উপভোগ করুন*! ✨"
             ];
         }
         if (isHindi) {
             if (relationship === 'partner') {
                 return [
-                    "कोई ऐसा है जो मेरी पूरी दुनिया का केंद्र बन चुका है...",
-                    "कोई ऐसा जो हर एक पल को किसी खूबसूरत फिल्म जैसा बना देता है...",
-                    isMale ? "वो इंसान जिसने मेरे लिए ताकत और प्यार की नई परिभाषा लिखी..." : isFemale ? "वो इंसान जिसकी सादगी और खूबसूरती हर महफ़िल को रोशन कर देती है..." : "वो खूबसूरत रूह जो मुझे हर दिन जादू पर यकीन दिलाती है...",
-                    "मैं सिर्फ एक 'I Love You' लिखकर भेज सकता/सकती थी...",
-                    "पर एक साधारण संदेश मेरे दिल के जज़्बातों को कभी बयां नहीं कर सकता।"
+                    "कोई ऐसा है जो मेरी पूरी *दुनिया का केंद्र* बन चुका है...",
+                    "कोई ऐसा जो हर एक पल को किसी *खूबसूरत फिल्म* जैसा बना देता है... ✨",
+                    isMale ? "वो इंसान जिसने मेरे लिए *प्यार और मजबूती* की नई परिभाषा लिखी..." : isFemale ? "वो इंसान जिसकी *सादगी और खूबसूरती* हर महफ़िल को रोशन कर देती है..." : "वो खूबसूरत रूह जो मुझे हर दिन *जादू पर यकीन* दिलाती है...",
+                    "मैं सिर्फ एक *'I Love You'* लिखकर भेज सकता/सकती थी...",
+                    "पर एक साधारण संदेश मेरे दिल के *सच्चे जज़्बातों* को कभी बयां नहीं कर सकता 💖"
                 ];
             }
             if (relationship === 'friend') {
                 return [
-                    "सावधान! एक असली लीजेंड ज़िंदगी के अगले लेवल पर पहुँच चुका है! 🚀",
-                    "रुको, क्या सच में आज तुम्हारा जन्मदिन है? या कैलेंडर मज़ाक कर रहा है? 😂",
-                    isMale ? "उस यार के नाम जो मेरे 99% पागलपन भरे फैसलों की वजह है..." : isFemale ? "उस दोस्त के नाम जो मुझे हंसाने की पूरी ज़िम्मेदारी लिए बैठी है..." : "उस इंसान के नाम जो इस दुनिया में सबसे ज्यादा कूल है...",
+                    "सावधान! एक *असली लीजेंड* ज़िंदगी के अगले लेवल पर पहुँच चुका है! 🚀",
+                    "रुको, क्या सच में आज तुम्हारा जन्मदिन है? या कैलेंडर *मज़ाक कर रहा है*? 😂",
+                    isMale ? "उस यार के नाम जो मेरे *99% पागल फैसलों की वजह* है..." : isFemale ? "उस दोस्त के नाम जो मुझे *हंसाने की पूरी ज़िम्मेदारी* लिए बैठी है..." : "उस इंसान के नाम जो इस दुनिया में *सबसे ज्यादा कूल* है...",
                     "मैंने सोचा था तुम्हें कोई समझदारी भरा तोहफा दूँ...",
-                    "पर फिर याद आया... वो तो हमारा स्टाइल ही नहीं है! 😎"
+                    "पर फिर याद आया... वो तो *हमारा स्टाइल ही नहीं है*! 😎🔥"
                 ];
             }
             return [
-                "आज का दिन एक यादगार इतिहास बनने जा रहा है...",
-                `क्योंकि आज हम परिवार के सबसे अनमोल ${isMale ? 'राजा' : isFemale ? 'रानी' : 'सितारे'} का जन्मदिन मना रहे हैं!`,
-                "एक ऐसा इंसान जिसकी मौजूदगी हम सबके लिए ईश्वर का सबसे बड़ा उपहार है...",
-                "हम कुछ ऐसा बनाना चाहते थे जो हमारी यादों की तरह हमेशा महकता रहे...",
-                "तो आराम से बैठिए और इस खूबसूरत जश्न का आनंद लीजिए! ✨"
+                "आज का दिन एक यादगार और *बेहद खास पल* बनने जा रहा है...",
+                `क्योंकि आज हम परिवार के सबसे *अनमोल सितारे* का जन्मदिन मना रहे हैं!`,
+                "एक ऐसा इंसान जिसकी मौजूदगी हम सबके लिए *ईश्वर का सबसे बड़ा उपहार* है...",
+                "हम कुछ ऐसा बनाना चाहते थे जो हमारी *खूबसूरत यादों* की तरह हमेशा महकता रहे...",
+                "तो आराम से बैठिए और इस *खूबसूरत जश्न का आनंद* लीजिए! ✨"
             ];
         }
         if (relationship === 'partner') {
             return [
-                "There's someone who has been the center of my world...",
-                `Someone who makes every second feel like a movie scene...`,
-                isMale ? "The man who redefined what strength and kindness mean to me..." : isFemale ? "The woman whose grace and beauty light up every room she enters..." : "The soul who makes me believe in magic every single day...",
-                "I could have just texted 'I love you'...",
-                "But a simple message could never hold all that I feel for you."
+                "There's someone who has been the *center of my world*...",
+                "Someone who makes every second feel like a *movie scene*... ✨",
+                isMale ? "The man whose *strength and kindness* redefined everything for me..." : isFemale ? "The woman whose *grace and beauty* light up every room she enters..." : "The soul who makes me believe in *true magic* every single day...",
+                "I could have just texted *'I love you'*...",
+                "But a simple message could never hold *all that I feel for you* 💖"
             ];
         }
         if (relationship === 'friend') {
             return [
-                "Warning: A true legend is leveling up today! 🚀",
-                `Wait, is it actually your birthday, or is the calendar just flexing? 😂`,
-                isMale ? "To the guy who is responsible for 99% of my worst decisions and best memories..." : isFemale ? "To the girl who somehow manages to keep me sane while being completely insane..." : "To the most unhinged, iconic human on this planet...",
+                "Warning: A *true legend* is leveling up today! 🚀",
+                "Wait, is it actually your birthday, or is the calendar just *flexing*? 😂",
+                isMale ? "To the guy who is responsible for *99% of my best memories*..." : isFemale ? "To the girl who somehow manages to keep me *sane while being completely insane*..." : "To the most *unhinged, iconic human* on this planet...",
                 "I was going to get you a sensible, adult birthday card...",
-                "Then I remembered who we are. 😎"
+                "Then I remembered *who we are*! 😎🔥"
             ];
         }
         return [
-            "Today marks a very special moment in time...",
-            `Because today, we celebrate the most incredible person in our universe.`,
-            "Someone whose presence is a gift to every single person in this room...",
-            "I wanted to build something that lasts as long as the memories we share...",
-            "So, sit back, relax, and enjoy the show! ✨"
+            "Today marks a very *special moment* in time...",
+            "Because today, we celebrate the most *incredible person* in our universe ✨",
+            "Someone whose presence is a *priceless gift* to all of us...",
+            "I wanted to build something that lasts as long as our *treasured memories*...",
+            "So, sit back, relax, and *enjoy your celebration*! ✨"
         ];
     }, [relationship, gender, isHindi, isBengali, isFrench]);
 
@@ -233,205 +233,192 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
             if (relationship === 'friend')
                 return [
                     "Parce que tu n'es pas n'importe quel(le) ami(e)...",
-                    "Tu es la personne sur qui je peux toujours compter pour rire et refaire le monde ! ☕️",
-                    "Tu mérites une fête aussi grandiose et unique que notre amitié...",
-                    "Alors, lançons les festivités et célébrons ça comme il se doit ! 🎉",
+                    "Tu es la personne sur qui je peux toujours compter pour *rire et refaire le monde* ! ☕️",
+                    "Tu mérites une fête aussi *grandiose et unique* que notre amitié...",
+                    "Alors, lançons les festivités et *célébrons ça comme des légendes* ! 🎉",
                 ];
             if (relationship === 'partner')
                 return [
                     "Mais tu es tellement plus qu'un(e) simple partenaire pour moi...",
-                    "Tu es mon refuge, ma plus belle aventure et mon foyer.",
-                    "J'ai passé la nuit à perfectionner chaque détail... tout comme toi.",
-                    "Es-tu prêt(e) pour la grande révélation ? ❤️",
+                    "Tu es mon *refuge*, ma *plus belle aventure* et mon *foyer*.",
+                    "J'ai passé la nuit à perfectionner chaque détail... *tout comme toi* ✨",
+                    "Es-tu prêt(e) pour la *grande révélation* ? ❤️",
                 ];
             return [
-                "Vous apportez tellement de lumière et de bonheur dans nos vies...",
-                "Vous méritez une célébration aussi éclatante que votre sourire.",
-                "Nous y avons mis tout notre cœur, spécialement pour vous...",
-                "Que la fête commence ! ✨",
+                "Vous apportez tellement de *lumière et de bonheur* dans nos vies...",
+                "Vous méritez une célébration aussi *éclatante que votre sourire*.",
+                "Nous y avons mis *tout notre cœur*, spécialement pour vous...",
+                "Que la *fête commence* ! ✨",
             ];
         }
         if (isBengali) {
             if (relationship === 'friend')
                 return [
                     "কারণ তুই শুধু একজন সাধারণ বন্ধু নোস...",
-                    "তুই সেই মানুষ যার ওপর আমি চোখ বন্ধ করে ভরসা করতে পারি! ☕️",
-                    "আমাদের এই অদ্ভুত বন্ধুত্বের মতো তুইও এক অবিস্মরণীয় উদযাপনের দাবিদার...",
-                    "তাহলে চল এই পার্টি ধামাকা সহকারে শুরু করা যাক! 🎉",
+                    "তুই সেই মানুষ যার ওপর আমি চোখ বন্ধ করে *ভরসা করতে পারি*! ☕️",
+                    "আমাদের এই অদ্ভুত বন্ধুত্বের মতো তুইও এক *অবিস্মরণীয় উদযাপনের* দাবিদার...",
+                    "তাহলে চল এই পার্টি *ধামাকা সহকারে শুরু করা যাক*! 🎉",
                 ];
             if (relationship === 'partner')
                 return [
                     "কিন্তু আপনি আমার কাছে শুধু একজন সঙ্গীর চেয়েও অনেক বেশি...",
-                    "আপনি আমার প্রশান্তি, আমার জীবনের সেরা রোমাঞ্চ এবং আমার নিরাপদ আশ্রয়।",
-                    "গভীর রাত জেগে প্রতিটি পিক্সেল সাজিয়েছি... ঠিক আপনারই মতো করে।",
-                    "আপনি কি সেই বড় সারপ্রাইজের জন্য প্রস্তুত? ❤️",
+                    "আপনি আমার *প্রশান্তি*, আমার জীবনের *সেরা রোমাঞ্চ* এবং আমার *নিরাপদ আশ্রয়*।",
+                    "গভীর রাত জেগে প্রতিটি পিক্সেল সাজিয়েছি... ঠিক *আপনারই মতো সুন্দর* করে।",
+                    "আপনি কি সেই *বড় সারপ্রাইজের* জন্য প্রস্তুত? ❤️",
                 ];
             return [
-                "আপনি আমাদের জীবনে অনেক আনন্দ আর আলো নিয়ে এসেছেন...",
-                "আপনি আপনার মিষ্টি হাসির মতোই উজ্জ্বল এক উদযাপনের যোগ্য।",
-                "আমরা আমাদের সম্পূর্ণ হৃদয় উজাড় করে এটি সাজিয়েছি, শুধু আপনার জন্য...",
-                "চলুন উদযাপনের আনন্দ শুরু করা যাক! ✨",
+                "আপনি আমাদের জীবনে অনেক *আনন্দ আর আলো* নিয়ে এসেছেন...",
+                "আপনি আপনার মিষ্টি হাসির মতোই *উজ্জ্বল এক উদযাপনের* যোগ্য।",
+                "আমরা আমাদের *সম্পূর্ণ হৃদয় উজাড় করে* এটি সাজিয়েছি, শুধু আপনার জন্য...",
+                "চলুন *উদযাপনের আনন্দ শুরু করা যাক*! ✨",
             ];
         }
         if (isHindi) {
             if (relationship === 'friend')
                 return [
                     "क्योंकि तुम सिर्फ एक दोस्त नहीं हो...",
-                    "तुम वो इंसान हो जिस पर मैं हमेशा भरोसा कर सकता/सकती हूँ! ☕️",
-                    "तुम हमारी इस अनोखी दोस्ती जितने ही शानदार जश्न के हकदार हो...",
-                    "तो चलो इस पार्टी को धमाकेदार तरीके से शुरू करते हैं! 🎉",
+                    "तुम वो इंसान हो जिस पर मैं *हमेशा भरोसा कर सकता हूँ*! ☕️",
+                    "तुम हमारी इस अनोखी दोस्ती जितने ही *शानदार जश्न के हकदार* हो...",
+                    "तो चलो इस पार्टी को *धमाकेदार तरीके से शुरू करते हैं*! 🎉",
                 ];
             if (relationship === 'partner')
                 return [
                     "लेकिन आप मेरे लिए सिर्फ एक साथी से कहीं बढ़कर हैं...",
-                    "आप मेरा सुकून, मेरा सबसे बड़ा रोमांच और मेरा घर हैं।",
-                    "देर रात तक जागकर हर एक पिक्सल को सजाया है... बिल्कुल आपकी तरह।",
-                    "क्या आप इस बड़े सरप्राइज के लिए तैयार हैं? ❤️",
+                    "आप मेरा *सुकून*, मेरा *सबसे बड़ा रोमांच* और मेरा *घर* हैं।",
+                    "देर रात तक जागकर हर एक पिक्सल को सजाया है... बिल्कुल *आपकी तरह खूबसूरत*।",
+                    "क्या आप इस *बड़े सरप्राइज* के लिए तैयार हैं? ❤️",
                 ];
             return [
-                "आप हमारी ज़िंदगी में इतनी सारी खुशियाँ लेकर आते हैं...",
-                "आप अपनी मुस्कान जितने ही उज्ज्वल जश्न के हकदार हैं।",
-                "हमने अपना पूरा दिल इसमें लगा दिया है, सिर्फ आपके लिए...",
-                "चलिए जश्न की शुरुआत करते हैं! ✨",
+                "आप हमारी ज़िंदगी में इतनी सारी *खुशियाँ लेकर आते हैं*...",
+                "आप अपनी मुस्कान जितने ही *उज्ज्वल जश्न के हकदार* हैं।",
+                "हमने अपना *पूरा दिल इसमें लगा दिया है*, सिर्फ आपके लिए...",
+                "चलिए *जश्न की शुरुआत करते हैं*! ✨",
             ];
         }
         if (relationship === 'friend')
             return [
                 "Because you're not just any friend...",
-                "You're the person I can always count on for chaos and coffee! ☕️",
-                "You deserve something as epic and weird as our friendship...",
-                "So let's get this party started! 🎉",
+                "You're the person I can always count on for *chaos & coffee*! ☕️",
+                "You deserve something as *epic and iconic* as our friendship...",
+                "So let's get this *party started*! 🎉",
             ];
         if (relationship === 'partner')
             return [
-                "But you are so much more than just a partner to me...",
-                "You are my safe haven, my greatest adventure, and my home.",
-                "I stayed up late, making sure every pixel was perfect... just like you.",
-                "Are you ready for the big reveal? ❤️",
+                "You are so much more than just a partner to me...",
+                "You are my *safe haven*, my *greatest adventure*, and my *home*.",
+                "I stayed up late, making sure every pixel was *perfect*... just like you ✨",
+                "Are you ready for the *big reveal*? ❤️",
             ];
         return [
-            "You bring so much warmth into our lives...",
-            "You deserve a celebration as bright as your smile.",
-            "We put our hearts into this, just for you...",
-            "Let the celebration begin! ✨",
+            "You bring so much *warmth and love* into our lives...",
+            "You deserve a celebration as *bright as your smile*.",
+            "We put our whole hearts into this, just for you...",
+            "Let the *celebration begin*! ✨",
         ];
     }, [relationship, isHindi, isBengali, isFrench]);
 
     const finalLines = useMemo(() => {
-        const isMale = gender === 'male';
-        const isFemale = gender === 'female';
         if (isFrench) {
             if (relationship === 'partner')
                 return [
-                    `Mon très cher / Ma très chère ${name || (isMale ? 'Prince' : isFemale ? 'Princesse' : 'Amour')}`,
+                    `Mon très cher / Ma très chère *${name || 'Amour'}* 💖`,
                     t('intro.hopeYouFeltHeartbeat'),
-                    t('intro.todayTomorrowAlways'),
-                    t('intro.loveInfinitely')
+                    "Tu es mon *aujourd'hui*, mon *demain*, et mon *toujours* ✨",
+                    "Joyeux Anniversaire, *je t'aime infiniment* ! 💖"
                 ];
             if (relationship === 'friend')
                 return [
-                    `Joyeux Anniversaire ${name || (isMale ? 'mon frère' : isFemale ? 'ma meilleure amie' : 'Légende')} !`,
+                    `Joyeux Anniversaire *${name || 'Légende'}* ! 🚀`,
                     t('intro.cakeChaosNoRegrets'),
-                    t('intro.partnerInCrime'),
-                    t('intro.stayLegendary')
+                    "Tellement fier(ère) d'avoir un(e) *complice comme toi* 🎉",
+                    "Reste *légendaire* ! 😎"
                 ];
             return [
-                `Cher(ère) ${name || 'Personne Formidable'}`,
+                `Cher(ère) *${name || 'Personne Formidable'}* ✨`,
                 t('intro.yearOfPureHappiness'),
                 t('intro.kindnessReturnTenfold'),
-                t('intro.loveYouSoMuch')
+                "Nous *vous aimons* de tout notre cœur ! 💖"
             ];
         }
         if (isBengali) {
             if (relationship === 'partner')
                 return [
-                    `আমার প্রিয় ${name || (isMale ? 'রাজপুত্র' : isFemale ? 'রাজকন্যা' : 'ভালোবাসা')}`,
+                    `আমার প্রিয় *${name || 'ভালোবাসা'}* 💖`,
                     t('intro.hopeYouFeltHeartbeat'),
-                    t('intro.todayTomorrowAlways'),
-                    t('intro.loveInfinitely')
+                    "আপনি আমার *বর্তমান*, আমার *আগামীকাল*, এবং আমার *চিরন্তন আশ্রয়* ✨",
+                    "শুভ জন্মদিন, *আপনাকে অনন্ত ভালোবাসি*! 💖"
                 ];
             if (relationship === 'friend')
                 return [
-                    `শুভ জন্মদিন ${name || (isMale ? 'আমার ভাই' : isFemale ? 'আমার সেরা বন্ধু' : 'লেজেন্ড')}!`,
+                    `শুভ জন্মদিন *${name || 'লেজেন্ড'}*! 🚀`,
                     t('intro.cakeChaosNoRegrets'),
-                    t('intro.partnerInCrime'),
-                    t('intro.stayLegendary')
+                    "তোর মতো একজন *পার্টনার-ইন-ক্রাইম* পেয়ে আমি ধন্য 🎉",
+                    "সবসময় *লেজেন্ডারি* থাকিস! 😎"
                 ];
             return [
-                `প্রিয় ${name || 'অসাধারণ মানুষ'}`,
+                `প্রিয় *${name || 'অসাধারণ মানুষ'}* ✨`,
                 t('intro.yearOfPureHappiness'),
                 t('intro.kindnessReturnTenfold'),
-                t('intro.loveYouSoMuch')
+                "আমরা *আপনাকে অনেক ভালোবাসি*! 💖"
             ];
         }
         if (isHindi) {
             if (relationship === 'partner')
                 return [
-                    `मेरे प्यारे ${name || (isMale ? 'राजकुमार' : isFemale ? 'राजकुमारी' : 'हमसफ़र')}`,
+                    `मेरे प्यारे *${name || 'हमसफ़र'}* 💖`,
                     t('intro.hopeYouFeltHeartbeat'),
-                    t('intro.todayTomorrowAlways'),
-                    t('intro.loveInfinitely')
+                    "आप मेरा *आज*, मेरा *कल*, और मेरी *हर सांस* हैं ✨",
+                    "जन्मदिन मुबारक, *मैं आपसे बेपनाह प्यार करता/करती हूँ*! 💖"
                 ];
             if (relationship === 'friend')
                 return [
-                    `जन्मदिन मुबारक ${name || (isMale ? 'मेरे भाई' : isFemale ? 'मेरी बेस्टी' : 'लीजेंड')}!`,
+                    `जन्मदिन मुबारक *${name || 'लीजेंड'}*! 🚀`,
                     t('intro.cakeChaosNoRegrets'),
-                    t('intro.partnerInCrime'),
-                    t('intro.stayLegendary')
+                    "तुम्हारे जैसा *पार्टनर-इन-क्राइम* पाकर मैं बहुत खुश हूँ 🎉",
+                    "हमेशा *लीजेंडरी* रहो! 😎"
                 ];
             return [
-                `प्रिय ${name || 'अद्भुत इंसान'}`,
+                `प्रिय *${name || 'अद्भुत इंसान'}* ✨`,
                 t('intro.yearOfPureHappiness'),
                 t('intro.kindnessReturnTenfold'),
-                t('intro.loveYouSoMuch')
+                "हम आपसे *बहुत प्यार करते हैं*! 💖"
             ];
         }
         if (relationship === 'partner')
             return [
-                `My dearest ${name || (isMale ? 'Prince' : isFemale ? 'Princess' : 'Love')}`,
-                "I hope you felt the heartbeat behind every animation...",
-                "You are my today, my tomorrow, and my always ✨",
-                "Happy Birthday, I love you infinitely! 💖"
+                `My dearest *${name || 'Love'}* 💖`,
+                "I hope you felt the *heartbeat* behind every animation...",
+                "You are my *today*, my *tomorrow*, and my *always* ✨",
+                "Happy Birthday, *I love you infinitely*! 💖"
             ];
         if (relationship === 'friend')
             return [
-                `Happy Birthday ${name || (isMale ? 'Bro' : isFemale ? 'Bestie' : 'Legend')}!`,
-                "May your day be filled with cake, chaos, and zero regrets!",
-                "I'm so lucky to have a partner-in-crime like you 🎉",
-                "Stay legendary! 😎"
+                `Happy Birthday *${name || 'Legend'}*! 🚀`,
+                "May your day be filled with *cake, chaos, and zero regrets*!",
+                "I'm so lucky to have a *partner-in-crime* like you 🎉",
+                "Stay *legendary*! 😎"
             ];
         return [
-            `Dear ${name || 'Wonderful Human'}`,
-            "We all wanted to wish you a year of pure happiness...",
-            "May your kindness always come back to you tenfold ✨",
-            "We love you so much! 💖"
+            `Dear *${name || 'Wonderful Human'}* ✨`,
+            "We all wanted to wish you a year of *pure happiness*...",
+            "May your kindness always come back to you *tenfold* ✨",
+            "We *love you* so much! 💖"
         ];
-    }, [name, relationship, gender, isHindi, isBengali, isFrench, t]);
+    }, [name, relationship, isHindi, isBengali, isFrench, t]);
 
     const effectiveStoryLines = useMemo(() => {
         if (!age) return storyLines;
         const ageLine = isFrench
-            ? `Alors que vous célébrez votre ${age}e année de splendeur...`
+            ? `Alors que vous célébrez votre *${age}e année* de pure splendeur... ✨`
             : isBengali
-                ? `আপনার জীবনের ${age}-তম বছর উদযাপন করতে করতে...`
+                ? `আপনার জীবনের *${age}-তম বছর* উদযাপন করতে করতে... ✨`
                 : isHindi
-                    ? `आपके जीवन के ${age}वें साल का जश्न मनाते हुए...`
-                    : `As you celebrate your ${age}th year...`;
+                    ? `आपके जीवन के *${age}वें खूबसूरत साल* का जश्न मनाते हुए... ✨`
+                    : `As you celebrate your *${age}th magical year*... ✨`;
         return [...storyLines.slice(0, -1), ageLine, storyLines[storyLines.length - 1]];
     }, [age, storyLines, isHindi, isBengali, isFrench]);
 
-    const primaryColor = favoriteColor || '#FF6B6B';
-    const storyLineStyles = [
-        { className: `${relationship === 'partner' ? 'italic' : ''} text-lg md:text-2xl lg:text-3xl font-light`, style: { color: "hsl(280, 20%, 85%)" } },
-        { className: `${relationship === 'friend' ? 'font-black uppercase tracking-tight' : 'font-normal'} text-xl md:text-3xl lg:text-4xl`, style: { color: "hsl(330, 80%, 85%)" } },
-        { className: `${relationship === 'partner' ? 'italic' : 'font-semibold'} text-xl md:text-3xl lg:text-[2.5rem]`, style: { color: primaryColor } },
-        { className: "text-lg md:text-2xl lg:text-3xl font-light", style: { color: "hsl(200, 90%, 85%)" } },
-    ];
-    const postChatStyles = [
-        { className: `${relationship === 'partner' ? 'italic' : ''} text-2xl md:text-4xl lg:text-5xl font-bold`, style: { color: "hsl(330, 95%, 75%)" } },
-        { className: `${relationship === 'friend' ? 'font-black uppercase' : 'font-extrabold'} text-2xl md:text-4xl lg:text-5xl`, style: { color: primaryColor } },
-        { className: "text-3xl md:text-5xl lg:text-6xl font-black bg-gradient-to-r from-[hsl(330,90%,70%)] via-[var(--color-primary)] to-[hsl(270,70%,70%)] bg-clip-text text-transparent animate-gradient-shift" },
-    ];
+    const primaryColor = favoriteColor || '#FF2A6D';
 
     // Cleanup on unmount
     useEffect(() => () => clearTimers(), [clearTimers]);
@@ -461,7 +448,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
         }
 
         if (scene === "post-chat") {
-            const chatLineInterval = 3200 * speedMultiplier;
+            const chatLineInterval = 3400 * speedMultiplier;
             postChatLines.forEach((_, i) => {
                 addTimer(() => {
                     setPostChatLine(i);
@@ -523,11 +510,11 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                     addTimer(() => {
                         setFinalLineIndex(i);
                         actionsRef.current.playType();
-                    }, (10000 + i * 3200) * speedMultiplier);
+                    }, (10000 + i * 3400) * speedMultiplier);
                 }
             });
 
-            const endTime = (10000 + finalLines.length * 3200) * speedMultiplier;
+            const endTime = (10000 + finalLines.length * 3400) * speedMultiplier;
             addTimer(() => {
                 actionsRef.current.playBoom();
                 actionsRef.current.fireConfetti({ particleCount: 300, spread: 180 });
@@ -554,51 +541,55 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
 
     return (
         <div
-            className={`fixed inset-0 z-40 flex items-center justify-center transition-all duration-1000 ${
+            className={`fixed inset-0 z-40 flex items-center justify-center transition-all duration-1000 overflow-hidden ${
                 fadeOut ? "opacity-0" : "opacity-100"
             } ${shaking ? "animate-screen-shake" : ""}`}
             style={{ background: 'transparent' }}
         >
+            {/* Dreamy Ambient Bokeh Auras */}
+            <div className="absolute top-[8%] left-[12%] w-[32rem] h-[32rem] rounded-full bg-[radial-gradient(circle,rgba(255,75,130,0.22)_0%,transparent_70%)] blur-[100px] pointer-events-none animate-subtle-float" />
+            <div className="absolute top-[18%] right-[12%] w-[30rem] h-[30rem] rounded-full bg-[radial-gradient(circle,rgba(255,200,100,0.18)_0%,transparent_70%)] blur-[110px] pointer-events-none animate-pulse" />
+            <div className="absolute bottom-[10%] left-[25%] w-[36rem] h-[36rem] rounded-full bg-[radial-gradient(circle,rgba(180,60,140,0.2)_0%,transparent_70%)] blur-[120px] pointer-events-none" />
+
             <AnimatePresence mode="wait">
                 {scene === "storytelling" && (
                     <motion.div
                         key="storytelling"
-                        initial={{ scale: 1.1, filter: "blur(15px)", opacity: 0 }}
+                        initial={{ scale: 1.08, filter: "blur(12px)", opacity: 0 }}
                         animate={{ scale: 1, filter: "blur(0px)", opacity: 1 }}
-                        exit={{ scale: 0.85, filter: "blur(15px)", opacity: 0 }}
+                        exit={{ scale: 0.88, filter: "blur(12px)", opacity: 0 }}
                         transition={{ duration: 1.2, ease: "easeOut" }}
-                        className="relative z-50 text-center max-w-3xl mx-auto px-6"
+                        className="relative z-50 text-center max-w-4xl mx-auto px-6"
                     >
                         <div className="flex justify-center mb-10">
                             <motion.div
-                                animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.9, 0.5] }}
+                                animate={{ scale: [1, 1.18, 1], opacity: [0.6, 1, 0.6] }}
                                 transition={{ duration: 3, repeat: Infinity }}
-                                className="w-16 h-16 rounded-full border-2 border-primary/30 flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(255,107,107,0.3)] backdrop-blur-md bg-white/5"
+                                className="w-16 h-16 rounded-full border border-primary/40 flex items-center justify-center text-3xl shadow-[0_0_35px_rgba(255,107,107,0.4)] backdrop-blur-md bg-white/10"
                             >
                                 ✨
                             </motion.div>
                         </div>
                         {effectiveStoryLines.map((line, i) => (
-                            <p
+                            <motion.div
                                 key={i}
-                                className={`font-display leading-relaxed mb-6 transition-all duration-700 ${
-                                    storyLine >= i ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
-                                } ${storyLineStyles[i]?.className || ''}`}
-                                style={{
-                                    ...(storyLineStyles[i]?.style || {}),
-                                    color: i === storyLine ? primaryColor : (storyLineStyles[i]?.style?.color || "hsl(0,0%,90%)"),
-                                    textShadow: i === storyLine ? `0 0 25px ${primaryColor}60` : "none"
+                                initial={{ opacity: 0, y: 15 }}
+                                animate={{
+                                    opacity: storyLine >= i ? (i === storyLine ? 1 : 0.65) : 0,
+                                    y: storyLine >= i ? 0 : 15,
+                                    scale: i === storyLine ? 1.03 : 0.98,
                                 }}
+                                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                                className={`mb-6 transition-all duration-700 ${
+                                    storyLine >= i ? "pointer-events-auto" : "pointer-events-none hidden"
+                                }`}
                             >
-                                {storyLine >= i && (
-                                    <TypeWriter
-                                        text={line}
-                                        speed={relationship === 'partner' ? 45 : relationship === 'friend' ? 35 : 40}
-                                        delay={200}
-                                        cursor={storyLine === i}
-                                    />
-                                )}
-                            </p>
+                                <HighlightedText
+                                    text={line}
+                                    relationship={relationship}
+                                    className="text-xl sm:text-2xl md:text-3xl lg:text-4xl"
+                                />
+                            </motion.div>
                         ))}
                     </motion.div>
                 )}
@@ -621,26 +612,25 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 1.05, filter: "blur(10px)", opacity: 0 }}
-                        className="text-center max-w-3xl mx-auto px-6"
+                        className="text-center max-w-4xl mx-auto px-6"
                     >
                         <div className="mb-8 flex justify-center">
                             <HeartProgression stage={3} />
                         </div>
                         {postChatLines.slice(0, postChatLine + 1).map((line, i) => (
-                            <p
+                            <motion.div
                                 key={i}
-                                className={`font-display leading-relaxed mb-6 ${postChatStyles[i]?.className || ''}`}
-                                style={{
-                                    ...(postChatStyles[i]?.style || {}),
-                                    color: i === postChatLine ? primaryColor : (postChatStyles[i]?.style?.color || "white")
-                                }}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                                className="mb-6"
                             >
-                                <KineticText
+                                <HighlightedText
                                     text={line}
-                                    animation={relationship === 'partner' ? 'float' : 'pop-out'}
-                                    delay={250}
+                                    relationship={relationship}
+                                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold"
                                 />
-                            </p>
+                            </motion.div>
                         ))}
                     </motion.div>
                 )}
@@ -674,8 +664,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                                     {t('intro.thisIsForYou')}
                                 </p>
                                 <h2
-                                    className="font-display text-5xl sm:text-7xl md:text-9xl lg:text-[12rem] font-black animate-glow-pulse break-words leading-tight"
-                                    style={{ color: primaryColor }}
+                                    className="font-script text-6xl sm:text-8xl md:text-9xl lg:text-[13rem] font-bold text-gradient-romantic text-glow-rose break-words leading-tight"
                                 >
                                     <KineticText
                                         text={name || (isFrench ? 'Vous' : isBengali ? 'আপনি' : isHindi ? 'आप' : 'You')}
@@ -697,7 +686,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                                         {t('common.happyBirthday')}
                                     </span>
                                 </h1>
-                                <h2 className="font-display text-5xl sm:text-7xl md:text-9xl lg:text-[12rem] font-black text-foreground animate-glow-pulse mt-4 break-words">
+                                <h2 className="font-script text-6xl sm:text-8xl md:text-9xl lg:text-[12rem] font-bold text-gradient-romantic text-glow-rose mt-4 break-words">
                                     {name}!
                                 </h2>
                             </div>
@@ -706,21 +695,23 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                         {revealStep === "final-message" && (
                             <div className="text-center max-w-4xl mx-auto px-6">
                                 {finalLines.slice(0, finalLineIndex + 1).map((line, i) => (
-                                    <p
+                                    <motion.div
                                         key={i}
-                                        className={`font-display leading-relaxed mb-5 ${
-                                            i === 0
-                                                ? "text-3xl md:text-5xl font-black text-primary"
-                                                : "text-2xl md:text-4xl text-white/90"
-                                        }`}
+                                        initial={{ opacity: 0, y: 15 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.8 }}
+                                        className="mb-5"
                                     >
-                                        <TypeWriter
+                                        <HighlightedText
                                             text={line}
-                                            speed={45}
-                                            delay={300}
-                                            cursor={finalLineIndex === i}
+                                            relationship={relationship}
+                                            className={
+                                                i === 0
+                                                    ? "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-primary"
+                                                    : "text-2xl sm:text-3xl md:text-4xl text-white/90"
+                                            }
                                         />
-                                    </p>
+                                    </motion.div>
                                 ))}
                             </div>
                         )}

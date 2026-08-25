@@ -24,7 +24,7 @@ export const SplashScreen = ({ onStart }: SplashScreenProps) => {
 
     return (
         <div
-            className={`fixed inset-0 z-50 flex flex-col items-center justify-center cursor-pointer transition-all duration-700 select-none ${
+            className={`fixed inset-0 z-50 flex flex-col items-center justify-center cursor-pointer transition-all duration-700 select-none overflow-hidden ${
                 tapped ? "opacity-0 scale-105 filter blur-sm" : "opacity-100 scale-100"
             }`}
             style={{
@@ -32,17 +32,19 @@ export const SplashScreen = ({ onStart }: SplashScreenProps) => {
             }}
             onClick={handleTap}
         >
-            {/* Ambient Background Glow */}
-            <div className="absolute w-[35rem] h-[35rem] rounded-full bg-primary/20 blur-[140px] pointer-events-none" />
+            {/* Dreamy Ambient Bokeh Auras */}
+            <div className="absolute top-[10%] left-[10%] w-[34rem] h-[34rem] rounded-full bg-[radial-gradient(circle,rgba(255,75,130,0.22)_0%,transparent_70%)] blur-[110px] pointer-events-none animate-subtle-float" />
+            <div className="absolute top-[20%] right-[10%] w-[30rem] h-[30rem] rounded-full bg-[radial-gradient(circle,rgba(255,200,100,0.18)_0%,transparent_70%)] blur-[120px] pointer-events-none animate-pulse" />
+            <div className="absolute bottom-[10%] left-[30%] w-[38rem] h-[38rem] rounded-full bg-[radial-gradient(circle,rgba(180,60,140,0.2)_0%,transparent_70%)] blur-[130px] pointer-events-none" />
 
             {/* Central Glassmorphic Card */}
             <motion.div
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="relative z-10 mx-4 max-w-lg w-full p-8 sm:p-12 rounded-[2.5rem] border border-white/10 text-center backdrop-blur-2xl shadow-[0_30px_100px_-20px_rgba(0,0,0,0.8)]"
+                className="relative z-10 mx-4 max-w-lg w-full p-8 sm:p-12 rounded-[2.5rem] border border-white/15 text-center backdrop-blur-3xl shadow-[0_30px_100px_-20px_rgba(0,0,0,0.7)]"
                 style={{
-                    background: "linear-gradient(165deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%)",
+                    background: "linear-gradient(165deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)",
                 }}
             >
                 <div className="mb-6 animate-subtle-float">
@@ -52,21 +54,24 @@ export const SplashScreen = ({ onStart }: SplashScreenProps) => {
                 <motion.div
                     whileHover={{ scale: 1.15, rotate: [0, -8, 8, 0] }}
                     transition={{ duration: 0.4 }}
-                    className="text-7xl sm:text-8xl mb-6 inline-block drop-shadow-[0_10px_30px_rgba(255,107,107,0.4)]"
+                    className="text-7xl sm:text-8xl mb-6 inline-block drop-shadow-[0_10px_30px_rgba(255,107,107,0.5)]"
                 >
                     🎂
                 </motion.div>
 
                 <h2 className="font-display text-2xl sm:text-4xl text-foreground font-black tracking-tight mb-8 leading-snug">
-                    <span className="bg-gradient-to-r from-white via-white/90 to-white/70 bg-clip-text text-transparent drop-shadow-lg">
+                    <span className="bg-gradient-to-r from-white via-white/95 to-amber-200 bg-clip-text text-transparent drop-shadow-lg block mb-2">
                         {t('splash.specialSurpriseAwaits')}
+                    </span>
+                    <span className="font-script text-3xl sm:text-5xl font-bold italic text-gradient-romantic text-glow-rose inline-block animate-subtle-float">
+                        ✨ Made with Love ✨
                     </span>
                 </h2>
 
                 <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.96 }}
-                    className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/20 bg-white/10 hover:bg-white/15 text-white font-medium text-sm sm:text-base tracking-widest uppercase transition-all shadow-[0_10px_30px_rgba(0,0,0,0.4)] hover:shadow-[0_10px_40px_rgba(255,107,107,0.3)]"
+                    className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/20 bg-white/10 hover:bg-white/20 text-white font-medium text-sm sm:text-base tracking-widest uppercase transition-all shadow-[0_10px_30px_rgba(0,0,0,0.4)] hover:shadow-[0_10px_40px_rgba(255,107,107,0.4)]"
                 >
                     <Sparkles size={18} className="text-primary animate-pulse" />
                     <span>{t('splash.tapAnywhereToBegin')}</span>
@@ -75,7 +80,7 @@ export const SplashScreen = ({ onStart }: SplashScreenProps) => {
 
             {/* Subtle Starfield */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                {Array.from({ length: 12 }).map((_, i) => (
+                {Array.from({ length: 14 }).map((_, i) => (
                     <div
                         key={i}
                         className="absolute rounded-full"
@@ -84,8 +89,8 @@ export const SplashScreen = ({ onStart }: SplashScreenProps) => {
                             height: 2 + (i % 3),
                             left: `${(i * 19 + 7) % 100}%`,
                             top: `${(i * 23 + 11) % 100}%`,
-                            backgroundColor: `hsl(${[330, 270, 45, 200][i % 4]}, 80%, 65%)`,
-                            opacity: 0.3 + ((i % 4) * 0.15),
+                            backgroundColor: `hsl(${[335, 45, 15, 200][i % 4]}, 85%, 65%)`,
+                            opacity: 0.35 + ((i % 4) * 0.15),
                             animation: `sparkle ${2.5 + (i % 3)}s ease-in-out ${(i * 0.4) % 2}s infinite`,
                         }}
                     />
