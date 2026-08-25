@@ -1,12 +1,21 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { PHOTO_ASSETS } from "@/config/birthday";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTranslation } from "@/i18n";
-import photo1Default from "@/assets/photo-1.jpg";
-import photo2Default from "@/assets/photo-2.jpg";
-import photo3Default from "@/assets/photo-3.jpg";
+import { Camera, Sparkles } from "lucide-react";
+
+/** Check if a URL looks like a real personal photo (not a stock/placeholder) */
+const isRealImageUrl = (url?: string): boolean => {
+    if (!url || !url.trim()) return false;
+    const lower = url.toLowerCase();
+    if (lower.includes('unsplash.com')) return false;
+    if (lower.includes('example.com')) return false;
+    if (lower.includes('placeholder')) return false;
+    if (lower.includes('picsum.photos')) return false;
+    return true;
+};
+
 export const PhotoGallery = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [lightbox, setLightbox] = useState<number | null>(null);
@@ -21,19 +30,15 @@ export const PhotoGallery = () => {
     const reducedMotion = isReducedMotion || isMobile;
     const transitionDuration = reducedMotion ? 0.9 : animationPacing === 'fast' ? 0.8 : animationPacing === 'slow' ? 1.5 : 1.2;
     const autoAdvanceDelay = animationPacing === 'fast' ? 4500 : animationPacing === 'slow' ? 8500 : 6000;
+
+    // Filter to only genuine configured photos
+    const validPhotos = useMemo(() => {
+        return (config.photos || []).filter(src => isRealImageUrl(src));
+    }, [config.photos]);
+
     const photos = useMemo(() => {
-        const envPhotos = config.photos?.map((src, index) => ({
-            src,
-            fallback: [photo1Default, photo2Default, photo3Default][index % 3],
-            key: `env-${index}`,
-        })) ?? [];
-        const base = envPhotos.length > 0
-            ? envPhotos
-            : [
-                { src: PHOTO_ASSETS.photo1 || photo1Default, fallback: photo1Default, key: "p1" },
-                { src: PHOTO_ASSETS.photo2 || photo2Default, fallback: photo2Default, key: "p2" },
-                { src: PHOTO_ASSETS.photo3 || photo3Default, fallback: photo3Default, key: "p3" },
-            ].filter(p => p.src !== null);
+        if (validPhotos.length === 0) return [];
+
         const captions = isFrench ? (relationship === 'partner' ? [
             "Chaque moment à tes côtés est un cadeau précieux 💖",
             "Bâtir notre merveilleux avenir ensemble ✨",
@@ -83,15 +88,19 @@ export const PhotoGallery = () => {
             "Cherishing every smile 💖",
             "A journey filled with love 🌟"
         ]);
-        return base.map((p, i) => ({
-            ...p,
-            caption: config.photoCaptions?.[i] || captions[i] || (isFrench ? "Doux souvenir" : isBengali ? "সুন্দর স্মৃতি" : isHindi ? "खूबसूरत याद" : "Beautiful memory"),
+
+        return validPhotos.map((src, i) => ({
+            src,
+            key: `photo-${i}`,
+            caption: config.photoCaptions?.[i] || captions[i % captions.length] || (isFrench ? "Doux souvenir" : isBengali ? "সুন্দর স্মৃতি" : isHindi ? "खूबसूरत याद" : "Beautiful memory"),
         }));
-    }, [relationship, config.photos, config.photoCaptions, isHindi, isBengali, isFrench]);
+    }, [validPhotos, relationship, config.photoCaptions, isHindi, isBengali, isFrench]);
+
     const x = useMotionValue(0);
     const y = useMotionValue(0);
     const rotateX = useSpring(useTransform(y, [-100, 100], [10, -10]), { damping: 20, stiffness: 150 });
     const rotateY = useSpring(useTransform(x, [-100, 100], [-10, 10]), { damping: 20, stiffness: 150 });
+
     const handleMouseMove = (e: React.MouseEvent) => {
         if (!supportsTilt || isMobile)
             return;
@@ -101,36 +110,41 @@ export const PhotoGallery = () => {
         x.set(e.clientX - centerX);
         y.set(e.clientY - centerY);
     };
+
     const handleMouseLeave = () => {
         x.set(0);
         y.set(0);
     };
+
     const handleImageLoad = (key: string, e: React.SyntheticEvent<HTMLImageElement, Event>) => {
         const { naturalWidth, naturalHeight } = e.currentTarget;
         if (naturalWidth && naturalHeight) {
             setPhotoRatios((prev) => ({ ...prev, [key]: naturalWidth / naturalHeight }));
         }
     };
+
     useEffect(() => {
         if (typeof window === 'undefined')
             return;
         setSupportsTilt(window.matchMedia('(pointer:fine)').matches && window.innerWidth >= 768);
         setIsReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     }, []);
+
     useEffect(() => {
-        if (lightbox !== null)
+        if (lightbox !== null || photos.length <= 1)
             return;
         const interval = setInterval(() => {
             setActiveIndex((prev) => (prev + 1) % photos.length);
         }, autoAdvanceDelay);
         return () => clearInterval(interval);
     }, [lightbox, photos.length, autoAdvanceDelay]);
+
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
                 setLightbox(null);
             }
-            if (lightbox !== null) {
+            if (lightbox !== null && photos.length > 0) {
                 if (event.key === 'ArrowRight') {
                     setActiveIndex((prev) => (prev + 1) % photos.length);
                 }
@@ -142,8 +156,46 @@ export const PhotoGallery = () => {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [lightbox, photos.length]);
-    if (photos.length === 0)
-        return null;
+
+    // If no real photos are configured, show a beautiful, personalized empty state
+    if (photos.length === 0) {
+        return (
+            <section className="relative z-20 px-4 py-24 max-w-4xl mx-auto overflow-hidden">
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                    className="relative rounded-[2.5rem] border border-white/10 p-8 sm:p-14 text-center overflow-hidden backdrop-blur-3xl"
+                    style={{
+                        background: "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
+                        boxShadow: "0 30px 100px -20px rgba(0,0,0,0.6)",
+                    }}
+                >
+                    <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center text-3xl sm:text-4xl mb-6 shadow-inner">
+                        📸
+                    </div>
+                    <h3 className="font-display text-3xl sm:text-5xl font-black mb-4 bg-gradient-to-r from-primary via-white to-accent bg-clip-text text-transparent">
+                        {t('memories.title')}
+                    </h3>
+                    <p className="text-base sm:text-xl text-foreground/80 font-light max-w-xl mx-auto leading-relaxed mb-6">
+                        {isFrench
+                            ? "Nous n'avons pas encore de photos ensemble ici, mais nous allons assurément créer d'innombrables souvenirs inoubliables !"
+                            : isBengali
+                            ? "আমাদের একসাথে কোনো ছবি এখনো যোগ করা হয়নি, তবে সামনে আমরা অনেক সুন্দর স্মৃতি তৈরি করব!"
+                            : isHindi
+                            ? "हमारे पास अभी साथ में तस्वीरें नहीं हैं, लेकिन आगे हम ढेर सारी खूबसूरत यादें ज़रूर बनाएंगे!"
+                            : "Sadly we don't have any picture with us yet, but we definitely will make many memories together!"}
+                    </p>
+                    <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-xs sm:text-sm text-white/60">
+                        <Sparkles size={14} className="text-primary" />
+                        <span>{isFrench ? "De nouvelles aventures à venir ✨" : isBengali ? "সামনে আসছে দারুণ সব স্মৃতি ✨" : isHindi ? "ढेर सारी नई यादें आने वाली हैं ✨" : "Future adventures await ✨"}</span>
+                    </div>
+                </motion.div>
+            </section>
+        );
+    }
+
     return (<>
       <section className="relative z-20 px-4 py-32 max-w-7xl mx-auto overflow-hidden">
         <motion.h3 initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="font-display text-6xl md:text-8xl lg:text-[10rem] font-black text-center mb-24 bg-gradient-to-b from-white via-white/80 to-white/20 bg-clip-text text-transparent drop-shadow-2xl">
@@ -153,7 +205,7 @@ export const PhotoGallery = () => {
         <motion.div onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ rotateX, rotateY, perspective: 1000 }} className={`relative group ${isMobile ? '' : 'cursor-none'}`}>
           <AnimatePresence mode="wait">
             <motion.div key={activeIndex} initial={isMobile ? { opacity: 1, scale: 1, rotateY: 0, filter: "blur(0px)" } : { opacity: 0, scale: 0.9, rotateY: -15, filter: "blur(20px)" }} animate={{ opacity: 1, scale: 1, rotateY: 0, filter: "blur(0px)" }} exit={isMobile ? undefined : { opacity: 0, scale: 1.1, rotateY: 15, filter: "blur(20px)" }} transition={{ duration: transitionDuration, ease: [0.22, 1, 0.36, 1] }} style={{ aspectRatio: photoRatios[photos[activeIndex].key] ?? 16 / 9 }} className="relative rounded-[3rem] overflow-hidden shadow-[0_60px_120px_-20px_rgba(0,0,0,0.8)] border border-white/10" onClick={() => setLightbox(activeIndex)}>
-              <img src={photos[activeIndex].src} alt={photos[activeIndex].caption} onLoad={(e) => handleImageLoad(photos[activeIndex].key, e)} onError={(e) => { (e.target as HTMLImageElement).src = photos[activeIndex].fallback; }} loading="lazy" className={`w-full h-full object-cover transition-transform [transition-duration:3000ms] ${!isMobile ? "group-hover:scale-110" : ""}`}/>
+              <img src={photos[activeIndex].src} alt={photos[activeIndex].caption} onLoad={(e) => handleImageLoad(photos[activeIndex].key, e)} loading="lazy" className={`w-full h-full object-cover transition-transform [transition-duration:3000ms] ${!isMobile ? "group-hover:scale-110" : ""}`}/>
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"/>
               
               <div className="absolute bottom-12 left-0 right-0 text-center px-12">
@@ -172,23 +224,27 @@ export const PhotoGallery = () => {
           </AnimatePresence>
 
           
-          <div className="absolute inset-0 flex items-center justify-between px-8 opacity-0 group-hover:opacity-100 transition-all duration-500">
-            <button onClick={(e) => { e.stopPropagation(); setActiveIndex((activeIndex - 1 + photos.length) % photos.length); }} className="w-20 h-20 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white text-4xl hover:bg-primary transition-all shadow-2xl">
-              ‹
-            </button>
-            <button onClick={(e) => { e.stopPropagation(); setActiveIndex((activeIndex + 1) % photos.length); }} className="w-20 h-20 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white text-4xl hover:bg-primary transition-all shadow-2xl">
-              ›
-            </button>
-          </div>
+          {photos.length > 1 && (
+            <div className="absolute inset-0 flex items-center justify-between px-8 opacity-0 group-hover:opacity-100 transition-all duration-500">
+              <button onClick={(e) => { e.stopPropagation(); setActiveIndex((activeIndex - 1 + photos.length) % photos.length); }} className="w-20 h-20 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white text-4xl hover:bg-primary transition-all shadow-2xl">
+                ‹
+              </button>
+              <button onClick={(e) => { e.stopPropagation(); setActiveIndex((activeIndex + 1) % photos.length); }} className="w-20 h-20 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white text-4xl hover:bg-primary transition-all shadow-2xl">
+                ›
+              </button>
+            </div>
+          )}
         </motion.div>
 
         
-        <div className="flex justify-center mt-20 gap-8">
-          {photos.map((photo, i) => (<motion.div key={i} onClick={() => setActiveIndex(i)} whileHover={!isMobile ? { scale: 1.15, y: -10, rotate: i % 2 === 0 ? 2 : -2 } : undefined} whileTap={{ scale: 0.9 }} className={`relative cursor-pointer rounded-3xl overflow-hidden w-28 h-28 md:w-40 md:h-40 border-4 transition-all duration-700 ${i === activeIndex ? "border-primary scale-110 shadow-[0_20px_50px_rgba(var(--color-primary-rgb,255,107,107),0.4)]" : "border-transparent opacity-30 hover:opacity-100"}`}>
-              <img src={photo.src} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = photo.fallback; }}/>
-              {i === activeIndex && (<motion.div layoutId="active-thumb-glow" className="absolute inset-0 bg-primary/10 pointer-events-none"/>)}
-            </motion.div>))}
-        </div>
+        {photos.length > 1 && (
+          <div className="flex justify-center mt-20 gap-8">
+            {photos.map((photo, i) => (<motion.div key={i} onClick={() => setActiveIndex(i)} whileHover={!isMobile ? { scale: 1.15, y: -10, rotate: i % 2 === 0 ? 2 : -2 } : undefined} whileTap={{ scale: 0.9 }} className={`relative cursor-pointer rounded-3xl overflow-hidden w-28 h-28 md:w-40 md:h-40 border-4 transition-all duration-700 ${i === activeIndex ? "border-primary scale-110 shadow-[0_20px_50px_rgba(var(--color-primary-rgb,255,107,107),0.4)]" : "border-transparent opacity-30 hover:opacity-100"}`}>
+                <img src={photo.src} className="w-full h-full object-cover"/>
+                {i === activeIndex && (<motion.div layoutId="active-thumb-glow" className="absolute inset-0 bg-primary/10 pointer-events-none"/>)}
+              </motion.div>))}
+          </div>
+        )}
       </section>
 
       <AnimatePresence>

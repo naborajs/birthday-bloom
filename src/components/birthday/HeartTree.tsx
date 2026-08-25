@@ -106,6 +106,16 @@ const LEAVES = [
     { cx: 262, cy: 92,  s: 0.7, d: 400 },
 ];
 
+const isRealImageUrl = (url?: string): boolean => {
+    if (!url || !url.trim()) return false;
+    const lower = url.toLowerCase();
+    if (lower.includes('unsplash.com')) return false;
+    if (lower.includes('example.com')) return false;
+    if (lower.includes('placeholder')) return false;
+    if (lower.includes('picsum.photos')) return false;
+    return true;
+};
+
 export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
     const [stage, setStage] = useState(0);
     const [activeMsg, setActiveMsg] = useState<string | null>(null);
@@ -113,6 +123,7 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
     const rafRefs = useRef<number[]>([]);
     const { config } = useBirthdayStore();
     const { relationship, gender, photos = [] } = config;
+    const validPhotos = useMemo(() => photos.filter(p => isRealImageUrl(p)), [photos]);
     const { isHindi, isBengali, isFrench } = useTranslation();
     const primaryColor = config.favoriteColor || 'hsl(330, 90%, 75%)';
     const { playPop } = useSoundManager();
@@ -287,7 +298,7 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
 
                         {LEAVES.map((leaf, i) => {
                             const sc = scales[i];
-                            const hasPhoto = photos.length > 0 && i < photos.length;
+                            const hasPhoto = validPhotos.length > 0 && i < validPhotos.length;
                             return (
                                 <g
                                     key={`h-${i}`}
@@ -299,7 +310,7 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
                                     {hasPhoto ? (
                                         <g>
                                             <rect x="-14" y="-14" width="28" height="32" fill="white" rx="2" />
-                                            <image href={photos[i % photos.length]} x="-12" y="-12" width="24" height="24" preserveAspectRatio="xMidYMid slice" />
+                                            <image href={validPhotos[i % validPhotos.length]} x="-12" y="-12" width="24" height="24" preserveAspectRatio="xMidYMid slice" />
                                         </g>
                                     ) : (
                                         <g>
