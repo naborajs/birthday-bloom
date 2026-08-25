@@ -18,6 +18,8 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 | Document | Purpose | Read Time |
 |---|---|---|
 | [[quick-start|quick-start.md]] | Get running locally in 5 minutes with zero code changes | 5 min |
+| [[Emotional-Psychology-and-UX|Emotional-Psychology-and-UX.md]] | Human Neurochemistry, Romantic Psychology, Celebratory Pacing & Aesthetics | 12 min |
+| [[Celebration-Sound-and-Sensory-Design|Celebration-Sound-and-Sensory-Design.md]] | Acoustic Neuro-Triggers, Mobile Haptics & Visual Sensory Harmony | 8 min |
 | [[ENV_GUIDE|ENV_GUIDE.md]] | Exhaustive environment variable reference with 15+ real-world recipes | 15 min |
 | [[setup-french|setup-french.md]] | Multi-Language Localization (French / Français) setup, European typography & recipes | 5 min |
 | [[setup-hindi|setup-hindi.md]] | Multi-Language Localization (Hindi / हिन्दी) setup, Indic typography & recipes | 5 min |
