@@ -123,7 +123,7 @@ VITE_PHOTOS=                    # Leave empty so numbered vars are used
 VITE_PHOTO_CAPTIONS=First memory|Favorite trip|Best smile
 ```
 
-The store builds the photos array: if `VITE_PHOTOS` is set, it splits on `|`. Otherwise it collects non-empty `VITE_PHOTO_1..6` values. Fallback defaults from `src/config/birthday.ts` and static imports (`src/assets/photo-1.jpg` etc.) are used when no env values are provided.
+The store builds the photos array: if `VITE_PHOTOS` is set, it splits on `|`. Otherwise it collects non-empty `VITE_PHOTO_1..6` values. If no real custom photos are provided, `PhotoGallery` automatically displays an elegant, localized placeholder card (*"Sadly we don't have any picture with us yet, but we definitely will make many memories together! 📸✨"*).
 
 ### Media Optimization Standards
 
@@ -264,7 +264,7 @@ Format for the FinalSurprise component's memory grid:
 VITE_SPECIAL_MEMORIES=First celebration;https://example.com/one.jpg|Favorite trip;https://example.com/two.jpg
 ```
 
-Each item is `text;imageUrl`. Separate multiple memories with `|`. Images are optional — without a URL, a camera placeholder icon is shown.
+Each item is `text;imageUrl`. Separate multiple memories with `|`. Images are optional. If `VITE_SPECIAL_MEMORIES` is left empty or no valid memories are provided, the section and video embed are cleanly hidden without showing broken connections.
 
 ---
 
