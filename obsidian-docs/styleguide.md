@@ -20,7 +20,7 @@ maintainers review efficiently.
 | Utilities | camelCase | `parseEnvString`, `fireConfetti` |
 | Types/Interfaces | PascalCase | `BirthdayConfig`, `FamilyMemberProfile` |
 | Env variables | UPPER_SNAKE_CASE with `VITE_` prefix | `VITE_BIRTHDAY_NAME` |
-| Files | PascalCase for components, camelCase for utils | `HeartTree.tsx`, `responsiveUtils.ts` |
+| Files | PascalCase for components, camelCase for utils | `HeartTree.tsx`, `password.ts` |
 | Directories | kebab-case | `cinematic-story`, `family-templates` |
 
 ### TypeScript

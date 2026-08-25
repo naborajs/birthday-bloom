@@ -97,8 +97,9 @@ This is an iOS limitation. Audio resumes on the next touch interaction via the A
 ```env
 VITE_PARTICLE_COUNT=10
 VITE_ANIMATION_INTENSITY=low
-# Reserved for future reduced-motion support; not currently parsed
-# VITE_REDUCED_MOTION=true
+# Active configuration option consumed in useBirthdayStore.ts and CakeCutting.tsx
+# Disables heavy 3D transforms, spring physics, and intense particle bursts
+VITE_REDUCED_MOTION=true
 ```
 
 Also check: low power mode, browser GPU acceleration settings, and avoid high-resolution transparent PNGs (use WebP).

@@ -23,6 +23,7 @@
     content="birthday website, animated birthday website, birthday surprise, romantic birthday website, cinematic birthday celebration, birthday bloom, naboraj sarkar, birthday gift website" />
   <meta name="author" content="Naboraj Sarkar" />
   <meta name="version" content="3.1.0" />
+  <link rel="canonical" href="https://birthday-bloom.vercel.app/" />
 
   <!-- Open Graph / WhatsApp / Facebook -->
   <meta property="og:title" content="A Magical Birthday Surprise Just For You ✨ — Birthday Bloom" />
@@ -30,11 +31,15 @@
     content="A handcrafted cinematic birthday celebration featuring emotional storytelling, interactive memories, and magical animations." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Birthday Bloom" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="hi_IN" />
+  <meta property="og:locale:alternate" content="bn_BD" />
+  <meta property="og:locale:alternate" content="fr_FR" />
   <meta property="og:image" content="https://birthday-bloom.vercel.app/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Birthday Bloom Magical Celebration" />
-  <meta property="og:url" content="https://birthday-bloom.vercel.app" />
+  <meta property="og:url" content="https://birthday-bloom.vercel.app/" />
 
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -42,28 +47,61 @@
   <meta name="twitter:description"
     content="Experience a heartfelt, cinematic birthday celebration with interactive moments, romantic styling, and celebration effects." />
   <meta name="twitter:image" content="https://birthday-bloom.vercel.app/og-image.jpg" />
+  <meta name="twitter:image:alt" content="Birthday Bloom Celebration Preview" />
   <meta name="twitter:site" content="@NSGAMMING699" />
+  <meta name="twitter:creator" content="@NSGAMMING699" />
 
   <!-- JSON-LD Structured Data for Rich Search Results -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Birthday Bloom",
-    "url": "https://birthday-bloom.vercel.app",
-    "description": "A cinematic, emotional birthday celebration website with physics animations, romantic storytelling, and interactive memories.",
-    "applicationCategory": "EntertainmentApplication",
-    "operatingSystem": "All",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "author": {
-      "@type": "Person",
-      "name": "Naboraj Sarkar",
-      "url": "https://github.com/naborajs"
-    }
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://birthday-bloom.vercel.app/#website",
+        "url": "https://birthday-bloom.vercel.app/",
+        "name": "Birthday Bloom",
+        "alternateName": "Birthday Bloom Celebration",
+        "description": "A magical cinematic birthday celebration website with physics animations, emotional storytelling, custom photo galleries, and festive interactions.",
+        "inLanguage": ["en", "bn", "hi", "fr"],
+        "publisher": {
+          "@type": "Person",
+          "name": "Naboraj Sarkar",
+          "url": "https://github.com/naborajs"
+        }
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://birthday-bloom.vercel.app/#webapp",
+        "name": "Birthday Bloom",
+        "url": "https://birthday-bloom.vercel.app/",
+        "description": "A cinematic, emotional birthday celebration web application featuring physics animations, romantic storytelling, custom photo galleries, 3D cake cutting, and interactive fireworks.",
+        "applicationCategory": "EntertainmentApplication",
+        "genre": "Celebration & Entertainment",
+        "operatingSystem": "All",
+        "browserRequirements": "Requires JavaScript. Requires HTML5 Canvas and WebGL support for 3D physics and visual effects.",
+        "inLanguage": ["en", "bn", "hi", "fr"],
+        "featureList": [
+          "3D Interactive Cake Cutting with WebGL physics",
+          "Canvas 2D Particle & Fireworks simulation",
+          "Multilingual localization in English, Bengali, Hindi, and French",
+          "10+ Emotional Relationship archetypes with custom narratives",
+          "Interactive Photo Gallery and Memory Lane",
+          "Music and Sound Effects Manager with Haptic feedback",
+          "Personalized Secret Passcode protection"
+        ],
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Naboraj Sarkar",
+          "url": "https://github.com/naborajs"
+        }
+      }
+    ]
   }
   </script>
 

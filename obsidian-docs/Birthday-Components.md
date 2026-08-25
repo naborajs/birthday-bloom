@@ -6,69 +6,54 @@ aliases: [Birthday Components, Cinematic Experience]
 # Birthday Components Engine
 [[DOCUMENTATION_INDEX|Back to Home]]
 
-The Birthday Bloom cinematic experience relies on a complex orchestration of 43 distinct components located inside the `src/components/birthday/` directory.
+The Birthday Bloom cinematic experience relies on an optimized suite of 29 specialized components located inside the `src/components/birthday/` directory.
 
-These components are mostly conditionally rendered via the central orchestrator: [[MainBirthday.tsx]]. Below is an exhaustive breakdown of **every single component** and its responsibility in the experience.
+These components are conditionally orchestrated across the 4-phase state machine (`splash` $\rightarrow$ `unlock` $\rightarrow$ `intro` $\rightarrow$ `main`) via [[Index.tsx]] and [[MainBirthday.tsx]].
 
 ---
 
-## 1. Orchestration & Core
-- **[[MainBirthday.tsx]]**: The absolute core of the app. It watches `phase` from [[useBirthdayStore]] (Mount, Cake, Reveal, Quotes, Final) and triggers the mount/unmount of all other components. It handles the initial splash screen logic.
-- **[[SplashScreen.tsx]]**: The entry loading screen. Handles preloading fonts, images, and audio, showing a progress bar before transitioning to the `Mount` phase.
-- **[[SoundManager.tsx]]**: An invisible component responsible for orchestrating background music using the Web Audio API based on the active phase.
+## 1. Orchestration & Gateway
+- **[[MainBirthday.tsx]]**: The central dashboard and stage orchestrator for the `main` phase. Coordinates the hero section, interest badges, message card, wishes grid, cake cutting, quiz, heart tree, galleries, and footer.
+- **[[SplashScreen.tsx]]**: The entry loading screen. Handles initial user gesture to unlock Web Audio playback, font preloading, and dynamic heart progress loading.
+- **[[PasswordUnlock.tsx]]**: Optional frosted-glass passcode gatekeeper screen. Validates birthday dates (`MMDD`, `YYYYMMDD`, etc.) or custom passwords with vibration and shake animations.
+- **[[SoundManager.tsx]]**: Singleton `AudioManager` coordinating background music loop, fade-in/fade-out, and interactive sound effects (typewriter, chimes, pops, fireworks, cake cuts).
 
-## 2. The 3D Cake Phase
-This section relies heavily on React Three Fiber (`@react-three/fiber`) and Drei.
-- **[[Cake3D.tsx]]**: The core 3D model. It uses `@react-spring/three` to animate a slice being pulled out when the user "cuts" the cake.
-- **[[CakeVisuals.tsx]]**: Connects the 3D `<Canvas>` from R3F and passes the lighting and shadow configurations to `Cake3D`.
-- **[[CakeCutting.tsx]]**: The 2D UI overlay for the cutting phase. It presents the "Swipe to cut" instruction.
-- **[[CakeKnife.tsx]]**: The interactive knife graphic that tracks cursor/touch events to slice the cake.
-- **[[CakeTypes.ts]]**: TypeScript definitions for cake variants (Maroon, Green, Pink).
+## 2. The 3D & 2D Cake Cutting Experience
+Powered by React Three Fiber (`@react-three/fiber`), Drei, and React Spring:
+- **[[Cake3D.tsx]]**: 3D cake model utilizing procedural geometry, ambient lighting, contact shadows, and dynamic slicing spring physics.
+- **[[CakeVisuals.tsx]]**: 3D `<Canvas>` scene wrapper configuring camera frustum, lighting parameters, and shadow maps.
+- **[[CakeCutting.tsx]]**: 2D/3D composite interaction orchestrator managing the 4 cake stages (flavor selection, candle blow, wish making, slice cutting) and reduced motion adaptation.
+- **[[CakeKnife.tsx]]**: Interactive cursor-tracking knife and drag gesture controller.
+- **[[CakeTypes.ts]]**: TypeScript definitions for cake variants, geometries, and slice angles.
 
-## 3. The Cinematic Reveal Phase
-After cutting the cake, the UI transitions to a text/story-driven phase.
-- **[[CinematicIntro.tsx]]**: Handles massive text reveals, using staggered framer-motion variants defined in [[dynamicVariants]].
-- **[[TypeWriter.tsx]]**: A robust typewriter effect that can stagger individual letters or words.
-- **[[TextRevealEffect.tsx]]**: A specialized reveal component for massive headlines.
-- **[[KineticText.tsx]]**: Handles fast-moving, kinetic typography effects.
-- **[[GlitchEffect.tsx]]**: A stylistic, cyberpunk-style text glitch for transitions.
+## 3. Cinematic Storytelling & Typography
+- **[[CinematicIntro.tsx]]**: Multi-scene narrative timeline coordinating storytelling sequences, typing intervals, simulated chat dialogues, and grand reveal payoff.
+- **[[TypeWriter.tsx]]**: Grapheme-safe recursive typewriter component with custom speed multipliers, blinking cursor, and sound synchronization.
+- **[[KineticText.tsx]]**: Dynamic kinetic typography component for animated character reveals and emotional headlines.
+- **[[HighlightedText.tsx]]**: Gradient and glowing text highlighter with subtle shimmer animations.
+- **[[FakeChatScene.tsx]]**: Realistic simulated messaging window where friends/loved ones type emotional birthday messages sequentially with realistic typing indicators.
 
-## 4. The Gallery & Memories
-- **[[PhotoGallery.tsx]]**: A 3D-tilt slider gallery for showing user photos loaded via env variables, with an automatic localized placeholder card when no custom photos are configured.
-- **[[VideoGallery.tsx]]**: Supports autoplaying/looping video memories.
-- **[[FakeChatScene.tsx]]**: A highly detailed component mimicking an iMessage/WhatsApp interface, where messages from friends (defined in templates) "type" themselves out sequentially.
-- **[[PasswordUnlock.tsx]]**: An optional lock screen component that requires a secret code (configured via env) before viewing the gallery.
+## 4. Memories & Media
+- **[[PhotoGallery.tsx]]**: Polaroid-style 3D-tilt slider gallery with caption reveal, lightbox expansion, and automatic multi-language placeholder card when custom photos are omitted.
+- **[[VideoGallery.tsx]]**: Video memories carousel supporting YouTube embeds and direct MP4/WebM videos.
+- **[[SpecialMemories]] / [[FinalSurprise.tsx]]**: Grand finale celebration screen with memory cards, closing video embed, and celebration replay button.
 
-## 5. Particle & Environmental Effects (Framer Motion)
-These components add the "juice" to the experience. They use pure Framer Motion or DOM manipulation.
-- **[[ParticleBurst.tsx]]**: Generates 2D particles (SVG or Div) on user clicks (like fireworks or starbursts).
-- **[[Balloons.tsx]]**: Spawns floating balloons from the bottom of the screen.
-- **[[Confetti.tsx]]**: Uses `canvas-confetti` (or custom logic) to blast confetti after the cake is cut.
-- **[[DigitalRain.tsx]]**: A Matrix-style code rain effect.
-- **[[EmojiCursorTrail.tsx]]**: Follows the user's mouse with a trail of contextual emojis.
-- **[[EnhancedFloatingElements.tsx]]**: Smoothly interpolates elements (like hearts/stars) randomly across the screen.
-- **[[FloatingElements.tsx]]**: The legacy/base floating engine.
-- **[[FloatingOrbs.tsx]]**: Renders glowing CSS orbs with blur filters.
-- **[[MorphingElements.tsx]]**: SVG shapes that morph (e.g. circle to heart).
-- **[[PartyElements.tsx]]**: Confetti poppers and party hats.
-- **[[RibbonEffect.tsx]]**: Wavy, trailing CSS ribbons.
-- **[[ShootingStars.tsx]]**: Fast CSS animations simulating shooting stars diagonally.
-- **[[SparkleEffect.tsx]] & [[SparkleRain.tsx]] & [[Sparkles.tsx]]**: Variations of glowing, rotating SVG stars using Framer Motion.
-- **[[TunnelEffect.tsx]]**: A 3D CSS optical illusion tunnel for transitions.
-- **[[WaveEffect.tsx]]**: Sine-wave animations for backgrounds.
-- **[[FireflyEffect.tsx]]**: Small glowing dots with chaotic paths (like fireflies).
-- **[[LiquidSwirl.tsx]]**: CSS filter-based gooey liquid animations.
-- **[[AnimatedGradient.tsx]]**: A shifting background hue gradient.
-- **[[CelebrationOverlay.tsx]]**: A full-screen overlay for max climax.
+## 5. Ambient & Sensory Effects Layer
+High-performance 60fps ambient visual effects running across mobile and desktop:
+- **[[PremiumFireworks.tsx]]**: HTML5 Canvas 2D fireworks particle engine with realistic physics, gravity, and color blending.
+- **[[SparkleRain.tsx]]**: Ambient falling sparkle canvas with alpha falloff.
+- **[[FireflyEffect.tsx]]**: Organic glowing fireflies floating across the screen.
+- **[[ShootingStars.tsx]]**: Ambient diagonal shooting star streaks.
+- **[[EmojiCursorTrail.tsx]]**: Interactive mouse and touch cursor trail spawning relationship-tailored emojis.
+- **[[Balloons.tsx]]**: Floating SVG balloons with physics drift and interactive click-to-pop sound effects.
+- **[[Confetti.tsx]]**: Layered multi-cannon confetti bursts powered by `canvas-confetti`.
+- **[[FloatingElements.tsx]]**: Ambient floating emoji and token particles with parallax depth.
+- **[[Sparkles.tsx]]**: SVG star sparkles and glowing ambient orbs.
 
-## 6. The Finale (HeartTree)
-- **[[HeartTree.tsx]]**: The absolute climax of the animation. It draws an SVG tree using `requestAnimationFrame`, where each branch blooms into a heart. It requires extreme performance optimization to prevent memory leaks and React `exhaustive-deps` warnings.
-- **[[HeartProgression.tsx]]**: The UI that wraps the HeartTree and displays the final personalized message.
-
-## 7. Interactive Elements
-- **[[BirthdayQuiz.tsx]]**: An optional interactive quiz about the birthday person.
-- **[[PremiumFireworks.tsx]]**: Intense fireworks rendering (Canvas or complex DOM).
-- **[[FinalSurprise.tsx]]**: The absolute final screen, showing the ultimate message and restart button.
+## 6. Climax & Gamification
+- **[[HeartTree.tsx]]**: The emotional visual climax of the celebration. Draws an SVG tree using `requestAnimationFrame` where branches bloom into hearts.
+- **[[HeartProgression.tsx]]**: Multi-stage SVG heart progress tracker used across splash and reveal screens.
+- **[[BirthdayQuiz.tsx]]**: Gamified trivia quiz that adapts questions dynamically based on the celebrant's interests and relationship.
 
 ---
 #obsidian #documentation #birthday-bloom #vault #components

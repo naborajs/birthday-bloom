@@ -1,40 +1,59 @@
-# Project: Birthday Bloom Repository Sweep
+# Project: Birthday Bloom
 
 ## Architecture
-Birthday Bloom is a modern, responsive, animated birthday celebration web application built with React 19, TypeScript 5.8, Tailwind CSS v4, Lucide React, Canvas Confetti, and Vite 8.
-Documentation is structured as an interconnected Obsidian Vault in `obsidian-docs/`. CI/CD is orchestrated with GitHub Actions in `.github/workflows/`.
+Birthday Bloom is a modern, deeply emotional, high-performance birthday celebration web experience.
+- **Frontend Core**: React 18 + TypeScript + Vite + Tailwind CSS + Radix UI + Lucide Icons.
+- **Animation & 3D Layer**: Framer Motion (page and phase transitions), Three.js + React Three Fiber + Drei + React Spring (procedural 3D cake cutting and slice physics), Canvas 2D (PremiumFireworks, EmojiCursorTrail, SparkleRain, FireflyEffect).
+- **State Management**: Zustand store (`src/features/core/store/useBirthdayStore.ts`) parsing 53 configuration variables and aliases from `.env.local` / `import.meta.env`, dynamic CSS variable theme injection (`useDynamicTheme.ts`).
+- **Audio & Haptics Subsystem**: Singleton `AudioManager` (`src/components/birthday/SoundManager.tsx`) managing background music fade-in/fade-out, interactive sound effects (typewriter, chimes, pops, boom), and mobile vibration triggers.
+- **Narrative State Machine**: 4 sequential phases (`splash` -> `unlock` -> `intro` -> `main`) with configurable narrative pacing (`fast`, `moderate`, `slow`), 10+ relationship templates, and 4 culturally authentic language engines (`en`, `bn`, `hi`, `fr`).
 
 ## Feature Inventory
 | # | Feature | Description | Milestone | Source |
 |---|---------|-------------|-----------|--------|
-| F1 | Dead Code & Unused Types Removal | Remove unused orphan file `src/config.ts` and legacy unused types from `src/config/templates.ts`. | M1 | Survey Explorer 1 |
-| F2 | URL Helper & Error Boundary Security | Unify YouTube embed parsing for `FinalSurprise.tsx` via shared helper; secure `GlobalErrorBoundary` in `src/main.tsx` with `import.meta.env.DEV`; refine `as never` casts in `useBirthdayStore.ts`. | M1 | Survey Explorer 1 |
-| F3 | Comprehensive Unit Test Coverage | Replace placeholder `src/test/example.test.ts` with comprehensive unit tests for `password.ts`, `emojiKits.ts`, `SuperPersonalizedLogic.ts`, `lib/utils.ts`, and YouTube parser. | M1 | Survey Explorer 1 |
-| F4 | Documentation Links & Anchor Repair | Fix 48 broken relative links in `README.md`, `.github/`, and `obsidian-docs/` (replace legacy `docs/` paths with `obsidian-docs/`); repair 22 broken TOC anchors in `README.md`; eliminate 11 hardcoded `file:///` local paths; resolve stale wikilinks. | M2 | Survey Explorer 2 |
-| F5 | Canonical Domain, Versions & UI Doc Sync | Align `public/sitemap.xml`, `public/robots.txt`, and docs to canonical `https://birthday-bloom.vercel.app`; synchronize version numbers (`v3.1`, `Vite 8`, `Cinematic Engine v3.1`); align `UI-Components.md` with actual components. | M2 | Survey Explorer 2 |
-| F6 | CI/CD, Workflows & Config Modernization | Whitelist Google Fonts and Audio CDNs in `vercel.json` CSP; add `.github/automation.config.json` to `.github/workflows/sync-labels.yml` paths; convert `scripts/strip-comments.js` to ESM; add `"typecheck"` script to `package.json`; remove dead `Dockerfile` in `CODEOWNERS` and duplicate config. | M3 | Survey Explorer 3 |
-| F7 | Final Quality & Forensic Integrity Audit | Run full automated quality checks (`npm run lint`, `npx tsc --noEmit`, `npm run test`, `npm run build`, `npm audit`), perform per-file git commit verification, multi-reviewer evaluation, adversarial challenger stress tests, and forensic integrity audit. | M4 | Project Orchestrator |
-| F8 | Performance Overhaul, Media Guard & iOS Glassmorphic Polish | Reduce particle overhead from ~260+ to ~50 DOM elements; guard Special Memories & Video iframes against broken connections; add auto-placeholders for empty photo gallery; add dynamic wisher name footer. | M5 | Project Orchestrator |
+| 1 | Emotional Relationship Archetypes | 10+ templates (Partner, Friend, Family, Love, Mentor, Colleague, Milestone) with custom styling | M1 | UX Survey |
+| 2 | Multilingual Localization Engines | English, Bengali, Hindi, and French culturally authentic letters, wishes, quotes, and UI copy | M1 | UX Survey |
+| 3 | Narrative Flow & Pacing Engine | 4-phase journey with speed multipliers, typing effects, and emotional phase transitions | M1 | UX Survey |
+| 4 | Sensory & Celebratory Payoff | 3D WebGL cake cutting, candle blowing, canvas fireworks physics, emoji trails, audio/haptic sync | M1 | UX Survey |
+| 5 | Dynamic Document Title | Reactive browser document title reflecting the recipient's name and celebration state | M1 | UX/SEO Survey |
+| 6 | Codebase Reliability & Memory Safety | Zero circular dependencies, zero memory leaks in RAF/intervals/audio listeners, zero unhandled errors | M2 | Arch Survey |
+| 7 | Component Cleanliness & Optimization | Prune unreferenced legacy components, optimize 60fps canvas/animation loops, ensure smooth mobile/desktop layout | M2 | Arch Survey |
+| 8 | Quality Gate Hardening | 100% pass rate for `npm run typecheck`, `npm run lint`, `npm test`, and `npm run build` | M2 | Arch Survey |
+| 9 | Documentation Suite Overhaul | Overhaul `obsidian-docs/` (all 31 files), fix pruned file citations, update `DOCUMENTATION_INDEX.md` | M3 | Docs Survey |
+| 10 | Environment Variable Synchronization | Harmonize all 53 env vars across `useBirthdayStore.ts`, `.env.example`, `ENV_GUIDE.md`, and docs | M3 | Docs Survey |
+| 11 | Root Documentation & LLM Specs | Overhaul `README.md`, `CHANGELOG.md`, `llm.txt`, and `public/llms.txt` with up-to-date architecture | M3 | Docs Survey |
+| 12 | Advanced SEO & Meta Tags | Canonical URL, `og:locale:alternate` (hi_IN, bn_BD, fr_FR), Twitter creator/card tags | M4 | SEO Survey |
+| 13 | Structured JSON-LD & PWA Manifest | Dual `WebSite` + `WebApplication` JSON-LD schemas, harmonize manifest theme color with index.html | M4 | SEO Survey |
+| 14 | Opaque-Box E2E Test Suite | 4-Tier requirement-driven test suite validating all templates, languages, env flags, and flows | E2E-Track | Dual Track |
+| 15 | Adversarial Coverage Hardening | Tier 5 white-box stress testing, gap analysis, and forensic integrity audit verification | Final-M | Dual Track |
 
 ## Milestones
 | # | Name | Scope | Dependencies | Status |
 |---|------|-------|-------------|--------|
-| 1 | Source Code Modernization & Test Expansion | F1, F2, F3 (`src/` cleanup, security guard, YouTube parser, unit tests) | none | DONE (8 commits pushed) |
-| 2 | Documentation, Links & Canonical Alignment | F4, F5 (`README.md`, `obsidian-docs/`, `.github/`, sitemap, robots, versions) | none | DONE (17 commits pushed) |
-| 3 | CI/CD Workflows, Scripts & Config Hardening | F6 (`vercel.json`, `.github/workflows/`, `scripts/`, `package.json`, `CODEOWNERS`) | none | DONE (6 commits pushed) |
-| 4 | Final Quality & Forensic Integrity Gate | F7 (Full suite verification, multi-reviewer approval, challenger pass, clean audit) | M1, M2, M3 | DONE (Gate PASS) |
-| 5 | Performance Overhaul & iOS Polish | F8 (Particle reduction, media guards, auto-placeholders, dynamic footer, glassmorphism) | M4 | DONE (10 commits pushed) |
+| M1 | Emotional UX, Pacing & Multilingual Narratives | Dynamic title hook, emotional typography, 10+ relationship templates, 4 language engines verification | None | DONE |
+| M2 | Codebase Architecture, Memory Leaks & Quality Gates | Pruning dead components, canvas/RAF lifecycle optimization, ensuring 0 circular deps, 0 lint warnings, 0 type errors | None | DONE |
+| M3 | Documentation & Knowledge Base Overhaul | Complete sync of 31 obsidian docs, ENV_GUIDE.md, .env.example, README.md, CHANGELOG.md, llm.txt | None | DONE |
+| M4 | SEO, OpenGraph & Social Sharing Optimization | index.html canonical, og:locale:alternate, Twitter metadata, JSON-LD schemas, site.webmanifest theme sync | None | DONE |
+| E2E | E2E Testing Track | Tier 1-4 opaque-box test suite, automated test runner, publish TEST_READY.md | None | DONE |
+| Final | 100% E2E Pass & Adversarial Hardening | Pass 100% E2E test suite (319/319 tests), Tier 5 Challenger stress testing, and Forensic Integrity Audit | M1, M2, M3, M4, E2E | DONE |
 
 ## Interface Contracts
-- **Strict Per-File Commit Rule**: Every single file modification was immediately tested/validated, committed with a clear conventional commit message, and pushed to remote before editing the next file (44+ total commits pushed).
-- **Automated Quality Standard**: Verified 0 lint errors/warnings (`npm run lint`), 0 TypeScript errors (`npm run typecheck`), 100% test pass rate (141/141 tests in `npm run test`), clean production builds (`npm run build` in ~900ms), and 0 security vulnerabilities (`npm audit`).
-- **YouTube Embed Helper Contract**:
-  - `getYouTubeEmbedUrl(url: string): string`
-  - Input: standard watch URL (`https://www.youtube.com/watch?v=ID`), short URL (`https://youtu.be/ID`), or embed URL (`https://www.youtube.com/embed/ID`).
-  - Output: formatted embed URL `https://www.youtube.com/embed/ID` (or original url if non-YouTube).
+### `useBirthdayStore.ts` ↔ Components & Views
+- `config: BirthdayConfig` contains normalized `name`, `relationship`, `language`, `pacingSpeed`, `soundEnabled`, `reducedMotion`, `familyMember`, `specialMemories`, `passwords`.
+- Custom hooks: `useDynamicTheme(config)` injects CSS variables into `document.documentElement.style`.
+
+### `SoundManager.tsx` ↔ Celebration Components
+- `audioManager.playEffect(name: 'click' | 'whoosh' | 'pop' | 'sparkle' | 'cheer' | 'firework' | 'cakeCut' | 'blowCandle' | 'giftOpen' | 'levelUp')`
+- `audioManager.playBgMusic(url?: string)` / `audioManager.fadeOutBgMusic(durationMs?: number)`
+
+### Environment Variables ↔ `ENV_GUIDE.md` / `.env.example`
+- Strict 1:1 mapping for all 53 variables across `Core Configuration`, `Storytelling & Content`, `Family Mode`, `Secret Vault / Password Protection`, and `Visual & Audio Controls`.
 
 ## Code Layout
-- `src/`: React source code (components, pages, hooks, state, utils, types) [M1]
-- `src/test/`: Test suites and unit tests (141 unit/stress tests across 6 files) [M1 & M4]
-- `obsidian-docs/`, `docs/`, `README.md`, `public/`: Documentation and public static metadata [M2]
-- `.github/`, `scripts/`, `vercel.json`, `package.json`: CI/CD, scripts, and root configs [M3]
+- `src/features/core/store/`: `useBirthdayStore.ts`, `useAudioStore.ts`
+- `src/config/`: `templates.ts`, `bengaliTemplates.ts`, `hindiTemplates.ts`, `frenchTemplates.ts`, `birthday.ts`, `themes.ts`
+- `src/components/birthday/`: Active visual, narrative, and interactive celebration components (29 active components)
+- `src/i18n/locales/`: `en.ts`, `bn.ts`, `hi.ts`, `fr.ts`
+- `obsidian-docs/`: 31 markdown technical, architectural, and user guides
+- `public/`: Assets, audio, favicon, `site.webmanifest`, `llms.txt`
+- `src/test/`: Unit, integration, stress, performance, and E2E test suites (11 suites, 319 passing tests)

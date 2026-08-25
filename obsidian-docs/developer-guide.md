@@ -11,36 +11,36 @@ This guide explains how Birthday Bloom is wired so a new contributor can make ch
 
 ## How to Read This Codebase
 
-1. **Start with the data flow**: `src/features/core/store/useBirthdayStore.ts` -- this is where all env parsing happens
-2. **Understand the phase machine**: `src/pages/Index.tsx` -- splash -> unlock -> intro -> main
-3. **Explore the major components**: `src/components/birthday/CinematicIntro.tsx` and `src/components/birthday/MainBirthday.tsx`
-4. **Study the models**: `src/features/core/models/familyTemplates.ts` and `dataModels.ts`
-5. **Learn the config layer**: `src/config/templates.ts` (emotional letters, presets)
+1. **Start with the data flow**: `src/features/core/store/useBirthdayStore.ts` -- where all 53 env variables and aliases are parsed and hydrated into the Zustand store.
+2. **Understand the phase machine**: `src/pages/Index.tsx` -- `splash` -> `unlock` -> `intro` -> `main`.
+3. **Explore the major components**: `src/components/birthday/CinematicIntro.tsx`, `src/components/birthday/CakeCutting.tsx`, and `src/components/birthday/MainBirthday.tsx`.
+4. **Study the models**: `src/features/core/models/familyTemplates.ts`.
+5. **Learn the config & i18n layer**: `src/config/templates.ts` and `src/i18n/locales/` (`en.ts`, `bn.ts`, `hi.ts`, `fr.ts`).
 
 ---
 
 ## Folder Structure
 
 | Path | Purpose |
-|---|---|---|
-| `src/App.tsx` | App shell: router, error boundary, ambient effects (sparkles, balloons, celebration overlay), QueryClient, Toaster |
-| `src/pages/Index.tsx` | Top-level phase state machine. Controls splash -> unlock -> intro -> main transitions with `AnimatePresence`. |
-| `src/pages/NotFound.tsx` | Simple 404 page. |
-| `src/components/birthday/` | 39 cinematic and interactive birthday components. Each is self-contained and reads from the Zustand store. |
-| `src/components/ui/` | shadcn/Radix UI primitives (button, card, dialog, etc.). |
+|---|---|
+| `src/App.tsx` | App shell: router, global error boundary, ambient effects, query client, sonner toast provider |
+| `src/pages/Index.tsx` | Top-level 4-phase state machine (`splash` -> `unlock` -> `intro` -> `main`) with `AnimatePresence`. |
+| `src/pages/NotFound.tsx` | Client-side 404 page with Link navigation. |
+| `src/components/birthday/` | 29 active cinematic and interactive birthday celebration components. |
+| `src/components/ui/` | Design system primitives (`sonner.tsx`, `tooltip.tsx`). |
 | `src/components/ErrorBoundary.tsx` | Class-based error boundary with cinematic fallback UI. |
-| `src/features/core/store/` | `useBirthdayStore.ts` (Zustand store, env parsing) + `SuperPersonalizedLogic.ts` (letter/quote/wish generation). |
-| `src/features/core/models/` | `familyTemplates.ts` (14 member types, registry, factories), `dataModels.ts` (enhanced config, validators). |
-| `src/features/core/theme/` | `useDynamicTheme.ts` -- injects CSS custom properties at runtime. |
+| `src/features/core/store/` | `useBirthdayStore.ts` (Zustand store, env parsing) + `SuperPersonalizedLogic.ts`. |
+| `src/features/core/models/` | `familyTemplates.ts` (14 member types, registry, factories). |
+| `src/features/core/theme/` | `useDynamicTheme.ts` -- computes and injects HSL/RGB CSS custom properties at runtime. |
 | `src/features/cinematic-story/` | Narrative scenes (`SpecialMessage`) and animation variants for the intro. |
-| `src/config/` | Static fallback config (`birthday.ts`), emotional letters and presets (`templates.ts`), emoji kits per relationship (`emojiKits.ts`). |
-| `src/utils/` | `password.ts` (password generation/validation), `responsiveUtils.ts` (device detection). |
-| `src/hooks/` | `use-mobile.tsx`, `use-toast.ts`. |
-| `src/lib/` | Shared utility code. |
-| `src/services/` | `audioSystem.ts`. |
-| `src/test/` | Vitest test setup and examples. |
-| `public/` | Static assets (favicon, images). |
-| `docs/` | Full documentation suite. |
+| `src/i18n/` | Multi-language translation engine (`useTranslation()`) and locale dictionaries (`en`, `bn`, `hi`, `fr`). |
+| `src/config/` | Audio assets fallback (`birthday.ts`), emotional letters and presets (`templates.ts`), cultural presets (`bengaliTemplates.ts`, `hindiTemplates.ts`, `frenchTemplates.ts`). |
+| `src/utils/` | `password.ts` (password generation and validation). |
+| `src/hooks/` | Responsive hooks (`use-mobile.tsx`). |
+| `src/lib/` | Tailwind class merging utilities (`utils.ts`). |
+| `src/test/` | Vitest test suites (unit, integration, stress, challenge). |
+| `public/` | Static assets (favicon, images, `llms.txt`, `site.webmanifest`). |
+| `obsidian-docs/` | Comprehensive 30-note documentation vault. |
 
 ---
 
@@ -48,45 +48,34 @@ This guide explains how Birthday Bloom is wired so a new contributor can make ch
 
 | Component | File | What It Does | Gated By |
 |---|---|---|---|
-| `SplashScreen` | `SplashScreen.tsx` | Tap-to-start with heart progression and ambient particles. Triggers audio awakening. | Always shown first |
-| `PasswordUnlock` | `PasswordUnlock.tsx` | Frosted-glass passcode screen with shake animation, confetti on success, dynamic hints. | `isPasswordRequired()` |
+| `SplashScreen` | `SplashScreen.tsx` | Tap-to-start with heart progression and ambient particles. Triggers audio context awakening. | Always shown first |
+| `PasswordUnlock` | `PasswordUnlock.tsx` | Frosted-glass passcode screen with shake animation, confetti on success, dynamic hints. | `isPasswordRequired()` / `VITE_PASSWORD_REQUIRED` |
 | `CinematicIntro` | `CinematicIntro.tsx` | Multi-scene timeline: storytelling -> fake chat -> post-chat -> special message -> reveal. Uses timer ref pattern. | Phase state machine |
-| `MainBirthday` | `MainBirthday.tsx` | Main dashboard: hero section, interest icons, message card, wishes grid, gift code, magnetic buttons, cake, heart tree, video gallery, final surprise. | Phase = "main" |
-| `PhotoGallery` | `PhotoGallery.tsx` | 3D-tilt cards, auto-advance, lightbox with `AnimatePresence`. | `VITE_SHOW_PHOTO_SECTION` |
+| `MainBirthday` | `MainBirthday.tsx` | Main celebration stage: hero section, interest icons, message card, wishes grid, cake, heart tree, video gallery, final surprise. | Phase = "main" |
+| `PhotoGallery` | `PhotoGallery.tsx` | Polaroid-style 3D-tilt cards, auto-advance, lightbox with `AnimatePresence`. Multi-language placeholder if no photos. | `VITE_SHOW_PHOTO_SECTION` |
 | `VideoGallery` | `VideoGallery.tsx` | Renders YouTube/MP4 videos. Returns null if no videos configured. | `VITE_SHOW_VIDEO_SECTION` |
-| `CakeCutting` | `CakeCutting.tsx` | 4-phase state machine: select cake -> blow candles -> wish -> cut -> burst -> quotes. SVG-based. | `VITE_SHOW_CAKE_SECTION` |
-| `BirthdayQuiz` | `BirthdayQuiz.tsx` | Interest-aware trivia with score tracking. | `VITE_SHOW_QUIZ_SECTION` |
+| `CakeCutting` | `CakeCutting.tsx` | 4-phase state machine: select cake -> blow candles -> wish -> cut -> burst -> quotes. SVG/3D WebGL composite with reduced-motion support. | `VITE_SHOW_CAKE_SECTION` |
+| `Cake3D` | `Cake3D.tsx` | Three.js / React Three Fiber procedural 3D cake model with dynamic slicing physics. | Rendered within CakeCutting |
+| `CakeVisuals` | `CakeVisuals.tsx` | 3D Canvas scene configuring lighting, shadows, and camera. | Rendered within CakeCutting |
+| `CakeKnife` | `CakeKnife.tsx` | Interactive cursor-tracking knife and drag gesture controller. | Rendered within CakeCutting |
+| `BirthdayQuiz` | `BirthdayQuiz.tsx` | Interest-aware trivia with score tracking and confetti burst. | `VITE_SHOW_QUIZ_SECTION` |
 | `HeartTree` | `HeartTree.tsx` | SVG stroke-dasharray tree with 5 growth stages, spark particles, quote display. | `VITE_SHOW_HEART_TREE_SECTION` |
-| `FinalSurprise` | `FinalSurprise.tsx` | Memory grid + optional final video embed. | `VITE_SHOW_FINAL_SURPRISE` |
+| `FinalSurprise` | `FinalSurprise.tsx` | Memory grid + optional final video embed and replay trigger. | `VITE_SHOW_FINAL_SURPRISE` |
 | `FakeChatScene` | `FakeChatScene.tsx` | Simulates a chat interface: types "Happy Birthday", deletes it, retypes emotional message. | CinematicIntro sub-scene |
-| `TypeWriter` | `TypeWriter.tsx` | Character-by-character typing with blinking cursor and optional onComplete callback. | Used across components |
-| `KineticText` | `KineticText.tsx` | Animated text with configurable animation type (float, pop-out, zoom-in). | Used across components |
+| `TypeWriter` | `TypeWriter.tsx` | Character-by-character typing with blinking cursor, audio sync, and optional onComplete callback. | Used across components |
+| `KineticText` | `KineticText.tsx` | Animated kinetic text with float, pop-out, or zoom reveals. | Used across components |
+| `HighlightedText` | `HighlightedText.tsx` | Shimmering text highlighter for emphasized phrases. | Used across components |
 | `HeartProgression` | `HeartProgression.tsx` | SVG heart drawn in 4 stages with trail particles. | Used across components |
-| `Balloons` | `Balloons.tsx` | Floating SVG balloons with relationship-aware colors. | Ambient layer |
+| `Balloons` | `Balloons.tsx` | Floating SVG balloons with relationship-aware colors and pop interaction. | Ambient layer |
 | `Sparkles` | `Sparkles.tsx` | Star sparkles and floating orbs. | Ambient layer |
 | `Confetti` | `Confetti.tsx` | `useConfetti` hook wrapping `canvas-confetti` with mobile-aware scaling. | Used across components |
 | `SoundManager` | `SoundManager.tsx` | `AudioManager` singleton + `useSoundManager` hook. Handles BGM loop, autoplay fallback, effect sounds. | Used across components |
 | `FloatingElements` | `FloatingElements.tsx` | Emoji floating particles with parallax depth. | Ambient layer |
-| `MorphingElements` | `MorphingElements.tsx` | Animated morphing shapes. | Ambient layer |
-| `EnhancedFloatingElements` | `EnhancedFloatingElements.tsx` | Additional floating ambient layer. | Ambient layer |
-| `SparkleRain` | `SparkleRain.tsx` | Falling sparkle particles (only in "main" phase). | Ambient layer |
-| `FireflyEffect` | `FireflyEffect.tsx` | Floating firefly particles (only in "main" phase). | Ambient layer |
-| `FloatingOrbs` | `FloatingOrbs.tsx` | Floating orb elements (only in "main" phase). | Ambient layer |
-| `ShootingStars` | `ShootingStars.tsx` | Shooting star streaks (only in "main" phase). | Ambient layer |
-| `AnimatedGradient` | `AnimatedGradient.tsx` | Background gradient animation. | Ambient layer |
-| `EmojiCursorTrail` | `EmojiCursorTrail.tsx` | Emoji trail following cursor. | Ambient layer |
-| `PremiumFireworks` | `PremiumFireworks.tsx` | Celebratory fireworks effect. | Ambient layer |
-| `PartyElements` | `PartyElements.tsx` | General party visual elements. | Ambient layer |
-| `CelebrationOverlay` | `CelebrationOverlay.tsx` | Overlay component for celebrations. | Ambient layer |
-| `SparkleEffect` | `SparkleEffect.tsx` | Sparkle visual effect. | Ambient layer |
-| `GlitchEffect` | `GlitchEffect.tsx` | Glitch visual effect. | Ambient layer |
-| `TextRevealEffect` | `TextRevealEffect.tsx` | Cinematic text reveal. | Ambient layer |
-| `ParticleBurst` | `ParticleBurst.tsx` | Particle burst effect. | Ambient layer |
-| `DigitalRain` | `DigitalRain.tsx` | Digital rain effect. | Ambient layer |
-| `LiquidSwirl` | `LiquidSwirl.tsx` | Liquid swirl effect. | Ambient layer |
-| `RibbonEffect` | `RibbonEffect.tsx` | Ribbon animation effect. | Ambient layer |
-| `TunnelEffect` | `TunnelEffect.tsx` | Tunnel animation effect. | Ambient layer |
-| `WaveEffect` | `WaveEffect.tsx` | Wave animation effect. | Ambient layer |
+| `SparkleRain` | `SparkleRain.tsx` | Falling sparkle canvas particles (active in "main" phase). | Ambient layer |
+| `FireflyEffect` | `FireflyEffect.tsx` | Floating firefly particles (active in "main" phase). | Ambient layer |
+| `ShootingStars` | `ShootingStars.tsx` | Shooting star streaks (active in "main" phase). | Ambient layer |
+| `EmojiCursorTrail` | `EmojiCursorTrail.tsx` | Emoji trail following cursor / touch position. | Ambient layer |
+| `PremiumFireworks` | `PremiumFireworks.tsx` | HTML5 Canvas 2D celebratory fireworks engine. | Ambient layer |
 
 ---
 
@@ -460,18 +449,18 @@ Singleton `AudioManager` class manages BGM loop and effect sounds. Effect audio 
 
 ### Ambient Effect Components
 
-These components take optional count/intensity props and are rendered in `Index.tsx` as persistent layers:
+These components are rendered in `Index.tsx` as optimized, 60fps persistent layers:
 
 | Component | Source | Props | Behavior |
 |---|---|---|---|
-| `Balloons` | `src/components/birthday/Balloons.tsx` | `count?: number` | SVG balloons with relationship-aware colors, floating upward with `animate-balloon-rise` |
-| `Sparkles` | `src/components/birthday/Sparkles.tsx` | `count?: number` | Star sparkles + floating blurred orbs with drift animation |
-| `FloatingOrbs` | `src/components/birthday/FloatingOrbs.tsx` | `count?: number` | Blurred floating orbs with slow drift, only rendered in "main" phase |
-| `ShootingStars` | `src/components/birthday/ShootingStars.tsx` | `count?: number` | Streaking star particles with pulsing glow, only in "main" phase |
-| `FireflyEffect` | `src/components/birthday/FireflyEffect.tsx` | `intensity?: number` | Golden glowing fireflies with organic movement, only in "main" phase |
-| `SparkleRain` | `src/components/birthday/SparkleRain.tsx` | `intensity?: number` | Falling white sparkle particles, only in "main" phase |
-
-Additional ambient components without props (rendered unconditionally): `FloatingElements`, `MorphingElements`, `EnhancedFloatingElements`, `AnimatedGradient`, `EmojiCursorTrail`, `PremiumFireworks`, `PartyElements`, `CelebrationOverlay`, `SparkleEffect`, `GlitchEffect`, `TextRevealEffect`, `ParticleBurst`, `DigitalRain`, `LiquidSwirl`, `RibbonEffect`, `TunnelEffect`, `WaveEffect`.
+| `Balloons` | `src/components/birthday/Balloons.tsx` | `count?: number` | SVG balloons with relationship-aware colors, floating upward with `animate-balloon-rise` and pop sound |
+| `Sparkles` | `src/components/birthday/Sparkles.tsx` | `count?: number` | Star sparkles + floating orbs with drift animation |
+| `ShootingStars` | `src/components/birthday/ShootingStars.tsx` | `count?: number` | Streaking star particles with pulsing glow, rendered in "main" phase |
+| `FireflyEffect` | `src/components/birthday/FireflyEffect.tsx` | `intensity?: number` | Golden glowing fireflies with organic movement, rendered in "main" phase |
+| `SparkleRain` | `src/components/birthday/SparkleRain.tsx` | `intensity?: number` | Falling white sparkle canvas particles, rendered in "main" phase |
+| `FloatingElements` | `src/components/birthday/FloatingElements.tsx` | — | Ambient emoji and token floating particles |
+| `EmojiCursorTrail` | `src/components/birthday/EmojiCursorTrail.tsx` | — | Interactive emoji particle trail following cursor / touch |
+| `PremiumFireworks` | `src/components/birthday/PremiumFireworks.tsx` | — | HTML5 Canvas 2D celebratory fireworks particle engine |
 
 ---
 
@@ -756,31 +745,6 @@ The `EnhancedBirthdayConfig.sections.customSections` array supports arbitrary se
 
 ## Utilities API
 
-### Data Validation
-
-```typescript
-import { ConfigValidator, DataValidator } from '@/features/core/models/dataModels';
-
-// Quick field checks
-DataValidator.isValidHexColor("#FF6B6B");    // true
-DataValidator.isValidEmail("user@example.com"); // true
-DataValidator.isValidName("Naboraj");          // true
-DataValidator.isValidPhoneNumber("+1-555-123-4567"); // true
-DataValidator.isValidURL("https://example.com"); // true
-DataValidator.isValidClosenessLevel(7);        // true
-
-// Full config validation
-const result = ConfigValidator.validate(myConfig);
-if (!result.isValid) {
-  console.error(result.errors);
-  console.warn(result.warnings);
-}
-
-// Sanitize and merge with defaults
-const safeConfig = ConfigValidator.sanitize(userInput);
-const fullConfig = ConfigValidator.mergeWithDefaults(partialConfig);
-```
-
 ### Password Utilities
 
 ```typescript
@@ -807,7 +771,7 @@ brother.siblingBond.closenessLevel = 9;
 const sister = createDefaultSisterProfile("Priya", new Date('2000-07-22'));
 sister.professionalLife.currentRole = "Engineer";
 
-// Generic factory (newer API)
+// Generic factory (supports all 14 member types)
 const mom = createFamilyMemberProfile('mother', 'Mom', new Date('1968-09-12'));
 ```
 
@@ -833,11 +797,10 @@ function Responsive() {
 ```
 
 ```typescript
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 
 function Notifier() {
-  const { toast } = useToast();
-  return <button onClick={() => toast({ title: "Celebration started!", duration: 5000 })}>Go</button>;
+  return <button onClick={() => toast.success("Celebration started!")}>Go</button>;
 }
 ```
 
@@ -845,85 +808,73 @@ function Notifier() {
 
 ## Data Models
 
-### EnhancedBirthdayConfig
+### BirthdayConfig
 
-The full type for programmatic configuration at `src/features/core/models/dataModels.ts:134`:
+The centralized type for application configuration at `src/features/core/store/useBirthdayStore.ts`:
 
 ```typescript
-interface EnhancedBirthdayConfig {
-  core: {
-    name: string;
-    dateOfBirth: Date;
-    gender: GenderType;
-    relationship: RelationshipType;
-    customRelationship?: string;
-  };
-  personalization: {
-    theme: ThemeType;
-    favoriteColor: string;
-    favoriteEmojis?: string[];
-    customMessage?: string;
-    interests?: string[];
-    hobbies?: string[];
-  };
-  media: {
-    photos?: { primary?: string; gallery?: string[]; thumbnails?: string[] };
-    videos?: { intro?: string; memories?: string[]; outro?: string };
-    audio?: { backgroundMusic?: string; voiceMessage?: string; soundEffects?: boolean };
-  };
-  experience: {
-    animationSpeed?: AnimationSpeed;
-    animationIntensity?: 'low' | 'medium' | 'high';
-    particleEffects?: boolean;
-    particleCount?: number;
-    showSkipButton?: boolean;
-    duration?: 'quick' | 'normal' | 'extended';
-  };
-  accessibility: {
-    reducedMotion?: boolean;
-    textSize?: 'small' | 'normal' | 'large';
-    highContrast?: boolean;
-    captions?: boolean;
-    screenReaderOptimized?: boolean;
-  };
-  messaging: {
-    letterTitle?: string;
-    letterContent?: string;
-    senderName?: string;
-    additionalMessages?: { title?: string; content?: string }[];
-  };
-  sections: {
-    showCake?: boolean;
-    showPhotos?: boolean;
-    showVideos?: boolean;
-    showQuiz?: boolean;
-    showHeartTree?: boolean;
-    showTimeline?: boolean;
-    customSections?: { id: string; title: string; content: string; order?: number }[];
-  };
-  metadata?: {
-    createdAt?: Date;
-    updatedAt?: Date;
-    version?: string;
-    tags?: string[];
-    isPublic?: boolean;
-  };
+export interface BirthdayConfig {
+  name: string;
+  age: number | null;
+  gender: GenderType;
+  relationship: RelationshipType;
+  favoriteColor: string;
+  favoriteEmojis: string[];
+  interests: string[];
+  customMessage: string;
+  birthdayDate: Date | null;
+  animationSpeed?: 'slow' | 'moderate' | 'fast';
+  animationIntensity?: 'low' | 'medium' | 'high';
+  particleCount?: number;
+  photos?: string[];
+  photoCaptions?: string[];
+  videos?: string[];
+  senderName?: string;
+  letterTitle?: string;
+  letterOverride?: string;
+  showCakeSection?: boolean;
+  showPhotoSection?: boolean;
+  showQuizSection?: boolean;
+  showHeartTreeSection?: boolean;
+  showVideoSection?: boolean;
+  showFinalSurprise?: boolean;
+  showGiftSection?: boolean;
+  finalVideoUrl?: string;
+  specialMemories?: { text: string; image?: string }[];
+  familyProfile?: FamilyMemberProfile;
+  reducedMotion?: boolean;
+  showSkipButton?: boolean;
+  soundEffectsEnabled?: boolean;
+  language?: 'en' | 'hi' | 'bn' | 'fr' | string;
+  password?: string;
+  passwordHint?: string;
+  passwordFormat?: string;
+  passwordRequired?: boolean;
 }
 ```
 
-### Type Constants
+### Relationship Types
 
 ```typescript
-import {
-  RELATIONSHIP_TYPES,
-  GENDER_TYPES,
-  THEME_TYPES,
-  ANIMATION_SPEEDS,
-  AGE_GROUPS,
-} from '@/features/core/models/dataModels';
-
-const relationship = RELATIONSHIP_TYPES.PARTNER; // "partner"
-const theme = THEME_TYPES.ROMANTIC;              // "romantic"
+export type RelationshipType =
+  | 'partner'
+  | 'friend'
+  | 'family'
+  | 'sibling'
+  | 'brother'
+  | 'sister'
+  | 'father'
+  | 'mother'
+  | 'grandfather'
+  | 'grandmother'
+  | 'uncle'
+  | 'aunt'
+  | 'cousin'
+  | 'son'
+  | 'daughter'
+  | 'guardian'
+  | 'colleague'
+  | 'mentor';
 ```
 
 ---

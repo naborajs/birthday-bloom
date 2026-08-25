@@ -5,6 +5,22 @@ All notable changes to Birthday Bloom are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.2.0] — 2026-08-26
+
+### Added
+- Complete Documentation Overhaul: synchronized all 30 Obsidian docs in `obsidian-docs/`, `DOCUMENTATION_INDEX.md`, `ENV_GUIDE.md`, `.env.example`, `README.md`, `llm.txt`, and `public/llms.txt`.
+- Exhaustive Master Reference for all 53 environment variables and aliases in `src/features/core/store/useBirthdayStore.ts`.
+- Multi-Language Localization Engine documentation covering English (`en`), Bengali (`bn`), Hindi (`hi`), and French (`fr`) with authentic cultural letters and grapheme-safe typography.
+- Documented `VITE_REDUCED_MOTION` as an active runtime configuration option consumed in `useBirthdayStore.ts` and `CakeCutting.tsx`.
+
+### Removed
+- Cleaned up 7 unreferenced and dead component files from `src/components/birthday/` (`AnimatedGradient.tsx`, `CelebrationOverlay.tsx`, `EnhancedFloatingElements.tsx`, `FloatingOrbs.tsx`, `MorphingElements.tsx`, `PartyElements.tsx`, `SparkleEffect.tsx`).
+- Pruned all stale citations to obsolete files (`src/config.ts`, `dataModels.ts`, `responsiveUtils.ts`, `audioSystem.ts`, and dead effect components) across the documentation suite.
+
+### Changed
+- Streamlined `obsidian-docs/DOCUMENTATION_INDEX.md` with read times, tags, and categorized use-case pathways.
+- Upgraded root `README.md` and `llm.txt` with up-to-date Three.js/R3F 3D architecture, Canvas 2D physics, and 60fps performance specifications.
+
 ## [3.1.1] — 2026-08-25
 
 ### Added

@@ -90,13 +90,15 @@ Everything you need to get the most out of Birthday Bloom:
 
 ## ✨ Key Features & Interactive Elements
 
-This project provides a personalized landing page built with **React 18**, **Framer Motion**, and **Tailwind CSS**. Rather than static text, it uses sequenced visual transitions and user interactions to guide the recipient through a customized birthday experience.
+This project provides a deeply emotional, personalized birthday celebration landing page built with **React 18**, **TypeScript**, **Framer Motion**, **Three.js / React Three Fiber**, **Tailwind CSS**, and **Zustand**.
 
-- **Interactive Birthday Quiz**: A gamified trivia section that adapts questions based on the recipient's hobbies or relationship.
-- **Polaroid Memory Gallery**: A responsive gallery featuring user-tilting photos and revealable captions.
-- **Interactive SVG Cake**: A vector-based cake with animated candle flames that can be blown out (removing the flame paths) and cut (splitting the cake SVG layers apart with a bounce transition).
-- **Heartfelt Surprise Letter**: A concluding message card utilizing glassmorphism styling and custom background sparkles.
-- **Interactive Balloons**: Physics-correct drifting balloons that can be popped by clicking.
+- **4 Authentic Multi-Language Localization Engines**: Culturally tailored emotional letters, wishes, quotes, and UI copy in **English (`en`)**, **Bengali (`bn`)**, **Hindi (`hi`)**, and **French (`fr`)** with grapheme-safe typography.
+- **3D WebGL Cake Cutting & Candle Blowout**: Real-time Three.js procedural cake with interactive slice separation physics (`@react-spring/three`), candle blowout detection, and reduced-motion support (`VITE_REDUCED_MOTION`).
+- **Interactive Birthday Quiz**: A gamified trivia section that adapts questions dynamically based on the recipient's hobbies, interests, and relationship.
+- **Polaroid Memory Gallery**: A responsive 3D-tilt photo carousel with caption reveals, lightbox support, and an automatic multi-language placeholder card when custom photos are omitted.
+- **Interactive Canvas Fireworks & Ambient Effects**: 60fps HTML5 Canvas 2D fireworks (`PremiumFireworks`), sparkle rain (`SparkleRain`), organic fireflies (`FireflyEffect`), and interactive emoji cursor trails (`EmojiCursorTrail`).
+- **Procedural HeartTree Finale**: An emotional climax drawing an SVG blooming tree with dynamic stage growth and personalized quotes.
+- **53 Environment Variables & Aliases**: 100% customizable without touching source code or JSX via `.env.local` or hosting dashboards.
 
 ## 🎬 Detailed Project Explainer
 
@@ -117,13 +119,13 @@ This project provides a personalized landing page built with **React 18**, **Fra
 
 ## ⚙️ Why This Project Exists
 
-Most landing page templates are static. Birthday Bloom treats the browser as a stage, using a linear state machine to control the pacing of messages, interactive transitions, and audio feedback.
+Most landing page templates are static. Birthday Bloom treats the browser as a stage, using a linear state machine (`splash` $\rightarrow$ `unlock` $\rightarrow$ `intro` $\rightarrow$ `main`) to control narrative pacing, interactive transitions, and audio/haptic sensory feedback.
 
 By coordinating asynchronous delays and Framer Motion timelines, the application guides the user through typing scenes, simulated chats, and final interactive reveals.
 
-- **Optimized Performance**: We rely on pure CSS and native SVG animations rather than heavy JavaScript physics libraries like Three.js or Matter.js. This ensures smooth 60fps animations on mobile devices while keeping the bundle size small.
-- **Engaging Text Flow**: Typewriter animations, cursor tracking, and simulated messaging windows help build a natural reading pace.
-- **Environment-Driven Configuration**: You can customize the name, relationship, messages, colors, and media simply by setting variables in a single `.env.local` file without editing code.
+- **Optimized 60fps Performance**: Procedural 3D elements (Three.js / R3F) are code-split into lazy chunks (`dist/three.*.js`), while ambient layers use lightweight Canvas 2D and hardware-accelerated CSS keyframes to ensure silky 60fps performance on mobile and desktop devices.
+- **Engaging Text Flow**: Grapheme-safe typewriter animations, cursor tracking, and simulated messaging windows build an authentic, heartfelt narrative pace.
+- **Environment-Driven Configuration**: Customize the name, relationship, language, messages, colors, and media by simply setting variables in a single `.env.local` file without editing code.
 - **Vite Build System**: Instant Hot-Module-Replacement (HMR) during local development and optimized assets for production deployments.
 
 ---

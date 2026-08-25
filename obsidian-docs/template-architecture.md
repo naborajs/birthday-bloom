@@ -23,12 +23,11 @@ Repo: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom)
 
 | File | Why It Exists |
 | --- | --- |
-| `src/features/core/store/useBirthdayStore.ts` | Parses env values and exposes runtime config. |
-| `src/features/core/models/familyTemplates.ts` | Defines reusable family member templates and factories. |
-| `src/features/core/models/dataModels.ts` | Defines enhanced app config, validation, and family collection types. |
+| `src/features/core/store/useBirthdayStore.ts` | Parses 53 env values & aliases and exposes runtime `BirthdayConfig`. |
+| `src/features/core/models/familyTemplates.ts` | Defines 14 reusable family member templates, registry, and factories. |
 | `src/config/birthday.ts` | Keeps backward-compatible photo/audio env fallbacks. |
-| `src/config.example.ts` | Shows typed examples for config, family profiles, custom templates, and validation. |
-| `src/components/birthday/*` | Renders the cinematic sections using store config. |
+| `src/config/templates.ts` | Cultural emotional letters, quotes, and tone presets. |
+| `src/components/birthday/*` | Renders the 29 active cinematic sections using store config. |
 
 ## Inheritance Model
 

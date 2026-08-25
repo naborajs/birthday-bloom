@@ -1,9 +1,4 @@
----
-tags: [environment, configuration, setup, i18n]
-aliases: [ENV_GUIDE, env-guide]
----
-
-# Complete Env Customization Guide
+# Complete Env Customization Guide — Birthday Bloom v3.1
 
 Birthday Bloom is **env-first**. Names, relationship types, messages, colors, photos, captions, videos, audio, visible sections, animation behavior, accessibility, and family-template metadata are all controlled through environment variables without editing React source files.
 
@@ -28,15 +23,6 @@ npm.cmd run dev  # PowerShell
 
 **All `VITE_` values are public in the client bundle.** Do not store sensitive database passwords, private API keys, or server secrets in `VITE_` variables.
 
-### Hydration & Verification
-
-On startup, `useBirthdayStore` parses all env variables, applies type coercion, matches aliases, and populates the reactive **Zustand** store. When `VITE_BIRTHDAY_NAME` (or `VITE_USER_NAME`) is set, the app personalizes the entire journey immediately.
-
-To verify env is loaded:
-1. Ensure `.env` or `.env.local` exists in the project root.
-2. Restart the dev server after editing.
-3. Open the browser console to confirm clean initialization.
-
 ---
 
 ## Master Environment Variables Reference (All 53 Variables & Aliases)
@@ -49,7 +35,7 @@ To verify env is loaded:
 | **Identity** | `VITE_BIRTHDAY_DATE` | — | ISO date string (`YYYY-MM-DD` or `YYYY-MM-DDTHH:mm:ss`) | `null` | Birthday timestamp. Used for passcode generation and age calculations. |
 | **Identity** | `VITE_BIRTHDAY_RELATIONSHIP` | `love`, `bestie`, `mom`, `dad`, `grandpa`, `grandma`, `work`, `teacher` | `partner` \| `friend` \| `family` \| `brother` \| `sister` \| `father` \| `mother` \| `grandfather` \| `grandmother` \| `uncle` \| `aunt` \| `cousin` \| `son` \| `daughter` \| `guardian` \| `sibling` \| `colleague` \| `mentor` \| `custom` | `friend` | Emotional relationship archetype controlling tone, letters, quiz questions, and default pacing. |
 | **Identity** | `VITE_BIRTHDAY_WISHER_NAME` | `VITE_WISHER_NAME` | string | `""` | Name of the person giving the wish (used in letters, cards, and dynamic footer signoff). |
-| **Localization** | `VITE_LANGUAGE` | `VITE_LANG`, `french`, `francais`, `hindi`, `bengali`, `bangla` | `en` \| `bn` \| `hi` \| `fr` | `en` | Multi-language localization engine switch. See [[setup-french]], [[setup-hindi]], [[setup-bengali]]. |
+| **Localization** | `VITE_LANGUAGE` | `VITE_LANG`, `french`, `francais`, `hindi`, `bengali`, `bangla` | `en` \| `bn` \| `hi` \| `fr` | `en` | Multi-language localization engine switch (English, Bengali, Hindi, French). |
 | **Aesthetics** | `VITE_BIRTHDAY_COLOR` | `VITE_THEME_COLOR`, `VITE_FAVORITE_COLOR` | hex string (e.g. `#FF6B6B`) | `#FF6B6B` | Primary theme accent color. Automatically computes HSL CSS variable tokens for `:root`. |
 | **Aesthetics** | `VITE_BIRTHDAY_INTERESTS` | `VITE_FAVORITE_ITEMS` | CSV string / list | `""` | Interests list (`car`, `music`, `art`, `coding`, `gaming`, `nature`, `travel`, `food`, `sport`, `space`). Generates hero badges and quiz questions. |
 | **Aesthetics** | `VITE_FAVORITE_EMOJIS` | `VITE_BIRTHDAY_EMOJIS` | CSV / pipe string | `""` | Custom emoji set for particle trails, interactive click bursts, and floating effects. |
@@ -110,25 +96,6 @@ VITE_LANGUAGE=hi
 # French / Français (European typography & poetic phrasing)
 VITE_LANGUAGE=fr
 ```
-
-The store automatically normalizes language codes and aliases (`french`, `francais`, `hindi`, `in`, `bengali`, `bangla`). If a key is missing from a locale dictionary, the engine safely falls back to English without throwing runtime errors.
-
----
-
-## Active Ambient & Sensory Visuals
-
-The celebration experience includes an optimized, 60fps ambient visual layer:
-
-1. **WebGL 3D Cake & Candle Blowout** (`Cake3D.tsx`, `CakeCutting.tsx`): Real-time Three.js + React Three Fiber procedural cake with interactive knife slicing physics and candle blow out detection.
-2. **Canvas 2D Celebration Fireworks** (`PremiumFireworks.tsx`): High-density celebratory fireworks burst on celebration triggers.
-3. **Interactive Sparkle Rain** (`SparkleRain.tsx`): Ambient falling sparkles with dynamic alpha blending.
-4. **Glowing Firefly Swarm** (`FireflyEffect.tsx`): Ambient organic floating fireflies across the main celebration stage.
-5. **Shooting Stars** (`ShootingStars.tsx`): Ambient diagonal meteor streaks.
-6. **Emoji Cursor Trail** (`EmojiCursorTrail.tsx`): Reactive mouse and touch trail spawning relationship-tailored emojis.
-7. **Physics Balloons & Floating Elements** (`Balloons.tsx`, `FloatingElements.tsx`): Interactive clickable pop balloons and drifting floating tokens.
-8. **Multi-Cannon Confetti** (`Confetti.tsx`): Dual-side and 360-degree confetti bursts powered by `canvas-confetti`.
-9. **Grapheme-Safe Kinetic Typography** (`KineticText.tsx`, `TypeWriter.tsx`): Typewriter and kinetic text animations supporting complex Indic conjuncts and accented French vowels.
-10. **Procedural HeartTree Finale** (`HeartTree.tsx`): Multi-stage blossoming SVG memory tree.
 
 ---
 
@@ -200,19 +167,7 @@ VITE_BIRTHDAY_CUSTOM_MESSAGE=Joyeux anniversaire mon amour ! Que cette journée 
 VITE_BIRTHDAY_WISHER_NAME=Antoine
 ```
 
-### 6. Sister / Family Member
-```env
-VITE_BIRTHDAY_NAME=Priya
-VITE_BIRTHDAY_RELATIONSHIP=sister
-VITE_FAMILY_MEMBER_TYPE=sister
-VITE_FAMILY_PREFERRED_NAME=Pri
-VITE_FAMILY_RELATIONSHIP_LABEL=Younger Sister
-VITE_FAMILY_CLOSENESS=10
-VITE_BIRTHDAY_COLOR=#FF69B4
-VITE_BIRTHDAY_WISHER_NAME=Brother
-```
-
-### 7. Accessibility & Reduced Motion Mode
+### 6. Accessibility & Reduced Motion Mode
 ```env
 VITE_BIRTHDAY_NAME=Grandma
 VITE_BIRTHDAY_RELATIONSHIP=grandmother
@@ -225,13 +180,8 @@ VITE_PARTICLE_COUNT=10
 
 ---
 
-## Production Deployment Checklist
+## Production Deployment
 
-1. **Configure Environment Variables**: Add all required `VITE_*` keys to your Vercel/Netlify/AWS dashboard.
-2. **Verify Public Assets**: Ensure background music URLs and photos are hosted over secure HTTPS.
-3. **Test Local Production Build**: Run `npm run build && npm run preview` to verify chunk splitting and 60fps performance.
-4. **Deploy**: Push changes to GitHub; automated CI workflows will test and build your project.
-
----
-
-#obsidian #documentation #birthday-bloom #vault #env #configuration
+1. **Set Environment Variables**: Add all required `VITE_*` keys in your hosting provider's dashboard.
+2. **Verify Media URLs**: Ensure audio and image URLs use secure HTTPS.
+3. **Build & Test**: Run `npm run build` and `npm test` to confirm quality gates pass.

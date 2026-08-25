@@ -178,15 +178,15 @@ Touch targets minimum 44x44px, font-size 16px to prevent auto-zoom.
 
 ### 5. Audio System Architecture
 
-Background music is loaded from `VITE_SOUND_URL` with `VITE_BGM_URL` as a backward-compatible alias. `VITE_SONG_URL` and `VITE_VOICE_MESSAGE_URL` are reserved for planned future enhancements and are not currently consumed.
+Background music is loaded from `VITE_BGM_URL` (with `VITE_SOUND_URL` as alias). Managed cleanly by the singleton `AudioManager` and `useSoundManager` hook in `src/components/birthday/SoundManager.tsx`:
 
 ```typescript
-import { audioSystem } from '@/services/audioSystem';
+import { useSoundManager } from '@/components/birthday/SoundManager';
 
-audioSystem.initBGM(bgmUrl);
-audioSystem.playEffect('pop');
-audioSystem.setBGMVolume(0.5);
-audioSystem.setEnabled(false);
+const { startMusic, playPop, setBgVolume, fadeOut } = useSoundManager();
+startMusic();
+playPop();
+setBgVolume(0.5);
 ```
 
 ### 6. Error Handling
@@ -209,7 +209,7 @@ v1.x was the initial release with a basic birthday experience, simple animations
    VITE_ANIMATION_INTENSITY=high
    VITE_PARTICLE_COUNT=25
    ```
-   Note: `VITE_THEME`, `VITE_REDUCED_MOTION`, `VITE_TEXT_SIZE`, and `VITE_HIGH_CONTRAST` are reserved for future use and are not currently parsed.
+   Note: In v3, `VITE_REDUCED_MOTION` is an **active runtime option** consumed in `useBirthdayStore.ts` and `CakeCutting.tsx`.
 
 3. **Update component imports**: v2.x introduced the Zustand store (`useBirthdayStore`) replacing direct config imports. Migrate from:
    ```typescript
@@ -219,13 +219,13 @@ v1.x was the initial release with a basic birthday experience, simple animations
    ```
    To:
    ```typescript
-   // v2.x - Zustand store
+   // v2.x / v3.x - Zustand store
    import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
    const { config } = useBirthdayStore();
    ```
-4. **Replace manual animations**: Remove custom animation code and use the built-in animation components (`ParticleBurst`, `MorphingElements`, etc.)
-5. **Apply responsive design**: Remove custom media queries; the v2.x responsive system handles all breakpoints
-6. **Add error boundaries**: Wrap your main component with the provided `ErrorBoundary`
+4. **Replace manual animations**: Use built-in celebration components (`Balloons`, `Sparkles`, `PremiumFireworks`, `Confetti`, etc.).
+5. **Apply responsive design**: The responsive design system handles all breakpoints dynamically.
+6. **Add error boundaries**: Wrap your main component with the provided `ErrorBoundary`.
 
 ### v2.x -> v3.x
 
@@ -235,7 +235,7 @@ v1.x was the initial release with a basic birthday experience, simple animations
    ```
 
 2. **Move all names, colors, media, and messages into env**:
-   - Replace `src/config.ts` edits with env values
+   - Set env values in `.env.local` instead of editing code
    - Replace hardcoded names with `VITE_BIRTHDAY_NAME`
    - Replace hardcoded colors with `VITE_BIRTHDAY_COLOR`
 
@@ -334,8 +334,7 @@ All existing env variables continue to work. New optional variables added:
 Old configuration structure still works. New `EnhancedBirthdayConfig` structure is recommended but optional.
 
 **Known migration notes:**
-- `src/config.ts` still works as a static fallback but is deprecated
-- `PHOTO_ASSETS` and `AUDIO_ASSETS` in `src/config/birthday.ts` still work but env-driven approach is preferred
+- `PHOTO_ASSETS` and `AUDIO_ASSETS` in `src/config/birthday.ts` provide static fallbacks, but env-driven configuration is the primary approach
 - Legacy relationship values like `"love"`, `"bestie"`, `"bro"`, `"mom"`, `"dad"` are normalized automatically
 
 ---
@@ -458,44 +457,16 @@ const legacyMembers = [
 const familyProfiles = batchMigrateFamilyMembers(legacyMembers);
 ```
 
-### ConfigValidator Migration Helpers
+### Profile Migration Helpers
 
 ```typescript
-import { ConfigValidator } from '@/features/core/models/dataModels';
+import { createFamilyMemberProfile, type FamilyMemberType } from '@/features/core/models/familyTemplates';
 
-function migrateV2ConfigToV3(v2Config: any): EnhancedBirthdayConfig {
-  // Map v2 flat config to v3 structured config
-  const v3Config = {
-    core: {
-      name: v2Config.name || v2Config.birthdayName || '',
-      dateOfBirth: v2Config.dateOfBirth || new Date(),
-      gender: v2Config.gender || 'other',
-      relationship: v2Config.relationship || 'friend',
-    },
-    personalization: {
-      theme: v2Config.theme || 'fun',
-      favoriteColor: v2Config.favoriteColor || v2Config.color || '#FF6B6B',
-      interests: v2Config.interests || v2Config.favoriteItems || [],
-    },
-    media: {
-      photos: v2Config.photos ? { gallery: v2Config.photos } : undefined,
-      audio: v2Config.bgmUrl ? { backgroundMusic: v2Config.bgmUrl } : undefined,
-    },
-    messaging: {
-      letterContent: v2Config.customMessage || v2Config.message || undefined,
-      senderName: v2Config.wisherName || undefined,
-    },
-    sections: {
-      showCake: v2Config.showCakeSection ?? true,
-      showPhotos: v2Config.showPhotos ?? true,
-      showVideos: v2Config.showVideos ?? true,
-    },
-  };
-
-  // Validate and sanitize the result
-  return ConfigValidator.mergeWithDefaults(
-    ConfigValidator.sanitize(v3Config)
-  );
+function createCustomMember(type: FamilyMemberType, name: string, birthDate?: Date) {
+  return createFamilyMemberProfile(type, name, birthDate, {
+    relationshipOverrides: { closenessLevel: 9 },
+    privacy: { defaultLevel: 'family', allowExport: true },
+  });
 }
 ```
 
@@ -539,7 +510,6 @@ The project preserves these older APIs for backward compatibility:
 ### API Backward Compatibility
 
 - `createDefaultBrotherProfile()` and `createDefaultSisterProfile()` factory functions remain available
-- `src/config.ts` static fallback still works (deprecated but functional)
 - `PHOTO_ASSETS` and `AUDIO_ASSETS` in `src/config/birthday.ts` continue to be supported
 - Legacy relationship value normalization (see Relationship Type Changes table)
 - Old v2.x flat config structure is still accepted by the store
@@ -619,7 +589,7 @@ The following documentation files provide additional context for migration:
    ```
 
 2. **Move all names, colors, media, and messages into env**:
-   - Replace `src/config.ts` edits with env values
+   - Set env values in `.env.local` or hosting dashboard
    - Replace hardcoded names with `VITE_BIRTHDAY_NAME`
    - Replace hardcoded colors with `VITE_BIRTHDAY_COLOR`
 

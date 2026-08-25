@@ -717,7 +717,7 @@ npm install core-js regenerator-runtime
 | --- | --- |
 | Audio doesn't autoplay | Browsers block audio until a click. Ensure the splash screen is enabled so the first click unlocks audio |
 | Images/Photos blurry | Use high-quality image URLs and `object-cover` to prevent stretching |
-| Animations laggy | Reduce `VITE_PARTICLE_COUNT` or disable `GlitchEffect` in config |
+| Animations laggy | Reduce `VITE_PARTICLE_COUNT` (e.g. 10) or enable `VITE_REDUCED_MOTION=true` |
 | Video not playing | Use the embed URL format for YouTube (`.../embed/VIDEO_ID`) |
 | Photos not loading | Use direct HTTPS image URLs. Enable CORS on image server. Test URL in browser first |
 

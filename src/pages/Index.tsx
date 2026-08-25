@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { SplashScreen } from "@/components/birthday/SplashScreen";
 import { CinematicIntro } from "@/components/birthday/CinematicIntro";
@@ -25,6 +25,16 @@ const Index = () => {
     const config = useBirthdayStore((state) => state.config);
     const { t } = useTranslation();
     useDynamicTheme();
+
+    useEffect(() => {
+        const name = config.name?.trim();
+        if (name) {
+            const greeting = t('common.happyBirthday');
+            document.title = `${greeting} ${name}! | Birthday Bloom`;
+        } else {
+            document.title = "Birthday Bloom | Magical Cinematic Birthday Celebration Website";
+        }
+    }, [config.name, t]);
 
     return (<div className="min-h-screen transition-colors duration-1000 relative overflow-hidden" style={{ background: 'var(--bg-gradient, #1a0515)' }}>
       {/* Dreamy Ambient Bokeh Auras */}

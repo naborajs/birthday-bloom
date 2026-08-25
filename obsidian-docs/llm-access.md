@@ -35,10 +35,11 @@ Use this prompt to get the best results:
 
 ## 🏗 Technical Stack Architecture
 
-- **Framework**: React 18 (Concurrent Mode).
-- **Styling**: Tailwind CSS 3.4 (PostCSS processed).
-- **Animation**: Framer Motion 11 (Spring physics oriented).
-- **Logic**: TypeScript 5.0 (Strict mode).
+- **Framework**: React 18 / 19 (Concurrent Mode).
+- **Styling**: Tailwind CSS 3.4 (PostCSS processed) + Dynamic CSS variable injection.
+- **Animation**: Framer Motion 12+ (Spring physics) + Three.js / React Three Fiber.
+- **Logic**: TypeScript 5.8 (Strict mode) + Zustand 5 (Centralized store).
+- **Localization**: Custom lightweight i18n engine (`en`, `bn`, `hi`, `fr`).
 
 ---
 
@@ -47,9 +48,9 @@ Use this prompt to get the best results:
 The following represents the internal module relationships:
 ```json
 {
-  "App": ["SparkleEffect", "CelebrationOverlay", "BrowserRouter"],
-  "Index": ["SplashScreen", "CinematicIntro", "HeartProgression", "MainBirthday"],
-  "MainBirthday": ["CakeCutting", "SoundManager", "PhotoGallery"]
+  "App": ["BrowserRouter", "ErrorBoundary", "Toaster"],
+  "Index": ["SplashScreen", "PasswordUnlock", "CinematicIntro", "MainBirthday", "FloatingElements", "ShootingStars", "EmojiCursorTrail", "PremiumFireworks", "SparkleRain", "FireflyEffect"],
+  "MainBirthday": ["CakeCutting", "BirthdayQuiz", "HeartTree", "PhotoGallery", "VideoGallery", "FinalSurprise", "SoundManager"]
 }
 ```
 
@@ -58,9 +59,9 @@ The following represents the internal module relationships:
 ## 🧠 Key Design Patterns for AI Maintenance
 
 AI models should adhere to these patterns when modifying the code:
-1. **The Phase State Machine**: Global state is an Enum in `Index.tsx`. Transitions must call `setPhase()`.
-2. **Prop Drilling Guard**: Use React context or centralized config to avoid deep drilling of personalized names.
-3. **SVG Particle System**: When adding particles, use the `SparkleEffect` logic as a blueprint.
+1. **The Phase State Machine**: State is managed via `Index.tsx` and `useBirthdayStore.ts`. Transitions must follow `splash` $\rightarrow$ `unlock` $\rightarrow$ `intro` $\rightarrow$ `main`.
+2. **Env-First Customization**: Never hardcode personal data into components. Add or read from `useBirthdayStore.ts` and `.env.example`.
+3. **Sensor & Particle Scaling**: Ambient particle layers must respect `isMobile` and `reducedMotion` settings to guarantee a 60fps budget.
 
 ---
 

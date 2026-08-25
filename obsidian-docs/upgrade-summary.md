@@ -21,23 +21,18 @@ aliases: [upgrade-summary]
 
 ## What's Been Upgraded
 
-### 🎨 **15 New Animation Effects**
+### 🎨 **Active Animation & Sensory Systems**
 
-1. **ParticleBurst** - Physics-based particle explosions
-2. **MorphingElements** - Fluid background shapes
-3. **EnhancedFloatingElements** - Floating emoji animations
-4. **SparkleRain** - Cascading sparkle effects
-5. **FireflyEffect** - Glowing flying fireflies
-6. **FloatingOrbs** - Blurred color orbs
-7. **ShootingStars** - Comet-like streaking stars
-8. **AnimatedGradient** - Rotating conic gradients
-9. **RibbonEffect** - Dancing ribbon banners
-10. **WaveEffect** - Expanding ring waves
-11. **LiquidSwirl** - Organic fluid shapes
-12. **DigitalRain** - Matrix-style falling text
-13. **GlitchEffect** - RGB offset cyberpunk glitch
-14. **TextRevealEffect** - Staggered character reveal
-15. **TunnelEffect** - Zooming depth tunnel
+1. **3D Cake Cutting & Slicing** - Three.js / R3F procedural 3D cake model with dynamic slicing physics
+2. **Canvas 2D Fireworks Engine** - HTML5 Canvas 2D particle simulation (`PremiumFireworks.tsx`)
+3. **SparkleRain** - Cascading sparkle canvas effects
+4. **FireflyEffect** - Glowing flying fireflies
+5. **ShootingStars** - Comet-like streaking stars
+6. **EmojiCursorTrail** - Interactive reactive emoji trails
+7. **Balloons & Sparkles** - Physics-spring floating tokens and click-to-pop interactions
+8. **HeartTree Climax** - Procedural multi-stage blossoming SVG memory tree
+9. **Multi-Cannon Confetti** - Dual-side and 360-degree confetti bursts (`canvas-confetti`)
+10. **Grapheme-Safe Typography** - TypeWriter and KineticText animation engines
 
 All effects are:
 - ✅ Production-optimized
@@ -218,41 +213,29 @@ Comprehensive environment variable guide with:
 
 ## New Files Created
 
-### Components (7 new)
+### Components
 ```
 src/components/birthday/
-├── ParticleBurst.tsx          (Physics particles)
-├── MorphingElements.tsx       (Fluid shapes)
-├── EnhancedFloatingElements.tsx (Floating emojis)
-├── SparkleRain.tsx            (Falling sparkles)
-├── FireflyEffect.tsx          (Flying lights)
-├── FloatingOrbs.tsx           (Blurred orbs)
+├── Cake3D.tsx                 (Procedural 3D cake)
+├── CakeCutting.tsx            (2D/3D composite interaction)
+├── CakeKnife.tsx              (Interactive slicing knife)
+├── SparkleRain.tsx            (Falling sparkle canvas)
+├── FireflyEffect.tsx          (Ambient fireflies)
 ├── ShootingStars.tsx          (Streaking stars)
-├── GlitchEffect.tsx           (RGB glitch)
-├── TextRevealEffect.tsx       (Character reveal)
-├── TunnelEffect.tsx           (Depth tunnel)
-├── RibbonEffect.tsx           (Dancing ribbon)
-├── WaveEffect.tsx             (Expanding waves)
-├── LiquidSwirl.tsx            (Organic fluid)
-└── DigitalRain.tsx            (Matrix text)
+├── PremiumFireworks.tsx       (Canvas 2D fireworks)
+├── EmojiCursorTrail.tsx       (Interactive cursor trail)
+├── Balloons.tsx               (Floating interactive balloons)
+├── Sparkles.tsx               (Ambient sparkles & orbs)
+├── HeartTree.tsx              (Procedural blossoming tree)
+└── SoundManager.tsx           (Singleton Web Audio manager)
 ```
 
-### Configuration
+### Configuration & State
 ```
-src/config/
-├── templates.ts               (6 theme presets)
-```
-
-### Services
-```
-src/services/
-├── audioSystem.ts             (Audio management)
-```
-
-### Utilities
-```
-src/utils/
-├── responsiveUtils.ts         (Device detection)
+src/features/core/
+├── store/useBirthdayStore.ts  (53 env variables & Zustand store)
+├── models/familyTemplates.ts  (14 family template archetypes)
+└── theme/useDynamicTheme.ts   (Dynamic HSL/RGB CSS injection)
 ```
 
 ### Components (Support)

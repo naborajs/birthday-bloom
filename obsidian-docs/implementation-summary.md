@@ -35,20 +35,15 @@ aliases: [implementation-summary]
 
 ```
 ✅ src/features/core/models/familyTemplates.ts (600+ lines)
-   ├── BrotherProfile interface (15 sections)
-   ├── SisterProfile interface (15 sections)
-   ├── createDefaultBrotherProfile() factory
-   ├── createDefaultSisterProfile() factory
+   ├── 14 specialized family member types
+   ├── createFamilyMemberProfile() factory
+   ├── createDefaultBrotherProfile() / createDefaultSisterProfile()
    └── Fully documented with examples
 
-✅ src/features/core/models/dataModels.ts (500+ lines)
-   ├── RELATIONSHIP_TYPES, GENDER_TYPES enums
-   ├── ANIMATION_SPEEDS, THEME_TYPES enums
-   ├── DataValidator class (12+ validators)
-   ├── ConfigValidator class
-   ├── EnhancedBirthdayConfig interface
-   ├── FamilyMember & FamilyCollection interfaces
-   └── DEFAULT_ENHANCED_CONFIG constant
+✅ src/features/core/store/useBirthdayStore.ts
+   ├── 53 environment variables & aliases parser
+   ├── BirthdayConfig reactive state management
+   └── Dynamic mood, pacing, and multi-language engine
 ```
 
 ### Documentation (2,800+ lines)
@@ -393,9 +388,8 @@ Current setup will continue working as-is.
 | File | Size | Type | Impact |
 | --- | --- | --- | --- |
 | familyTemplates.ts | ~25KB | Source | Development only |
-| dataModels.ts | ~20KB | Source | Development only |
+| useBirthdayStore.ts | ~14KB | Source | Development only |
 | Documentation | ~100KB | Markdown | No impact |
-| config.example.ts | ~20KB | Source | Development only |
 | **Bundle Impact** | **0KB** | **Gzipped** | **No increase** |
 
 ---

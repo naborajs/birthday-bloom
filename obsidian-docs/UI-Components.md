@@ -31,12 +31,12 @@ To maximize runtime performance and minimize bundle overhead, the active generic
 The primary cinematic experiences and interactive features are located in `src/components/birthday/`:
 
 - **`CinematicIntro.tsx`**: Typewriter text sequencing, story pacing, and unlock logic.
-- **`CakeCutting.tsx`**: Interactive SVG cake with candle blowout detection, wishes, and interactive cutting physics.
-- **`HeartTree.tsx`**: Procedural physics balloon aggregation and grand finale blossoming tree.
+- **`CakeCutting.tsx`**: 3D/SVG cake with candle blowout detection, wishes, and interactive cutting physics.
+- **`HeartTree.tsx`**: Procedural physics blossoming finale tree.
 - **`PhotoGallery.tsx`**: Polaroid-style 3D tilt photo grid with caption reveal and lightbox support.
 - **`MainBirthday.tsx`**: Central orchestration view coordinating ambient fireworks, audio playback, countdowns, and footer.
-- **`FloatingBalloons.tsx`**: Dynamic floating balloons with pop interactions and physics drift.
-- **`ConfettiCanvas.tsx`**: High-performance canvas confetti engine.
+- **`Balloons.tsx`**: Dynamic floating balloons with pop interactions and physics drift.
+- **`Confetti.tsx`**: High-performance canvas confetti engine.
 - **`PasswordUnlock.tsx`**: Gatekeeper passcode challenge for personalized surprise unlocks.
 
 ---
