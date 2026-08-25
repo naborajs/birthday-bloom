@@ -439,7 +439,6 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
     // Scene progression orchestrator — ONLY triggers when scene changes
     useEffect(() => {
         clearTimers();
-        const actions = actionsRef.current;
 
         if (scene === "storytelling") {
             if (typeof navigator !== 'undefined' && navigator.vibrate)
