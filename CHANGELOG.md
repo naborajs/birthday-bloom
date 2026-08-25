@@ -5,6 +5,22 @@ All notable changes to Birthday Bloom are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.1.1] — 2026-08-25
+
+### Added
+- Multi-language empty-state placeholder for Photo Gallery when no custom photos are configured.
+- iOS-level glassmorphism and spring animation utilities (`.glass-panel`, `.glass-card`, `.glass-pill`, `.animate-subtle-float`).
+
+### Changed
+- Major performance optimization: eliminated massive rendering lag by removing redundant global particle layers (`SparkleEffect`, `PartyElements`, `CelebrationOverlay`, `MorphingElements`, `EnhancedFloatingElements`, `AnimatedGradient`, `FloatingOrbs`) and scaling down active particle counts for silky 60fps performance.
+- Upgraded Splash Screen, Message card, Wishes cards, and Action buttons with frosted glass aesthetic and spring physics.
+- Replaced hardcoded footer credit with dynamic `VITE_BIRTHDAY_WISHER_NAME` (`senderName`) integration.
+
+### Fixed
+- Fixed `Special Memories` video iframe "refused to connect" error by guarding video embeds and hiding the section when no valid media is provided.
+- Filtered out stock/placeholder coding images from appearing in `PhotoGallery` and `HeartTree` when custom photos are not provided.
+- Cleaned up `.env.example` to document auto-placeholder and wisher name configurations.
+
 ## [3.1.0] — 2026-08-20
 
 ### Added
