@@ -175,9 +175,9 @@ export const PhotoGallery = () => {
                     <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center text-3xl sm:text-4xl mb-6 shadow-inner">
                         📸
                     </div>
-                    <h3 className="font-display text-3xl sm:text-5xl font-black mb-4 bg-gradient-to-r from-primary via-white to-accent bg-clip-text text-transparent">
+                    <h2 className="font-display text-3xl sm:text-5xl font-black mb-4 bg-gradient-to-r from-primary via-white to-accent bg-clip-text text-transparent">
                         {t('memories.title')}
-                    </h3>
+                    </h2>
                     <p className="text-base sm:text-xl text-foreground/80 font-light max-w-xl mx-auto leading-relaxed mb-6">
                         {isFrench
                             ? "Nous n'avons pas encore de photos ensemble ici, mais nous allons assurément créer d'innombrables souvenirs inoubliables !"
@@ -197,10 +197,10 @@ export const PhotoGallery = () => {
     }
 
     return (<>
-      <section className="relative z-20 px-4 py-32 max-w-7xl mx-auto overflow-hidden">
-        <motion.h3 initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="font-display text-6xl md:text-8xl lg:text-[10rem] font-black text-center mb-24 bg-gradient-to-b from-white via-white/80 to-white/20 bg-clip-text text-transparent drop-shadow-2xl">
+      <section className="relative z-20 px-4 py-32 max-w-7xl mx-auto overflow-hidden" aria-label="Photo Memories Gallery">
+        <motion.h2 initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="font-display text-6xl md:text-8xl lg:text-[10rem] font-black text-center mb-24 bg-gradient-to-b from-white via-white/80 to-white/20 bg-clip-text text-transparent drop-shadow-2xl">
           {t('memories.title')}
-        </motion.h3>
+        </motion.h2>
 
         <motion.div onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ rotateX, rotateY, perspective: 1000 }} className={`relative group ${isMobile ? '' : 'cursor-none'}`}>
           <AnimatePresence mode="wait">
@@ -208,10 +208,13 @@ export const PhotoGallery = () => {
               <img src={photos[activeIndex].src} alt={photos[activeIndex].caption} onLoad={(e) => handleImageLoad(photos[activeIndex].key, e)} loading="lazy" className={`w-full h-full object-cover transition-transform [transition-duration:3000ms] ${!isMobile ? "group-hover:scale-110" : ""}`}/>
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"/>
               
-              <div className="absolute bottom-12 left-0 right-0 text-center px-12">
-                <motion.p initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-display text-3xl md:text-5xl lg:text-6xl text-white font-black italic tracking-tighter drop-shadow-2xl">
+              <div className="absolute bottom-0 inset-x-0 p-8 sm:p-16 text-center">
+                <p className="font-display text-3xl sm:text-5xl md:text-7xl font-black text-white italic tracking-tighter drop-shadow-2xl mb-4">
                   {photos[activeIndex].caption}
-                </motion.p>
+                </p>
+                <span className="text-white/40 text-xs sm:text-sm tracking-[0.3em] uppercase font-bold">
+                  {activeIndex + 1} / {photos.length}
+                </span>
               </div>
 
               
@@ -226,10 +229,10 @@ export const PhotoGallery = () => {
           
           {photos.length > 1 && (
             <div className="absolute inset-0 flex items-center justify-between px-8 opacity-0 group-hover:opacity-100 transition-all duration-500">
-              <button onClick={(e) => { e.stopPropagation(); setActiveIndex((activeIndex - 1 + photos.length) % photos.length); }} className="w-20 h-20 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white text-4xl hover:bg-primary transition-all shadow-2xl">
+              <button aria-label="Previous photo" onClick={(e) => { e.stopPropagation(); setActiveIndex((activeIndex - 1 + photos.length) % photos.length); }} className="w-20 h-20 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white text-4xl hover:bg-primary transition-all shadow-2xl">
                 ‹
               </button>
-              <button onClick={(e) => { e.stopPropagation(); setActiveIndex((activeIndex + 1) % photos.length); }} className="w-20 h-20 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white text-4xl hover:bg-primary transition-all shadow-2xl">
+              <button aria-label="Next photo" onClick={(e) => { e.stopPropagation(); setActiveIndex((activeIndex + 1) % photos.length); }} className="w-20 h-20 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white text-4xl hover:bg-primary transition-all shadow-2xl">
                 ›
               </button>
             </div>
@@ -239,8 +242,8 @@ export const PhotoGallery = () => {
         
         {photos.length > 1 && (
           <div className="flex justify-center mt-20 gap-8">
-            {photos.map((photo, i) => (<motion.div key={i} onClick={() => setActiveIndex(i)} whileHover={!isMobile ? { scale: 1.15, y: -10, rotate: i % 2 === 0 ? 2 : -2 } : undefined} whileTap={{ scale: 0.9 }} className={`relative cursor-pointer rounded-3xl overflow-hidden w-28 h-28 md:w-40 md:h-40 border-4 transition-all duration-700 ${i === activeIndex ? "border-primary scale-110 shadow-[0_20px_50px_rgba(var(--color-primary-rgb,255,107,107),0.4)]" : "border-transparent opacity-30 hover:opacity-100"}`}>
-                <img src={photo.src} className="w-full h-full object-cover"/>
+            {photos.map((photo, i) => (<motion.div key={i} role="button" tabIndex={0} aria-label={`View photo ${i + 1}: ${photo.caption}`} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveIndex(i); } }} onClick={() => setActiveIndex(i)} whileHover={!isMobile ? { scale: 1.15, y: -10, rotate: i % 2 === 0 ? 2 : -2 } : undefined} whileTap={{ scale: 0.9 }} className={`relative cursor-pointer rounded-3xl overflow-hidden w-28 h-28 md:w-40 md:h-40 border-4 transition-all duration-700 focus:outline-none focus:ring-2 focus:ring-primary ${i === activeIndex ? "border-primary scale-110 shadow-[0_20px_50px_rgba(var(--color-primary-rgb,255,107,107),0.4)]" : "border-transparent opacity-30 hover:opacity-100"}`}>
+                <img src={photo.src} alt={photo.caption || `Celebration photo memory thumbnail ${i + 1}`} className="w-full h-full object-cover"/>
                 {i === activeIndex && (<motion.div layoutId="active-thumb-glow" className="absolute inset-0 bg-primary/10 pointer-events-none"/>)}
               </motion.div>))}
           </div>
@@ -256,7 +259,7 @@ export const PhotoGallery = () => {
                   {photos[lightbox].caption}
                 </p>
               </div>
-              <button onClick={() => setLightbox(null)} className="absolute top-4 right-4 md:-top-12 md:-right-12 w-12 h-12 md:w-20 md:h-20 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-2xl border border-white/10 flex items-center justify-center text-white text-xl md:text-3xl transition-all shadow-2xl z-50">
+              <button aria-label="Close enlarged photo view" onClick={() => setLightbox(null)} className="absolute top-4 right-4 md:-top-12 md:-right-12 w-12 h-12 md:w-20 md:h-20 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-2xl border border-white/10 flex items-center justify-center text-white text-xl md:text-3xl transition-all shadow-2xl z-50">
                 ✕
               </button>
             </motion.div>
