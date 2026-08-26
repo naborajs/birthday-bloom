@@ -94,7 +94,7 @@ export const EnvelopeLetterScene = ({
             }
             if (relationship === "friend") {
                 return [
-                    `जन्मदिन मुबारक मेरे सबसे पक्के यार और ज़िंदगी के सबसे बड़े पार्टनर-ইন-क्राइम को! 🚀`,
+                    `जन्मदिन मुबारक मेरे सबसे पक्के यार और ज़िंदगी के सबसे बड़े पार्टनर-इन-क्राइम को! 🚀`,
                     `हर मस्ती, हर पागलपन और हमेशा साथ निभाने के लिए दिल से शुक्रिया।`,
                     `आने वाला साल तुम्हारे लिए ढेर सारी कामयाबी और मस्ती लेकर आए! 🎉🍻`,
                 ];
@@ -177,7 +177,7 @@ export const EnvelopeLetterScene = ({
     const displayedContent = fullLetterText.slice(0, typedLength);
 
     return (
-        <div className="relative w-full max-w-xl mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[500px]">
+        <div className="relative w-full max-w-xl mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[520px]">
             <AnimatePresence mode="wait">
                 {!isExtracted ? (
                     /* The Luxury 3D Envelope */
@@ -234,9 +234,9 @@ export const EnvelopeLetterScene = ({
                                 <motion.div
                                     whileHover={{ scale: 1.15 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className="relative z-30 w-14 h-14 rounded-full bg-gradient-to-tr from-[#D11A48] via-[#FF2A6D] to-[#FF758C] shadow-[0_8px_20px_rgba(209,26,72,0.6)] border-2 border-[#FFE8B3] flex items-center justify-center cursor-pointer animate-pulse"
+                                    className="relative z-30 w-14 h-14 rounded-full bg-gradient-to-tr from-[#A60F35] via-[#D11A48] to-[#FF2A6D] shadow-[0_10px_25px_rgba(166,15,53,0.7),inset_0_2px_4px_rgba(255,255,255,0.4)] border-2 border-[#FFE8B3] flex items-center justify-center cursor-pointer animate-pulse"
                                 >
-                                    <Heart size={24} fill="white" className="text-white" />
+                                    <Heart size={24} fill="white" className="text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]" />
                                 </motion.div>
                             )}
 
@@ -244,7 +244,7 @@ export const EnvelopeLetterScene = ({
                             <motion.div
                                 animate={isOpen ? { y: -40 } : { y: 0 }}
                                 transition={{ duration: 0.6, delay: 0.4 }}
-                                className="absolute bottom-3 w-[88%] h-[60%] bg-[#FFFDF8] rounded-xl shadow-inner border border-[#E8DFC8] flex items-center justify-center z-10"
+                                className="absolute bottom-3 w-[88%] h-[60%] bg-[#FAF5EA] rounded-xl shadow-inner border border-[#E8DFC8] flex items-center justify-center z-10"
                             >
                                 <p className="font-script text-xs sm:text-sm text-[#8B5A2B] opacity-70">
                                     {isFrench ? "Pour toi..." : isBengali ? "তোমার জন্য..." : isHindi ? "आपके लिए..." : "For you..."}
@@ -260,30 +260,69 @@ export const EnvelopeLetterScene = ({
                         </p>
                     </motion.div>
                 ) : (
-                    /* The Open Parchment Letter (Exact match to Reference Image 1) */
+                    /* The Realistic Luxury Parchment Letter */
                     <motion.div
                         key="letter-card"
                         initial={{ opacity: 0, scale: 0.88, y: 60 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                        className="relative w-full max-w-lg rounded-[2.5rem] p-6 sm:p-10 shadow-[0_30px_90px_-15px_rgba(0,0,0,0.9),0_0_40px_rgba(255,200,120,0.25)] border border-[#E5C378]/80 text-[#2B1B17] overflow-hidden backdrop-blur-xl"
+                        className="relative w-full max-w-lg rounded-[2.5rem] p-7 sm:p-11 shadow-[0_35px_100px_-15px_rgba(0,0,0,0.95),0_0_0_1px_rgba(218,165,32,0.3),inset_0_0_60px_rgba(180,130,70,0.14)] border-2 border-[#D4AF37]/50 text-[#2B1B17] overflow-hidden select-none"
                         style={{
-                            background: "linear-gradient(175deg, #FFFDF8 0%, #FAF4E8 50%, #F5ECDA 100%)",
+                            backgroundColor: "#FAF3E3",
+                            backgroundImage: `
+                                radial-gradient(circle at 100% 0%, rgba(220, 180, 120, 0.25) 0%, transparent 40%),
+                                radial-gradient(circle at 0% 100%, rgba(190, 140, 80, 0.2) 0%, transparent 40%),
+                                radial-gradient(ellipse at center, #FFFCF5 0%, #FAF3E3 70%, #F0E2C8 100%)
+                            `,
                         }}
                     >
-                        {/* Top Wax Heart Stamp on Corner */}
+                        {/* Realistic Hand-Crafted Paper Grain Noise Texture Layer */}
+                        <div
+                            className="absolute inset-0 pointer-events-none opacity-[0.065] mix-blend-multiply"
+                            style={{
+                                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+                            }}
+                        />
+
+                        {/* Deckle Edge / Aged Parchment Vignette Shadow */}
+                        <div className="absolute inset-0 pointer-events-none rounded-[2.5rem] shadow-[inset_0_0_45px_rgba(160,110,50,0.18),inset_0_0_90px_rgba(120,70,25,0.08)]" />
+
+                        {/* Debossed Gold Leaf Filigree Inner Framing */}
+                        <div className="absolute inset-3.5 sm:inset-4 rounded-[2rem] border border-[#D4AF37]/30 pointer-events-none" />
+                        <div className="absolute inset-4 sm:inset-5 rounded-[1.8rem] border border-[#C59B27]/15 pointer-events-none" />
+
+                        {/* Delicate Filigree Corner Ornaments */}
+                        <div className="absolute top-5 left-5 w-4 h-4 border-t-2 border-l-2 border-[#C59B27]/50 rounded-tl-sm pointer-events-none" />
+                        <div className="absolute top-5 right-5 w-4 h-4 border-t-2 border-r-2 border-[#C59B27]/50 rounded-tr-sm pointer-events-none" />
+                        <div className="absolute bottom-5 left-5 w-4 h-4 border-b-2 border-l-2 border-[#C59B27]/50 rounded-bl-sm pointer-events-none" />
+                        <div className="absolute bottom-5 right-5 w-4 h-4 border-b-2 border-r-2 border-[#C59B27]/50 rounded-br-sm pointer-events-none" />
+
+                        {/* Subtle Central Botanical / Heart Watermark */}
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
+                            <Heart size={260} fill="#6B4423" />
+                        </div>
+
+                        {/* Realistic 3D Red Wax Seal Stamp with Drip Rim & Gold Halo */}
                         <motion.div
-                            initial={{ scale: 0, rotate: -30 }}
-                            animate={{ scale: 1, rotate: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2, type: "spring" }}
-                            className="absolute top-6 right-6 w-12 h-12 rounded-full bg-gradient-to-tr from-[#D11A48] via-[#FF2A6D] to-[#FF758C] shadow-[0_8px_20px_rgba(209,26,72,0.5)] border-2 border-[#FFE8B3] flex items-center justify-center z-20"
+                            initial={{ scale: 0, rotate: -40 }}
+                            animate={{ scale: 1, rotate: -8 }}
+                            transition={{ duration: 0.6, delay: 0.25, type: "spring", stiffness: 180 }}
+                            className="absolute top-5 sm:top-6 right-5 sm:right-7 z-20 cursor-pointer"
                         >
-                            <Heart size={20} fill="white" className="text-white" />
+                            <div className="relative w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-[#8C0B2B] via-[#C9184A] to-[#FF4D6D] shadow-[0_8px_22px_rgba(140,11,43,0.65),inset_0_3px_6px_rgba(255,255,255,0.45),inset_0_-3px_6px_rgba(0,0,0,0.5)] border-2 border-[#FFD166]/60 flex items-center justify-center">
+                                {/* Debossed Inner Ring */}
+                                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white/25 flex items-center justify-center shadow-inner">
+                                    <Heart size={18} fill="white" className="text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.4)]" />
+                                </div>
+                                {/* Molten Wax Irregular Edge Details */}
+                                <div className="absolute -top-0.5 -left-0.5 w-3 h-3 rounded-full bg-[#C9184A] opacity-80" />
+                                <div className="absolute -bottom-1 -right-0.5 w-3.5 h-3 rounded-full bg-[#8C0B2B] opacity-90" />
+                            </div>
                         </motion.div>
 
                         {/* Title Header */}
-                        <div className="text-center mb-6 pr-10">
-                            <h2 className="font-display italic text-2xl sm:text-4xl font-bold text-[#3B1F2B] tracking-tight">
+                        <div className="relative z-10 text-center mb-6 sm:mb-8 pr-12 sm:pr-14">
+                            <h2 className="font-display italic text-2xl sm:text-4xl font-bold text-[#3B1F2B] tracking-tight drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)]">
                                 {isFrench
                                     ? "Un Message de Mon Cœur"
                                     : isBengali
@@ -292,25 +331,25 @@ export const EnvelopeLetterScene = ({
                                             ? "मेरे दिल का एक पैग़ाम"
                                             : "A Message From My Heart"}
                             </h2>
-                            <div className="flex justify-center mt-1 text-purple-600 text-lg">
+                            <div className="flex justify-center mt-1.5 text-purple-600 text-base sm:text-lg">
                                 💜
                             </div>
                         </div>
 
-                        {/* Live Handwritten Cursive Text Body */}
-                        <div className="font-script text-xl sm:text-2xl md:text-[1.65rem] text-[#2C1810] leading-relaxed tracking-wide space-y-4 min-h-[220px] whitespace-pre-line select-none">
+                        {/* Live Handwritten Cursive Text Body on Parchment */}
+                        <div className="relative z-10 font-script text-xl sm:text-2xl md:text-[1.65rem] text-[#24120B] leading-relaxed sm:leading-[1.75] tracking-wide min-h-[220px] whitespace-pre-line select-none font-medium drop-shadow-[0_0.5px_1px_rgba(255,255,255,0.7)]">
                             {displayedContent}
                             {!isTypingDone && (
-                                <span className="inline-block w-[3px] h-[1.1em] ml-1 bg-[#FF2A6D] animate-blink align-middle" />
+                                <span className="inline-block w-[2.5px] h-[1.1em] ml-1 bg-[#C9184A] animate-blink align-middle shadow-[0_0_8px_rgba(201,24,74,0.7)]" />
                             )}
                         </div>
 
-                        {/* Cute Sticker & Sign-off */}
-                        <div className="mt-8 pt-4 border-t border-[#E5C378]/40 flex items-center justify-between">
-                            <div className="font-script text-lg sm:text-xl text-[#6B4423] font-semibold">
-                                {senderName ? `— ${senderName}` : `— Forever Yours 💕`}
+                        {/* Luxury Stationery Footer / Sign-off & Stickers */}
+                        <div className="relative z-10 mt-8 pt-4 border-t border-[#D4AF37]/35 flex items-center justify-between">
+                            <div className="font-script text-lg sm:text-xl md:text-2xl text-[#5C3215] font-bold tracking-wide">
+                                {senderName ? `— ${senderName}` : `— Yours Forever 💕`}
                             </div>
-                            <div className="text-3xl sm:text-4xl filter drop-shadow-md select-none animate-subtle-float">
+                            <div className="flex items-center gap-1.5 text-3xl sm:text-4xl filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)] select-none animate-subtle-float">
                                 {relationship === "friend" ? "🎉😎" : relationship === "family" ? "💐💝" : "🧸🧸"}
                             </div>
                         </div>
@@ -321,14 +360,15 @@ export const EnvelopeLetterScene = ({
                                 initial={{ opacity: 0, y: 15 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5 }}
-                                className="mt-6 flex justify-center"
+                                className="relative z-10 mt-6 flex justify-center"
                             >
                                 <button
+                                    type="button"
                                     onClick={onComplete}
-                                    className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-gradient-to-r from-[#FF2A6D] to-[#FF758C] text-white font-medium text-sm sm:text-base tracking-wide shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95"
+                                    className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-gradient-to-r from-[#A60F35] via-[#D11A48] to-[#FF2A6D] text-white font-semibold text-sm sm:text-base tracking-wide shadow-[0_10px_25px_rgba(166,15,53,0.4)] hover:shadow-[0_15px_35px_rgba(166,15,53,0.6)] transition-all duration-300 hover:scale-105 active:scale-95 border border-[#FFD166]/40"
                                 >
                                     <span>{isFrench ? "Continuer la Fête ✨" : isBengali ? "উদযাপনে এগিয়ে যান ✨" : isHindi ? "जश्न जारी रखें ✨" : "Continue Celebration ✨"}</span>
-                                    <ArrowRight size={16} />
+                                    <ArrowRight size={17} />
                                 </button>
                             </motion.div>
                         )}
