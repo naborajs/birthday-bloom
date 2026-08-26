@@ -92,6 +92,9 @@ Everything you need to get the most out of Birthday Bloom:
 
 This project provides a deeply emotional, personalized birthday celebration landing page built with **React 18**, **TypeScript**, **Framer Motion**, **Three.js / React Three Fiber**, **Tailwind CSS**, and **Zustand**.
 
+- **Instant URL Query Customization & Zero-Code Sharing**: Create and share personalized surprises instantly via URL parameters (e.g. `?name=Sophia&rel=partner&lang=en&sender=Alex`) without modifying code.
+- **1-Click Viral Social Sharing & Referral Modal**: Built-in glassmorphic sharing suite for WhatsApp, X (Twitter), Telegram, Facebook, LinkedIn, and native Web Share API with UTM tracking.
+- **Advanced Dynamic SEO & Generative Engine Optimization (GEO)**: Reactive document head manager (`useDynamicSEO.ts`), full Schema.org structured data (`WebSite`, `WebApplication`, `FAQPage`, `HowTo`, `BreadcrumbList`, `SocialEvent`), multilingual sitemap with `hreflang` alternates, and AI bot discovery rules.
 - **4 Authentic Multi-Language Localization Engines**: Culturally tailored emotional letters, wishes, quotes, and UI copy in **English (`en`)**, **Bengali (`bn`)**, **Hindi (`hi`)**, and **French (`fr`)** with grapheme-safe typography.
 - **3D WebGL Cake Cutting & Candle Blowout**: Real-time Three.js procedural cake with interactive slice separation physics (`@react-spring/three`), candle blowout detection, and reduced-motion support (`VITE_REDUCED_MOTION`).
 - **Interactive Birthday Quiz**: A gamified trivia section that adapts questions dynamically based on the recipient's hobbies, interests, and relationship.

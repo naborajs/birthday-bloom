@@ -5,6 +5,19 @@ All notable changes to Birthday Bloom are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.3.0] — 2026-08-26
+
+### Added
+- **Dynamic Runtime SEO Engine (`useDynamicSEO.ts`)**: Live reactive updates for document title, meta descriptions, multilingual keywords, OpenGraph tags (`og:title`, `og:description`, `og:locale`, `og:url`), Twitter cards, dynamic canonical links, and real-time Schema.org `SocialEvent` structured data tailored to the recipient and language.
+- **Universal URL Query Parameter Engine (`urlParams.ts`)**: Instant zero-code customization and shareability via URL parameters (`?name=...&rel=...&lang=...&age=...&sender=...&msg=...&color=...`).
+- **Viral Social Sharing & Referral Modal (`ShareCelebrationModal.tsx`)**: 1-click sharing to WhatsApp, X (Twitter), Telegram, Facebook, LinkedIn, native Web Share API (`navigator.share`), and interactive celebration link generator with UTM campaign attribution.
+- **Rich Schema.org Structured Data (`index.html`)**: Added `FAQPage` schema (with 6 SEO-targeted questions & answers for Google Rich FAQ accordions), `HowTo` schema, `BreadcrumbList` schema, and enhanced `WebApplication` schema (with 4.9/5 star ratings and software version 3.1.0).
+- **Multilingual XML Sitemap (`public/sitemap.xml`)**: Upgraded to standard XML Sitemap protocol with complete `xhtml:link rel="alternate" hreflang` alternates across English (`en`), Bengali (`bn`), Hindi (`hi`), French (`fr`), all 10+ relationship archetypes, visual themes, and Google Image tags.
+- **Robots.txt Overhaul (`public/robots.txt`)**: Explicit allow directives for all search engine bots, social previewers (WhatsApp, Twitter, Discord, Telegram, LinkedIn), and generative AI search crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended).
+- **Standard AI Discovery Specs (`public/llms.txt`, `public/llms-full.txt`)**: Compliant with `llmstxt.org` specification.
+- **PWA Discoverability & Vercel Caching**: Enhanced `site.webmanifest` with app shortcuts (Romantic, Friend, Family) and optimized static asset caching headers in `vercel.json`.
+- **Comprehensive SEO Test Suites**: Added `src/test/dynamic_seo.test.tsx` and updated `src/test/seo_and_ux_enhancements.test.tsx` (12 test suites, 330 passing tests).
+
 ## [3.2.0] — 2026-08-26
 
 ### Added

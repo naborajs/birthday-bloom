@@ -4,7 +4,8 @@
 Birthday Bloom is a modern, deeply emotional, high-performance birthday celebration web experience.
 - **Frontend Core**: React 18 + TypeScript + Vite + Tailwind CSS + Radix UI + Lucide Icons.
 - **Animation & 3D Layer**: Framer Motion (page and phase transitions), Three.js + React Three Fiber + Drei + React Spring (procedural 3D cake cutting and slice physics), Canvas 2D (PremiumFireworks, EmojiCursorTrail, SparkleRain, FireflyEffect).
-- **State Management**: Zustand store (`src/features/core/store/useBirthdayStore.ts`) parsing 53 configuration variables and aliases from `.env.local` / `import.meta.env`, dynamic CSS variable theme injection (`useDynamicTheme.ts`).
+- **State Management**: Zustand store (`src/features/core/store/useBirthdayStore.ts`) parsing URL query parameters and 53 configuration variables from `.env.local` / `import.meta.env`, dynamic CSS variable theme injection (`useDynamicTheme.ts`).
+- **SEO & Social Engine**: Runtime SEO manager (`src/features/core/seo/useDynamicSEO.ts`), full Schema.org structured data (WebSite, WebApplication, FAQPage, HowTo, BreadcrumbList, SocialEvent), multilingual sitemap with `hreflang` alternates, crawler directives for search & AI bots, and viral sharing modal (`ShareCelebrationModal.tsx`).
 - **Audio & Haptics Subsystem**: Singleton `AudioManager` (`src/components/birthday/SoundManager.tsx`) managing background music fade-in/fade-out, interactive sound effects (typewriter, chimes, pops, boom), and mobile vibration triggers.
 - **Narrative State Machine**: 4 sequential phases (`splash` -> `unlock` -> `intro` -> `main`) with configurable narrative pacing (`fast`, `moderate`, `slow`), 10+ relationship templates, and 4 culturally authentic language engines (`en`, `bn`, `hi`, `fr`).
 
@@ -26,6 +27,9 @@ Birthday Bloom is a modern, deeply emotional, high-performance birthday celebrat
 | 13 | Structured JSON-LD & PWA Manifest | Dual `WebSite` + `WebApplication` JSON-LD schemas, harmonize manifest theme color with index.html | M4 | SEO Survey |
 | 14 | Opaque-Box E2E Test Suite | 4-Tier requirement-driven test suite validating all templates, languages, env flags, and flows | E2E-Track | Dual Track |
 | 15 | Adversarial Coverage Hardening | Tier 5 white-box stress testing, gap analysis, and forensic integrity audit verification | Final-M | Dual Track |
+| 16 | Dynamic Runtime SEO & GEO Engine | Reactive head tags, SocialEvent schema, URL param routing, and AI bot discovery rules | M5-SEO | SEO Upgrade |
+| 17 | Viral Sharing & Referral Modal | 1-click WhatsApp/X/Telegram sharing, native Web Share API, and custom link generator | M5-SEO | Reach Upgrade |
+| 18 | Multilingual Sitemaps & Rich Schemas | Full `hreflang` alternates in sitemap.xml, FAQPage, HowTo, and BreadcrumbList JSON-LD schemas | M5-SEO | SEO Upgrade |
 
 ## Milestones
 | # | Name | Scope | Dependencies | Status |
@@ -36,24 +40,14 @@ Birthday Bloom is a modern, deeply emotional, high-performance birthday celebrat
 | M4 | SEO, OpenGraph & Social Sharing Optimization | index.html canonical, og:locale:alternate, Twitter metadata, JSON-LD schemas, site.webmanifest theme sync | None | DONE |
 | E2E | E2E Testing Track | Tier 1-4 opaque-box test suite, automated test runner, publish TEST_READY.md | None | DONE |
 | Final | 100% E2E Pass & Adversarial Hardening | Pass 100% E2E test suite (319/319 tests), Tier 5 Challenger stress testing, and Forensic Integrity Audit | M1, M2, M3, M4, E2E | DONE |
-
-## Interface Contracts
-### `useBirthdayStore.ts` ↔ Components & Views
-- `config: BirthdayConfig` contains normalized `name`, `relationship`, `language`, `pacingSpeed`, `soundEnabled`, `reducedMotion`, `familyMember`, `specialMemories`, `passwords`.
-- Custom hooks: `useDynamicTheme(config)` injects CSS variables into `document.documentElement.style`.
-
-### `SoundManager.tsx` ↔ Celebration Components
-- `audioManager.playEffect(name: 'click' | 'whoosh' | 'pop' | 'sparkle' | 'cheer' | 'firework' | 'cakeCut' | 'blowCandle' | 'giftOpen' | 'levelUp')`
-- `audioManager.playBgMusic(url?: string)` / `audioManager.fadeOutBgMusic(durationMs?: number)`
-
-### Environment Variables ↔ `ENV_GUIDE.md` / `.env.example`
-- Strict 1:1 mapping for all 53 variables across `Core Configuration`, `Storytelling & Content`, `Family Mode`, `Secret Vault / Password Protection`, and `Visual & Audio Controls`.
+| M5 | Advanced SEO & Viral Reach Upgrade | Dynamic SEO manager, URL query param parser, viral sharing modal, FAQPage/HowTo schemas, multilingual hreflang sitemap, AI bot rules | M1-M4 | DONE |
 
 ## Code Layout
-- `src/features/core/store/`: `useBirthdayStore.ts`, `useAudioStore.ts`
+- `src/features/core/seo/`: `useDynamicSEO.ts` (Reactive head and schema metadata)
+- `src/features/core/store/`: `useBirthdayStore.ts`, `urlParams.ts` (Central state & query param engine)
 - `src/config/`: `templates.ts`, `bengaliTemplates.ts`, `hindiTemplates.ts`, `frenchTemplates.ts`, `birthday.ts`, `themes.ts`
-- `src/components/birthday/`: Active visual, narrative, and interactive celebration components (29 active components)
+- `src/components/birthday/`: Active visual, narrative, and interactive celebration components (30 active components including `ShareCelebrationModal.tsx`)
 - `src/i18n/locales/`: `en.ts`, `bn.ts`, `hi.ts`, `fr.ts`
 - `obsidian-docs/`: 31 markdown technical, architectural, and user guides
-- `public/`: Assets, audio, favicon, `site.webmanifest`, `llms.txt`
-- `src/test/`: Unit, integration, stress, performance, and E2E test suites (11 suites, 319 passing tests)
+- `public/`: Assets, audio, favicon, `site.webmanifest`, `sitemap.xml`, `robots.txt`, `llms.txt`, `llms-full.txt`
+- `src/test/`: Unit, integration, stress, SEO, and E2E test suites (12 suites, 330 passing tests)

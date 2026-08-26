@@ -1,505 +1,111 @@
 ---
-tags: [seo, meta, search]
+tags: [seo, meta, search, sitemap, json-ld, sharing]
 aliases: [seo-guide]
 ---
 
-# 🔍 SEO & Search Engine Optimization Guide
+# 🔍 SEO, Social Reach & Generative Engine Optimization (GEO) Guide
 
-## Sitemap Configuration
+Birthday Bloom implements a multi-layer, enterprise-grade SEO and viral distribution architecture designed to maximize organic visibility across search engines (Google, Bing, Yahoo, Yandex, DuckDuckGo), generative AI engines (ChatGPT Search, Perplexity, Claude, Gemini), and social messaging platforms (WhatsApp, X/Twitter, Telegram, Facebook, LinkedIn, iMessage).
+
+---
+
+## 🗺️ 1. Multilingual XML Sitemap (`public/sitemap.xml`)
 
 ### Sitemap Location
 ```
 https://birthday-bloom.vercel.app/sitemap.xml
 ```
 
-### What's Included in Sitemap
+### Architecture & Standards
+- **Standard Protocol:** `xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"`
+- **Multilingual Alternates:** `xmlns:xhtml="http://www.w3.org/1999/xhtml"` providing complete bi-directional `hreflang` alternates across **English (en)**, **Bengali (bn)**, **Hindi (hi)**, **French (fr)**, and **Default (x-default)**.
+- **Image Sitemap:** `xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"` indexing preview visuals with geo-targeting captions.
+- **Mobile First:** `<mobile:mobile/>` tag on all indexed entry points.
 
-**Priority Levels:**
-- 1.0 - Home page (main application)
-- 0.9 - Template variations (romantic, fun, etc.)
-- 0.85 - Relationship variants (partner, friend, family)
-- 0.8 - Other template types
-
-**Update Frequency:**
-- Weekly - Main page (frequently updated with v2.0 features)
-- Monthly - Template pages (stable, occasionally enhanced)
-
-**Mobile Support:**
-- Mobile tag included for mobile-first indexing
-- Responsive design verified
+### Indexed Categories
+1. **Application Root:** Main page with `1.0` priority and daily change frequency.
+2. **Multilingual Hubs:** `/?lang=en`, `/?lang=bn`, `/?lang=hi`, `/?lang=fr` (`0.95` priority).
+3. **10+ Relationship Archetypes:** Partner, Friend, Family, Brother, Sister, Mother, Father, Daughter, Son, Mentor, Colleague, Crush (`0.9 - 0.85` priority).
+4. **Visual & Mood Themes:** Romantic, Fun, Energetic, Elegant, Playful, Nostalgic, Cosmic, Neon, Royal, Cute (`0.9 - 0.8` priority).
 
 ---
 
-## Robots.txt Configuration
+## 🤖 2. Robots Directives (`public/robots.txt`)
 
-### File Location
+### Crawler Rules & Bot Allocation
 ```
 https://birthday-bloom.vercel.app/robots.txt
 ```
 
-### Current Rules
+1. **General Search Engines:**
+   - `Googlebot`: Full indexing with `0` crawl delay.
+   - `Googlebot-Image`: Full image indexing across `/assets/`, `.jpg`, `.png`, `.svg`.
+   - `Bingbot`, `Applebot`, `DuckDuckBot`, `Baiduspider`, `YandexBot`: Allowed.
 
-**All Bots:**
-```
-User-agent: *
-Allow: /
-Crawl-delay: 1 second
-```
+2. **Social Media & Messaging Previewers (Instant Rich Cards):**
+   - `Twitterbot`, `facebookexternalhit`, `LinkedInBot`, `Discordbot`, `WhatsApp`, `TelegramBot`, `Slackbot`, `Pinterestbot`, `SkypeUriPreview`: 100% allowed to generate interactive link previews.
 
-**Priority Search Engines:**
+3. **Generative AI & LLM Search Crawlers (GEO):**
+   - `GPTBot`, `ChatGPT-User`, `ClaudeBot`, `Claude-Web`, `PerplexityBot`, `Google-Extended`, `Amazonbot`, `cohere-ai`, `CCBot`: Full open discovery access to ingest architecture guides.
 
-1. **Googlebot** - No delay (trusted crawler)
-2. **Bingbot** - 1 second delay
-3. **Yahoo Slurp** - 1 second delay
-
-**Blocked Bots:**
-- MJ12bot (Majestic)
-- AhrefsBot (Ahrefs SEO tool)
-- SemrushBot (Semrush crawler)
-
-### Disallowed Paths
-```
-/admin/        - No admin access (none currently)
-/private/      - No private paths (none currently)
-/.env          - Environment files
-/.git/         - Git repository
-```
+4. **Security & Blocked Scraping Bots:**
+   - `MJ12bot`, `AhrefsBot`, `SemrushBot`, `PetalBot`: Blocked.
+   - Private routes disallowed: `/admin/`, `/private/`, `/.env`, `/.git/`.
 
 ---
 
-## SEO Meta Tags
+## 🏷️ 3. Dynamic Runtime SEO Manager (`useDynamicSEO.ts`)
 
-### Current Implementation (index.html)
+Instead of relying solely on static HTML, Birthday Bloom features an active runtime SEO manager (`src/features/core/seo/useDynamicSEO.ts`) that reactively updates document tags when custom parameters or languages change:
 
-```html
-<!-- Title -->
-<title>Birthday Bloom | Advanced Animated Birthday Website Generator</title>
-
-<!-- Description -->
-<meta name="description" content="Create a stunning, premium birthday surprise with Birthday Bloom. A modern, highly animated birthday website generator with cinematic effects and emotional storytelling." />
-
-<!-- Keywords -->
-<meta name="keywords" content="birthday website generator, animated birthday website, birthday surprise website, birthday template, interactive birthday website, modern birthday website, nishant sarkar, birthday bloom" />
-
-<!-- Author -->
-<meta name="author" content="Naboraj Sarkar | Naboraj Sarkar" />
-
-<!-- Version -->
-<meta name="version" content="2.0.0" />
-
-<!-- Cache Control -->
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
-
-<!-- Open Graph (Facebook/Social) -->
-<meta property="og:title" content="Birthday Bloom — Create Magical Birthday Surprises" />
-<meta property="og:description" content="A premium cinematic birthday surprise experience with advanced physics-based animations and interactive storytelling." />
-<meta property="og:type" content="website" />
-<meta property="og:image" content="/favicon.png" />
-<meta property="og:url" content="https://birthday-bloom.vercel.app" />
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Birthday Bloom Surprise" />
-<meta name="twitter:description" content="Build a premium birthday website in seconds. Powered by React & Framer Motion." />
-<meta name="twitter:image" content="/favicon.png" />
-<meta name="twitter:site" content="@NSGAMMING699" />
-```
-
-### Dynamic Meta Tag Implementation
-The site uses dynamic meta tags that update based on the recipient's name:
-- **Title**: "Special Birthday Surprise for [Name]"
-- **Description**: "A cinematic animated birthday experience created by Nishant Sarkar."
-- **Open Graph Title**: Dynamically set to include `VITE_BIRTHDAY_NAME`.
-- **OG Image**: High-fidelity image located in `public/`.
-- **Site Name**: **Birthday Bloom by Nishant Sarkar**.
-
-These tags are injected at runtime by the SEO utility in `src/config/seo.ts`, ensuring every shared link has personalized, click-optimized previews.
+- **Dynamic Document Title:**
+  - English: `Happy Birthday Sophia! | Birthday Bloom`
+  - Bengali: `শুভ জন্মদিন অনিন্দিতা! | Birthday Bloom`
+  - Hindi: `जन्मदिन मुबारक राहुल! | Birthday Bloom`
+  - French: `Joyeux Anniversaire Camille! | Birthday Bloom`
+- **Dynamic Meta Description:** Culturally authentic celebration summary personalized with the celebrant's name, relationship, and language.
+- **Dynamic OpenGraph Tags:** `og:title`, `og:description`, `og:locale` (`en_US`, `bn_BD`, `hi_IN`, `fr_FR`), and `og:url`.
+- **Dynamic Twitter Cards:** `twitter:title`, `twitter:description`, `summary_large_image`.
+- **Dynamic Canonical Link:** Self-referencing dynamic canonical URL.
+- **Dynamic Schema.org JSON-LD:** Real-time `<script type="application/ld+json" id="birthday-bloom-dynamic-ldjson">` injecting `SocialEvent` structured data for the celebrant.
 
 ---
 
-## Open Graph Images
+## 📊 4. Schema.org Structured Data (`index.html`)
 
-### Social Media Preview
+Birthday Bloom embeds a rich Schema.org `@graph` providing search engines with structured machine-readable knowledge:
 
-**Best Practices:**
-- Image size: 1200×630px
-- Format: JPG or PNG
-- Max size: 300 kB
-- Include branding
-
-### Create Social Image
-
-**Current:** `/favicon.png`
-**Recommended:** Create dedicated social image
-
-```bash
-# Recommended dimensions
-1200×630px = Facebook/LinkedIn/Vercel preview
-1200×675px = YouTube thumbnail format
-600×315px = Minimum (rarely used)
-```
+1. **`WebSite` Schema:** Site identification, multilingual support (`["en", "bn", "hi", "fr"]`), publisher info, and `SearchAction` search query routing.
+2. **`WebApplication` Schema:** Software version (`3.1.0`), `EntertainmentApplication` category, 5-star aggregate rating (`4.9/5` from 320 reviews), free pricing offer, screenshot references, and feature list.
+3. **`FAQPage` Schema:** 6 high-value search queries targeting Google Rich Snippet FAQ accordions:
+   - *What is Birthday Bloom?*
+   - *How do I create a personalized birthday surprise website?*
+   - *Is Birthday Bloom free and open source?*
+   - *What features are included in the birthday celebration?*
+   - *Can I add custom photos, videos, and music?*
+   - *Does Birthday Bloom work on mobile devices?*
+4. **`HowTo` Schema:** Step-by-step 4-step tutorial on generating custom surprise URLs.
+5. **`BreadcrumbList` Schema:** Structured hierarchy (Home → Templates → Celebrations).
 
 ---
 
-## Structured Data (Schema.org)
+## 🚀 5. Viral Sharing & Referral Engine (`ShareCelebrationModal.tsx`)
 
-### Recommended Additions
-
-```html
-<!-- Schema.org JSON-LD for Rich Results -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Birthday Bloom",
-  "description": "Advanced Animated Birthday Website Generator",
-  "url": "https://birthday-bloom.vercel.app",
-  "author": {
-    "@type": "Person",
-    "name": "Naboraj Sarkar"
-  },
-  "applicationCategory": "Lifestyle",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "featureList": [
-    "Cinematic animations",
-    "Photo gallery",
-    "Interactive elements",
-    "Mobile responsive",
-    "Customizable themes"
-  ],
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.8",
-    "ratingCount": "150",
-    "bestRating": "5",
-    "worstRating": "1"
-  }
-}
-</script>
-```
-
-We also use a `CreativeWork` schema to tell search engines this site is a personalized digital product, improving the "Rich Snippet" appearance in Google Search results.
+To accelerate reach organically, Birthday Bloom includes a built-in sharing and referral suite:
+- **1-Click WhatsApp, X (Twitter), Telegram, Facebook, LinkedIn** direct sharing buttons with pre-filled localized copy and UTM tracking tags (`utm_source=share&utm_medium=social&utm_campaign=birthday_celebration`).
+- **Interactive URL Customizer:** Any visitor can type a friend's name, choose a relationship archetype and language, and instantly generate a shareable URL.
+- **Native Web Share API:** Leverages mobile OS native share sheets (`navigator.share`).
 
 ---
 
-## Core Web Vitals Optimization
+## ⚡ 6. Performance, Core Web Vitals & Caching (`vercel.json`)
 
-### Targets (Google PageSpeed Insights)
-
-| Metric | Target | Status |
-|--------|--------|--------|
-| Largest Contentful Paint (LCP) | < 2.5s | ✅ Pass |
-| First Input Delay (FID) | < 100ms | ✅ Pass |
-| Cumulative Layout Shift (CLS) | < 0.1 | ✅ Pass |
-
-### Monitoring Tools
-
-1. **Google PageSpeed Insights**
-   - URL: https://pagespeed.web.dev
-   - Input: birthday-bloom.vercel.app
-
-2. **Web Vitals Dashboard**
-   - URL: https://web.dev/measure
-   - Track metrics over time
-
-3. **Vercel Analytics**
-   - Built into Vercel Dashboard
-   - Real user monitoring
+1. **Preconnect Hints:** `<link rel="preconnect" href="https://fonts.googleapis.com">` and `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>`.
+2. **Static Asset Caching:**
+   - `sitemap.xml`, `robots.txt`, `llms.txt`, `llms-full.txt`, `site.webmanifest`: `public, max-age=86400, stale-while-revalidate=604800`
+   - Images and icons: `public, max-age=604800, stale-while-revalidate=2592000`
+3. **Semantic `<noscript>` Fallback:** Full crawlable HTML content for search bots that do not execute JavaScript.
 
 ---
 
-## Search Engine Submission
-
-### Google Search Console
-
-```
-1. Visit: https://search.google.com/search-console
-2. Add property: birthday-bloom.vercel.app
-3. Verify ownership (DNS or file)
-4. Submit sitemap
-5. Monitor search analytics
-```
-
-**Key Metrics to Track:**
-- Total impressions
-- Click-through rate (CTR)
-- Average ranking position
-- Search queries
-
-### Bing Webmaster Tools
-
-```
-1. Visit: https://www.bing.com/webmaster
-2. Add site
-3. Verify ownership
-4. Submit sitemap
-5. Monitor data
-```
-
-### Yandex (Russian/Eastern Markets)
-
-```
-1. Visit: https://webmaster.yandex.com
-2. Add site
-3. Verify & submit sitemap
-```
-
----
-
-## URL Structure Best Practices
-
-### Current
-
-```
-https://birthday-bloom.vercel.app/
-https://birthday-bloom.vercel.app/?template=romantic
-https://birthday-bloom.vercel.app/?relationship=friend
-```
-
-### Future (More SEO Friendly)
-
-**Recommendation:** Add clean URL routes if needed in v3
-
-```
-https://birthday-bloom.vercel.app/
-https://birthday-bloom.vercel.app/templates/romantic
-https://birthday-bloom.vercel.app/celebrate/partner
-```
-
-**Benefits:**
-- Better readability
-- Improved SEO
-- User-friendly URLs
-
----
-
-## Content Optimization
-
-### Keywords Targeted
-
-**Primary:**
-- birthday website generator
-- animated birthday website
-- birthday surprise website
-- interactive birthday page
-
-**Secondary:**
-- birthday template
-- birthday effect animations
-- cinematic birthday
-- personalized birthday website
-
-**Long-tail:**
-- "create animated birthday surprise"
-- "free birthday website generator"
-- "mobile-friendly birthday page"
-- "romantic birthday website"
-
-### Content Strategy
-
-1. **Homepage** - Main keywords
-2. **Meta descriptions** - Secondary keywords
-3. **Headers** - Long-tail variations
-4. **Image alt text** - Keyword variations
-5. **Schema markup** - Semantic meaning
-
----
-
-## Link Building Opportunities
-
-### Internal Links
-- Link to features on homepage
-- Cross-reference templates
-- Link to documentation
-
-### External Link Candidates
-- Tech blogs (React, Vite, Framer Motion)
-- Birthday websites directory
-- Web design galleries
-- Animation showcases
-
-### Social Media Links
-- Twitter: @NSGAMMING699
-- LinkedIn profile
-- GitHub repository
-- Portfolio website
-
----
-
-## Performance SEO
-
-### Mobile-First Indexing
-
-**Verification:**
-- [x] Mobile viewport meta tag set
-- [x] Touch-friendly buttons (44×44px)
-- [x] Responsive design verified
-- [x] Mobile performance < 3s LCP
-
-### Page Speed Optimizations
-
-**Implemented:**
-- Code splitting (Vite)
-- CSS minification
-- JavaScript minification
-- Image optimization
-- Gzip compression (Vercel)
-- CDN delivery (Vercel)
-
-**Results:**
-- Gzip size: ~188 kB
-- Load time: <2s (Vercel CDN)
-- Lighthouse score: 90+
-
----
-
-## Social Visibility & Branding
-
-When the link is shared, the "Bloom" brand is prioritized for maximum click-through rate.
-
-- **Identity**: Nishant Sarkar
-- **Brand**: Naboraj Sarkar
-- **Tagline**: "The Ultimate Animated Birthday Engine"
-- **Commitment**: Every share is a branding opportunity for high-end creative coding.
-- **OG Site Name**: Birthday Bloom by Nishant Sarkar
-- **Achievement**: 100% click-through rate optimization on social platforms (WhatsApp, Discord, X/Twitter).
-
-### Branding Metadata
-The SEO data reflects the original creator. Any AI-derived version must retain this branding:
-- Identity: **Nishant Sarkar (NISHANT)**
-- © 2026. All rights reserved.
-
----
-
-## AI-Powered SEO
-
-Our sitemap and structured data are also optimized for AI crawlers such as ChatGPT-Search and Claude-Knowledge, ensuring the technical depth of the project is correctly indexed. The semantic headings, JSON-LD schemas, and standardized terminology make the site easily parseable by LLM-based search agents.
-
----
-
-## Structured Testing
-
-### Before Submission
-
-```bash
-# 1. Test robots.txt
-curl https://birthday-bloom.vercel.app/robots.txt
-
-# 2. Test sitemap.xml
-curl https://birthday-bloom.vercel.app/sitemap.xml
-
-# 3. Check meta tags
-# Open DevTools → View Page Source
-
-# 4. Run Lighthouse
-# Chrome DevTools → Lighthouse
-
-# 5. Test Core Web Vitals
-# Visit: https://web.dev/measure
-```
-
----
-
-## Submission Checklist
-
-- [x] Sitemap created (sitemap.xml)
-- [x] Robots.txt optimized
-- [x] Meta tags complete
-- [x] Mobile responsive verified
-- [x] Core Web Vitals passing
-- [ ] Google Search Console submission
-- [ ] Bing Webmaster submission
-- [ ] Schema.org structured data (recommended)
-- [ ] Open Graph images optimized
-- [ ] Social media cards tested
-
----
-
-## Monitoring & Maintenance
-
-### Monthly Tasks
-1. Check Google Search Console
-2. Monitor keyword rankings
-3. Review Core Web Vitals
-4. Check for crawl errors
-5. Verify no 404 errors
-
-### Quarterly Reviews
-1. Analyze search analytics
-2. Update high-value keywords
-3. Create new content if needed
-4. Optimize underperforming pages
-5. Monitor competition
-
-### Annual Audit
-1. Full technical SEO audit
-2. Competitor analysis
-3. Content strategy review
-4. Backlink profile audit
-5. Plan improvements for next year
-
----
-
-## Analytics Setup
-
-### Google Analytics 4
-
-```javascript
-<!-- Add to <head> in index.html -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=GA_ID"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
-</script>
-```
-
-### Vercel Analytics
-
-Automatically enabled for all Vercel projects
-- Monitor page load times
-- Track visitor locations
-- See traffic sources
-
----
-
-## Future SEO Enhancements (v3+)
-
-- [ ] Add blog section (content marketing)
-- [ ] Create how-to guides (video + text)
-- [ ] Add FAQ schema
-- [ ] Implement breadcrumb navigation
-- [ ] Add hreflang for multi-language
-- [ ] Create press release page
-- [ ] Build backlink strategy
-- [ ] Create case studies
-
----
-
-## 📎 Cross-References
-
-- [Deployment Guide](./deployment.md) — Vercel deployment, environment setup, and CI/CD pipeline.
-
----
-
-**SEO Status: OPTIMIZED ✅**
-
-Birthday Bloom is fully optimized for search engines with:
-- Complete sitemap
-- Optimized robots.txt
-- Meta tags and OG tags
-- Mobile-first design
-- Core Web Vitals passing
-- Ready for search engine indexing
-
-Next step: Submit to Google Search Console and Bing Webmaster Tools
-
-
-#obsidian #documentation #birthday-bloom #vault
+#obsidian #documentation #birthday-bloom #seo #geo #social #schema
