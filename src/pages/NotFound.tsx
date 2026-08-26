@@ -30,12 +30,12 @@ const NotFound: React.FC = () => {
   }, [location.pathname]);
 
   const titleText = isFrench
-    ? "Oups ! Célébration Introuvable"
+    ? "Oups ! Page introuvable"
     : isBengali
-      ? "উফ! পেজটি খুঁজে পাওয়া যায়নি"
+      ? "উফ! পেজটি পাওয়া যায়নি"
       : isHindi
         ? "ओह! यह पेज नहीं मिला"
-        : "Oops! Celebration Not Found";
+        : "Oops! Page not found";
 
   const descriptionText = isFrench
     ? "Cette page d'anniversaire semble s'être envolée dans les étoiles..."
