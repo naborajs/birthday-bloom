@@ -28,7 +28,7 @@ const Index = () => {
     useDynamicTheme();
     useDynamicSEO(config);
 
-    return (<main role="main" aria-label="Birthday Celebration Experience" className="min-h-screen transition-colors duration-1000 relative overflow-hidden" style={{ background: 'var(--bg-gradient, #1a0515)' }}>
+    return (<main aria-label="Birthday Celebration Experience" className="min-h-screen transition-colors duration-1000 relative overflow-hidden" style={{ background: 'var(--bg-gradient, #1a0515)' }}>
       {/* Dreamy Ambient Bokeh Auras */}
       <div className="fixed top-[5%] left-[8%] w-[38rem] h-[38rem] rounded-full bg-[radial-gradient(circle,rgba(255,75,130,0.2)_0%,transparent_70%)] blur-[120px] pointer-events-none animate-subtle-float" />
       <div className="fixed top-[20%] right-[8%] w-[34rem] h-[34rem] rounded-full bg-[radial-gradient(circle,rgba(255,200,100,0.15)_0%,transparent_70%)] blur-[130px] pointer-events-none animate-pulse" />
@@ -50,7 +50,7 @@ const Index = () => {
       <div className="vignette"/>
 
       {/* Skip button */}
-      {phase !== "main" && phase !== "unlock" && config.showSkipButton !== false && (<button onClick={() => setPhase("main")} className="fixed bottom-6 right-6 z-50 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-xl rounded-full text-white/40 hover:text-white/90 text-xs tracking-[0.2em] uppercase transition-all duration-300 shadow-2xl">
+      {phase !== "main" && phase !== "unlock" && config.showSkipButton !== false && (<button onClick={() => setPhase("main")} aria-label={t('common.skipIntro')} className="fixed bottom-6 right-6 z-50 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-xl rounded-full text-white/40 hover:text-white/90 text-xs tracking-[0.2em] uppercase transition-all duration-300 shadow-2xl">
           {t('common.skipIntro')}
         </button>)}
 
