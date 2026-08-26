@@ -302,9 +302,18 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
                             return (
                                 <g
                                     key={`h-${i}`}
+                                    role="button"
+                                    tabIndex={0}
+                                    aria-label={`Open wish leaf ${i + 1}`}
                                     transform={`translate(${leaf.cx},${leaf.cy}) scale(${sc})`}
                                     onClick={(e) => clickHeart(e, i)}
-                                    style={{ cursor: "pointer" }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            clickHeart(e as unknown as React.MouseEvent<SVGGElement>, i);
+                                        }
+                                    }}
+                                    style={{ cursor: "pointer", outline: "none" }}
                                 >
                                     <circle r="22" fill="transparent" />
                                     {hasPhoto ? (
