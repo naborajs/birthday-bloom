@@ -172,7 +172,7 @@ export const MainBirthday = () => {
 
       
       {megaSurprise && (<div className="fixed inset-0 z-[100] bg-white/20 backdrop-blur-sm pointer-events-none animate-flash flex items-center justify-center">
-          <h1 className="text-6xl md:text-9xl font-black text-white drop-shadow-2xl animate-bounce">MEGA SURPRISE! 🎊</h1>
+          <p role="status" aria-live="assertive" className="text-6xl md:text-9xl font-black text-white drop-shadow-2xl animate-bounce">MEGA SURPRISE! 🎊</p>
         </div>)}
 
       <AnimatePresence>
@@ -182,7 +182,7 @@ export const MainBirthday = () => {
       </AnimatePresence>
 
       
-      <motion.section variants={containerVariants} initial="hidden" animate={visible ? "visible" : "hidden"} className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 py-20 overflow-hidden">
+      <header className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 py-20 overflow-hidden">
         <motion.div style={{ x: springX, y: springY }} className="absolute inset-0 pointer-events-none flex items-center justify-center">
           <div className="w-[150%] h-[150%] bg-[radial-gradient(circle,var(--color-primary)_0%,transparent_70%)] opacity-[0.05]"/>
         </motion.div>
@@ -204,9 +204,7 @@ export const MainBirthday = () => {
         <motion.h2 variants={itemVariants} className="font-display text-5xl sm:text-7xl md:text-[10rem] lg:text-[13rem] font-black text-foreground animate-glow-pulse mb-10 break-words leading-none px-2">
           <TypeWriter text={`${name}!`} speed={120} delay={1500} cursor={false}/>
         </motion.h2>
-
-        
-      </motion.section>
+      </header>
 
       
       
@@ -230,9 +228,9 @@ export const MainBirthday = () => {
         }}>
           <div className="absolute top-0 right-0 p-8 opacity-15 text-9xl select-none pointer-events-none">✨</div>
           <div className="text-6xl sm:text-7xl text-center mb-8 animate-subtle-float">💌</div>
-          <h3 className="font-display text-3xl sm:text-5xl md:text-6xl font-black text-center mb-10 bg-gradient-to-r from-primary via-white to-accent bg-clip-text text-transparent">
+          <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-black text-center mb-10 bg-gradient-to-r from-primary via-white to-accent bg-clip-text text-transparent">
             {relationship === 'partner' ? t('common.fromMyHeart') : relationship === 'friend' ? t('common.legendaryMessage') : t('common.specialMessage')}
-          </h3>
+          </h2>
           <div className="space-y-8 text-center text-xl sm:text-2xl md:text-3xl text-foreground/90 leading-relaxed">
             <p className="font-display font-black text-2xl sm:text-4xl md:text-5xl" style={{ color: primaryColor }}>{t('common.dear', { name })}</p>
             {customMessage ? (<p className="italic font-light text-2xl sm:text-4xl md:text-5xl leading-tight text-white/95" style={{ fontFamily: "var(--font-quote, var(--font-display))" }}>"{customMessage}"</p>) : (<div className="space-y-6">
@@ -241,9 +239,9 @@ export const MainBirthday = () => {
               </div>)}
             
             <div className="mt-10 p-6 sm:p-10 bg-white/[0.06] rounded-3xl border border-white/15 transition-all duration-500 hover:bg-white/[0.09] hover:border-white/25 shadow-inner" style={{ backdropFilter: "blur(20px)" }}>
-              <h4 className="font-display text-xl sm:text-3xl md:text-4xl font-black mb-6 text-primary cursor-pointer transition-transform hover:scale-[1.01]" onDoubleClick={() => { fireCannon(); playBoom(); }} title={t('common.doubleTapSurprise')}>
+              <h3 className="font-display text-xl sm:text-3xl md:text-4xl font-black mb-6 text-primary cursor-pointer transition-transform hover:scale-[1.01]" onDoubleClick={() => { fireCannon(); playBoom(); }} title={t('common.doubleTapSurprise')}>
                 {config.letterTitle || (isFrench ? "Une Lettre Spéciale Rien que pour Vous 💌" : isBengali ? "আপনার জন্য একটি বিশেষ চিঠি 💌" : isHindi ? "आपके लिए एक खास पत्र 💌" : "A Special Letter Just for You 💌")}
-              </h4>
+              </h3>
               <div className="text-left text-base sm:text-lg md:text-xl leading-relaxed whitespace-pre-line font-light text-white/95" style={{ fontFamily: "var(--font-quote, inherit)" }}>
                 {config.letterOverride
                   ? config.letterOverride
@@ -277,7 +275,7 @@ export const MainBirthday = () => {
       
       {/* Big Wishes Section */}
       <section className="relative z-20 px-4 pb-32">
-        <h3 className="font-display text-4xl sm:text-6xl md:text-8xl font-black text-center mb-16 drop-shadow-xl" style={{ color: primaryColor }}>{isBengali ? "আপনার জন্য অফুরন্ত শুভকামনা ✨" : isHindi ? "आपके लिए ढेरों दुआएं ✨" : "Wishes for You ✨"}</h3>
+        <h2 className="font-display text-4xl sm:text-6xl md:text-8xl font-black text-center mb-16 drop-shadow-xl" style={{ color: primaryColor }}>{isBengali ? "আপনার জন্য অফুরন্ত শুভকামনা ✨" : isHindi ? "आपके लिए ढेरों दुआएं ✨" : "Wishes for You ✨"}</h2>
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
           {bigWishes.map((item, i) => (<motion.div key={i} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }} whileHover={!isMobile ? { y: -10, scale: 1.02, boxShadow: `0 30px 60px -15px ${primaryColor}35` } : undefined} className="p-8 sm:p-10 backdrop-blur-3xl border cursor-pointer group rounded-[2.5rem] glass-card" onClick={addEmoji}>
               <div className="text-6xl sm:text-7xl mb-6 group-hover:scale-110 transition-transform duration-400 select-none">{item.emoji}</div>
