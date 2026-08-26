@@ -12,6 +12,7 @@ import { SpecialMessage } from "@/features/cinematic-story/scenes/SpecialMessage
 import { useTranslation } from "@/i18n";
 import { HighlightedText } from "./HighlightedText";
 import { EnvelopeLetterScene } from "./EnvelopeLetterScene";
+import { Heart } from "lucide-react";
 
 interface CinematicIntroProps {
     onComplete: () => void;
@@ -570,11 +571,22 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                     >
                         <div className="flex justify-center mb-8">
                             <motion.div
-                                animate={{ scale: [1, 1.18, 1], opacity: [0.6, 1, 0.6] }}
-                                transition={{ duration: 3, repeat: Infinity }}
-                                className="w-16 h-16 rounded-full border border-primary/40 flex items-center justify-center text-3xl shadow-[0_0_35px_rgba(255,107,107,0.4)] backdrop-blur-md bg-white/10"
+                                animate={{
+                                    scale: [1, 1.15, 1, 1.2, 1],
+                                    boxShadow: [
+                                        "0 0 25px rgba(255, 105, 180, 0.4)",
+                                        "0 0 45px rgba(255, 42, 109, 0.7)",
+                                        "0 0 25px rgba(255, 105, 180, 0.4)",
+                                    ],
+                                }}
+                                transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                                className="w-16 h-16 rounded-full border border-pink-400/40 flex items-center justify-center backdrop-blur-md bg-gradient-to-br from-pink-500/20 via-rose-500/10 to-transparent"
                             >
-                                ✨
+                                <Heart
+                                    size={28}
+                                    fill="#FF2A6D"
+                                    className="text-[#FF2A6D] drop-shadow-[0_0_14px_rgba(255,42,109,0.85)]"
+                                />
                             </motion.div>
                         </div>
 
