@@ -99,7 +99,7 @@ describe("Interactive Features: EnvelopeLetterScene and BalloonPopGame", () => {
             }
 
             // Heartfelt partner message should be typed out
-            expect(screen.getByText(/sweet, loyal, my rock/i)).toBeInTheDocument();
+            expect(screen.getByText(/Queen|Muse|grace|warmth|Aria/i)).toBeInTheDocument();
         });
 
         it("renders French localized letter when language is fr", async () => {

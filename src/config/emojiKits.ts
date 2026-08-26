@@ -641,4 +641,8 @@ export const getTemplateEmojiKit = (config: BirthdayConfig): TemplateEmojiKit =>
         accent: unique([...base.accent, ...custom, ...interestEmojis]),
     };
 };
+export const getRelationshipEmojiKit = (relationship: RelationshipType) => {
+    return kits[relationship] ?? kits.family;
+};
 export const pickTemplateEmoji = (items: string[]) => items[Math.floor(Math.random() * items.length)] ?? "✨";
+

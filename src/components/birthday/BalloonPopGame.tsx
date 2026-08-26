@@ -27,27 +27,49 @@ export const BalloonPopGame = () => {
     const relationship = config.relationship || "partner";
     const primaryColor = config.favoriteColor || "#FF2A6D";
 
-    // 4 words for 4 balloons
+    // 4 words for 4 balloons customized to relationship and language
     const words = useMemo(() => {
         if (isFrench) {
             if (relationship === "partner") return ["Tu", "es", "mon", "tout ! 💖"];
             if (relationship === "friend") return ["Tu", "es", "une", "légende ! 🚀"];
-            return ["Tu", "es", "notre", "trésor ! 🌟"];
+            if (relationship === "brother" || relationship === "sibling") return ["Tu", "es", "le", "meilleur ! 🏆"];
+            if (relationship === "sister") return ["Tu", "es", "pure", "magie ! 🌸✨"];
+            if (relationship === "father") return ["Tu", "es", "notre", "héros ! 🌟💪"];
+            if (relationship === "mother") return ["Tu", "es", "notre", "cœur ! 💐💛"];
+            if (relationship === "mentor" || relationship === "colleague") return ["Tu", "es", "une", "inspiration ! 🎯✨"];
+            return ["Tu", "es", "notre", "trésor ! 🌟💝"];
         }
         if (isBengali) {
             if (relationship === "partner") return ["তুমি", "আমার", "সবচেয়ে", "প্রিয় ! 💖"];
             if (relationship === "friend") return ["তুই", "আমাদের", "আসল", "লেজেন্ড ! 🚀"];
-            return ["আপনি", "আমাদের", "শ্রেষ্ঠ", "উপহার ! 🌟"];
+            if (relationship === "brother" || relationship === "sibling") return ["তুমি", "আমাদের", "সেরা", "ভাই ! 🏆"];
+            if (relationship === "sister") return ["তুমি", "আমাদের", "মিষ্টি", "বোন ! 🌸✨"];
+            if (relationship === "father") return ["আপনি", "আমাদের", "আসল", "হিরো ! 🌟💪"];
+            if (relationship === "mother") return ["আপনি", "আমাদের", "জীবনের", "আলো ! 💐💛"];
+            if (relationship === "mentor" || relationship === "colleague") return ["আপনি", "আমাদের", "প্রেরণার", "উৎস ! 🎯✨"];
+            return ["আপনি", "আমাদের", "শ্রেষ্ঠ", "উপহার ! 🌟💝"];
         }
         if (isHindi) {
             if (relationship === "partner") return ["आप", "मेरी", "पूरी", "दुनिया ! 💖"];
             if (relationship === "friend") return ["तुम", "सच में", "सुपर", "लीजेंड ! 🚀"];
-            return ["आप", "हमारा", "सबसे अनमोल", "तोहफा ! 🌟"];
+            if (relationship === "brother" || relationship === "sibling") return ["तुम", "हमारे", "नंबर 1", "भाई ! 🏆"];
+            if (relationship === "sister") return ["तुम", "हमारी", "प्यारी", "बहन ! 🌸✨"];
+            if (relationship === "father") return ["आप", "हमारे", "सच्चे", "हीरो ! 🌟💪"];
+            if (relationship === "mother") return ["आप", "हमारा", "सबसे प्यारा", "सुकून ! 💐💛"];
+            if (relationship === "mentor" || relationship === "colleague") return ["आप", "हमारी", "सच्ची", "प्रेरणा ! 🎯✨"];
+            return ["आप", "हमारा", "सबसे अनमोल", "तोहफा ! 🌟💝"];
         }
 
+        // English Default
         if (relationship === "partner") return ["You", "are", "so", "loved! 💖"];
         if (relationship === "friend") return ["You", "are", "super", "awesome! 🚀"];
-        return ["You", "are", "our", "treasure! 🌟"];
+        if (relationship === "brother" || relationship === "sibling") return ["You", "are", "the", "legend! 🏆"];
+        if (relationship === "sister") return ["You", "are", "pure", "magic! 🌸✨"];
+        if (relationship === "father") return ["You", "are", "our", "hero! 🌟💪"];
+        if (relationship === "mother") return ["You", "are", "our", "heart! 💐💛"];
+        if (relationship === "grandfather" || relationship === "grandmother") return ["You", "are", "our", "pride! 🏅🌟"];
+        if (relationship === "mentor" || relationship === "colleague") return ["You", "are", "an", "inspiration! 🎯✨"];
+        return ["You", "are", "our", "treasure! 🌟💝"];
     }, [relationship, isHindi, isBengali, isFrench]);
 
     const initialBalloons: BalloonItem[] = useMemo(() => [

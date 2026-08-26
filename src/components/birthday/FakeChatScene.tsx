@@ -37,28 +37,70 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
             if (relationship === "partner")
                 return isMale ? "Pour l'homme qui fait battre mon cœur..." : isFemale ? "Pour la femme de mes rêves..." : "Pour l'âme qui me complète...";
             if (relationship === "friend")
-                return "Attends, un simple message texte ? Ce n'est pas notre genre ! 😂";
-            return "Une surprise exceptionnelle arrive...";
+                return "Attends, un simple message texte ? Ce n'est pas notre genre ! 😂🚀";
+            if (relationship === "brother" || relationship === "sibling")
+                return "Un simple SMS pour le meilleur frère du monde ? Pas question ! 🏆";
+            if (relationship === "sister")
+                return "Un simple message pour ma sœur adorée ? Tu mérites tout un univers ! 🌸✨";
+            if (relationship === "father")
+                return "Un simple texto ne suffira jamais pour remercier mon héros... 🌟💪";
+            if (relationship === "mother")
+                return "Un simple message ne pourra jamais exprimer tout mon amour... 💐💛";
+            if (relationship === "mentor" || relationship === "colleague")
+                return "Un simple message pour une telle inspiration ? On a créé bien mieux ! 🎯✨";
+            return "Un simple message ne suffirait jamais pour exprimer tout notre amour... 💝🌟";
         }
         if (isBengali) {
             if (relationship === "partner")
                 return isMale ? "আমার মনের রাজপুত্রের জন্য..." : isFemale ? "আমার স্বপ্নের রাজকন্যার জন্য..." : "সেই বিশেষ মানুষের জন্য যে আমাকে পূর্ণ করে...";
             if (relationship === "friend")
-                return "দাঁড়াও, এত সাধারণ মেসেজ? এটা আমরা নই! 😂";
-            return "দারুণ কিছু আসতে চলেছে...";
+                return "দাঁড়াও, এত সাধারণ মেসেজ? এটা আমরা নই! 😂🚀";
+            if (relationship === "brother" || relationship === "sibling")
+                return "সেরা ভাইয়ের জন্য এত সাধারণ টেক্সট? হতেই পারে না! 🏆";
+            if (relationship === "sister")
+                return "আমার মিষ্টি বোনের জন্য সামান্য মেসেজ? তোর জন্য পুরো একটা ওয়েবসাইট! 🌸✨";
+            if (relationship === "father")
+                return "আমার জীবনের আসল হিরোকে একটা মেসেজে কি আর ভালোবাসা জানানো যায়... 🌟💪";
+            if (relationship === "mother")
+                return "মায়ের জন্য শুধু একটা মেসেজ? কোনোদিনও যথেষ্ট নয়... 💐💛";
+            if (relationship === "mentor" || relationship === "colleague")
+                return "আমাদের সেরা অনুপ্রেরণাকে এত সাধারণ শুভেচ্ছা? অসম্ভব! 🎯✨";
+            return "পরিবারের এত বিশেষ মানুষের জন্য একটা টেক্সট কখনোই যথেষ্ট নয়... 💝🌟";
         }
         if (isHindi) {
             if (relationship === "partner")
                 return isMale ? "मेरे दिल के राजा के लिए..." : isFemale ? "मेरे ख्वाबों की मलिका के लिए..." : "उस इंसान के लिए जो मुझे पूरा करता है...";
             if (relationship === "friend")
-                return "अरे रुको, सिर्फ एक साधारण संदेश? वो हम नहीं! 😂";
-            return "कुछ बहुत ही खास आ रहा है...";
+                return "अरे रुको, सिर्फ एक साधारण संदेश? वो हम नहीं! 😂🚀";
+            if (relationship === "brother" || relationship === "sibling")
+                return "दुनिया के सबसे धांसू भाई के लिए सिर्फ एक टेक्स्ट? कभी नहीं! 🏆";
+            if (relationship === "sister")
+                return "मेरी प्यारी बहन के लिए सिर्फ एक मैसेज? तुम्हारे लिए पूरी दुनिया हाजिर है! 🌸✨";
+            if (relationship === "father")
+                return "हमारे असली हीरो के लिए सिर्फ एक संदेश काफी नहीं हो सकता... 🌟💪";
+            if (relationship === "mother")
+                return "माँ के लिए सिर्फ एक टेक्स्ट? कभी भी मुमकिन नहीं... 💐💛";
+            if (relationship === "mentor" || relationship === "colleague")
+                return "हमारी सबसे बड़ी प्रेरणा के लिए साधारण मैसेज? हमने कुछ खास बनाया है! 🎯✨";
+            return "परिवार के इतने अनमोल सदस्य के लिए सिर्फ एक टेक्स्ट काफी नहीं... 💝🌟";
         }
+
+        // English Default
         if (relationship === "partner")
             return isMale ? "To the man who holds my heart..." : isFemale ? "To the woman of my dreams..." : "To the soul who completes me...";
         if (relationship === "friend")
-            return "Wait, a boring text? That's not us! 😂";
-        return "Something special is coming...";
+            return "Wait, a boring text? That's not us! 😂🚀";
+        if (relationship === "brother" || relationship === "sibling")
+            return "A basic text for the best brother in the universe? Not a chance! 🏆";
+        if (relationship === "sister")
+            return "A plain text for my sweetest sister? You deserve a whole universe! 🌸✨";
+        if (relationship === "father")
+            return "A mere text could never thank you enough for being my hero... 🌟💪";
+        if (relationship === "mother")
+            return "A simple message could never express how much your warmth means to me... 💐💛";
+        if (relationship === "mentor" || relationship === "colleague")
+            return "A regular birthday ping? For our greatest inspiration? We built something better! 🎯✨";
+        return "A simple text could never capture how much you mean to our family... 💝🌟";
     }, [relationship, isMale, isFemale, isHindi, isBengali, isFrench]);
 
     const primaryColor = favoriteColor || "#FF2A6D";

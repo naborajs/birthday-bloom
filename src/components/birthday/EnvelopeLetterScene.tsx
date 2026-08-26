@@ -5,6 +5,7 @@ import { useSoundManager } from "./SoundManager";
 import { useTranslation } from "@/i18n";
 import { Heart, Sparkles, ArrowRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { getHighlySpecificLetter } from "@/features/core/store/SuperPersonalizedLogic";
 
 interface EnvelopeLetterSceneProps {
     onComplete?: () => void;
@@ -24,17 +25,33 @@ export const EnvelopeLetterScene = ({
 
     const { config } = useBirthdayStore();
     const { playPop, playWhoosh, playType } = useSoundManager();
-    const { isHindi, isBengali, isFrench } = useTranslation();
+    const { isHindi, isBengali, isFrench, language } = useTranslation();
     const isMobile = useIsMobile();
     const typingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const relationship = config.relationship || "partner";
     const senderName = config.senderName || "";
 
-    // Generate heartfelt paragraphs
     const paragraphs = (() => {
+        if (config.letterOverride && config.letterOverride.trim().length > 5) {
+            return config.letterOverride.split("\n\n").map(p => p.trim()).filter(Boolean);
+        }
         if (config.customMessage && config.customMessage.trim().length > 10) {
-            return config.customMessage.split("\n\n").filter(Boolean);
+            return config.customMessage.split("\n\n").map(p => p.trim()).filter(Boolean);
+        }
+
+        // Get highly specific tailored letter for recipient archetype and gender
+        const generated = getHighlySpecificLetter(
+            config.name || (isFrench ? "Mon Amour" : isBengali ? "প্রিয়" : isHindi ? "प्रिय" : "My Dearest"),
+            relationship,
+            config.gender || "female",
+            config.interests || [],
+            language,
+            senderName
+        );
+
+        if (generated && generated.trim().length > 10) {
+            return generated.split("\n\n").map(p => p.trim()).filter(Boolean);
         }
 
         if (isFrench) {
@@ -323,13 +340,15 @@ export const EnvelopeLetterScene = ({
                         {/* Title Header */}
                         <div className="relative z-10 text-center mb-6 sm:mb-8 pr-12 sm:pr-14">
                             <h2 className="font-display italic text-2xl sm:text-4xl font-bold text-[#3B1F2B] tracking-tight drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)]">
-                                {isFrench
-                                    ? "Un Message de Mon Cœur"
-                                    : isBengali
-                                        ? "আমার হৃদয়ের এক বিশেষ চিঠি"
-                                        : isHindi
-                                            ? "मेरे दिल का एक पैग़ाम"
-                                            : "A Message From My Heart"}
+                                {config.letterTitle || (
+                                    isFrench
+                                        ? "Un Message de Mon Cœur"
+                                        : isBengali
+                                            ? "আমার হৃদয়ের এক বিশেষ চিঠি"
+                                            : isHindi
+                                                ? "मेरे दिल का एक पैग़ाम"
+                                                : "A Message From My Heart"
+                                )}
                             </h2>
                             <div className="flex justify-center mt-1.5 text-purple-600 text-base sm:text-lg">
                                 💜
