@@ -130,15 +130,22 @@ export const useDynamicSEO = (config: BirthdayConfig) => {
     setMetaTag('meta[name="twitter:description"]', 'name', 'twitter:description', description);
 
     // 6. Dynamic JSON-LD Structured Data
+    const today = new Date().toISOString();
     const dynamicSchema = {
       '@context': 'https://schema.org',
       '@type': 'SocialEvent',
-      '@id': 'https://birthday-bloom.vercel.app/#celebration-event',
+      '@id': `${currentUrl.split('?')[0]}#celebration-event`,
       name: rawName ? `${rawName}'s Birthday Celebration` : 'Birthday Bloom Celebration',
       description: description,
       url: currentUrl,
+      startDate: today,
       eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
       eventStatus: 'https://schema.org/EventScheduled',
+      location: {
+        '@type': 'VirtualLocation',
+        url: currentUrl,
+      },
+      image: 'https://birthday-bloom.vercel.app/og-image.jpg',
       organizer: {
         '@type': 'Person',
         name: sender || 'Someone Special',
