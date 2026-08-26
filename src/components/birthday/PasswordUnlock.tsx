@@ -161,6 +161,9 @@ export const PasswordUnlock = ({ onUnlock }: PasswordUnlockProps) => {
           </motion.div>
         </div>
 
+        {/* Semantic Heading for SEO & Screen Readers */}
+        <h1 className="sr-only">{t('common.unlockMagic')}</h1>
+
         <h2 className="font-display text-2xl md:text-3xl font-black text-white mb-2 uppercase tracking-wide">
           {unlocked ? t('common.verificationSuccessful') : t('common.unlockMagic')}
         </h2>
@@ -170,14 +173,28 @@ export const PasswordUnlock = ({ onUnlock }: PasswordUnlockProps) => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="relative">
-            <input type="text" inputMode={isNumericFormat ? "numeric" : "text"} pattern={isNumericFormat ? "[0-9]*" : undefined} value={password} onChange={handleInputChange} placeholder={isNumericFormat ? "••••" : t('common.enterPasscodePlaceholder')} disabled={unlocked} className="w-full text-center py-4 px-6 bg-white/5 border border-white/10 rounded-2xl text-2xl md:text-3xl font-bold tracking-widest text-white focus:outline-none transition-all duration-300 placeholder:text-white/20 placeholder:tracking-normal placeholder:font-normal placeholder:text-base focus:bg-white/10" style={{
-            borderColor: error ? "#EF4444" : unlocked ? primaryColor : "rgba(255,255,255,0.1)",
-            boxShadow: error
-                ? "0 0 30px rgba(239, 68, 68, 0.2)"
-                : unlocked
+            <input
+              id="passcode-input"
+              aria-label={t('common.enterPasscodePlaceholder')}
+              type="text"
+              inputMode={isNumericFormat ? "numeric" : "text"}
+              pattern={isNumericFormat ? "[0-9]*" : undefined}
+              value={password}
+              onChange={handleInputChange}
+              placeholder={isNumericFormat ? "••••" : t('common.enterPasscodePlaceholder')}
+              disabled={unlocked}
+              className="w-full text-center py-4 px-6 bg-white/5 border border-white/10 rounded-2xl text-2xl md:text-3xl font-bold tracking-widest text-white focus:outline-none transition-all duration-300 placeholder:text-white/20 placeholder:tracking-normal placeholder:font-normal placeholder:text-base focus:bg-white/10"
+              style={{
+                borderColor: error ? "#EF4444" : unlocked ? primaryColor : "rgba(255,255,255,0.1)",
+                boxShadow: error
+                  ? "0 0 30px rgba(239, 68, 68, 0.2)"
+                  : unlocked
                     ? `0 0 30px ${primaryColor}30`
                     : "none"
-        }} autoFocus autoComplete="off"/>
+              }}
+              autoFocus
+              autoComplete="off"
+            />
           </div>
 
           {error && (<motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-red-400 font-semibold text-sm animate-pulse">
