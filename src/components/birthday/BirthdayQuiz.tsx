@@ -231,7 +231,8 @@ export const BirthdayQuiz = () => {
             }
         }, 2200);
     };
-    return (<section className="relative z-20 px-4 py-20 max-w-4xl mx-auto">
+    return (<section className="relative z-20 px-4 py-20 max-w-4xl mx-auto" aria-label="Birthday Celebration Trivia Quiz">
+      <h2 className="sr-only">Birthday Celebration Trivia Quiz</h2>
       <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="p-8 md:p-12 rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-2xl shadow-2xl text-center">
         {!showResult ? (<AnimatePresence mode="wait">
             <motion.div key={currentIdx} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
