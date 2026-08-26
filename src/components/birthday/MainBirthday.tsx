@@ -36,7 +36,7 @@ export const MainBirthday = () => {
     const { fireConfetti, fireCannon, fireStars } = useConfetti();
     const { playReveal, playPop, playBoom, setBgVolume } = useSoundManager();
     const { config } = useBirthdayStore();
-    const { t, language } = useTranslation();
+    const { t, isHindi, isBengali, isFrench, language } = useTranslation();
     const { name, age, relationship, favoriteColor, gender } = config;
     const isMobile = useIsMobile();
     const reduceMotion = useReducedMotion();
