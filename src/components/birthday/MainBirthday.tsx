@@ -37,7 +37,7 @@ export const MainBirthday = () => {
     const { playReveal, playPop, playBoom, setBgVolume } = useSoundManager();
     const { config } = useBirthdayStore();
     const { t, isHindi, isBengali, isFrench, language } = useTranslation();
-    const { name, age, relationship, favoriteColor, gender } = config;
+    const { name, age, relationship, favoriteColor, gender, senderName } = config;
     const isMobile = useIsMobile();
     const reduceMotion = useReducedMotion();
     const shouldAnimate = !isMobile && !reduceMotion;
