@@ -24,7 +24,16 @@ export const SplashScreen = ({ onStart }: SplashScreenProps) => {
 
     return (
         <div
-            className={`fixed inset-0 z-50 flex flex-col items-center justify-center cursor-pointer transition-all duration-700 select-none overflow-hidden ${
+            role="button"
+            tabIndex={0}
+            aria-label={t('splash.tapAnywhereToBegin')}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleTap();
+                }
+            }}
+            className={`fixed inset-0 z-50 flex flex-col items-center justify-center cursor-pointer transition-all duration-700 select-none overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary ${
                 tapped ? "opacity-0 scale-105 filter blur-sm" : "opacity-100 scale-100"
             }`}
             style={{
@@ -32,6 +41,9 @@ export const SplashScreen = ({ onStart }: SplashScreenProps) => {
             }}
             onClick={handleTap}
         >
+            {/* Semantic Top-Level Heading for Screen Readers & SEO */}
+            <h1 className="sr-only">Birthday Bloom — Magical Cinematic Birthday Celebration</h1>
+
             {/* Dreamy Ambient Bokeh Auras */}
             <div className="absolute top-[10%] left-[10%] w-[34rem] h-[34rem] rounded-full bg-[radial-gradient(circle,rgba(255,75,130,0.22)_0%,transparent_70%)] blur-[110px] pointer-events-none animate-subtle-float" />
             <div className="absolute top-[20%] right-[10%] w-[30rem] h-[30rem] rounded-full bg-[radial-gradient(circle,rgba(255,200,100,0.18)_0%,transparent_70%)] blur-[120px] pointer-events-none animate-pulse" />
