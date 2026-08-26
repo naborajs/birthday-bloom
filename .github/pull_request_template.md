@@ -83,9 +83,10 @@
 * **Node Version**: <!-- e.g., v18.16.0 -->
 
 ### Automated Quality Checks
-- [ ] Checked for TypeScript errors (`npx tsc --noEmit` or `npm run build` succeeds)
+- [ ] Ran unified verification check: `npm run verify` (includes typecheck, lint, test, build)
+- [ ] Checked for TypeScript errors (`npm run typecheck` succeeds with 0 errors)
 - [ ] Ran ESLint and formatting checks (`npm run lint` passes without errors)
-- [ ] Ran existing test suites (`npm test` or `npm run test` passes)
+- [ ] Ran existing test suites (`npm test` passes 100%)
 - [ ] Tested responsiveness on multiple screen sizes (Mobile, Tablet, Desktop)
 - [ ] Checked console logs to verify no unexpected warnings or memory leaks in animations
 - [ ] Verified that GitHub Actions CI passes locally if possible
