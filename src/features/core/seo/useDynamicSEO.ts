@@ -2,12 +2,6 @@ import { useEffect } from 'react';
 import type { BirthdayConfig } from '../store/useBirthdayStore';
 import { useTranslation } from '@/i18n';
 
-interface MetaTagConfig {
-  name?: string;
-  property?: string;
-  content: string;
-}
-
 const setMetaTag = (selector: string, attribute: 'name' | 'property', key: string, content: string) => {
   if (typeof document === 'undefined') return;
   let element = document.querySelector(selector) as HTMLMetaElement | null;
@@ -53,9 +47,13 @@ export const useDynamicSEO = (config: BirthdayConfig) => {
     if (typeof document === 'undefined') return;
 
     const rawName = config.name?.trim() || '';
-    const age = config.age;
     const relationship = config.relationship || 'celebration';
     const sender = config.senderName?.trim();
+
+    const activeLanguage = (config.language || language || 'en').toLowerCase().trim();
+    const isFr = activeLanguage === 'fr' || activeLanguage === 'french' || isFrench;
+    const isBn = activeLanguage === 'bn' || activeLanguage === 'bengali' || isBengali;
+    const isHi = activeLanguage === 'hi' || activeLanguage === 'hindi' || isHindi;
 
     // 1. Dynamic Title
     let title: string;
@@ -63,11 +61,11 @@ export const useDynamicSEO = (config: BirthdayConfig) => {
       const greeting = t('common.happyBirthday');
       title = `${greeting} ${rawName}! | Birthday Bloom`;
     } else {
-      title = isFrench
+      title = isFr
         ? "Birthday Bloom | Site Magique de Célébration d'Anniversaire Cinématographique"
-        : isBengali
+        : isBn
           ? "Birthday Bloom | জাদুকরী ও আবেগঘন জন্মদিনের শুভেচ্ছা ওয়েবসাইট"
-          : isHindi
+          : isHi
             ? "Birthday Bloom | जादुई और भावनात्मक जन्मदिन का सरप्राइज"
             : "Birthday Bloom | Magical Cinematic Birthday Celebration Website";
     }
@@ -76,21 +74,21 @@ export const useDynamicSEO = (config: BirthdayConfig) => {
     // 2. Dynamic Description
     let description: string;
     if (rawName) {
-      if (isFrench) {
+      if (isFr) {
         description = `Célébrez l'anniversaire de ${rawName} avec une expérience cinématographique magique : gâteau 3D, feux d'artifice, galerie de souvenirs et mots d'amour sur Birthday Bloom.`;
-      } else if (isBengali) {
+      } else if (isBn) {
         description = `${rawName}-এর জন্মদিনে একটি জাদুকরী ও স্মরণীয় উপহার: ৩ডি কেক কাটা, আতশবাজি, ফটো গ্যালারি ও আবেগময় চিঠি নিয়ে Birthday Bloom।`;
-      } else if (isHindi) {
+      } else if (isHi) {
         description = `${rawName} के जन्मदिन पर एक जादुई और यादगार तोहफा: 3D केक कटिंग, आतिशबाजी, फोटो गैलरी और दिल को छू लेने वाले संदेश के साथ Birthday Bloom।`;
       } else {
         description = `Celebrate ${rawName}'s birthday with a magical cinematic experience featuring 3D cake cutting, fireworks, custom photo memories, and heartfelt wishes on Birthday Bloom.`;
       }
     } else {
-      description = isFrench
+      description = isFr
         ? "Vivez une célébration d'anniversaire cinématographique à couper le souffle avec des animations physiques, des récits émotionnels et des galeries photo personnalisées."
-        : isBengali
+        : isBn
           ? "পদার্থবিজ্ঞানের অ্যানিমেশন, আবেগময় গল্প, কাস্টম ফটো গ্যালারি এবং ভালোবাসায় তৈরি উৎসবের সমন্বয়ে একটি শ্বাসরুদ্ধকর জন্মদিনের ওয়েবসাইটের অভিজ্ঞতা নিন।"
-          : isHindi
+          : isHi
             ? "भौतिकी एनिमेशन, भावनात्मक कहानी, कस्टम फोटो गैलरी और प्यार से तैयार किए गए उत्सव के साथ एक लुभावनी जन्मदिन वेबसाइट का अनुभव करें।"
             : "Experience a breathtaking, cinematic birthday celebration website with physics animations, emotional storytelling, custom photo galleries, and festive interactions crafted with love.";
     }
@@ -117,7 +115,7 @@ export const useDynamicSEO = (config: BirthdayConfig) => {
       ? `A Magical Birthday Surprise Just For ${rawName} ✨ — Birthday Bloom` 
       : 'A Magical Birthday Surprise Just For You ✨ — Birthday Bloom';
     
-    const locale = isFrench ? 'fr_FR' : isBengali ? 'bn_BD' : isHindi ? 'hi_IN' : 'en_US';
+    const locale = isFr ? 'fr_FR' : isBn ? 'bn_BD' : isHi ? 'hi_IN' : 'en_US';
     
     setMetaTag('meta[property="og:title"]', 'property', 'og:title', ogTitle);
     setMetaTag('meta[property="og:description"]', 'property', 'og:description', description);
@@ -149,14 +147,14 @@ export const useDynamicSEO = (config: BirthdayConfig) => {
         '@type': 'Person',
         name: rawName || 'Celebrant',
       },
-      inLanguage: language,
+      inLanguage: activeLanguage,
       isAccessibleForFree: true,
     };
 
     setDynamicJsonLd('birthday-bloom-dynamic-ldjson', dynamicSchema);
 
     // Update html lang attribute
-    document.documentElement.lang = language || 'en';
+    document.documentElement.lang = activeLanguage || 'en';
 
-  }, [config.name, config.age, config.relationship, config.senderName, language, t, isBengali, isHindi, isFrench]);
+  }, [config.name, config.age, config.relationship, config.senderName, config.language, language, t, isBengali, isHindi, isFrench]);
 };

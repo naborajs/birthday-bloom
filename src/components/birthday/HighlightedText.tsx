@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { motion } from "framer-motion";
 
 export interface HighlightedTextProps {
     text: string;
@@ -43,7 +42,7 @@ export const HighlightedText: React.FC<HighlightedTextProps> = ({
     text,
     relationship = "partner",
     className = "",
-    animate = true,
+    animate: _animate = true,
     typewriter = false,
     speed = 40,
     delay = 100,

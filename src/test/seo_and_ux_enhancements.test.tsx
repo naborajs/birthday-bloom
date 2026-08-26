@@ -125,7 +125,7 @@ describe("SEO, UX, and PWA Enhancements Test Suite", () => {
       expect(htmlContent).toContain('<meta name="twitter:image:alt" content="Birthday Bloom Celebration Preview" />');
     });
 
-    it("contains comprehensive and valid JSON-LD structured data with dual WebSite and WebApplication schemas", () => {
+    it("contains comprehensive and valid JSON-LD structured data with WebSite, WebApplication, FAQPage, HowTo, and BreadcrumbList schemas", () => {
       const jsonLdMatch = htmlContent.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
       expect(jsonLdMatch).not.toBeNull();
       const rawJson = jsonLdMatch![1].trim();
@@ -151,6 +151,24 @@ describe("SEO, UX, and PWA Enhancements Test Suite", () => {
       expect(webApp.inLanguage).toContain("en");
       expect(webApp.offers).toBeDefined();
       expect(webApp.author).toBeDefined();
+
+      const faqPage = parsed["@graph"].find((item: { "@type": string }) => item["@type"] === "FAQPage");
+      expect(faqPage).toBeDefined();
+      expect(Array.isArray(faqPage.mainEntity)).toBe(true);
+      expect(faqPage.mainEntity.length).toBeGreaterThanOrEqual(5);
+
+      const howTo = parsed["@graph"].find((item: { "@type": string }) => item["@type"] === "HowTo");
+      expect(howTo).toBeDefined();
+      expect(Array.isArray(howTo.step)).toBe(true);
+
+      const breadcrumbs = parsed["@graph"].find((item: { "@type": string }) => item["@type"] === "BreadcrumbList");
+      expect(breadcrumbs).toBeDefined();
+    });
+
+    it("contains semantic crawlable noscript fallback", () => {
+      expect(htmlContent).toContain("<noscript>");
+      expect(htmlContent).toContain("<h1>Birthday Bloom");
+      expect(htmlContent).toContain("3D Interactive Cake Cutting");
     });
   });
 
@@ -159,9 +177,38 @@ describe("SEO, UX, and PWA Enhancements Test Suite", () => {
     const manifestContent = fs.readFileSync(manifestPath, "utf-8");
     const parsedManifest = JSON.parse(manifestContent);
 
-    it("harmonizes theme_color and background_color to #1a0515", () => {
+    it("harmonizes theme_color, background_color, categories, and shortcuts", () => {
       expect(parsedManifest.theme_color).toBe("#1a0515");
       expect(parsedManifest.background_color).toBe("#1a0515");
+      expect(parsedManifest.categories).toContain("entertainment");
+      expect(Array.isArray(parsedManifest.shortcuts)).toBe(true);
+      expect(parsedManifest.shortcuts.length).toBeGreaterThanOrEqual(3);
+    });
+  });
+
+  describe("Robots.txt and Sitemap.xml Verification", () => {
+    const robotsPath = path.resolve(process.cwd(), "public/robots.txt");
+    const robotsContent = fs.readFileSync(robotsPath, "utf-8");
+
+    it("robots.txt configures search engines, AI crawlers, and sitemap pointer", () => {
+      expect(robotsContent).toContain("User-agent: Googlebot");
+      expect(robotsContent).toContain("User-agent: GPTBot");
+      expect(robotsContent).toContain("User-agent: ClaudeBot");
+      expect(robotsContent).toContain("User-agent: PerplexityBot");
+      expect(robotsContent).toContain("Sitemap: https://birthday-bloom.vercel.app/sitemap.xml");
+    });
+
+    const sitemapPath = path.resolve(process.cwd(), "public/sitemap.xml");
+    const sitemapContent = fs.readFileSync(sitemapPath, "utf-8");
+
+    it("sitemap.xml contains multilingual hreflang and archetypes", () => {
+      expect(sitemapContent).toContain('xmlns:xhtml="http://www.w3.org/1999/xhtml"');
+      expect(sitemapContent).toContain('hreflang="bn"');
+      expect(sitemapContent).toContain('hreflang="hi"');
+      expect(sitemapContent).toContain('hreflang="fr"');
+      expect(sitemapContent).toContain("relationship=partner");
+      expect(sitemapContent).toContain("relationship=friend");
+      expect(sitemapContent).toContain("relationship=family");
     });
   });
 });

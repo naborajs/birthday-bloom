@@ -1,4 +1,4 @@
-import type { BirthdayConfig, RelationshipType, GenderType } from './useBirthdayStore';
+import type { BirthdayConfig, GenderType } from './useBirthdayStore';
 
 /**
  * Safely parses URL query parameters to allow custom, shareable birthday celebration links.

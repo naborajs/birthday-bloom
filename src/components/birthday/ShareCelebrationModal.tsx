@@ -24,7 +24,7 @@ interface ShareCelebrationModalProps {
 
 export const ShareCelebrationModal: React.FC<ShareCelebrationModalProps> = ({ isOpen, onClose }) => {
   const { config } = useBirthdayStore();
-  const { t, language, isBengali, isHindi, isFrench } = useTranslation();
+  const { language, isBengali, isHindi, isFrench } = useTranslation();
   
   const [customName, setCustomName] = useState(config.name || '');
   const [customRel, setCustomRel] = useState<RelationshipType>(config.relationship || 'partner');
