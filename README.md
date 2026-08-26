@@ -9,8 +9,18 @@
  <p align="center">
   <a href="https://github.com/naborajs/birthday-bloom/stargazers"><img src="https://img.shields.io/github/stars/naborajs/birthday-bloom?style=for-the-badge&color=ff69b4&logo=github" alt="Stars"></a>
   <a href="https://github.com/naborajs/birthday-bloom/blob/main/LICENSE"><img src="https://img.shields.io/github/license/naborajs/birthday-bloom?style=for-the-badge&color=4169e1" alt="License"></a>
+  <a href="https://github.com/naborajs/birthday-bloom/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22"><img src="https://img.shields.io/badge/Good%20First%20Issue-Welcome-7928ca?style=for-the-badge&logo=github" alt="Good First Issue"></a>
   <a href="https://vercel.com"><img src="https://img.shields.io/badge/Deploy-Vercel-black?style=for-the-badge&logo=vercel" alt="Deploy"></a>
-</p> 
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/React-18.3-61dafb?style=flat-square&logo=react&logoColor=black" alt="React 18">
+  <img src="https://img.shields.io/badge/TypeScript-5.8-3178c6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Three.js-WebGL-000000?style=flat-square&logo=three.js&logoColor=white" alt="Three.js">
+  <img src="https://img.shields.io/badge/Framer_Motion-12-ff0055?style=flat-square&logo=framer&logoColor=white" alt="Framer Motion">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-3.4-38bdf8?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS">
+  <img src="https://img.shields.io/badge/Zustand-5.0-brown?style=flat-square" alt="Zustand">
+</p>
 
 ## 🎥 Project Overview
 
@@ -28,9 +38,32 @@
 
 ---
 
+## ⚡ 10-Minute Contributor Fast-Track
+
+Want to contribute to an active open-source project? We love contributions from first-time developers!
+
+```bash
+# 1. Clone your fork
+git clone https://github.com/naborajs/birthday-bloom.git
+cd birthday-bloom
+
+# 2. Install dependencies
+npm install
+
+# 3. Start local development server (with HMR)
+npm run dev
+
+# 4. Run tests and full CI verification
+npm run verify
+```
+
+👉 Check out our [Good First Issues](https://github.com/naborajs/birthday-bloom/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) and the [Root Contributing Guide](./CONTRIBUTING.md) to get started!
+
+---
+
 ## Start Here
 
-Birthday Bloom is now **env-first**: names, relationship type, messages, colors, photos, captions, videos, audio, visible sections, animation behavior, accessibility, and family-template metadata can be changed from `.env.local`.
+Birthday Bloom is now **env-first & zero-config**: names, relationship type, messages, colors, photos, captions, videos, audio, visible sections, animation behavior, accessibility, and family-template metadata can be changed from `.env.local` or instant URL query parameters.
 
 Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom)
 
@@ -38,10 +71,11 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 
 If you ask an AI coding agent to customize Birthday Bloom, tell it this first:
 
-> This project is already built to be customized through env values. Before editing components or templates, check `.env.example` and `obsidian-docs/ENV_GUIDE.md`, then tell me which env keys to update.
+> This project is already built to be customized through env values and URL parameters. Before editing components or templates, check `.env.example`, `obsidian-docs/URL-Parameters.md`, and `obsidian-docs/ENV_GUIDE.md`, then tell me which env keys or parameters to update.
 
 Direct docs:
 
+- [Zero-Config URL Parameters Guide](./obsidian-docs/URL-Parameters.md)
 - [Complete env customization guide](./obsidian-docs/ENV_GUIDE.md)
 - [Multi-Language Localization (French) guide](./obsidian-docs/setup-french.md)
 - [Multi-Language Localization (Bengali) guide](./obsidian-docs/setup-bengali.md)
@@ -49,7 +83,7 @@ Direct docs:
 - [Quick start](./obsidian-docs/quick-start.md)
 - [Family system](./obsidian-docs/family-system.md)
 - [Template architecture](./obsidian-docs/template-architecture.md)
-- [Developer guide](./obsidian-docs/developer-guide.md)
+- [Developer guide & Contributor Walkthroughs](./obsidian-docs/developer-guide.md)
 - [Migration guide](./obsidian-docs/migration-guide.md)
 - [Documentation index](./obsidian-docs/DOCUMENTATION_INDEX.md)
 
