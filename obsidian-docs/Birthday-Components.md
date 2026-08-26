@@ -6,22 +6,23 @@ aliases: [Birthday Components, Cinematic Experience]
 # Birthday Components Engine
 [[DOCUMENTATION_INDEX|Back to Home]]
 
-The Birthday Bloom cinematic experience relies on an optimized suite of 29 specialized components located inside the `src/components/birthday/` directory.
+The Birthday Bloom cinematic experience relies on an optimized suite of 30 specialized components located inside the `src/components/birthday/` directory.
 
 These components are conditionally orchestrated across the 4-phase state machine (`splash` $\rightarrow$ `unlock` $\rightarrow$ `intro` $\rightarrow$ `main`) via [[Index.tsx]] and [[MainBirthday.tsx]].
 
 ---
 
 ## 1. Orchestration & Gateway
-- **[[MainBirthday.tsx]]**: The central dashboard and stage orchestrator for the `main` phase. Coordinates the hero section, interest badges, message card, wishes grid, cake cutting, quiz, heart tree, galleries, and footer.
+- **[[MainBirthday.tsx]]**: The central dashboard and stage orchestrator for the `main` phase. Coordinates the hero header, interest badges, message card, wishes grid, cake cutting, quiz, heart tree, galleries, and footer.
 - **[[SplashScreen.tsx]]**: The entry loading screen. Handles initial user gesture to unlock Web Audio playback, font preloading, and dynamic heart progress loading.
 - **[[PasswordUnlock.tsx]]**: Optional frosted-glass passcode gatekeeper screen. Validates birthday dates (`MMDD`, `YYYYMMDD`, etc.) or custom passwords with vibration and shake animations.
+- **[[ShareCelebrationModal.tsx]]**: Modal dialog for sharing customized URLs across WhatsApp, X, Telegram, Facebook, and LinkedIn with native Web Share API integration.
 - **[[SoundManager.tsx]]**: Singleton `AudioManager` coordinating background music loop, fade-in/fade-out, and interactive sound effects (typewriter, chimes, pops, fireworks, cake cuts).
 
 ## 2. The 3D & 2D Cake Cutting Experience
-Powered by React Three Fiber (`@react-three/fiber`), Drei, and React Spring:
-- **[[Cake3D.tsx]]**: 3D cake model utilizing procedural geometry, ambient lighting, contact shadows, and dynamic slicing spring physics.
-- **[[CakeVisuals.tsx]]**: 3D `<Canvas>` scene wrapper configuring camera frustum, lighting parameters, and shadow maps.
+Powered by React Three Fiber (`@react-three/fiber`), Three.js Drei, and Framer Motion:
+- **[[Cake3D.tsx]]**: Three.js 3D WebGL cake model utilizing procedural geometry, ambient lighting, contact shadows, and dynamic slicing spring physics.
+- **[[CakeVisuals.tsx]]**: 2D Framer Motion celebration particle overlays (`CutSparks` and `MagicDust`) rendered during cake cutting and candle blowing.
 - **[[CakeCutting.tsx]]**: 2D/3D composite interaction orchestrator managing the 4 cake stages (flavor selection, candle blow, wish making, slice cutting) and reduced motion adaptation.
 - **[[CakeKnife.tsx]]**: Interactive cursor-tracking knife and drag gesture controller.
 - **[[CakeTypes.ts]]**: TypeScript definitions for cake variants, geometries, and slice angles.
