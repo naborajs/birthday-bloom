@@ -13,10 +13,11 @@ import { HeartTree } from "./HeartTree";
 import { BirthdayQuiz } from "./BirthdayQuiz";
 import { FinalSurprise } from "./FinalSurprise";
 import { VideoGallery } from "./VideoGallery";
+import { ShareCelebrationModal } from "./ShareCelebrationModal";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { getHighlySpecificLetter, getBigWishes } from "@/features/core/store/SuperPersonalizedLogic";
 import { useTranslation } from "@/i18n";
-import { Car, Trophy, Star } from "lucide-react";
+import { Car, Trophy, Star, Share2 } from "lucide-react";
 
 export const MainBirthday = () => {
     const [visible, setVisible] = useState(false);
@@ -28,6 +29,7 @@ export const MainBirthday = () => {
     const [cakeClicks, setCakeClicks] = useState(0);
     const [megaSurprise, setMegaSurprise] = useState(false);
     const [giftStage, setGiftStage] = useState<'closed' | 'party' | 'open'>('closed');
+    const [shareOpen, setShareOpen] = useState(false);
     const giftTimerRef = useRef<number | null>(null);
     const { fireConfetti, fireCannon, fireStars } = useConfetti();
     const { playReveal, playPop, playBoom, setBgVolume } = useSoundManager();
@@ -355,7 +357,8 @@ export const MainBirthday = () => {
             { label: isBengali ? "🎊 কামান!" : isHindi ? "🎊 तोप!" : "🎊 Cannon!", color: primaryColor, action: fireCannon },
             { label: isBengali ? "🎈 পার্টি!" : isHindi ? "🎈 पार्टी!" : "🎈 Party!", color: "hsl(45, 100%, 50%)", action: fireConfetti },
             { label: isBengali ? "💫 ভালোবাসা!" : isHindi ? "💫 प्यार!" : "💫 Love!", color: "hsl(200, 80%, 50%)", action: () => { for (let i = 0; i < 5; i++)
-                    setTimeout(addEmoji, i * 200); } }
+                    setTimeout(addEmoji, i * 200); } },
+            { label: isFrench ? "💌 Partager!" : isBengali ? "💌 শেয়ার!" : isHindi ? "💌 शेयर!" : "💌 Share!", color: "hsl(320, 85%, 55%)", action: () => setShareOpen(true) }
         ].map((btn, i) => (<motion.button key={i} whileHover={shouldAnimate ? { scale: 1.08, y: -4 } : undefined} whileTap={{ scale: 0.94 }} onClick={() => { btn.action(); addEmoji(); }} className="px-8 sm:px-12 py-4 sm:py-6 rounded-full text-lg sm:text-2xl font-black text-white shadow-2xl transition-all border border-white/20 backdrop-blur-xl" style={{
                 background: `linear-gradient(135deg, ${btn.color}cc, ${btn.color}88)`,
                 boxShadow: `0 15px 40px -10px ${btn.color}50, inset 0 1px 0 rgba(255,255,255,0.4)`
@@ -373,8 +376,15 @@ export const MainBirthday = () => {
       {config.showFinalSurprise && <FinalSurprise />}
 
       <footer className="relative z-20 text-center py-20 bg-gradient-to-t from-black/60 to-transparent w-full">
-        <div className="flex items-center justify-center gap-2 mb-3">
-          <span className="text-white/20 text-lg">💝</span>
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <button
+            type="button"
+            onClick={() => setShareOpen(true)}
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white/90 text-xs sm:text-sm font-semibold tracking-wider transition-all duration-300 shadow-xl hover:scale-105"
+          >
+            <Share2 size={16} className="text-primary" />
+            <span>{isFrench ? "Partager ou Créer une Surprise ✨" : isBengali ? "সারপ্রাইজ শেয়ার বা নতুন তৈরি করুন ✨" : isHindi ? "सरप्राइज शेयर करें या नया बनाएं ✨" : "Share Surprise or Create Yours ✨"}</span>
+          </button>
         </div>
         <p className="text-white/30 text-sm tracking-[0.15em]">
           {isFrench ? "Avec amour de" : isBengali ? "ভালোবাসায়" : isHindi ? "प्यार से" : "With love from"}{' '}
@@ -384,5 +394,7 @@ export const MainBirthday = () => {
           Birthday Bloom ✨
         </p>
       </footer>
+
+      <ShareCelebrationModal isOpen={shareOpen} onClose={() => setShareOpen(false)} />
     </div>);
 };
