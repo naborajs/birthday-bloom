@@ -623,10 +623,11 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                 {scene === "fake-chat" && (
                     <motion.div
                         key="fake-chat"
-                        initial={{ y: 80, opacity: 0, rotateX: 30 }}
-                        animate={{ y: 0, opacity: 1, rotateX: 0 }}
-                        exit={{ y: -80, opacity: 0, rotateX: -30 }}
-                        transition={{ duration: 0.7, type: "spring" }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, filter: "blur(15px)" }}
+                        transition={{ duration: 0.5 }}
+                        className="fixed inset-0 z-50"
                     >
                         <FakeChatScene onComplete={handleChatComplete} />
                     </motion.div>
