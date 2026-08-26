@@ -60,7 +60,7 @@ birthday-bloom/
     │   │   ├── CinematicIntro.tsx     # Cinematic typewriter & message storyline
     │   │   ├── CakeCutting.tsx        # 2D/3D composite cake cutting with reduced motion support
     │   │   ├── Cake3D.tsx             # Three.js / R3F procedural 3D cake model
-    │   │   ├── CakeVisuals.tsx        # 3D Canvas scene configuring lighting and shadows
+    │   │   ├── CakeVisuals.tsx        # 2D celebration particle overlays (CutSparks and MagicDust)
     │   │   ├── CakeKnife.tsx          # Interactive slicing knife gesture tracker
     │   │   ├── BirthdayQuiz.tsx       # Interactive trivia quiz with score counters
     │   │   ├── HeartTree.tsx          # SVG physics balloon merges & grand finale tree
