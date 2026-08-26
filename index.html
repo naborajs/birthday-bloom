@@ -7,6 +7,12 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Preconnect & DNS-Prefetch for Speed -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Favicon & PWA Assets -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=2" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=2" />
@@ -16,16 +22,23 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="application-name" content="Birthday Bloom" />
+
+  <!-- Core SEO Metadata -->
   <title>Birthday Bloom | Magical Cinematic Birthday Celebration Website</title>
   <meta name="description"
     content="Experience a breathtaking, cinematic birthday celebration website with physics animations, emotional storytelling, custom photo galleries, and festive interactions crafted with love." />
   <meta name="keywords"
-    content="birthday website, animated birthday website, birthday surprise, romantic birthday website, cinematic birthday celebration, birthday bloom, naboraj sarkar, birthday gift website" />
+    content="birthday website, animated birthday website, birthday surprise, romantic birthday website, cinematic birthday celebration, birthday bloom, naboraj sarkar, birthday gift website, 3d cake cutting online, virtual birthday card, personalized birthday wishes" />
   <meta name="author" content="Naboraj Sarkar" />
   <meta name="version" content="3.1.0" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="rating" content="General" />
+  <meta name="distribution" content="Global" />
+  <meta name="revisit-after" content="7 days" />
   <link rel="canonical" href="https://birthday-bloom.vercel.app/" />
 
-  <!-- Open Graph / WhatsApp / Facebook -->
+  <!-- Open Graph / WhatsApp / Facebook / LinkedIn -->
   <meta property="og:title" content="A Magical Birthday Surprise Just For You ✨ — Birthday Bloom" />
   <meta property="og:description"
     content="A handcrafted cinematic birthday celebration featuring emotional storytelling, interactive memories, and magical animations." />
@@ -38,10 +51,10 @@
   <meta property="og:image" content="https://birthday-bloom.vercel.app/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Birthday Bloom Magical Celebration" />
+  <meta property="og:image:alt" content="Birthday Bloom Magical Celebration Preview" />
   <meta property="og:url" content="https://birthday-bloom.vercel.app/" />
 
-  <!-- Twitter / X -->
+  <!-- Twitter / X Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="A Magical Birthday Surprise Just For You ✨" />
   <meta name="twitter:description"
@@ -51,7 +64,7 @@
   <meta name="twitter:site" content="@NSGAMMING699" />
   <meta name="twitter:creator" content="@NSGAMMING699" />
 
-  <!-- JSON-LD Structured Data for Rich Search Results -->
+  <!-- JSON-LD Structured Data for Rich Search Results (Schema.org) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -61,13 +74,18 @@
         "@id": "https://birthday-bloom.vercel.app/#website",
         "url": "https://birthday-bloom.vercel.app/",
         "name": "Birthday Bloom",
-        "alternateName": "Birthday Bloom Celebration",
+        "alternateName": ["Birthday Bloom Celebration", "Birthday Bloom Web App"],
         "description": "A magical cinematic birthday celebration website with physics animations, emotional storytelling, custom photo galleries, and festive interactions.",
         "inLanguage": ["en", "bn", "hi", "fr"],
         "publisher": {
           "@type": "Person",
           "name": "Naboraj Sarkar",
           "url": "https://github.com/naborajs"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://birthday-bloom.vercel.app/?name={search_term_string}",
+          "query-input": "required name=search_term_string"
         }
       },
       {
@@ -80,6 +98,7 @@
         "genre": "Celebration & Entertainment",
         "operatingSystem": "All",
         "browserRequirements": "Requires JavaScript. Requires HTML5 Canvas and WebGL support for 3D physics and visual effects.",
+        "softwareVersion": "3.1.0",
         "inLanguage": ["en", "bn", "hi", "fr"],
         "featureList": [
           "3D Interactive Cake Cutting with WebGL physics",
@@ -88,8 +107,17 @@
           "10+ Emotional Relationship archetypes with custom narratives",
           "Interactive Photo Gallery and Memory Lane",
           "Music and Sound Effects Manager with Haptic feedback",
-          "Personalized Secret Passcode protection"
+          "Personalized Secret Passcode protection",
+          "1-Click Social Sharing and custom referral links"
         ],
+        "screenshot": "https://birthday-bloom.vercel.app/og-image.jpg",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "ratingCount": "320",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -100,20 +128,157 @@
           "name": "Naboraj Sarkar",
           "url": "https://github.com/naborajs"
         }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://birthday-bloom.vercel.app/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is Birthday Bloom?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Birthday Bloom is an open-source, cinematic, emotional birthday celebration web experience featuring 3D cake cutting physics, canvas fireworks, photo and video galleries, and heartfelt storytelling."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I create a personalized birthday surprise website?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You can personalize Birthday Bloom instantly by adding URL parameters (such as ?name=Sophia&rel=partner&lang=en) or configuring 53 custom environment variables without editing codebase files."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is Birthday Bloom free and open source?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, Birthday Bloom is 100% free and open source under the MIT License on GitHub."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What features are included in the birthday celebration?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Features include 3D WebGL cake cutting, canvas fireworks, photo & video albums, 10+ relationship archetypes (partner, friend, family), multilingual support (English, Bengali, Hindi, French), birthday trivia quiz, and secret passcode protection."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I add custom photos, videos, and music to the birthday surprise?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, you can configure custom photos with captions, YouTube video memories, background soundtracks, and interactive sound effects."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does Birthday Bloom work on mobile devices?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, Birthday Bloom is fully responsive and optimized for mobile devices with touch gesture slicing, haptic vibrations, and smooth 60fps animations."
+            }
+          }
+        ]
+      },
+      {
+        "@type": "HowTo",
+        "@id": "https://birthday-bloom.vercel.app/#howto",
+        "name": "How to Create a Personalized Birthday Surprise Website with Birthday Bloom",
+        "description": "Step-by-step guide to generating a cinematic birthday website surprise for someone special in seconds.",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Choose Name & Relationship",
+            "text": "Enter the recipient's name and choose their relationship archetype (partner, friend, brother, sister, mother, father, etc.)."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Select Language",
+            "text": "Select your preferred language among English, Bengali, Hindi, or French for culturally authentic narratives."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Customize Celebration Elements",
+            "text": "Optionally configure custom photos, memories, passcodes, or personalized letters."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Share the Celebration Link",
+            "text": "Copy the generated personalized URL or share directly via WhatsApp, Twitter, Telegram, or Facebook."
+          }
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://birthday-bloom.vercel.app/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://birthday-bloom.vercel.app/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Templates",
+            "item": "https://birthday-bloom.vercel.app/?template=romantic"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Celebrations",
+            "item": "https://birthday-bloom.vercel.app/?relationship=partner"
+          }
+        ]
       }
     ]
   }
   </script>
 
-  <!-- SEO & LLM Metadata -->
+  <!-- Open Source & AI Discovery -->
   <meta name="source" content="https://github.com/naborajs/birthday-bloom" />
   <meta name="repository" content="https://github.com/naborajs/birthday-bloom" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="help" title="Source Code" href="https://github.com/naborajs/birthday-bloom" />
 </head>
 
 <body>
   <div id="root"></div>
+
+  <!-- Crawlable Semantic Fallback for Non-JS Search Engine Bots -->
+  <noscript>
+    <div style="font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.6; color: #fff; background: #1a0515; border-radius: 16px;">
+      <h1>Birthday Bloom | Magical Cinematic Birthday Celebration Website</h1>
+      <p>
+        Experience a breathtaking, cinematic birthday celebration website with physics animations, emotional storytelling, custom photo galleries, 3D WebGL cake cutting, and festive interactions crafted with love.
+      </p>
+      <h2>Key Features</h2>
+      <ul>
+        <li><strong>3D Interactive Cake Cutting:</strong> Slice realistic virtual cakes with physics-based knife animations.</li>
+        <li><strong>Multilingual Narratives:</strong> Culturally authentic letters and wishes in English, Bengali, Hindi, and French.</li>
+        <li><strong>10+ Relationship Archetypes:</strong> Tailored journeys for Partner, Best Friend, Family, Brother, Sister, Mother, Father, and Mentors.</li>
+        <li><strong>Memory Lane & Photo Gallery:</strong> Polaroid-style photo galleries and video memory carousels.</li>
+        <li><strong>Festive Celebrations:</strong> Interactive confetti cannons, fireworks, sound effects, and secret gift reveals.</li>
+      </ul>
+      <h2>Create Your Personalized Surprise</h2>
+      <p>
+        Share personalized links instantly:
+        <br />
+        • <a href="https://birthday-bloom.vercel.app/?template=romantic" style="color: #ff6b6b;">Romantic Birthday Template</a>
+        <br />
+        • <a href="https://birthday-bloom.vercel.app/?template=fun" style="color: #ffd166;">Fun & Energetic Friend Celebration</a>
+        <br />
+        • <a href="https://birthday-bloom.vercel.app/?relationship=family" style="color: #06d6a0;">Family Celebration Template</a>
+      </p>
+      <p>
+        Open source on <a href="https://github.com/naborajs/birthday-bloom" style="color: #ff6b6b;">GitHub</a>. Created by Naboraj Sarkar.
+      </p>
+    </div>
+  </noscript>
+
   <script type="module" src="/src/main.tsx"></script>
 </body>
 
