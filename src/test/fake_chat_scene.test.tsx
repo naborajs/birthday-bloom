@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { FakeChatScene } from '@/components/birthday/FakeChatScene';
 import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
 
@@ -57,5 +57,20 @@ describe('FakeChatScene Component (Instagram DM Style)', () => {
         expect(screen.getByRole('button', { name: /attach photo/i })).toBeTruthy();
         expect(screen.getByRole('button', { name: /add sticker or emoji/i })).toBeTruthy();
         expect(screen.getByRole('button', { name: /send message/i })).toBeTruthy();
+    });
+
+    it('renders simulated iOS status bar with time indicator', () => {
+        const onComplete = vi.fn();
+        render(<FakeChatScene onComplete={onComplete} />);
+        expect(screen.getByText('9:41')).toBeTruthy();
+    });
+
+    it('handles interaction on message bubbles', () => {
+        const onComplete = vi.fn();
+        render(<FakeChatScene onComplete={onComplete} />);
+
+        const messageEl = screen.getByText(/hey my love/i);
+        expect(messageEl).toBeTruthy();
+        fireEvent.click(messageEl);
     });
 });
