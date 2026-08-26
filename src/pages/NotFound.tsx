@@ -73,7 +73,7 @@ const NotFound: React.FC = () => {
             className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-primary hover:bg-primary/90 text-black font-bold transition-all shadow-[0_0_20px_rgba(255,107,130,0.4)] hover:scale-105 active:scale-95"
           >
             <Home className="w-4 h-4" />
-            {isFrench ? "Retour à l'accueil" : isBengali ? "হোমে ফিরে যান" : isHindi ? "मुख्य पृष्ठ" : "Return Home"}
+            {isFrench ? "Retour à l'accueil" : isBengali ? "হোমে ফিরে যান" : isHindi ? "मुख्य पृष्ठ पर लौटें" : "Return to Home"}
           </Link>
 
           <Link
