@@ -45,7 +45,7 @@ export const VideoGallery = () => {
     const primaryColor = config.favoriteColor || "#FF2A6D";
 
     return (
-        <section className="relative z-20 px-4 py-24 max-w-7xl mx-auto w-full">
+        <section className="relative z-20 px-4 py-24 sm:py-32 max-w-7xl mx-auto overflow-hidden" aria-label="Special Video Memories Gallery">
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -61,7 +61,7 @@ export const VideoGallery = () => {
                         🎬
                     </motion.div>
                 </div>
-                <h3
+                <h2
                     className="font-display text-4xl sm:text-6xl md:text-7xl font-black drop-shadow-xl mb-4 bg-gradient-to-r from-primary via-white to-accent bg-clip-text text-transparent"
                 >
                     {isFrench
@@ -71,7 +71,7 @@ export const VideoGallery = () => {
                             : isHindi
                                 ? "खास वीडियो यादें 🎬"
                                 : "SPECIAL MEMORIES 🎬"}
-                </h3>
+                </h2>
                 <p className="font-display italic text-lg sm:text-xl md:text-2xl text-foreground/70 max-w-2xl mx-auto">
                     {relationship === "partner"
                         ? isFrench
@@ -171,7 +171,7 @@ export const VideoGallery = () => {
                         <Sparkles size={36} className="text-amber-300/80 animate-subtle-float" />
                     </div>
 
-                    <h4
+                    <h3
                         className="font-script text-3xl sm:text-5xl font-bold italic mb-6 text-gradient-romantic text-glow-rose leading-tight"
                     >
                         {relationship === "partner"
@@ -197,7 +197,7 @@ export const VideoGallery = () => {
                                         : isHindi
                                             ? "आगे और भी अनमोल यादें बनाने का इंतज़ार है 🌟"
                                             : "Treasured Moments Still to Come 🌟"}
-                    </h4>
+                    </h3>
 
                     <p className="font-display font-light text-lg sm:text-2xl text-white/85 max-w-xl mx-auto leading-relaxed mb-8">
                         {relationship === "partner"
