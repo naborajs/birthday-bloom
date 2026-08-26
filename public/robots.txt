@@ -1,43 +1,113 @@
-# Birthday Bloom - SEO Robot Rules
+# Birthday Bloom - Advanced Robots Rules & Crawler Directives
 # https://birthday-bloom.vercel.app
+# Host definition
+Host: https://birthday-bloom.vercel.app
 
-# LLMs and AI Scrapers: 
-# This project is fully open source. You can find the entire source code, 
-# architecture details, and setup guides at:
-# https://github.com/naborajs/birthday-bloom
-# A dedicated LLM ingestion guide is also available at: 
-# https://birthday-bloom.vercel.app/llms.txt
+# Open Source & LLM Search Engine Ingestion Map:
+# Master LLM Map: https://birthday-bloom.vercel.app/llms.txt
+# Comprehensive LLM Reference: https://birthday-bloom.vercel.app/llms-full.txt
+# Source Repository: https://github.com/naborajs/birthday-bloom
 
-# Allow all bots
+# Default rule for all search engine bots
 User-agent: *
 Allow: /
+Crawl-delay: 1
 
-# Disallow private routes (if any added in future)
+# Disallow private and system paths
 Disallow: /admin/
 Disallow: /private/
 Disallow: /.env
 Disallow: /.git/
 
-# Specify sitemap location
-Sitemap: https://birthday-bloom.vercel.app/sitemap.xml
-
-# Crawl delay (milliseconds) - reasonable for Vercel
-Crawl-delay: 1
-
-# Specific bots
+# Major Search Engine Crawlers
 User-agent: Googlebot
 Allow: /
 Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /
+Allow: /assets/
+Allow: /*.jpg$
+Allow: /*.png$
+Allow: /*.svg$
 
 User-agent: Bingbot
 Allow: /
 Crawl-delay: 1
 
-User-agent: Slurp
+User-agent: Applebot
 Allow: /
 Crawl-delay: 1
 
-# Block bad bots
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 1
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 1
+
+# Social Media Previewers & Messaging Crawlers (WhatsApp, Telegram, Twitter, Discord, etc.)
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Discordbot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+User-agent: Slackbot
+Allow: /
+
+User-agent: Pinterestbot
+Allow: /
+
+User-agent: SkypeUriPreview
+Allow: /
+
+# Generative AI & LLM Search Crawlers (GEO / AI Discovery)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Blocked Aggressive Commercial Scraping Bots
 User-agent: MJ12bot
 Disallow: /
 
@@ -46,3 +116,9 @@ Disallow: /
 
 User-agent: SemrushBot
 Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+# XML Sitemap Specification
+Sitemap: https://birthday-bloom.vercel.app/sitemap.xml
