@@ -1,14 +1,14 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Documentation
-    url: https://github.com/naborajs/birthday-bloom/blob/main/docs/DOCUMENTATION_INDEX.md
-    about: Check the documentation index first
-  - name: ENV Configuration Guide
-    url: https://github.com/naborajs/birthday-bloom/blob/main/docs/ENV_GUIDE.md
-    about: Most customization questions are answered here
-  - name: Troubleshooting
-    url: https://github.com/naborajs/birthday-bloom/blob/main/docs/troubleshooting.md
-    about: Common issues and fixes
-  - name: GitHub Security
+  - name: Documentation Index
+    url: https://github.com/naborajs/birthday-bloom/blob/main/obsidian-docs/DOCUMENTATION_INDEX.md
+    about: Check the interactive Obsidian documentation index first
+  - name: Environment Configuration Guide
+    url: https://github.com/naborajs/birthday-bloom/blob/main/ENV_GUIDE.md
+    about: Master reference for all 53 environment variables and recipes
+  - name: Troubleshooting Guide
+    url: https://github.com/naborajs/birthday-bloom/blob/main/obsidian-docs/troubleshooting.md
+    about: Solutions for common runtime, audio, and deployment issues
+  - name: GitHub Security Policy
     url: https://github.com/naborajs/birthday-bloom/security/policy
-    about: Report security vulnerabilities here
+    about: Report security vulnerabilities responsibly
