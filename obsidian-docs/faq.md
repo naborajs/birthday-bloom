@@ -33,16 +33,15 @@ Set `VITE_PHOTO_1`, `VITE_PHOTO_2`, `VITE_PHOTO_3` (or use `VITE_PHOTOS` for unl
 with direct image URLs. See the [Photos section in ENV_GUIDE.md](./ENV_GUIDE.md#photos).
 
 ### How do I change the theme/color?
-Set `VITE_BIRTHDAY_COLOR` to any hex code and optionally `VITE_THEME` to
-`romantic`, `fun`, `energetic`, `elegant`, `playful`, or `nostalgic`.
+Set `VITE_BIRTHDAY_COLOR` to any hex code (e.g. `#FF1493`), or use dynamic URL query parameters like `?template=romantic&color=ff1493`.
 
 ### How do I hide sections I don't want?
 Use the `VITE_SHOW_*_SECTION` variables. Set any to `false` to hide that section.
 See [Sections in ENV_GUIDE.md](./ENV_GUIDE.md#sections).
 
 ### How do I make it accessible for older users?
-Set `VITE_TEXT_SIZE=large`, `VITE_REDUCED_MOTION=true`,
-`VITE_ANIMATION_INTENSITY=low`, and `VITE_PARTICLE_COUNT=8`.
+Set `VITE_REDUCED_MOTION=true`, `VITE_ANIMATION_INTENSITY=low`,
+and `VITE_ANIMATION_SPEED=slow`.
 
 ### Can I add background music?
 Yes. Set `VITE_SOUND_URL` to an MP3 URL. Video sharing platforms and direct MP3 links
