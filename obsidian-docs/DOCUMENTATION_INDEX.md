@@ -5,9 +5,9 @@ aliases: [DOCUMENTATION_INDEX, index]
 
 # Birthday Bloom v3.1 — Documentation Index
 
-[[quick-start|Quick Start]] | [[ENV_GUIDE|Env Customization Guide]] | [[setup-french|French Guide]] | [[setup-hindi|Hindi Guide]] | [[setup-bengali|Bengali Guide]] | [[architecture-env|Env Architecture]] | [[deployment|Deployment Guide]]
+[[quick-start|Quick Start]] | [[ENV_GUIDE|Env Customization Guide]] | [[URL-Parameters|URL Parameters]] | [[setup-french|French Guide]] | [[setup-hindi|Hindi Guide]] | [[setup-bengali|Bengali Guide]] | [[architecture-env|Env Architecture]] | [[deployment|Deployment Guide]]
 
-**Complete documentation suite for Birthday Bloom**, an env-first cinematic birthday surprise engine built with React 18, TypeScript, Framer Motion, Three.js / React Three Fiber, Tailwind CSS, and Zustand.
+**Complete 32-note documentation suite for Birthday Bloom**, an env-first and zero-config cinematic birthday surprise engine built with React 18, TypeScript, Framer Motion, Three.js / React Three Fiber, Tailwind CSS, and Zustand.
 
 Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom)
 
@@ -18,6 +18,7 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 | Document | Purpose & Summary | Read Time | Tags |
 |---|---|---|---|
 | [[quick-start\|quick-start.md]] | Get running locally in 5 minutes with zero code changes | 5 min | `setup`, `quickstart` |
+| [[URL-Parameters\|URL-Parameters.md]] | Zero-config URL query parameter matrix and live sharing examples | 6 min | `url`, `config`, `parameters` |
 | [[Emotional-Psychology-and-UX\|Emotional-Psychology-and-UX.md]] | Human Neurochemistry, Romantic Psychology, Celebratory Pacing & Aesthetics | 12 min | `ux`, `psychology`, `emotion` |
 | [[Celebration-Sound-and-Sensory-Design\|Celebration-Sound-and-Sensory-Design.md]] | Acoustic Neuro-Triggers, Mobile Haptics & Visual Sensory Harmony | 8 min | `audio`, `sound`, `haptics` |
 | [[ENV_GUIDE\|ENV_GUIDE.md]] | Exhaustive reference for all 53 environment variables, aliases & recipes | 15 min | `environment`, `configuration` |
@@ -27,12 +28,12 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 | [[architecture\|architecture.md]] | Finite state machine, scene timeline, and system architecture | 10 min | `architecture`, `fsm`, `state` |
 | [[architecture-env\|architecture-env.md]] | Environment variable lifecycle, Zustand store hydration & normalization | 8 min | `store`, `zustand`, `env` |
 | [[Website-Architecture\|Website-Architecture.md]] | Core technologies, build toolchain, and rendering pipeline | 7 min | `react`, `vite`, `structure` |
-| [[developer-guide\|developer-guide.md]] | Component API reference, hooks, and extension patterns | 15 min | `developer`, `api`, `components` |
+| [[developer-guide\|developer-guide.md]] | Component API reference, hooks, and 4 step-by-step contributor walkthroughs | 15 min | `developer`, `api`, `components` |
 | [[family-system\|family-system.md]] | Dedicated family templates (brother, sister, parents, grandparents, etc.) | 10 min | `family`, `templates`, `profiles` |
 | [[Template-System-Deep-Dive\|Template-System-Deep-Dive.md]] | Deep dive & extension guide for relationship templates & tone engines | 10 min | `templates`, `tone`, `narrative` |
 | [[template-architecture\|template-architecture.md]] | Template and config architecture data flow | 8 min | `templates`, `models`, `config` |
 | [[Animation-System\|Animation-System.md]] | Framer Motion, 3D WebGL (R3F), Canvas 2D fireworks, and reduced motion | 8 min | `animation`, `3d`, `physics` |
-| [[Birthday-Components\|Birthday-Components.md]] | Exhaustive catalog of all 29 active celebration scene components | 12 min | `components`, `scenes`, `ui` |
+| [[Birthday-Components\|Birthday-Components.md]] | Exhaustive catalog of all 30 active celebration scene components | 12 min | `components`, `scenes`, `ui` |
 | [[UI-Components\|UI-Components.md]] | Design system primitives (`sonner.tsx`, `tooltip.tsx`) and UI extensions | 6 min | `ui`, `radix`, `tailwind` |
 | [[Codebase-Map\|Codebase-Map.md]] | Complete map of all repository folders, scripts, and modules | 6 min | `map`, `codebase`, `files` |
 | [[GitHub-Automation\|GitHub-Automation.md]] | CI/CD pipelines, issue triage workflows, and repository automation | 6 min | `github`, `ci-cd`, `actions` |
@@ -54,9 +55,10 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 
 ### 1. New to Birthday Bloom?
 1. [[quick-start|quick-start.md]] — Install dependencies and run locally in 5 minutes.
-2. [[ENV_GUIDE|ENV_GUIDE.md]] — Learn all 53 customizable settings and situation recipes.
-3. [[faq|faq.md]] — Frequently asked questions.
-4. Copy `.env.example` to `.env.local` and restart the dev server.
+2. [[URL-Parameters|URL-Parameters.md]] — Zero-config personalization via query parameters.
+3. [[ENV_GUIDE|ENV_GUIDE.md]] — Learn all 53 customizable settings and situation recipes.
+4. [[faq|faq.md]] — Frequently asked questions.
+5. Copy `.env.example` to `.env.local` and restart the dev server.
 
 ### 2. Customizing for a Specific Person or Language
 1. **Multi-Language Setup**:
@@ -74,8 +76,8 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 ### 3. Contributing & Code Development
 1. [[styleguide|styleguide.md]] — TypeScript, CSS, and component conventions.
 2. [[architecture|architecture.md]] — Runtime finite state machine.
-3. [[developer-guide|developer-guide.md]] — Component API, hooks, and utilities.
-4. [[Birthday-Components|Birthday-Components.md]] — Component breakdown.
+3. [[developer-guide|developer-guide.md]] — Component API, hooks, and contributor walkthroughs.
+4. [[Birthday-Components|Birthday-Components.md]] — Component breakdown (30 components).
 5. [[roadmap|roadmap.md]] — Planned features and improvements.
 
 ### 4. Deploying to Production
@@ -92,6 +94,7 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 birthday-bloom/
 ├── .env.example                # Exhaustive 53 environment variables template
 ├── ENV_GUIDE.md                # Root markdown customization reference & recipes
+├── CONTRIBUTING.md             # Root 10-minute fast-track contributor guide
 ├── README.md                   # Project introduction and video guides
 ├── CHANGELOG.md                # Version history
 ├── LICENSE                     # MIT License
@@ -103,9 +106,10 @@ birthday-bloom/
 │   ├── SUPPORT.md             # Support and contact
 │   ├── PULL_REQUEST_POLICY.md # Pull request policy
 │   └── workflows/              # CI/CD automation pipelines
-├── obsidian-docs/              # Complete 30-note Obsidian documentation vault
+├── obsidian-docs/              # Complete 32-note Obsidian documentation vault
 │   ├── DOCUMENTATION_INDEX.md  # Central documentation index (this file)
 │   ├── ENV_GUIDE.md            # Master environment variable reference & recipes
+│   ├── URL-Parameters.md       # Zero-config URL query parameters guide
 │   ├── quick-start.md          # Local dev setup guide
 │   ├── setup-french.md         # French setup & European typography
 │   ├── setup-hindi.md          # Hindi setup & Devanagari typography
@@ -113,8 +117,8 @@ birthday-bloom/
 │   ├── architecture.md         # Finite state machine & runtime orchestration
 │   ├── architecture-env.md     # Env lifecycle & Zustand store hydration
 │   ├── Website-Architecture.md # Tech stack & rendering pipeline
-│   ├── developer-guide.md      # Developer reference & component APIs
-│   ├── Birthday-Components.md  # Exhaustive 29-component catalog
+│   ├── developer-guide.md      # Developer reference & 4 contributor walkthroughs
+│   ├── Birthday-Components.md  # Exhaustive 30-component catalog
 │   ├── Animation-System.md     # 2D, 3D WebGL & Canvas animation system
 │   ├── UI-Components.md        # Design system primitives & extensions
 │   ├── Codebase-Map.md         # Repository structure index
@@ -135,11 +139,14 @@ birthday-bloom/
 │   └── upgrade-summary.md      # Architecture modernization log
 ├── public/
 │   ├── llms.txt                # Public LLM context index
+│   ├── llms-full.txt           # Comprehensive public LLM context index
+│   ├── robots.txt              # Search engine crawler directives
+│   ├── sitemap.xml             # XML Sitemap with multilingual alternates
 │   └── site.webmanifest        # PWA web manifest
 └── src/                        # Application source code
-    ├── components/birthday/    # 29 interactive celebration scenes & components
+    ├── components/birthday/    # 30 interactive celebration scenes & components
     ├── components/ui/          # Design system primitives (sonner, tooltip)
-    ├── features/core/          # Zustand store, dynamic theme & family models
+    ├── features/core/          # Zustand store, dynamic theme, SEO & family models
     ├── i18n/                   # Multi-language translation engine & locales (EN, BN, HI, FR)
     └── config/                 # Templates, wishes & cultural presets
 ```
