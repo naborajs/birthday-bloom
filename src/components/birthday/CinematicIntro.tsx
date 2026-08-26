@@ -11,12 +11,13 @@ import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { SpecialMessage } from "@/features/cinematic-story/scenes/SpecialMessage";
 import { useTranslation } from "@/i18n";
 import { HighlightedText } from "./HighlightedText";
+import { EnvelopeLetterScene } from "./EnvelopeLetterScene";
 
 interface CinematicIntroProps {
     onComplete: () => void;
 }
 
-type Scene = "storytelling" | "fake-chat" | "post-chat" | "reveal-sequence" | "special-message" | "done";
+type Scene = "storytelling" | "fake-chat" | "post-chat" | "envelope-letter" | "reveal-sequence" | "special-message" | "done";
 type RevealStep = "dear-name" | "grand-reveal" | "final-message";
 
 export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
@@ -460,8 +461,14 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                 actionsRef.current.playReveal();
                 actionsRef.current.fireStars();
                 actionsRef.current.triggerFlash();
-                setScene("special-message");
+                setScene("envelope-letter");
             }, postChatLines.length * chatLineInterval + 800);
+        }
+
+        if (scene === "envelope-letter") {
+            addTimer(() => {
+                setScene("special-message");
+            }, 14000 * speedMultiplier);
         }
 
         if (scene === "special-message") {
@@ -652,6 +659,22 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                                 </motion.div>
                             ))}
                         </div>
+                    </motion.div>
+                )}
+
+                {scene === "envelope-letter" && (
+                    <motion.div
+                        key="envelope-letter"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+                        transition={{ duration: 0.8 }}
+                        className="w-full flex items-center justify-center z-50 py-6"
+                    >
+                        <EnvelopeLetterScene
+                            autoOpen={true}
+                            onComplete={() => setScene("special-message")}
+                        />
                     </motion.div>
                 )}
 
