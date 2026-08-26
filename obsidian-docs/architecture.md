@@ -49,6 +49,7 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 │                  State & Reactive Theming                   │
 │     - Zustand Store (useBirthdayStore.ts)                   │
 │     - Dynamic CSS Variable Injection (useDynamicTheme.ts)   │
+│     - Dynamic SEO & Structured Data (useDynamicSEO.ts)      │
 ├─────────────────────────────────────────────────────────────┤
 │                     Data & Models Layer                     │
 │     - Family Member Profiles (familyTemplates.ts)           │
@@ -68,14 +69,14 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 - Uses `FAMILY_TEMPLATE_REGISTRY` for scalable type mapping and metadata resolution.
 
 ### State & Env Parsing Layer — `src/features/core/store/useBirthdayStore.ts`
-- Parses, sanitizes, and type-coerces all 53 environment variables and aliases.
+- Parses, sanitizes, and type-coerces all 53 environment variables, URL query parameters, and aliases.
 - Computes reactive animation pacing (`slow`, `moderate`, `fast`), mood (`romantic`, `energetic`, `warm`), and language (`en`, `bn`, `hi`, `fr`).
 - Exposes `config` to all celebration components.
 
 ### Audio Subsystem — `src/components/birthday/SoundManager.tsx`
 - Singleton `AudioManager` manages:
   - Background music loop with smooth volume fade-in and fade-out.
-  - Interactive sound effects: `click`, `whoosh`, `pop`, `sparkle`, `cheer`, `firework`, `cakeCut`, `blowCandle`, `giftOpen`, `levelUp`.
+  - Interactive sound effects: `typeClick` (`playType`), `whoosh` (`playWhoosh`), `reveal` (`playReveal`), `pop` (`playPop`), `boom` (`playBoom`).
   - Autoplay fallback handlers on first user gesture.
 
 ### Responsive & Device Adaptation
@@ -91,13 +92,14 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 |---|---|
 | `src/App.tsx` | App shell: router, global error boundary, ambient effects, toaster |
 | `src/pages/Index.tsx` | 4-phase state machine (`splash` $\rightarrow$ `unlock` $\rightarrow$ `intro` $\rightarrow$ `main`) |
-| `src/pages/NotFound.tsx` | Client-side 404 handler with Link navigation |
-| `src/components/birthday/` | 29 active cinematic, narrative, and sensory celebration components |
+| `src/pages/NotFound.tsx` | SEO-friendly client-side 404 handler with theme palette and discovery links |
+| `src/components/birthday/` | 30 active cinematic, narrative, and sensory celebration components |
 | `src/components/ui/` | Design system primitives (`sonner.tsx`, `tooltip.tsx`) |
 | `src/components/ErrorBoundary.tsx` | Class-based error boundary with cinematic fallback UI |
 | `src/features/core/store/` | `useBirthdayStore.ts` (Zustand store, env parsing) + `SuperPersonalizedLogic.ts` |
 | `src/features/core/models/` | `familyTemplates.ts` (14 member archetypes, registry, factories) |
 | `src/features/core/theme/` | `useDynamicTheme.ts` (dynamic CSS variable tokens injection) |
+| `src/features/core/seo/` | `useDynamicSEO.ts` (JSON-LD structured data and dynamic meta tags) |
 | `src/features/cinematic-story/` | Narrative intro scenes and animation variants |
 | `src/i18n/` | Multi-language translation engine & locale dictionaries (`en.ts`, `bn.ts`, `hi.ts`, `fr.ts`) |
 | `src/config/` | Audio assets (`birthday.ts`), emotional letters (`templates.ts`), cultural presets |
@@ -105,8 +107,8 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 | `src/hooks/` | Responsive hooks (`use-mobile.tsx`) |
 | `src/lib/` | Tailwind class merging utilities (`utils.ts`) |
 | `src/test/` | Vitest unit, integration, stress, and challenge test suites |
-| `public/` | Static assets, web manifest, `llms.txt` |
-| `obsidian-docs/` | Comprehensive 30-note technical documentation vault |
+| `public/` | Static assets, web manifest, `robots.txt`, `sitemap.xml`, `llms.txt` |
+| `obsidian-docs/` | Comprehensive 32-note technical documentation vault |
 
 ---
 
