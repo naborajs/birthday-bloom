@@ -15,11 +15,11 @@ import { FinalSurprise } from "./FinalSurprise";
 import { VideoGallery } from "./VideoGallery";
 import { ShareCelebrationModal } from "./ShareCelebrationModal";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
-import { getBigWishes } from "@/features/core/store/SuperPersonalizedLogic";
 import { useTranslation } from "@/i18n";
-import { Car, Trophy, Star, Share2 } from "lucide-react";
+import { Car, Trophy, Share2 } from "lucide-react";
 import { BalloonPopGame } from "./BalloonPopGame";
 import { EnvelopeLetterScene } from "./EnvelopeLetterScene";
+import { WishDeck } from "./WishDeck";
 
 export const MainBirthday = () => {
     const [visible, setVisible] = useState(false);
@@ -36,13 +36,12 @@ export const MainBirthday = () => {
     const { fireConfetti, fireCannon, fireStars } = useConfetti();
     const { playReveal, playPop, playBoom, setBgVolume } = useSoundManager();
     const { config } = useBirthdayStore();
-    const { t, isHindi, isBengali, isFrench, language } = useTranslation();
-    const { name, age, relationship, favoriteColor, gender, senderName } = config;
+    const { t, isHindi, isBengali, isFrench } = useTranslation();
+    const { name, age, relationship, favoriteColor, senderName } = config;
     const isMobile = useIsMobile();
     const reduceMotion = useReducedMotion();
     const shouldAnimate = !isMobile && !reduceMotion;
     const primaryColor = favoriteColor || '#FF6B6B';
-    const bigWishes = useMemo(() => getBigWishes(name, relationship, gender, config.interests || [], language), [name, relationship, gender, config.interests, language]);
     const specialCode = useMemo(() => {
         const template = relationship === 'partner' ? 'LOVE' : relationship === 'friend' ? 'LEGEND' : 'HOME';
         const interestMap = [
@@ -244,19 +243,8 @@ export const MainBirthday = () => {
       {config.showQuizSection && <BirthdayQuiz />}
 
       
-      {/* Big Wishes Section */}
-      <section className="relative z-20 px-4 pb-32">
-        <h2 className="font-display text-4xl sm:text-6xl md:text-8xl font-black text-center mb-16 drop-shadow-xl" style={{ color: primaryColor }}>{isBengali ? "আপনার জন্য অফুরন্ত শুভকামনা ✨" : isHindi ? "आपके लिए ढेरों दुआएं ✨" : "Wishes for You ✨"}</h2>
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-          {bigWishes.map((item, i) => (<motion.div key={i} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }} whileHover={!isMobile ? { y: -10, scale: 1.02, boxShadow: `0 30px 60px -15px ${primaryColor}35` } : undefined} className="p-8 sm:p-10 backdrop-blur-3xl border cursor-pointer group rounded-[2.5rem] glass-card" onClick={addEmoji}>
-              <div className="text-6xl sm:text-7xl mb-6 group-hover:scale-110 transition-transform duration-400 select-none">{item.emoji}</div>
-              <p className="text-foreground/95 text-xl sm:text-2xl md:text-3xl font-black leading-tight tracking-tight">{item.wish}</p>
-              <div className="mt-6 flex gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                {[1, 2, 3].map(j => <Star key={j} size={16} className="text-primary fill-primary"/>)}
-              </div>
-            </motion.div>))}
-        </div>
-      </section>
+      {/* Tinder-Style Wishes Deck */}
+      <WishDeck />
 
       {config.showGiftSection && <section className="relative z-20 px-4 pb-20">
         <div className="max-w-6xl mx-auto">
