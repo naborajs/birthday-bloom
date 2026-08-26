@@ -115,6 +115,100 @@ Happy Birthday to my forever sister. The world is infinitely better because you'
 
 With All My Love,
 [Your Name]`,
+    father: (name: string) => `To My Hero & Dearest Father, Dear ${name},
+
+No words will ever be enough to thank you for your quiet sacrifices, your steady wisdom, and your unconditional love. You've always been the anchor of our Family and the hero I look up to every single day.
+
+Every lesson you taught me and every laugh we shared has shaped who I am. Today, I wish you endless health, deep peace, and the happiest birthday filled with all the joy you've given us.
+
+Happy Birthday, Dad. You will always be my greatest role model. 🙏
+
+With Immense Love and Respect,
+[Your Name]`,
+    mother: (name: string) => `To My Sweetest Mother & Guiding Light, Dear ${name},
+
+Your love is the gentlest refuge, and your smile is the purest blessing in our home. Everything good in my life is a reflection of your endless patience, warmth, and the pride of our Family.
+
+Thank you for every silent prayer, every warm hug, and every sacrifice you made with a smile. May your days be filled with radiant health, peace, and eternal happiness.
+
+Happy Birthday, Mom. I love you more than words could ever tell. 💐💛
+
+Forever Your Loving Child,
+[Your Name]`,
+    grandfather: (name: string) => `To Our Beloved Grandfather & Patriarch, Dear ${name},
+
+Your life is a living library of wisdom, strength, and honorable memories. Having you at the head of our Family tree is our greatest treasure.
+
+Thank you for your warmth, your unforgettable stories, and the legacy of kindness you instill in all of us. Wishing you a day of immense joy, good health, and peace.
+
+Happy Birthday, Grandpa. You are deeply cherished. 🌳✨
+
+With Utmost Respect and Love,
+[Your Name]`,
+    grandmother: (name: string) => `To Our Sweetest Grandmother, Dear ${name},
+
+Your tenderness has a way of turning every ordinary day into something warm and magical. Your recipes, your soft embrace, and your prayers are the heart of our Family.
+
+May your birthday be as sweet and luminous as your heart. We wish you wonderful health and endless smiles.
+
+Happy Birthday, Grandma! 🌼🧁
+
+With All Our Love,
+[Your Name]`,
+    uncle: (name: string) => `To The Best Uncle in the World, Dear ${name},
+
+You always bring the best laughs, the greatest stories, and the most uplifting energy to every family gathering. You're not just an uncle—you're a true friend and a Family legend.
+
+May this year bring you massive triumphs, good health, and unforgettable times. Let's celebrate your day in style! 🎩🎉
+
+Cheers to You,
+[Your Name]`,
+    aunt: (name: string) => `To My Wonderful & Vibrant Aunt, Dear ${name},
+
+Your elegance, your infectious joy, and your loving heart brighten up every room you walk into. Thank you for always cheering me on and bringing sparkle to our Family.
+
+Wishing you a birthday as fabulous, vibrant, and loving as you are! 🌺💃
+
+With Lots of Love,
+[Your Name]`,
+    cousin: (name: string) => `To My Favorite Cousin & Partner in Crime, Dear ${name},
+
+Part Family, part best friend, and 100% chaotic fun! From childhood family get-togethers to life's latest adventures, having you in my corner has made everything 10x better.
+
+Here's to another year of legendary memories, inside jokes, and leveling up together! 🎮⚡
+
+Your Favorite Cousin,
+[Your Name]`,
+    son: (name: string) => `To My Wonderful Son & Brightest Star, Dear ${name},
+
+Watching you grow, achieve, and walk through this world with honor and kindness is the greatest joy and pride of our Family. You make me prouder than words can describe.
+
+Never forget how capable, brave, and deeply loved you are. May your year be filled with big dreams coming true and limitless happiness.
+
+Happy Birthday, my boy! 🚀⭐
+
+With All My Heart,
+[Your Name]`,
+    daughter: (name: string) => `To My Precious Daughter & Shining Light, Dear ${name},
+
+You bring a gentle grace, brilliant joy, and endless love into this world. Seeing the remarkable, compassionate person you've become fills our Family with endless pride.
+
+May your birthday be as radiant and beautiful as your spirit. Keep shining your magical light wherever you go.
+
+Happy Birthday, my darling girl! 🌈👑
+
+With Endless Love,
+[Your Name]`,
+    guardian: (name: string) => `To My Dedicated Guardian & Protector, Dear ${name},
+
+Your steady presence, guidance, and unwavering protection have been the foundation of our Family. You stepped up with patience and deep care, and for that, I am eternally grateful.
+
+Today, we honor you and the safety, warmth, and strength you bring into my life. Wishing you deep peace and happiness on your birthday.
+
+Happy Birthday, with profound gratitude. 🛡️🌟
+
+With Utmost Respect,
+[Your Name]`,
     colleague: (name: string) => `To an Incredible Colleague, ${name},
 
 Working with you is a daily reminder that the people make the place. Your dedication, your brilliant ideas, and your positive energy transform even the most stressful days into something manageable—and often, genuinely fun.
@@ -171,6 +265,36 @@ export const SPECIAL_QUOTES = {
             "Having a friend as loyal and wonderful as you is the greatest blessing in my life. ✨"
         ]
     },
+    brother: [
+        "To the best brother ever—growing up with you was the greatest adventure. Keep shining! 🏆",
+        "Loyal, strong, and always in my corner. Blessed to call you my brother. 🔥",
+        "No matter how old we get, you'll always be my favorite partner in crime. 🚀"
+    ],
+    sister: [
+        "To my sweetest sister—your laughter fills our home with endless light and joy. 🌸",
+        "More than a sister, you are my closest confidante and dearest friend. ✨",
+        "May your birthday bloom with all the happiness and beauty you bring into the world. 💖"
+    ],
+    father: [
+        "To my hero and dad—thank you for your quiet strength, wisdom, and endless love. 🌟💪",
+        "The lessons you taught me are the greatest treasures I will ever hold. 🙏",
+        "Wishing the happiest birthday to the man who made everything possible. 👑"
+    ],
+    mother: [
+        "To the heart and soul of our family—your love is the warmest light in our lives. 💐💛",
+        "Thank you for every silent sacrifice, every warm hug, and your endless care. 🌹",
+        "Wishing the most wonderful mother on earth a birthday as beautiful as her heart. 💖"
+    ],
+    colleague: [
+        "To a fantastic colleague—working alongside you makes every challenge a victory. 🎯",
+        "Your positive energy and brilliant ideas elevate our whole team every day. 🚀",
+        "Wishing you immense professional success and a joyful, well-deserved celebration! ✨"
+    ],
+    mentor: [
+        "To an inspiring mentor—your guidance and belief have shaped my journey profoundly. 🌟",
+        "Thank you for leading with wisdom, generosity, and uncompromising excellence. 🧭",
+        "Wishing you a milestone year filled with health, triumph, and happiness. 🙏"
+    ],
     family: [
         "The roots of our family tree are strengthened by your love. You are our pride and joy.",
         "Every memory we share is a treasure. Thank you for being the heart of our home.",

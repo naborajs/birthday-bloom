@@ -93,6 +93,92 @@ Joyeux Anniversaire, Maman chérie. Je t'aime plus que les mots ne pourront jama
 
 Ton enfant qui t'adore,
 [Votre Nom]`,
+    sibling: (name: string) => `À mon incroyable frère/sœur, ${name},
+
+De nos disputes pour la télécommande à nos plus beaux fous rires complices, nous avons partagé toute une vie de souvenirs inoubliables. Tu es la personne qui connaît tous mes secrets d'enfance ! 😂
+
+Au-delà des plaisanteries, je suis immensément reconnaissant(e) d'avoir un(e) partenaire de vie comme toi. Ton courage et ton humour m'inspirent chaque jour.
+
+Joyeux Anniversaire ! Faisons de cette année la plus belle de toutes. ✨
+
+Avec toute ma tendresse,
+[Votre Nom]`,
+    grandfather: (name: string) => `À notre cher grand-père bien-aimé, ${name},
+
+Votre parcours est un modèle de sagesse, de dignité et de bonté. Avoir la chance de grandir sous votre bienveillance est une bénédiction inestimable pour toute notre famille.
+
+Merci pour vos récits passionnants et votre amour chaleureux. Nous vous souhaitons une excellente santé et une profonde sérénité.
+
+Joyeux Anniversaire, Papi ! 🌳✨
+
+Avec tout notre respect et notre amour,
+[Votre Nom]`,
+    grandmother: (name: string) => `À notre très chère grand-mère, ${name},
+
+Votre douceur, vos délicates attentions et vos doux câlins réchauffent le cœur de notre famille. Vous êtes l'âme bienveillante de notre maison.
+
+Que votre anniversaire soit aussi doux et lumineux que votre cœur. Nous vous souhaitons une merveilleuse santé et mille sourires.
+
+Joyeux Anniversaire, Mamie ! 🌼🧁
+
+Avec tout notre amour le plus tendre,
+[Votre Nom]`,
+    uncle: (name: string) => `Au meilleur des oncles, ${name},
+
+Chaque fête de famille prend une dimension festive et joyeuse dès que tu arrives ! Tu n'es pas seulement un oncle formidable, mais aussi un complice exceptionnel.
+
+Que cette nouvelle année t'apporte de grands succès, la forme et des moments inoubliables.
+
+Joyeux Anniversaire ! 🎩🎉
+
+Bien chaleureusement,
+[Votre Nom]`,
+    aunt: (name: string) => `À ma tante adorée et rayonnante, ${name},
+
+Ton élégance, ta joie de vivre communicative et ta générosité illuminent chaque moment partagé. Merci pour ton écoute et ta présence si chaleureuse.
+
+Je te souhaite un anniversaire aussi magnifique et pétillant que toi ! 🌺💃
+
+Avec toute mon affection,
+[Votre Nom]`,
+    cousin: (name: string) => `À mon/ma cousin(e) préféré(e) et complice de toujours, ${name},
+
+Un mélange parfait de famille, de meilleur(e) ami(e) et de franche camaraderie ! Des réunions de famille d'enfance aux aventures d'aujourd'hui, c'est toujours un bonheur de t'avoir à mes côtés.
+
+Prépare-toi pour une nouvelle année mémorable et pleine d'énergie ! 🎮⚡
+
+Ton/Ta cousin(e) préféré(e),
+[Votre Nom]`,
+    son: (name: string) => `À mon fils formidable et ma plus grande fierté, ${name},
+
+Te voir grandir, t'épanouir et devenir une personne généreuse et accomplie est le plus beau bonheur de ma vie.
+
+Garde toujours cette belle énergie et poursuis tes rêves avec confiance. Que cette année soit couronnée de brillantes réussites.
+
+Joyeux Anniversaire, mon grand ! 🚀⭐
+
+De tout mon cœur,
+[Votre Nom]`,
+    daughter: (name: string) => `À ma fille chérie, mon rayon de soleil et ma joie, ${name},
+
+Ta grâce, ton sourire radieux et ta douceur apportent tant de bonheur dans notre vie. Te voir devenir cette jeune femme exceptionnelle me remplit d'une immense fierté.
+
+Que ton anniversaire soit aussi beau et étincelant que ton âme.
+
+Joyeux Anniversaire, ma princesse ! 🌈👑
+
+Avec tout mon amour infini,
+[Votre Nom]`,
+    guardian: (name: string) => `À mon protecteur et tuteur dévoué, ${name},
+
+Votre présence bienveillante, vos précieux conseils et votre protection constante ont été le socle de notre famille sur lequel j'ai pu grandir en toute sérénité.
+
+Je vous adresse ma plus sincère reconnaissance en ce jour spécial. Que cette année vous apporte paix, joie et bonne santé.
+
+Joyeux Anniversaire, avec mon profond respect. 🛡️🌟
+
+Avec toute ma gratitude,
+[Votre Nom]`,
     family: (name: string) => `À un membre très cher de notre famille, ${name},
 
 Les liens du sang et du cœur sont ce qu'il y a de plus précieux en ce monde, et tu incarnes parfaitement la beauté de notre famille. Ta chaleur, ta bienveillance et ta présence rendent nos réunions si chaleureuses et vivantes.
@@ -147,6 +233,36 @@ export const FRENCH_SPECIAL_QUOTES = {
             "Avoir un(e) ami(e) comme toi est un cadeau inestimable. Joyeux Anniversaire ! ✨"
         ]
     },
+    brother: [
+        "Au meilleur des frères—grandir à tes côtés a été la plus belle des aventures ! 🏆",
+        "Toujours loyal, courageux et à mes côtés. Fier(ère) d'être ton frère/ta sœur. 🔥",
+        "Peu importe les années qui passent, tu resteras toujours mon partenaire de choc. 🚀"
+    ],
+    sister: [
+        "À ma sœur adorée—ton rire remplit notre maison d'une lumière et d'une douceur infinies. 🌸",
+        "Bien plus qu'une sœur, tu es ma confidente de toujours et ma meilleure amie. ✨",
+        "Que ton anniversaire soit à la hauteur de toute la beauté et la joie que tu apportes. 💖"
+    ],
+    father: [
+        "À mon héros et cher papa—merci pour ta force tranquille, ta sagesse et ton amour sans bornes. 🌟💪",
+        "Tes précieux enseignements sont le plus beau des héritages. 🙏",
+        "Très Joyeux Anniversaire à l'homme qui rend tout possible ! 👑"
+    ],
+    mother: [
+        "Au cœur et à l'âme de notre foyer—ta tendresse est la plus douce lumière de notre existence. 💐💛",
+        "Merci pour chaque doux sacrifice, chaque câlin réconfortant et ton dévouement infini. 🌹",
+        "Joyeux Anniversaire à la plus merveilleuse des mamans du monde. 💖"
+    ],
+    colleague: [
+        "À un(e) collègue fantastique—travailler avec toi transforme chaque défi en belle victoire. 🎯",
+        "Ton enthousiasme et tes idées brillantes inspirent toute l'équipe au quotidien. 🚀",
+        "Je te souhaite de grands succès professionnels et une fête mémorable ! ✨"
+    ],
+    mentor: [
+        "À mon mentor respecté—votre bienveillance et vos conseils ont façonné mon parcours avec excellence. 🌟",
+        "Merci de guider nos pas avec générosité, sagesse et exemplarité. 🧭",
+        "Que cette nouvelle année vous apporte accomplissement, santé et bonheur ! 🙏"
+    ],
     family: [
         "Les fondations de notre famille reposent sur ton amour et ta générosité. Tu es notre fierté.",
         "Chaque instant passé avec toi est un doux souvenir gravé dans nos cœurs. Merci d'illuminer notre famille.",

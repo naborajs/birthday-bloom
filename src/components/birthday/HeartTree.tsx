@@ -134,6 +134,12 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
                 return FRENCH_SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || FRENCH_SPECIAL_QUOTES.family;
             if (relationship === 'friend')
                 return (gender === 'male' ? FRENCH_SPECIAL_QUOTES.friend.legend : FRENCH_SPECIAL_QUOTES.friend.friendly) || FRENCH_SPECIAL_QUOTES.family;
+            if (relationship === 'brother' || relationship === 'sibling') return FRENCH_SPECIAL_QUOTES.brother || FRENCH_SPECIAL_QUOTES.family;
+            if (relationship === 'sister') return FRENCH_SPECIAL_QUOTES.sister || FRENCH_SPECIAL_QUOTES.family;
+            if (relationship === 'father') return FRENCH_SPECIAL_QUOTES.father || FRENCH_SPECIAL_QUOTES.family;
+            if (relationship === 'mother') return FRENCH_SPECIAL_QUOTES.mother || FRENCH_SPECIAL_QUOTES.family;
+            if (relationship === 'colleague') return FRENCH_SPECIAL_QUOTES.colleague || FRENCH_SPECIAL_QUOTES.family;
+            if (relationship === 'mentor') return FRENCH_SPECIAL_QUOTES.mentor || FRENCH_SPECIAL_QUOTES.family;
             return FRENCH_SPECIAL_QUOTES.family;
         }
         if (isBengali) {
@@ -141,6 +147,12 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
                 return BENGALI_SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || BENGALI_SPECIAL_QUOTES.family;
             if (relationship === 'friend')
                 return (gender === 'male' ? BENGALI_SPECIAL_QUOTES.friend.legend : BENGALI_SPECIAL_QUOTES.friend.friendly) || BENGALI_SPECIAL_QUOTES.family;
+            if (relationship === 'brother' || relationship === 'sibling') return BENGALI_SPECIAL_QUOTES.brother || BENGALI_SPECIAL_QUOTES.family;
+            if (relationship === 'sister') return BENGALI_SPECIAL_QUOTES.sister || BENGALI_SPECIAL_QUOTES.family;
+            if (relationship === 'father') return BENGALI_SPECIAL_QUOTES.father || BENGALI_SPECIAL_QUOTES.family;
+            if (relationship === 'mother') return BENGALI_SPECIAL_QUOTES.mother || BENGALI_SPECIAL_QUOTES.family;
+            if (relationship === 'colleague') return BENGALI_SPECIAL_QUOTES.colleague || BENGALI_SPECIAL_QUOTES.family;
+            if (relationship === 'mentor') return BENGALI_SPECIAL_QUOTES.mentor || BENGALI_SPECIAL_QUOTES.family;
             return BENGALI_SPECIAL_QUOTES.family;
         }
         if (isHindi) {
@@ -148,12 +160,24 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
                 return HINDI_SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || HINDI_SPECIAL_QUOTES.family;
             if (relationship === 'friend')
                 return (gender === 'male' ? HINDI_SPECIAL_QUOTES.friend.legend : HINDI_SPECIAL_QUOTES.friend.friendly) || HINDI_SPECIAL_QUOTES.family;
+            if (relationship === 'brother' || relationship === 'sibling') return HINDI_SPECIAL_QUOTES.brother || HINDI_SPECIAL_QUOTES.family;
+            if (relationship === 'sister') return HINDI_SPECIAL_QUOTES.sister || HINDI_SPECIAL_QUOTES.family;
+            if (relationship === 'father') return HINDI_SPECIAL_QUOTES.father || HINDI_SPECIAL_QUOTES.family;
+            if (relationship === 'mother') return HINDI_SPECIAL_QUOTES.mother || HINDI_SPECIAL_QUOTES.family;
+            if (relationship === 'colleague') return HINDI_SPECIAL_QUOTES.colleague || HINDI_SPECIAL_QUOTES.family;
+            if (relationship === 'mentor') return HINDI_SPECIAL_QUOTES.mentor || HINDI_SPECIAL_QUOTES.family;
             return HINDI_SPECIAL_QUOTES.family;
         }
         if (relationship === 'partner')
             return SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || SPECIAL_QUOTES.family;
         if (relationship === 'friend')
             return (gender === 'male' ? SPECIAL_QUOTES.friend.legend : SPECIAL_QUOTES.friend.friendly) || SPECIAL_QUOTES.family;
+        if (relationship === 'brother' || relationship === 'sibling') return SPECIAL_QUOTES.brother || SPECIAL_QUOTES.family;
+        if (relationship === 'sister') return SPECIAL_QUOTES.sister || SPECIAL_QUOTES.family;
+        if (relationship === 'father') return SPECIAL_QUOTES.father || SPECIAL_QUOTES.family;
+        if (relationship === 'mother') return SPECIAL_QUOTES.mother || SPECIAL_QUOTES.family;
+        if (relationship === 'colleague') return SPECIAL_QUOTES.colleague || SPECIAL_QUOTES.family;
+        if (relationship === 'mentor') return SPECIAL_QUOTES.mentor || SPECIAL_QUOTES.family;
         return SPECIAL_QUOTES.family;
     }, [relationship, gender, isHindi, isBengali, isFrench]);
     useEffect(() => {

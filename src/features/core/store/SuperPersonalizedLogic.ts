@@ -27,6 +27,8 @@ export const getHighlySpecificLetter = (
             if (isFemale) letter = FRENCH_EMOTIONAL_LETTERS.friend.friendly(name);
             else if (isMale) letter = FRENCH_EMOTIONAL_LETTERS.friend.legend(name);
             else letter = FRENCH_EMOTIONAL_LETTERS.friend.romantic(name);
+        } else if (relationship === 'sibling') {
+            letter = FRENCH_EMOTIONAL_LETTERS.sibling(name);
         } else if (relationship === 'brother') {
             letter = FRENCH_EMOTIONAL_LETTERS.brother(name);
         } else if (relationship === 'sister') {
@@ -35,6 +37,22 @@ export const getHighlySpecificLetter = (
             letter = FRENCH_EMOTIONAL_LETTERS.father(name);
         } else if (relationship === 'mother') {
             letter = FRENCH_EMOTIONAL_LETTERS.mother(name);
+        } else if (relationship === 'grandfather') {
+            letter = FRENCH_EMOTIONAL_LETTERS.grandfather(name);
+        } else if (relationship === 'grandmother') {
+            letter = FRENCH_EMOTIONAL_LETTERS.grandmother(name);
+        } else if (relationship === 'uncle') {
+            letter = FRENCH_EMOTIONAL_LETTERS.uncle(name);
+        } else if (relationship === 'aunt') {
+            letter = FRENCH_EMOTIONAL_LETTERS.aunt(name);
+        } else if (relationship === 'cousin') {
+            letter = FRENCH_EMOTIONAL_LETTERS.cousin(name);
+        } else if (relationship === 'son') {
+            letter = FRENCH_EMOTIONAL_LETTERS.son(name);
+        } else if (relationship === 'daughter') {
+            letter = FRENCH_EMOTIONAL_LETTERS.daughter(name);
+        } else if (relationship === 'guardian') {
+            letter = FRENCH_EMOTIONAL_LETTERS.guardian(name);
         } else if (relationship === 'colleague') {
             letter = FRENCH_EMOTIONAL_LETTERS.colleague(name);
         } else if (relationship === 'mentor') {
@@ -55,6 +73,26 @@ export const getHighlySpecificLetter = (
             letter = BENGALI_EMOTIONAL_LETTERS.brother(name);
         } else if (relationship === 'sister') {
             letter = BENGALI_EMOTIONAL_LETTERS.sister(name);
+        } else if (relationship === 'father') {
+            letter = BENGALI_EMOTIONAL_LETTERS.father(name);
+        } else if (relationship === 'mother') {
+            letter = BENGALI_EMOTIONAL_LETTERS.mother(name);
+        } else if (relationship === 'grandfather') {
+            letter = BENGALI_EMOTIONAL_LETTERS.grandfather(name);
+        } else if (relationship === 'grandmother') {
+            letter = BENGALI_EMOTIONAL_LETTERS.grandmother(name);
+        } else if (relationship === 'uncle') {
+            letter = BENGALI_EMOTIONAL_LETTERS.uncle(name);
+        } else if (relationship === 'aunt') {
+            letter = BENGALI_EMOTIONAL_LETTERS.aunt(name);
+        } else if (relationship === 'cousin') {
+            letter = BENGALI_EMOTIONAL_LETTERS.cousin(name);
+        } else if (relationship === 'son') {
+            letter = BENGALI_EMOTIONAL_LETTERS.son(name);
+        } else if (relationship === 'daughter') {
+            letter = BENGALI_EMOTIONAL_LETTERS.daughter(name);
+        } else if (relationship === 'guardian') {
+            letter = BENGALI_EMOTIONAL_LETTERS.guardian(name);
         } else if (relationship === 'colleague') {
             letter = BENGALI_EMOTIONAL_LETTERS.colleague(name);
         } else if (relationship === 'mentor') {
@@ -75,6 +113,26 @@ export const getHighlySpecificLetter = (
             letter = HINDI_EMOTIONAL_LETTERS.brother(name);
         } else if (relationship === 'sister') {
             letter = HINDI_EMOTIONAL_LETTERS.sister(name);
+        } else if (relationship === 'father') {
+            letter = HINDI_EMOTIONAL_LETTERS.father(name);
+        } else if (relationship === 'mother') {
+            letter = HINDI_EMOTIONAL_LETTERS.mother(name);
+        } else if (relationship === 'grandfather') {
+            letter = HINDI_EMOTIONAL_LETTERS.grandfather(name);
+        } else if (relationship === 'grandmother') {
+            letter = HINDI_EMOTIONAL_LETTERS.grandmother(name);
+        } else if (relationship === 'uncle') {
+            letter = HINDI_EMOTIONAL_LETTERS.uncle(name);
+        } else if (relationship === 'aunt') {
+            letter = HINDI_EMOTIONAL_LETTERS.aunt(name);
+        } else if (relationship === 'cousin') {
+            letter = HINDI_EMOTIONAL_LETTERS.cousin(name);
+        } else if (relationship === 'son') {
+            letter = HINDI_EMOTIONAL_LETTERS.son(name);
+        } else if (relationship === 'daughter') {
+            letter = HINDI_EMOTIONAL_LETTERS.daughter(name);
+        } else if (relationship === 'guardian') {
+            letter = HINDI_EMOTIONAL_LETTERS.guardian(name);
         } else if (relationship === 'colleague') {
             letter = HINDI_EMOTIONAL_LETTERS.colleague(name);
         } else if (relationship === 'mentor') {
@@ -95,6 +153,26 @@ export const getHighlySpecificLetter = (
             letter = EMOTIONAL_LETTERS.brother(name);
         } else if (relationship === 'sister') {
             letter = EMOTIONAL_LETTERS.sister(name);
+        } else if (relationship === 'father') {
+            letter = EMOTIONAL_LETTERS.father(name);
+        } else if (relationship === 'mother') {
+            letter = EMOTIONAL_LETTERS.mother(name);
+        } else if (relationship === 'grandfather') {
+            letter = EMOTIONAL_LETTERS.grandfather(name);
+        } else if (relationship === 'grandmother') {
+            letter = EMOTIONAL_LETTERS.grandmother(name);
+        } else if (relationship === 'uncle') {
+            letter = EMOTIONAL_LETTERS.uncle(name);
+        } else if (relationship === 'aunt') {
+            letter = EMOTIONAL_LETTERS.aunt(name);
+        } else if (relationship === 'cousin') {
+            letter = EMOTIONAL_LETTERS.cousin(name);
+        } else if (relationship === 'son') {
+            letter = EMOTIONAL_LETTERS.son(name);
+        } else if (relationship === 'daughter') {
+            letter = EMOTIONAL_LETTERS.daughter(name);
+        } else if (relationship === 'guardian') {
+            letter = EMOTIONAL_LETTERS.guardian(name);
         } else if (relationship === 'colleague') {
             letter = EMOTIONAL_LETTERS.colleague(name);
         } else if (relationship === 'mentor') {
