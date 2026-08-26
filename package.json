@@ -13,6 +13,29 @@
   "bugs": {
     "url": "https://github.com/naborajs/birthday-bloom/issues"
   },
+  "description": "Magical, cinematic open-source birthday celebration web app built with React 18, Three.js, React Three Fiber, Framer Motion, Zustand, and Tailwind CSS. Fully customizable via URL parameters and environment variables.",
+  "keywords": [
+    "react-18",
+    "threejs",
+    "react-three-fiber",
+    "webgl",
+    "framer-motion",
+    "zustand",
+    "tailwind-css",
+    "canvas-2d",
+    "creative-coding",
+    "interactive-webgl",
+    "birthday-app",
+    "good-first-issue",
+    "open-source",
+    "hacktoberfest",
+    "first-timers-only",
+    "pair-programming",
+    "vitest",
+    "typescript",
+    "particles-animation",
+    "web-audio-api"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -21,7 +44,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "verify": "npm run typecheck && npm run lint && npm test && npm run build"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.20",
