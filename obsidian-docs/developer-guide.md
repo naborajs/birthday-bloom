@@ -1,67 +1,69 @@
 ---
-tags: [developer, api, components]
+tags: [developer, api, components, contribution]
 aliases: [developer-guide]
 ---
 
-# Developer Guide
+# Developer Guide & Contributor Handbook
 
-This guide explains how Birthday Bloom is wired so a new contributor can make changes confidently. Read this before modifying source code.
-
----
-
-## How to Read This Codebase
-
-1. **Start with the data flow**: `src/features/core/store/useBirthdayStore.ts` -- where all 53 env variables and aliases are parsed and hydrated into the Zustand store.
-2. **Understand the phase machine**: `src/pages/Index.tsx` -- `splash` -> `unlock` -> `intro` -> `main`.
-3. **Explore the major components**: `src/components/birthday/CinematicIntro.tsx`, `src/components/birthday/CakeCutting.tsx`, and `src/components/birthday/MainBirthday.tsx`.
-4. **Study the models**: `src/features/core/models/familyTemplates.ts`.
-5. **Learn the config & i18n layer**: `src/config/templates.ts` and `src/i18n/locales/` (`en.ts`, `bn.ts`, `hi.ts`, `fr.ts`).
+This guide explains how Birthday Bloom is wired so new contributors and open-source developers can make changes quickly, safely, and confidently. Read this before modifying source code.
 
 ---
 
-## Folder Structure
+## 🧭 How to Read This Codebase
+
+1. **Start with the data flow**: [`src/features/core/store/useBirthdayStore.ts`](file:///d:/Projects/Website/birthday-bloom/src/features/core/store/useBirthdayStore.ts) — where 53 environment variables, query parameters, and aliases are parsed, validated, and hydrated into the centralized Zustand store.
+2. **Understand the phase machine**: [`src/pages/Index.tsx`](file:///d:/Projects/Website/birthday-bloom/src/pages/Index.tsx) — manages linear transitions: `splash` -> `unlock` -> `intro` -> `main`.
+3. **Explore major interactive components**: [`CinematicIntro.tsx`](file:///d:/Projects/Website/birthday-bloom/src/components/birthday/CinematicIntro.tsx), [`CakeCutting.tsx`](file:///d:/Projects/Website/birthday-bloom/src/components/birthday/CakeCutting.tsx), [`Cake3D.tsx`](file:///d:/Projects/Website/birthday-bloom/src/components/birthday/Cake3D.tsx), and [`MainBirthday.tsx`](file:///d:/Projects/Website/birthday-bloom/src/components/birthday/MainBirthday.tsx).
+4. **Study relationship and template models**: [`familyTemplates.ts`](file:///d:/Projects/Website/birthday-bloom/src/features/core/models/familyTemplates.ts) and [`templates.ts`](file:///d:/Projects/Website/birthday-bloom/src/config/templates.ts).
+5. **Learn the i18n localization engine**: [`src/i18n/index.ts`](file:///d:/Projects/Website/birthday-bloom/src/i18n/index.ts) and locale dictionaries (`en.ts`, `bn.ts`, `hi.ts`, `fr.ts`).
+
+---
+
+## 📁 Folder Structure
 
 | Path | Purpose |
 |---|---|
-| `src/App.tsx` | App shell: router, global error boundary, ambient effects, query client, sonner toast provider |
-| `src/pages/Index.tsx` | Top-level 4-phase state machine (`splash` -> `unlock` -> `intro` -> `main`) with `AnimatePresence`. |
-| `src/pages/NotFound.tsx` | Client-side 404 page with Link navigation. |
-| `src/components/birthday/` | 29 active cinematic and interactive birthday celebration components. |
+| `src/App.tsx` | Application shell: React Router, global error boundary, ambient effect canvas, Sonner toast notification provider. |
+| `src/pages/Index.tsx` | Top-level 4-phase state machine (`splash` -> `unlock` -> `intro` -> `main`) with Framer Motion `AnimatePresence`. |
+| `src/pages/NotFound.tsx` | SEO-optimized client-side 404 page with glassmorphic cards, theme palette, and discovery links. |
+| `src/components/birthday/` | 30 cinematic, 3D WebGL, and interactive celebration components. |
 | `src/components/ui/` | Design system primitives (`sonner.tsx`, `tooltip.tsx`). |
-| `src/components/ErrorBoundary.tsx` | Class-based error boundary with cinematic fallback UI. |
-| `src/features/core/store/` | `useBirthdayStore.ts` (Zustand store, env parsing) + `SuperPersonalizedLogic.ts`. |
+| `src/components/ErrorBoundary.tsx` | Class-based error boundary with a cinematic fallback UI. |
+| `src/features/core/store/` | `useBirthdayStore.ts` (Zustand store, env/URL parameter parsing) + `SuperPersonalizedLogic.ts`. |
 | `src/features/core/models/` | `familyTemplates.ts` (14 member types, registry, factories). |
-| `src/features/core/theme/` | `useDynamicTheme.ts` -- computes and injects HSL/RGB CSS custom properties at runtime. |
-| `src/features/cinematic-story/` | Narrative scenes (`SpecialMessage`) and animation variants for the intro. |
+| `src/features/core/theme/` | `useDynamicTheme.ts` — computes and injects HSL/RGB CSS custom properties at runtime. |
+| `src/features/core/seo/` | `useDynamicSEO.ts` — updates OpenGraph, Twitter Cards, canonical tags, and Schema.org `SocialEvent` structured data. |
+| `src/features/cinematic-story/` | Narrative scenes and animation variants for the cinematic intro. |
 | `src/i18n/` | Multi-language translation engine (`useTranslation()`) and locale dictionaries (`en`, `bn`, `hi`, `fr`). |
-| `src/config/` | Audio assets fallback (`birthday.ts`), emotional letters and presets (`templates.ts`), cultural presets (`bengaliTemplates.ts`, `hindiTemplates.ts`, `frenchTemplates.ts`). |
-| `src/utils/` | `password.ts` (password generation and validation). |
-| `src/hooks/` | Responsive hooks (`use-mobile.tsx`). |
+| `src/config/` | Audio assets fallback (`birthday.ts`), emotional letters (`templates.ts`), cultural presets (`bengaliTemplates.ts`, `hindiTemplates.ts`, `frenchTemplates.ts`). |
+| `src/utils/` | `password.ts` (password validation and date hashing). |
+| `src/hooks/` | Responsive and platform hooks (`use-mobile.tsx`). |
 | `src/lib/` | Tailwind class merging utilities (`utils.ts`). |
-| `src/test/` | Vitest test suites (unit, integration, stress, challenge). |
-| `public/` | Static assets (favicon, images, `llms.txt`, `site.webmanifest`). |
-| `obsidian-docs/` | Comprehensive 30-note documentation vault. |
+| `src/test/` | Vitest test suites (unit, integration, stress, and challenge tests). |
+| `public/` | Static assets (favicon, images, `llms.txt`, `site.webmanifest`, `robots.txt`, `sitemap.xml`). |
+| `obsidian-docs/` | Comprehensive 32-note documentation vault. |
 
 ---
 
-## Component Responsibilities
+## 🧩 Component Responsibilities
 
 | Component | File | What It Does | Gated By |
 |---|---|---|---|
-| `SplashScreen` | `SplashScreen.tsx` | Tap-to-start with heart progression and ambient particles. Triggers audio context awakening. | Always shown first |
-| `PasswordUnlock` | `PasswordUnlock.tsx` | Frosted-glass passcode screen with shake animation, confetti on success, dynamic hints. | `isPasswordRequired()` / `VITE_PASSWORD_REQUIRED` |
-| `CinematicIntro` | `CinematicIntro.tsx` | Multi-scene timeline: storytelling -> fake chat -> post-chat -> special message -> reveal. Uses timer ref pattern. | Phase state machine |
-| `MainBirthday` | `MainBirthday.tsx` | Main celebration stage: hero section, interest icons, message card, wishes grid, cake, heart tree, video gallery, final surprise. | Phase = "main" |
-| `PhotoGallery` | `PhotoGallery.tsx` | Polaroid-style 3D-tilt cards, auto-advance, lightbox with `AnimatePresence`. Multi-language placeholder if no photos. | `VITE_SHOW_PHOTO_SECTION` |
-| `VideoGallery` | `VideoGallery.tsx` | Renders YouTube/MP4 videos. Returns null if no videos configured. | `VITE_SHOW_VIDEO_SECTION` |
-| `CakeCutting` | `CakeCutting.tsx` | 4-phase state machine: select cake -> blow candles -> wish -> cut -> burst -> quotes. SVG/3D WebGL composite with reduced-motion support. | `VITE_SHOW_CAKE_SECTION` |
-| `Cake3D` | `Cake3D.tsx` | Three.js / React Three Fiber procedural 3D cake model with dynamic slicing physics. | Rendered within CakeCutting |
-| `CakeVisuals` | `CakeVisuals.tsx` | 3D Canvas scene configuring lighting, shadows, and camera. | Rendered within CakeCutting |
-| `CakeKnife` | `CakeKnife.tsx` | Interactive cursor-tracking knife and drag gesture controller. | Rendered within CakeCutting |
+| `SplashScreen` | `SplashScreen.tsx` | Tap-to-start with heart progression and ambient bokeh. Triggers audio context awakening. | Always shown first |
+| `PasswordUnlock` | `PasswordUnlock.tsx` | Frosted-glass passcode screen with shake animation, dynamic hints, and celebration bursts on success. | `isPasswordRequired()` / `VITE_PASSWORD_REQUIRED` |
+| `CinematicIntro` | `CinematicIntro.tsx` | Multi-scene timeline: storytelling -> fake chat -> post-chat -> special message -> reveal. | Phase state machine |
+| `MainBirthday` | `MainBirthday.tsx` | Main celebration stage: hero header, interest icons, emotional letter card, wishes grid, and interactive triggers. | Phase = "main" |
+| `PhotoGallery` | `PhotoGallery.tsx` | 3D-tilt photo cards, auto-advance, lightbox with `AnimatePresence`. Localized placeholder if no photos. | `VITE_SHOW_PHOTO_SECTION` |
+| `VideoGallery` | `VideoGallery.tsx` | Renders YouTube and MP4 videos. Returns null if no videos configured. | `VITE_SHOW_VIDEO_SECTION` |
+| `CakeCutting` | `CakeCutting.tsx` | 9-phase state machine: select cake -> blow candles -> wish -> cut -> burst -> quotes. SVG/3D composite. | `VITE_SHOW_CAKE_SECTION` |
+| `Cake3D` | `Cake3D.tsx` | Three.js / React Three Fiber procedural 3D WebGL cake model with dynamic slice physics. | Rendered inside `CakeCutting` |
+| `CakeVisuals` | `CakeVisuals.tsx` | 2D Framer Motion celebration particle overlays (`CutSparks` and `MagicDust`). | Rendered inside `CakeCutting` |
+| `CakeKnife` | `CakeKnife.tsx` | Interactive cursor-tracking knife and drag gesture controller. | Rendered inside `CakeCutting` |
 | `BirthdayQuiz` | `BirthdayQuiz.tsx` | Interest-aware trivia with score tracking and confetti burst. | `VITE_SHOW_QUIZ_SECTION` |
-| `HeartTree` | `HeartTree.tsx` | SVG stroke-dasharray tree with 5 growth stages, spark particles, quote display. | `VITE_SHOW_HEART_TREE_SECTION` |
-| `FinalSurprise` | `FinalSurprise.tsx` | Memory grid + optional final video embed and replay trigger. | `VITE_SHOW_FINAL_SURPRISE` |
-| `FakeChatScene` | `FakeChatScene.tsx` | Simulates a chat interface: types "Happy Birthday", deletes it, retypes emotional message. | CinematicIntro sub-scene |
+| `HeartTree` | `HeartTree.tsx` | Interactive SVG tree with 5 growth stages, spark particles, and quote display leaves. | `VITE_SHOW_HEART_TREE_SECTION` |
+| `ShareCelebrationModal` | `ShareCelebrationModal.tsx` | Modal dialog for sharing customized URLs across WhatsApp, X, Telegram, Facebook, and LinkedIn. | Triggered by user share button |
+| `FinalSurprise` | `FinalSurprise.tsx` | Memory photo grid + optional final video embed and replay trigger. | `VITE_SHOW_FINAL_SURPRISE` |
+| `FakeChatScene` | `FakeChatScene.tsx` | Simulates a live chat interface: types greeting, deletes it, and retypes a heartfelt message. | CinematicIntro sub-scene |
 | `TypeWriter` | `TypeWriter.tsx` | Character-by-character typing with blinking cursor, audio sync, and optional onComplete callback. | Used across components |
 | `KineticText` | `KineticText.tsx` | Animated kinetic text with float, pop-out, or zoom reveals. | Used across components |
 | `HighlightedText` | `HighlightedText.tsx` | Shimmering text highlighter for emphasized phrases. | Used across components |
@@ -69,850 +71,192 @@ This guide explains how Birthday Bloom is wired so a new contributor can make ch
 | `Balloons` | `Balloons.tsx` | Floating SVG balloons with relationship-aware colors and pop interaction. | Ambient layer |
 | `Sparkles` | `Sparkles.tsx` | Star sparkles and floating orbs. | Ambient layer |
 | `Confetti` | `Confetti.tsx` | `useConfetti` hook wrapping `canvas-confetti` with mobile-aware scaling. | Used across components |
-| `SoundManager` | `SoundManager.tsx` | `AudioManager` singleton + `useSoundManager` hook. Handles BGM loop, autoplay fallback, effect sounds. | Used across components |
+| `SoundManager` | `SoundManager.tsx` | `AudioManager` singleton + `useSoundManager` hook. Handles BGM loop, volume, and sound effects. | Used across components |
 | `FloatingElements` | `FloatingElements.tsx` | Emoji floating particles with parallax depth. | Ambient layer |
 | `SparkleRain` | `SparkleRain.tsx` | Falling sparkle canvas particles (active in "main" phase). | Ambient layer |
-| `FireflyEffect` | `FireflyEffect.tsx` | Floating firefly particles (active in "main" phase). | Ambient layer |
+| `FireflyEffect` | `FireflyEffect.tsx` | Golden firefly particles with organic movement (active in "main" phase). | Ambient layer |
 | `ShootingStars` | `ShootingStars.tsx` | Shooting star streaks (active in "main" phase). | Ambient layer |
-| `EmojiCursorTrail` | `EmojiCursorTrail.tsx` | Emoji trail following cursor / touch position. | Ambient layer |
+| `EmojiCursorTrail` | `EmojiCursorTrail.tsx` | Interactive emoji particle trail following cursor / touch position. | Ambient layer |
 | `PremiumFireworks` | `PremiumFireworks.tsx` | HTML5 Canvas 2D celebratory fireworks engine. | Ambient layer |
 
 ---
 
-## State Flow
+## ⚡ Central State Flow
 
 ```
-.env.local -> import.meta.env -> useBirthdayStore (Zustand) -> components
-                                                             -> useDynamicTheme (CSS vars)
+.env.local / URL Query Params -> useBirthdayStore (Zustand) -> components
+                                                            -> useDynamicTheme (CSS vars)
+                                                            -> useDynamicSEO (JSON-LD & Meta)
 ```
 
-The store parses env once at module load and exposes:
-- `config` -- full `BirthdayConfig` object
-- `isConfigured` -- boolean (true if `VITE_BIRTHDAY_NAME` is set)
-- `setConfig(partial)` -- runtime partial update
-- `completeConfiguration()` -- marks config as complete
-- `getAnimationPacing()` -- `'slow' | 'moderate' | 'fast'`
-- `getMood()` -- `'romantic' | 'energetic' | 'warm'`
-
-**Rule**: Components should read from the store, not `import.meta.env` directly. This keeps env parsing centralized.
-
----
-
-## Adding a New Env Variable
-
-1. Add the variable to `.env.example` with a comment explaining its purpose
-2. In `useBirthdayStore.ts`, use the appropriate parser:
-   - `parseEnvString()` for strings
-   - `parseEnvBoolean()` for booleans (supports true/false/1/0/yes/no/on/off)
-   - `parseEnvNumber()` for integers
-   - `parseEnvList()` for comma/pipe/newline-separated lists
-   - `parseEnvJson<T>()` for JSON values
-3. Add the parsed value to the `config` object in the store
-4. Add the field to `BirthdayConfig` interface
-5. Wire it through to the relevant component(s)
-6. Add docs in `docs/ENV_GUIDE.md`
-
----
-
-## Adding a New Section
-
-1. Create the component in `src/components/birthday/`
-2. Add a `VITE_SHOW_*` env variable and wire it through the store
-3. In `MainBirthday.tsx`, add the section gated by `config.show*Section`
-4. Follow the existing pattern: `motion.section` with `whileInView` animations, store-driven content
-5. Add env docs in `docs/ENV_GUIDE.md`
-
----
-
-## Adding a New Family Template
-
-1. Define specialized fields interface (e.g., `CoachFields`)
-2. Add the type to `FamilyMemberType` union
-3. Add a template entry to `FAMILY_TEMPLATE_REGISTRY`
-4. Add a `createDefault*Profile()` factory function
-5. Add the type to the env normalization in `useBirthdayStore.ts`
-6. Add docs in `docs/family-system.md`
-
----
-
-## Testing
-
-```bash
-npm run test          # Run vitest once
-npm run test:watch    # Watch mode
-```
-
-Tests live in `src/test/`. The test environment uses `jsdom` with `@testing-library/react`.
-
----
-
-## Build and Typecheck
-
-```bash
-npm run build         # Production build
-npm run lint          # ESLint
-```
-
-The Vite build configuration:
-- Chunk splitting: framer-motion, radix-ui, and vendor chunks
-- Content hashing in filenames
-- Empty `dist/` on each build
-- Alias `@/` -> `./src/`
-
----
-
-## Extension Rules
-
-1. **Env first**: Names, colors, media, section visibility, relationship, animation, accessibility -- change in `.env.local` or hosting env secrets before editing source
-2. **Centralized config**: Add new env vars in `useBirthdayStore.ts`, not scattered across components
-3. **Store over direct env**: Components should read from the Zustand store, not `import.meta.env`
-4. **Backward compatibility**: Keep old env aliases (e.g., `VITE_FAVORITE_COLOR` alongside `VITE_BIRTHDAY_COLOR`)
-5. **Export preservation**: Keep factory functions like `createDefaultBrotherProfile()` for compatibility
-
----
-
-## AI Agent Rule
-
-When an AI coding agent works on this repo, it should first check whether a personalization request can be solved with env values using `.env.example` and `docs/ENV_GUIDE.md`. Only edit source code when the requested behavior is not covered by env.
-
----
-
-## Component API Reference
-
-### Core Exported Types
-
-The Zustand store lives at `src/features/core/store/useBirthdayStore.ts:70`:
+The Zustand store at [`src/features/core/store/useBirthdayStore.ts`](file:///d:/Projects/Website/birthday-bloom/src/features/core/store/useBirthdayStore.ts) exposes:
+- `config`: full immutable `BirthdayConfig` object containing all 53 resolved configuration parameters.
+- `getAnimationPacing()`: returns `'slow' | 'fast' | 'moderate'`.
+- `getMood()`: returns `'romantic' | 'energetic' | 'warm'`.
+- `getLanguage()`: returns `'en' | 'hi' | 'bn' | 'fr' | string`.
 
 ```typescript
 interface BirthdayStore {
   config: BirthdayConfig;
-  isConfigured: boolean;
-  setConfig: (config: Partial<BirthdayConfig>) => void;
-  completeConfiguration: () => void;
   getAnimationPacing: () => 'slow' | 'fast' | 'moderate';
   getMood: () => 'romantic' | 'energetic' | 'warm';
-}
-```
-
-`BirthdayConfig` at `src/features/core/store/useBirthdayStore.ts:35` holds all runtime state: name, age, gender, relationship, favoriteColor, favoriteEmojis, interests, customMessage, birthdayDate, animationSpeed, animationIntensity, particleCount, photos, photoCaptions, videos, senderName, letterTitle, letterOverride, show*Section booleans, finalVideoUrl, specialMemories, familyProfile, password, passwordHint, passwordFormat, passwordRequired.
-
-### `SplashScreen`
-
-**Source**: `src/components/birthday/SplashScreen.tsx`
-
-```typescript
-interface SplashScreenProps {
-  onStart: () => void;
-}
-```
-
-First screen shown to the user. Displays a tap-to-start prompt with `HeartProgression` stage 1, ambient sparkle particles, and triggers audio awakening via `useSoundManager().startMusic()`. After tap, fades out over 800ms then calls `onStart`.
-
-**Example**:
-
-```typescript
-<SplashScreen onStart={() => setPhase("intro")} />
-```
-
-### `PasswordUnlock`
-
-**Source**: `src/components/birthday/PasswordUnlock.tsx`
-
-```typescript
-interface PasswordUnlockProps {
-  onUnlock: () => void;
-}
-```
-
-Frosted-glass passcode entry screen with shake animation on failed attempts. After 2 failed attempts, automatically expands a hint drawer (`getDynamicHint()` in `useBirthdayStore`). On success, fires confetti bursts, triggers a white flash overlay, then calls `onUnlock` after 1200ms. The expected password is resolved via `getEffectivePassword(config)` from `src/utils/password.ts:107`.
-
-**Behavior notes**:
-- Input mode switches to `numeric` when `passwordFormat` is `MMDD`, `DDMM`, or `YYYYMMDD`
-- Falls back to generating a password from `VITE_BIRTHDAY_DATE` when no `VITE_PASSWORD` is set
-- Uses `isPasswordRequired()` from `src/utils/password.ts:151` in `Index.tsx` to decide if this screen appears
-
-### `CinematicIntro`
-
-**Source**: `src/components/birthday/CinematicIntro.tsx`
-
-```typescript
-interface CinematicIntroProps {
-  onComplete: () => void;
-}
-```
-
-Multi-scene orchestration component that drives the full cinematic experience before the main dashboard. Manages a scene state machine: `storytelling` -> `fake-chat` -> `post-chat` -> `special-message` -> `reveal-sequence` -> `done`.
-
-**Behavior notes**:
-- Scene transitions are driven by `useEffect` with timer chains; all timers are cleaned up via `clearTimers()` on unmount
-- Relationship and gender adjust story lines, post-chat lines, final lines, and emoji bursts
-- The `reveal-sequence` sub-step (`dear-name` -> `grand-reveal` -> `final-message`) includes layered confetti, screen shake, emoji bursts, and ring pulses
-- Pacing is determined by `getAnimationPacing()`: `fast` = 0.7x multiplier, `slow` = 1.3x, `moderate` = 1x
-- Returns `null` once scene reaches `"done"`
-
-### `MainBirthday`
-
-**Source**: `src/components/birthday/MainBirthday.tsx`
-
-No props required -- reads everything from `useBirthdayStore`.
-
-Main landing page after the cinematic intro. Orchestrates: hero section with interest icons, wishes grid, emotional letter card, hidden gift code reveal, magnetic buttons, plus all section components conditionally rendered by `config.show*` flags.
-
-**Behavior notes**:
-- Cake emoji click counter: 7 clicks triggers the "MEGA SURPRISE!" easter egg
-- Gift code is auto-generated from relationship + interest mapping (`src/components/birthday/MainBirthday.tsx:72`)
-- Interest icons are mapped via `interestIcons` record using Lucide icons
-- Magnetic mouse-tracking effect on hero via `useMotionValue` + `useSpring`
-- `useReducedMotion()` and `useIsMobile()` control animation intensity
-- Calls `setBgVolume(0.4)` on mount
-
-### `PhotoGallery`
-
-**Source**: `src/components/birthday/PhotoGallery.tsx`
-
-```typescript
-// No props -- reads from store
-```
-
-3D-tilt photo cards with auto-advance, lightbox with `AnimatePresence`, and keyboard navigation (ArrowLeft/ArrowRight/Escape). Auto-advance interval is derived from `getAnimationPacing()`.
-
-**Behavior notes**:
-- Filters out placeholder and stock photos to only render genuine personal images
-- When no custom photos are provided, renders a warm, localized placeholder card
-- 3D tilt effect uses `useMotionValue` + `useSpring` + `useTransform`
-- Captions are relationship-aware (custom sets for partner, friend, family in en, fr, hi, bn)
-
-### `VideoGallery`
-
-**Source**: `src/components/birthday/VideoGallery.tsx`
-
-```typescript
-// No props -- reads config.videos from store
-```
-
-Renders YouTube embed URLs or direct MP4/WebM video files. Distinguishes YouTube URLs via `includes('youtube.com')` or `includes('youtu.be')` and converts to embed format. Returns `null` when `config.videos` is empty.
-
-### `CakeCutting`
-
-**Source**: `src/components/birthday/CakeCutting.tsx`
-
-```typescript
-// No props -- reads from store. Renders via createPortal when active.
-```
-
-9-phase state machine: `select` -> `blow-intro` -> `blowing` -> `wish` -> `countdown` -> `knife-enter` -> `cutting` -> `burst` -> `quotes`. Portaled into `document.body` once a cake is selected.
-
-**Behavior notes**:
-- 4 cake designs: Chocolate Dream, Strawberry Bliss, Royal Velvet, Floral Garden
-- Cinematic timings are defined in `CINEMATIC_TIMINGS` at `src/components/birthday/CakeCutting.tsx:352`
-- Quotes are relationship/gender-aware with per-quote animation types (`zoom-in`, `float`, `pop-out`, `typewriter-burst`)
-- Knife SVG descends via spring physics; on `burst` the cake SVG splits into left/right halves
-- Countdown displays 3-2-1 with staggered pop sounds and scale animations
-
-### `BirthdayQuiz`
-
-**Source**: `src/components/birthday/BirthdayQuiz.tsx`
-
-```typescript
-// No props -- reads from store
-```
-
-Interest-aware trivia game. Questions are generated dynamically from the store's name, interests, and relationship. Score tracking with trophy animation on completion.
-
-**Behavior notes**:
-- If `interests` includes `car`, a car-themed question is added
-- If `interests` includes `coding`, a coding-themed question is added
-- If `relationship === 'partner'`, a love-themed question is added
-- Correct answer highlights green, incorrect red, with explanation text
-
-### `HeartTree`
-
-**Source**: `src/components/birthday/HeartTree.tsx`
-
-```typescript
-interface HeartTreeProps {
-  delay?: number;
-}
-```
-
-SVG heart tree that grows through 5 stages (0-4) with stroke-dasharray branch animations. Stage 4 triggers a glow background. Contains `heartLeaves` that display either photos from the config or heart-shaped icons. Clicking a leaf shows a quote bubble from `SPECIAL_QUOTES` in `src/config/templates.ts`.
-
-**Behavior notes**:
-- `TreeSparks` sub-component animates 25 spark particles upward
-- Quotes are filtered by `relationship` and `gender` from `SPECIAL_QUOTES`
-- Default `delay` is 1000ms for the growth animation timeline
-
-### `FinalSurprise`
-
-**Source**: `src/components/birthday/FinalSurprise.tsx`
-
-```typescript
-// No props -- reads from store
-```
-
-Memory grid + optional final video embed + emotional closing section. Memories come from `config.specialMemories` (parsed from `VITE_SPECIAL_MEMORIES` env as pipe-separated `text;image` pairs). The final video embed supports YouTube auto-detection.
-
-### `FakeChatScene`
-
-**Source**: `src/components/birthday/FakeChatScene.tsx`
-
-```typescript
-interface FakeChatSceneProps {
-  onComplete: () => void;
-}
-```
-
-Simulated chat interface that types "Happy Birthday", deletes it character-by-character, retypes a relationship-aware emotional message, then displays a special message bubble. Generates different chat themes (colors, icons, status text) per relationship type.
-
-**Behavior notes**:
-- Uses async `runSequence` with `await new Promise(r => setTimeout(...))` pattern
-- Phase state machine: `typing` -> `deleting` -> `retype` -> `special` -> `done`
-- Chat bubble design tokens are memoized per relationship
-
-### `TypeWriter`
-
-**Source**: `src/components/birthday/TypeWriter.tsx`
-
-```typescript
-interface TypeWriterProps {
-  text: string;
-  speed?: number;        // ms per character, default 45
-  delay?: number;        // ms before starting, default 0
-  className?: string;
-  onComplete?: () => void;
-  cursor?: boolean;      // show blinking cursor, default true
-}
-```
-
-Character-by-character typing effect. Starts with an optional delay, then appends one character per `speed` ms. Calls `onComplete` when finished. Blinking cursor is a 3px-wide `span` with `animate-blink`.
-
-### `KineticText`
-
-**Source**: `src/components/birthday/KineticText.tsx`
-
-```typescript
-type AnimationType = "zoom-in" | "pop-out" | "stagger-up" | "float" | "wave" | "typewriter-burst";
-
-interface KineticTextProps {
-  text: string;
-  animation: AnimationType;
-  className?: string;
-  style?: React.CSSProperties;
-  delay?: number;
-  onComplete?: () => void;
-}
-```
-
-Per-character animated text. Each character is wrapped in an inline-block `span` with CSS animation classes defined in the global stylesheet. The `delay` prop sets a global delay before any animation starts; each character then staggers by `i * 60ms`.
-
-### `HeartProgression`
-
-**Source**: `src/components/birthday/HeartProgression.tsx`
-
-```typescript
-interface HeartProgressionProps {
-  stage: 1 | 2 | 3 | 4;
-  onRevealComplete?: () => void;
-}
-```
-
-SVG heart drawn in 4 stages. Stage 1-3: draw heart segments via stroke-dasharray animation. Stage 4: renders `FourCornerMerge` sub-component with flying heart pieces that converge from 4 corners, a burst particle explosion, and a "Love You Dear [Name]" text reveal. `onRevealComplete` is called after the full animation (~6500ms).
-
-### `Confetti`
-
-**Source**: `src/components/birthday/Confetti.tsx`
-
-```typescript
-const { fireConfetti, fireCannon, fireStars, fireCinematicCelebration } = useConfetti();
-```
-
-Hook wrapping `canvas-confetti` with mobile-aware scaling. `fireConfetti` accepts optional `confetti.Options` overrides. `fireCannon` runs staggered corner cannons for ~2s. `fireStars` emits a circular star burst. `fireCinematicCelebration` runs a 3-layer pyrotechnic sequence: dual corner cannons, central fireworks burst, slow glitter rain.
-
-### `SoundManager`
-
-**Source**: `src/components/birthday/SoundManager.tsx`
-
-```typescript
-const {
-  startMusic,      // Start BGM loop
-  playType,        // Typing click
-  playWhoosh,      // Whoosh transition
-  playReveal,      // Celebration reveal
-  playPop,         // Balloon pop
-  playBoom,        // Explosion sound
-  fadeOut,         // Fade out BGM (default 2000ms)
-  setBgVolume,     // Set BGM volume (0-1)
-} = useSoundManager();
-```
-
-Singleton `AudioManager` class manages BGM loop and effect sounds. Effect audio URLs are free hosted MP3s from CDNs. The BGM loop auto-plays with fallback for browsers that block autoplay (registers a one-time click listener). Volume is clamped to [0, 1].
-
-### Ambient Effect Components
-
-These components are rendered in `Index.tsx` as optimized, 60fps persistent layers:
-
-| Component | Source | Props | Behavior |
-|---|---|---|---|
-| `Balloons` | `src/components/birthday/Balloons.tsx` | `count?: number` | SVG balloons with relationship-aware colors, floating upward with `animate-balloon-rise` and pop sound |
-| `Sparkles` | `src/components/birthday/Sparkles.tsx` | `count?: number` | Star sparkles + floating orbs with drift animation |
-| `ShootingStars` | `src/components/birthday/ShootingStars.tsx` | `count?: number` | Streaking star particles with pulsing glow, rendered in "main" phase |
-| `FireflyEffect` | `src/components/birthday/FireflyEffect.tsx` | `intensity?: number` | Golden glowing fireflies with organic movement, rendered in "main" phase |
-| `SparkleRain` | `src/components/birthday/SparkleRain.tsx` | `intensity?: number` | Falling white sparkle canvas particles, rendered in "main" phase |
-| `FloatingElements` | `src/components/birthday/FloatingElements.tsx` | — | Ambient emoji and token floating particles |
-| `EmojiCursorTrail` | `src/components/birthday/EmojiCursorTrail.tsx` | — | Interactive emoji particle trail following cursor / touch |
-| `PremiumFireworks` | `src/components/birthday/PremiumFireworks.tsx` | — | HTML5 Canvas 2D celebratory fireworks particle engine |
-
----
-
-## Store Consumption Patterns
-
-### Reading config in a component
-
-```typescript
-import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
-
-function MySection() {
-  const { config, getAnimationPacing, getMood } = useBirthdayStore();
-  const { name, favoriteColor, relationship, interests } = config;
-  const pacing = getAnimationPacing();
-  const mood = getMood();
-
-  return (
-    <div style={{ color: favoriteColor }}>
-      {name} - {mood} - {pacing}
-    </div>
-  );
-}
-```
-
-### Updating config at runtime
-
-```typescript
-import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
-
-function ThemeSwitcher() {
-  const { config, setConfig } = useBirthdayStore();
-
-  const handleColorChange = (newColor: string) => {
-    setConfig({ favoriteColor: newColor });
-  };
-
-  return (
-    <button onClick={() => handleColorChange('#FF0000')}>
-      Switch to Red
-    </button>
-  );
-}
-```
-
-### Using selectors for performance
-
-```typescript
-import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
-
-function NameDisplay() {
-  // Only re-renders when name changes
-  const name = useBirthdayStore((state) => state.config.name);
-  const isConfigured = useBirthdayStore((state) => state.isConfigured);
-
-  return <h1>{isConfigured ? name : 'Guest'}</h1>;
-}
-```
-
-### Composing store with hooks and sound
-
-```typescript
-import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
-import { useConfetti } from '@/components/birthday/Confetti';
-import { useSoundManager } from '@/components/birthday/SoundManager';
-
-function CelebrationButton() {
-  const { config } = useBirthdayStore();
-  const { fireConfetti } = useConfetti();
-  const { playBoom } = useSoundManager();
-
-  const handleCelebrate = () => {
-    fireConfetti({ particleCount: 200, spread: 120 });
-    playBoom();
-  };
-
-  return (
-    <button
-      onClick={handleCelebrate}
-      style={{ backgroundColor: config.favoriteColor }}
-    >
-      Celebrate {config.name}!
-    </button>
-  );
-}
-```
-
-### Accessing family profile
-
-```typescript
-import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
-
-function FamilyCard() {
-  const { config } = useBirthdayStore();
-  const profile = config.familyProfile;
-
-  if (!profile) return null;
-
-  return (
-    <div>
-      <h2>{profile.basicInfo?.fullName}</h2>
-      <p>Closeness: {profile.relationshipOverrides?.closenessLevel}/10</p>
-    </div>
-  );
+  getLanguage: () => 'en' | 'hi' | 'bn' | 'fr' | string;
 }
 ```
 
 ---
 
-## Creating Custom Components
+## 🛠️ Step-by-Step Contributor Walkthroughs
 
-### Pattern 1: Store-driven section component
+### 🌟 Walkthrough 1: How to Add a New Relationship Template
 
-Create a component that reads from the store and renders conditionally in `MainBirthday`:
+1. **Update the Relationship Union**:
+   In `src/features/core/store/useBirthdayStore.ts`, add the new relationship identifier (e.g. `'godparent'`):
+   ```typescript
+   export type RelationshipType =
+     | 'partner'
+     | 'friend'
+     | 'family'
+     | 'sibling'
+     | 'godparent' // [NEW]
+     // ...
+   ```
+2. **Add Normalization**:
+   In the raw string normalization switch inside `useBirthdayStore.ts`, add matching aliases:
+   ```typescript
+   case 'godparent':
+   case 'godfather':
+   case 'godmother':
+     return 'godparent';
+   ```
+3. **Add Emotional Letter & Preset Data**:
+   In `src/config/templates.ts`, add an entry to `EMOTIONAL_LETTERS` and `TEMPLATE_PRESETS`:
+   ```typescript
+   export const EMOTIONAL_LETTERS: Record<RelationshipType, string> = {
+     // ...
+     godparent: "To my wonderful Godparent, thank you for your unconditional guidance, love, and support...",
+   };
+   ```
+4. **Test & Verify**:
+   Run `npm test` and verify that `?rel=godparent` correctly loads the preset.
 
-```typescript
-import { motion } from 'framer-motion';
-import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
-import { useSoundManager } from '@/components/birthday/SoundManager';
-import { useConfetti } from '@/components/birthday/Confetti';
+---
 
-interface CustomTimelineProps {
-  title?: string;
-}
+### 🌐 Walkthrough 2: How to Add a New Language Localization (i18n)
 
-export const CustomTimeline = ({ title = 'Our Journey' }: CustomTimelineProps) => {
-  const { config, getMood } = useBirthdayStore();
-  const { name, favoriteColor } = config;
-  const mood = getMood();
-  const { playReveal } = useSoundManager();
-  const { fireStars } = useConfetti();
+1. **Create the Locale Dictionary**:
+   Create a new dictionary file in `src/i18n/locales/` (e.g. `es.ts` for Spanish):
+   ```typescript
+   export const es = {
+     common: {
+       happyBirthday: "¡Feliz Cumpleaños!",
+       skipIntro: "Saltar Introducción",
+       unlockMagic: "Desbloquear Magia",
+       // ...
+     },
+     // ...
+   };
+   ```
+2. **Register the Language in i18n Engine**:
+   In `src/i18n/index.ts`, import `es`, add `'es'` to supported languages, and register translations.
+3. **Add static hreflang Tag in `index.html`**:
+   ```html
+   <link rel="alternate" hreflang="es" href="https://birthday-bloom.vercel.app/?lang=es" />
+   ```
+4. **Run Verification**:
+   Run `npm run verify` (`npm run typecheck && npm run lint && npm test && npm run build`).
 
-  return (
-    <motion.section
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-      className="relative z-20 px-4 py-32 max-w-6xl mx-auto"
-    >
-      <h2
-        className="font-display text-5xl md:text-7xl font-black text-center mb-16"
-        style={{ color: favoriteColor }}
-      >
-        {title} - {name}
-      </h2>
-      <p className="text-center text-foreground/60 text-xl">
-        Mood: {mood}
-      </p>
-    </motion.section>
-  );
-};
-```
+---
 
-Then in `MainBirthday.tsx`:
+### 🎂 Walkthrough 3: How to Add a Custom 3D Cake Design
 
-```typescript
-{config.showTimelineSection && <CustomTimeline />}
-```
+1. **Define Cake Model Configuration**:
+   In `src/components/birthday/CakeCutting.tsx`, add your new cake to `CAKE_OPTIONS`:
+   ```typescript
+   {
+     id: 'matcha-zen',
+     name: 'Matcha Blossom Zen',
+     flavor: 'Japanese Ceremonial Matcha & White Chocolate',
+     layers: 3,
+     color: '#88B04B',
+     icingColor: '#E8F5E9',
+     config3D: {
+       layers: [
+         { color: '#88B04B', radius: 1.6, height: 0.8 },
+         { color: '#A0C878', radius: 1.2, height: 0.7 },
+         { color: '#D4E7C5', radius: 0.8, height: 0.6 },
+       ],
+       candleCount: 5,
+       toppings: 'blossom',
+     }
+   }
+   ```
+2. **Update 3D Mesh Renderer in `Cake3D.tsx`**:
+   Ensure materials and topping geometries in `src/components/birthday/Cake3D.tsx` handle your custom toppings.
+3. **Verify 60fps WebGL Physics**:
+   Test cake selection, candle blowing, and cutting slice animations in your local browser.
 
-### Pattern 2: Wrapping ambient effects
+---
 
-```typescript
-import { Sparkles } from '@/components/birthday/Sparkles';
-import { Balloons } from '@/components/birthday/Balloons';
+### ✨ Walkthrough 4: How to Add a Custom Canvas 2D Particle Effect
 
-export const EnhancedBackground = () => {
-  return (
-    <>
-      <Sparkles count={30} />
-      <Balloons count={12} />
-    </>
-  );
-};
-```
+1. **Create the Particle Component**:
+   In `src/components/birthday/`, create your canvas component (e.g. `FloatingLanterns.tsx`):
+   ```typescript
+   import React, { useEffect, useRef } from 'react';
+   import { useIsMobile } from '@/hooks/use-mobile';
 
-### Pattern 3: Feature hook that combines store + confetti + sound
+   export const FloatingLanterns: React.FC<{ count?: number }> = ({ count = 8 }) => {
+     const canvasRef = useRef<HTMLCanvasElement>(null);
+     const isMobile = useIsMobile();
+     const actualCount = isMobile ? Math.ceil(count / 2) : count;
 
-```typescript
-import { useCallback } from 'react';
-import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
-import { useConfetti } from '@/components/birthday/Confetti';
-import { useSoundManager } from '@/components/birthday/SoundManager';
+     useEffect(() => {
+       const canvas = canvasRef.current;
+       if (!canvas) return;
+       const ctx = canvas.getContext('2d');
+       if (!ctx) return;
 
-export const useSpecialMoment = () => {
-  const { config } = useBirthdayStore();
-  const { fireConfetti, fireStars } = useConfetti();
-  const { playBoom, playReveal } = useSoundManager();
+       let animationFrameId: number;
+       // ... initialize particles and render with requestAnimationFrame ...
 
-  const trigger = useCallback(() => {
-    fireConfetti({ particleCount: 300, spread: 180 });
-    fireStars();
-    playBoom();
-    setTimeout(() => playReveal(), 500);
-  }, [fireConfetti, fireStars, playBoom, playReveal]);
+       return () => cancelAnimationFrame(animationFrameId);
+     }, [actualCount]);
 
-  return {
-    trigger,
-    name: config.name,
-    color: config.favoriteColor,
-  };
-};
+     return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-10" />;
+   };
+   ```
+2. **Mount in `src/pages/Index.tsx`**:
+   Render conditionally based on `phase` or configuration.
+3. **Verify Performance**:
+   Ensure zero frame drops and automatic cleanup on unmount.
+
+---
+
+## 🧪 Testing & Verification
+
+We maintain strict zero-regression standards across all test suites:
+
+```bash
+# Run all vitest suites
+npm test
+
+# Run TypeScript typecheck without emitting files
+npm run typecheck
+
+# Run ESLint
+npm run lint
+
+# Unified CI/CD verification script
+npm run verify
 ```
 
 ---
 
-## Extension Patterns
+## 🔗 Related Documentation
+- [[URL-Parameters|Zero-Config URL Parameters Reference]]
+- [[Birthday-Components|30 Interactive Birthday Components Reference]]
+- [[architecture|System Architecture & Rendering Pipeline]]
+- [[env-configs|Environment Variables & Configuration Matrix]]
 
-### Adding a new VITE_SHOW_* section toggle
-
-1. Add env parsing in `useBirthdayStore.ts`:
-```typescript
-const envShowTimeline = parseEnvBoolean(import.meta.env.VITE_SHOW_TIMELINE_SECTION, true);
-```
-2. Add the boolean to `BirthdayConfig` interface and the store `config` object.
-3. Create the component in `src/components/birthday/`.
-4. Gate it in `MainBirthday.tsx`:
-```typescript
-{config.showTimelineSection && <CustomTimeline />}
-```
-5. Document the new env var in `docs/ENV_GUIDE.md`.
-
-### Adding a new animation effect component
-
-1. Create `src/components/birthday/MyEffect.tsx` following the ambient pattern:
-```typescript
-import { motion } from "framer-motion";
-
-export const MyEffect = ({ count = 10 }: { count?: number }) => {
-  return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden">
-      {Array.from({ length: count }, (_, i) => (
-        <motion.div key={i} animate={{ ... }} />
-      ))}
-    </div>
-  );
-};
-```
-2. Import and render it in `Index.tsx`.
-
-### Adding a new relationship type
-
-1. Add the type string to the `RelationshipType` union in `useBirthdayStore.ts:14`.
-2. Add a normalization branch in the raw relationship parsing block (`useBirthdayStore.ts:136`).
-3. Add emotional letters in `src/config/templates.ts` under `EMOTIONAL_LETTERS`.
-4. Add story lines in `CinematicIntro.tsx` (if different narrative needed).
-5. Add color palette/emoji presets in `src/config/templates.ts` under `TEMPLATE_PRESETS`.
-6. Document in `docs/family-system.md`.
-
-### Adding a new password format
-
-1. Add the format string to the switch in `generatePasswordFromDate()` (`src/utils/password.ts:82`).
-2. Add the corresponding hint in `getDynamicHint()` in `PasswordUnlock.tsx:85`.
-3. Add the format option to `.env.example` documentation.
-
-### Customizing emotional letters
-
-Override the letter content via env without touching source:
-```env
-VITE_BIRTHDAY_LETTER_OVERRIDE="Your completely custom letter with \n newlines..."
-VITE_BIRTHDAY_LETTER_TITLE="My Custom Title"
-```
-
-Or programmatically in the store:
-```typescript
-setConfig({
-  letterOverride: "Custom letter content here...",
-  letterTitle: "A Special Note",
-});
-```
-
-### Adding custom sections via env
-
-```env
-VITE_CUSTOM_SECTION_1_TITLE="Guest Book"
-VITE_CUSTOM_SECTION_1_CONTENT="<div>Custom HTML here</div>"
-VITE_CUSTOM_SECTION_1_ORDER=1
-```
-
-The `EnhancedBirthdayConfig.sections.customSections` array supports arbitrary sections with id, title, content, and order fields.
-
----
-
-## Utilities API
-
-### Password Utilities
-
-```typescript
-import { getEffectivePassword, isPasswordRequired, generatePasswordFromDate } from '@/utils/password';
-
-const password = getEffectivePassword(config);
-const required = isPasswordRequired(config);
-const generated = generatePasswordFromDate('2001-05-22', 'MMDD'); // "0522"
-```
-
-### Family Template Factories
-
-```typescript
-import {
-  createDefaultBrotherProfile,
-  createDefaultSisterProfile,
-  createFamilyMemberProfile,
-} from '@/features/core/models/familyTemplates';
-
-const brother = createDefaultBrotherProfile("Raj", new Date('1998-03-15'));
-brother.personality.traits = ['protective', 'humorous'];
-brother.siblingBond.closenessLevel = 9;
-
-const sister = createDefaultSisterProfile("Priya", new Date('2000-07-22'));
-sister.professionalLife.currentRole = "Engineer";
-
-// Generic factory (supports all 14 member types)
-const mom = createFamilyMemberProfile('mother', 'Mom', new Date('1968-09-12'));
-```
-
-### SuperPersonalizedLogic
-
-```typescript
-import { getHighlySpecificLetter, getBigWishes, getInterestBasedTheme } from '@/features/core/store/SuperPersonalizedLogic';
-
-const letter = getHighlySpecificLetter("Sarah", "partner", "female", ["music", "art"]);
-const wishes = getBigWishes("Alex", "friend", "male", ["gaming"]);
-const theme = getInterestBasedTheme(["car"]); // "automotive"
-```
-
-### Hooks
-
-```typescript
-import { useIsMobile } from '@/hooks/use-mobile';
-
-function Responsive() {
-  const isMobile = useIsMobile();
-  return <div>{isMobile ? "Mobile" : "Desktop"}</div>;
-}
-```
-
-```typescript
-import { toast } from 'sonner';
-
-function Notifier() {
-  return <button onClick={() => toast.success("Celebration started!")}>Go</button>;
-}
-```
-
----
-
-## Data Models
-
-### BirthdayConfig
-
-The centralized type for application configuration at `src/features/core/store/useBirthdayStore.ts`:
-
-```typescript
-export interface BirthdayConfig {
-  name: string;
-  age: number | null;
-  gender: GenderType;
-  relationship: RelationshipType;
-  favoriteColor: string;
-  favoriteEmojis: string[];
-  interests: string[];
-  customMessage: string;
-  birthdayDate: Date | null;
-  animationSpeed?: 'slow' | 'moderate' | 'fast';
-  animationIntensity?: 'low' | 'medium' | 'high';
-  particleCount?: number;
-  photos?: string[];
-  photoCaptions?: string[];
-  videos?: string[];
-  senderName?: string;
-  letterTitle?: string;
-  letterOverride?: string;
-  showCakeSection?: boolean;
-  showPhotoSection?: boolean;
-  showQuizSection?: boolean;
-  showHeartTreeSection?: boolean;
-  showVideoSection?: boolean;
-  showFinalSurprise?: boolean;
-  showGiftSection?: boolean;
-  finalVideoUrl?: string;
-  specialMemories?: { text: string; image?: string }[];
-  familyProfile?: FamilyMemberProfile;
-  reducedMotion?: boolean;
-  showSkipButton?: boolean;
-  soundEffectsEnabled?: boolean;
-  language?: 'en' | 'hi' | 'bn' | 'fr' | string;
-  password?: string;
-  passwordHint?: string;
-  passwordFormat?: string;
-  passwordRequired?: boolean;
-}
-```
-
-### Relationship Types
-
-```typescript
-export type RelationshipType =
-  | 'partner'
-  | 'friend'
-  | 'family'
-  | 'sibling'
-  | 'brother'
-  | 'sister'
-  | 'father'
-  | 'mother'
-  | 'grandfather'
-  | 'grandmother'
-  | 'uncle'
-  | 'aunt'
-  | 'cousin'
-  | 'son'
-  | 'daughter'
-  | 'guardian'
-  | 'colleague'
-  | 'mentor';
-```
-
----
-
-## Performance Considerations
-
-| Technique | Implementation |
-|---|---|
-| Lazy loading | `const MainBirthday = lazy(() => import('@/components/birthday/MainBirthday'))` |
-| Memoization | `useMemo` for `getBigWishes`, interest icons, story lines |
-| Mobile particle reduction | `useIsMobile()` limits `Balloons`, `Sparkles`, `CakeCutting` spark counts |
-| Reduced motion | `useReducedMotion()` disables spring physics, 3D tilts, complex animations |
-| Image optimization | `< 500KB per image, lazy loading, onError fallback to assets |
-| Bundle splitting | Vite chunks: framer-motion, radix-ui, vendor, app |
-| CSS animations | Animations use CSS `@keyframes` where possible (sparkle, balloon-rise, etc.) |
-
----
-
-## Error Handling
-
-The `ErrorBoundary` component at `src/components/ErrorBoundary.tsx` wraps the app and provides a cinematic fallback UI. Individual components handle their own edge cases:
-- `PhotoGallery` displays an elegant localized empty-state card when no custom photos are configured
-- `VideoGallery` returns `null` when no videos are configured
-- `CakeCutting` uses `createPortal` with cleanup for body overflow
-- `CinematicIntro` cleans up all timers on unmount via `clearTimers()`
-- `SoundManager` catches autoplay failures and registers fallback click handlers
-
----
-
-## Cross-References
-
-- [[./ARCHITECTURE|ARCHITECTURE.md]] -- System architecture overview, rendering pipeline, data flow diagram
-- [[ENV_GUIDE|docs/ENV_GUIDE.md]] -- Complete environment variable reference with all options
-- [[family-system|docs/family-system.md]] -- Family template system, member types, registry, factories
-- [[template-architecture|docs/template-architecture.md]] -- Template architecture, presets, emotional content
-- [[./STYLEGUIDE|STYLEGUIDE.md]] -- Code conventions, naming, formatting rules
-- [[./CONTRIBUTING|CONTRIBUTING.md]] -- Contribution workflow, PR process, code review guidelines
-- [[./QUICK_START|QUICK_START.md]] -- 5-minute setup with minimal configuration
-
-
-#obsidian #documentation #birthday-bloom #vault
+#obsidian #documentation #birthday-bloom #developer #guide
