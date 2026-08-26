@@ -88,8 +88,6 @@ For SPA routing, add a `_redirects` file inside the `public/` folder:
   VITE_BIRTHDAY_AGE = "26"
   VITE_BIRTHDAY_RELATIONSHIP = "partner"
   VITE_BIRTHDAY_COLOR = "#FF1493"
-  # Reserved for future theme hints; not currently parsed
-  # VITE_THEME = "romantic"
 ```
 
 ---
@@ -562,10 +560,7 @@ adb connect ANDROID_DEVICE_IP:5555
 VITE_BIRTHDAY_NAME=Sarah
 VITE_ANIMATION_INTENSITY=medium
 VITE_PARTICLE_COUNT=12
-# Reserved for future text scaling support; not currently parsed
-# VITE_TEXT_SIZE=normal
-# Reserved for future reduced-motion support; not currently parsed
-# VITE_REDUCED_MOTION=false
+VITE_REDUCED_MOTION=false
 ```
 
 **Test Devices:**
