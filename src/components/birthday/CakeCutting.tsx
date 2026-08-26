@@ -285,6 +285,9 @@ export const CakeCutting = () => {
                 <AnimatePresence>
                     {phase !== "select" && (
                         <motion.div 
+                            role="dialog"
+                            aria-modal="true"
+                            aria-label="3D Cake Cutting Experience"
                             initial={{ opacity: 0 }} 
                             animate={{ opacity: 1 }} 
                             exit={{ opacity: 0 }} 
@@ -361,7 +364,9 @@ export const CakeCutting = () => {
                                                 {t('cake.prepareToCut')}
                                             </motion.span>
                                             <AnimatePresence mode="wait">
-                                                <motion.h1 
+                                                <motion.div 
+                                                    role="status"
+                                                    aria-live="polite"
                                                     key={countdownVal} 
                                                     initial={{ scale: 0.3, opacity: 0, filter: "blur(10px)" }} 
                                                     animate={{
@@ -375,7 +380,7 @@ export const CakeCutting = () => {
                                                     className="font-display text-8xl md:text-[10rem] font-black text-white"
                                                 >
                                                     {countdownVal}
-                                                </motion.h1>
+                                                </motion.div>
                                             </AnimatePresence>
                                         </div>
                                     )}
@@ -454,13 +459,13 @@ export const CakeCutting = () => {
 
             <div id="cake-section" className="relative z-20 py-4">
                 <div className="max-w-6xl mx-auto text-center">
-                    <motion.h3 
+                    <motion.h2 
                         initial={{ opacity: 0, y: 20 }} 
                         whileInView={{ opacity: 1, y: 0 }} 
                         className="font-display text-4xl sm:text-6xl md:text-8xl font-black mb-6 bg-gradient-to-b from-white to-white/20 bg-clip-text text-transparent"
                     >
                         {t('cake.selectTitle')}
-                    </motion.h3>
+                    </motion.h2>
                     <p className="text-white/40 text-lg sm:text-xl mb-12 sm:mb-20 max-w-2xl mx-auto font-light tracking-widest uppercase">
                         {t('cake.selectSubtitle')}
                     </p>
