@@ -6,6 +6,7 @@ import {
     type RelationshipMetadata,
     type PrivacyLevel,
 } from '../models/familyTemplates';
+import { parseBirthdayUrlParams } from './urlParams';
 export type RelationshipType = 'partner' | 'friend' | 'family' | 'sibling' | 'brother' | 'sister' | 'father' | 'mother' | 'grandfather' | 'grandmother' | 'uncle' | 'aunt' | 'cousin' | 'son' | 'daughter' | 'guardian' | 'colleague' | 'mentor';
 export type GenderType = 'male' | 'female' | 'other';
 export interface BirthdayConfig {
@@ -248,19 +249,21 @@ const envFamilyProfile = envFamilyProfileJson ??
             },
         })
         : undefined);
+const urlOverrides = parseBirthdayUrlParams();
+
 export const useBirthdayStore = create<BirthdayStore>((set, get) => ({
     config: {
-        name: envName,
-        age: envAge,
-        gender: envGender,
-        relationship: envRelationship,
-        favoriteColor: envColor,
+        name: urlOverrides.name !== undefined ? urlOverrides.name : envName,
+        age: urlOverrides.age !== undefined ? urlOverrides.age : envAge,
+        gender: urlOverrides.gender !== undefined ? urlOverrides.gender : envGender,
+        relationship: urlOverrides.relationship !== undefined ? urlOverrides.relationship : envRelationship,
+        favoriteColor: urlOverrides.favoriteColor !== undefined ? urlOverrides.favoriteColor : envColor,
         favoriteEmojis: envFavoriteEmojis,
         interests: envItems,
-        customMessage: envMessage,
-        senderName: envSenderName,
+        customMessage: urlOverrides.customMessage !== undefined ? urlOverrides.customMessage : envMessage,
+        senderName: urlOverrides.senderName !== undefined ? urlOverrides.senderName : envSenderName,
         birthdayDate: envDate,
-        animationSpeed: (import.meta.env.VITE_ANIMATION_SPEED as 'slow' | 'moderate' | 'fast') || null,
+        animationSpeed: (urlOverrides.animationSpeed || (import.meta.env.VITE_ANIMATION_SPEED as 'slow' | 'moderate' | 'fast')) || null,
         animationIntensity: (parseEnvString(import.meta.env.VITE_ANIMATION_INTENSITY) as 'low' | 'medium' | 'high') || 'high',
         particleCount: parseEnvNumber(import.meta.env.VITE_PARTICLE_COUNT, 25) ?? 25,
         photos: envPhotos,
@@ -277,8 +280,8 @@ export const useBirthdayStore = create<BirthdayStore>((set, get) => ({
         showGiftSection: envShowGift,
         showSkipButton: envShowSkipButton,
         reducedMotion: envReducedMotion,
-        soundEffectsEnabled: envSoundEffects,
-        language: envLanguage,
+        soundEffectsEnabled: urlOverrides.soundEffectsEnabled !== undefined ? urlOverrides.soundEffectsEnabled : envSoundEffects,
+        language: urlOverrides.language !== undefined ? urlOverrides.language : envLanguage,
         finalVideoUrl: envFinalVideo,
         specialMemories: envMemories,
         familyProfile: envFamilyProfile,

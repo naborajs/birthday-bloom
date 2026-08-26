@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { SplashScreen } from "@/components/birthday/SplashScreen";
 import { CinematicIntro } from "@/components/birthday/CinematicIntro";
@@ -6,6 +6,7 @@ import { MainBirthday } from "@/components/birthday/MainBirthday";
 import { PasswordUnlock } from "@/components/birthday/PasswordUnlock";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useDynamicTheme } from "@/features/core/theme/useDynamicTheme";
+import { useDynamicSEO } from "@/features/core/seo/useDynamicSEO";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { FloatingElements } from "@/components/birthday/FloatingElements";
 import { SparkleRain } from "@/components/birthday/SparkleRain";
@@ -25,18 +26,9 @@ const Index = () => {
     const config = useBirthdayStore((state) => state.config);
     const { t } = useTranslation();
     useDynamicTheme();
+    useDynamicSEO(config);
 
-    useEffect(() => {
-        const name = config.name?.trim();
-        if (name) {
-            const greeting = t('common.happyBirthday');
-            document.title = `${greeting} ${name}! | Birthday Bloom`;
-        } else {
-            document.title = "Birthday Bloom | Magical Cinematic Birthday Celebration Website";
-        }
-    }, [config.name, t]);
-
-    return (<div className="min-h-screen transition-colors duration-1000 relative overflow-hidden" style={{ background: 'var(--bg-gradient, #1a0515)' }}>
+    return (<main role="main" aria-label="Birthday Celebration Experience" className="min-h-screen transition-colors duration-1000 relative overflow-hidden" style={{ background: 'var(--bg-gradient, #1a0515)' }}>
       {/* Dreamy Ambient Bokeh Auras */}
       <div className="fixed top-[5%] left-[8%] w-[38rem] h-[38rem] rounded-full bg-[radial-gradient(circle,rgba(255,75,130,0.2)_0%,transparent_70%)] blur-[120px] pointer-events-none animate-subtle-float" />
       <div className="fixed top-[20%] right-[8%] w-[34rem] h-[34rem] rounded-full bg-[radial-gradient(circle,rgba(255,200,100,0.15)_0%,transparent_70%)] blur-[130px] pointer-events-none animate-pulse" />
@@ -89,7 +81,7 @@ const Index = () => {
             <MainBirthday />
           </motion.div>)}
       </AnimatePresence>
-    </div>);
+    </main>);
 };
 
 export default Index;
