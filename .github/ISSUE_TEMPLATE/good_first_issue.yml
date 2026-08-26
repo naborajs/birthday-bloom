@@ -1,0 +1,49 @@
+name: "🌱 Good First Issue (Starter Task)"
+description: "Propose a beginner-friendly task or starter contribution for newcomers"
+title: "[Good First Issue]: "
+labels: ["good first issue", "help wanted", "level:beginner"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Welcome First-Time Contributors! 🌸
+        This template is for tasks that are clearly scoped, well-documented, and ideal for developers making their first contribution to Birthday Bloom.
+  - type: textarea
+    id: task-summary
+    attributes:
+      label: Task Summary
+      description: What needs to be built, polished, or improved?
+      placeholder: e.g., Add a new preset color theme, improve mobile button focus states, or add a new relationship template
+    validations:
+      required: true
+  - type: textarea
+    id: relevant-files
+    attributes:
+      label: Relevant Files & Code Locations
+      description: List the exact file paths that the contributor will need to inspect or edit.
+      placeholder: |
+        - `src/config/templates.ts`
+        - `src/features/core/store/useBirthdayStore.ts`
+    validations:
+      required: true
+  - type: textarea
+    id: steps-to-complete
+    attributes:
+      label: Step-by-Step Implementation Guide
+      description: Explain the steps required to complete this task successfully.
+      placeholder: |
+        1. Fork the repo and create a branch `feat/your-feature-name`
+        2. Make the code edits in the files listed above
+        3. Run `npm run verify` to test your changes locally
+        4. Open a Pull Request!
+    validations:
+      required: true
+  - type: checkboxes
+    id: contributor-prerequisites
+    attributes:
+      label: Contributor Prerequisites
+      options:
+        - label: This task has a clear scope and does not require major architectural changes
+          required: true
+        - label: This task can be verified with `npm run verify`
+          required: true
