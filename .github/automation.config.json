@@ -48,7 +48,7 @@
     "performance": ["perf", "performance"]
   },
   "typePathHeuristics": {
-    "documentation": ["docs/**/*", "*.md"],
+    "documentation": ["obsidian-docs/**/*", "*.md"],
     "ci-cd": [".github/workflows/**/*", "vercel.json", "package.json", "package-lock.json"],
     "test": ["src/test/**/*", "src/**/*.test.ts", "src/**/*.test.tsx"],
     "style": ["src/**/*.css", "tailwind.config.ts"],
@@ -57,12 +57,16 @@
   "areaMapping": {
     "area:frontend": ["src/components/**/*", "src/pages/**/*", "src/features/cinematic-story/**/*", "src/App.tsx", "src/App.css"],
     "area:core": ["src/features/core/**/*", "src/lib/**/*", "src/services/**/*"],
-    "customization": ["src/config/**/*", "src/config.ts", ".env.example"],
-    "documentation": ["docs/**/*", "*.md"],
+    "customization": ["src/config/**/*", ".env.example"],
+    "documentation": ["obsidian-docs/**/*", "*.md"],
     "ci-cd": [".github/workflows/**/*", "vercel.json"],
     "test": ["src/test/**/*", "src/**/*.test.ts", "src/**/*.test.tsx", "src/main.test.tsx"]
   },
   "labels": [
+    { "name": "good first issue", "color": "7057ff", "description": "Good for newcomers and first-time open source contributors" },
+    { "name": "help wanted", "color": "008672", "description": "Extra attention is needed from community contributors" },
+    { "name": "area: 3d-webgl", "color": "ba68c8", "description": "Three.js, React Three Fiber, procedural models, and WebGL shaders" },
+    { "name": "area: animations", "color": "ff69b4", "description": "Framer Motion timelines, Canvas 2D fireworks, and spring physics" },
     { "name": "bug", "color": "ee0701", "description": "Something isn't working or needs a fix" },
     { "name": "enhancement", "color": "a2eeef", "description": "New feature or request" },
     { "name": "documentation", "color": "0075ca", "description": "Improvements or additions to documentation" },
