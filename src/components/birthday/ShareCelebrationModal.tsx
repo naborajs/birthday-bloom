@@ -163,6 +163,9 @@ export const ShareCelebrationModal: React.FC<ShareCelebrationModalProps> = ({ is
 
         {/* Modal Window */}
         <motion.div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="share-modal-title"
           initial={{ scale: 0.9, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -185,7 +188,7 @@ export const ShareCelebrationModal: React.FC<ShareCelebrationModalProps> = ({ is
             <div className="inline-flex p-3 rounded-2xl bg-gradient-to-tr from-primary/30 to-pink-500/20 mb-3 border border-white/10">
               <Share2 className="text-primary" size={28} />
             </div>
-            <h3 className="font-display text-2xl sm:text-3xl font-black text-white">
+            <h3 id="share-modal-title" className="font-display text-2xl sm:text-3xl font-black text-white">
               {isFrench ? "Partager la Célébration ✨" : isBengali ? "উদযাপন শেয়ার করুন ✨" : isHindi ? "जश्न शेयर करें ✨" : "Share Celebration ✨"}
             </h3>
             <p className="text-white/60 text-xs sm:text-sm mt-1">
@@ -304,6 +307,7 @@ export const ShareCelebrationModal: React.FC<ShareCelebrationModalProps> = ({ is
             <button
               type="button"
               onClick={shareToWhatsApp}
+              aria-label="Share via WhatsApp"
               className="flex flex-col items-center justify-center p-3 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 text-emerald-400 transition-all hover:scale-105"
             >
               <span className="text-2xl mb-1">💬</span>
@@ -313,6 +317,7 @@ export const ShareCelebrationModal: React.FC<ShareCelebrationModalProps> = ({ is
             <button
               type="button"
               onClick={shareToTwitter}
+              aria-label="Share via X / Twitter"
               className="flex flex-col items-center justify-center p-3 rounded-2xl bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/20 text-sky-400 transition-all hover:scale-105"
             >
               <Twitter size={22} className="mb-1" />
@@ -322,6 +327,7 @@ export const ShareCelebrationModal: React.FC<ShareCelebrationModalProps> = ({ is
             <button
               type="button"
               onClick={shareToTelegram}
+              aria-label="Share via Telegram"
               className="flex flex-col items-center justify-center p-3 rounded-2xl bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 text-blue-400 transition-all hover:scale-105"
             >
               <Send size={22} className="mb-1" />
@@ -331,6 +337,7 @@ export const ShareCelebrationModal: React.FC<ShareCelebrationModalProps> = ({ is
             <button
               type="button"
               onClick={shareToFacebook}
+              aria-label="Share via Facebook"
               className="flex flex-col items-center justify-center p-3 rounded-2xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 text-indigo-400 transition-all hover:scale-105"
             >
               <Facebook size={22} className="mb-1" />
@@ -340,6 +347,7 @@ export const ShareCelebrationModal: React.FC<ShareCelebrationModalProps> = ({ is
             <button
               type="button"
               onClick={shareToLinkedIn}
+              aria-label="Share via LinkedIn"
               className="flex flex-col items-center justify-center p-3 rounded-2xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/20 text-cyan-400 transition-all hover:scale-105"
             >
               <Linkedin size={22} className="mb-1" />
@@ -352,12 +360,14 @@ export const ShareCelebrationModal: React.FC<ShareCelebrationModalProps> = ({ is
             <input
               type="text"
               readOnly
+              aria-label="Celebration Share URL"
               value={activeShareUrl}
               className="flex-1 bg-transparent px-3 text-xs text-white/80 select-all outline-none truncate font-mono"
             />
             <button
               type="button"
               onClick={handleCopyLink}
+              aria-label="Copy share link"
               className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-xs font-bold text-black transition-all hover:brightness-110 active:scale-95"
             >
               {copied ? <Check size={14} /> : <Copy size={14} />}
