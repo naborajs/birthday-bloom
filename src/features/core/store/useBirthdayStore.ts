@@ -114,30 +114,44 @@ const parseEnvJson = <T>(value: unknown): T | null => {
     }
 };
 const envName = parseEnvString(import.meta.env.VITE_BIRTHDAY_NAME, import.meta.env.VITE_USER_NAME);
-const rawRel = (import.meta.env.VITE_BIRTHDAY_RELATIONSHIP || '').toLowerCase();
-const envRelationship: RelationshipType = rawRel.includes('partner') || rawRel.includes('love') ? 'partner' :
-    rawRel.includes('friend') || rawRel.includes('bestie') ? 'friend' :
-        rawRel.includes('brother') ? 'brother' :
-            rawRel.includes('sister') ? 'sister' :
-                rawRel.includes('father') || rawRel.includes('dad') ? 'father' :
-                    rawRel.includes('mother') || rawRel.includes('mom') ? 'mother' :
-                        rawRel.includes('grandfather') || rawRel.includes('grandpa') ? 'grandfather' :
-                            rawRel.includes('grandmother') || rawRel.includes('grandma') ? 'grandmother' :
-                                rawRel.includes('uncle') ? 'uncle' :
-                                    rawRel.includes('aunt') ? 'aunt' :
-                                        rawRel.includes('cousin') ? 'cousin' :
-                                            rawRel.includes('son') ? 'son' :
-                                                rawRel.includes('daughter') ? 'daughter' :
-                                                    rawRel.includes('guardian') ? 'guardian' :
-                                                        rawRel.includes('sibling') ? 'sibling' :
-                                                            rawRel.includes('colleague') || rawRel.includes('work') ? 'colleague' :
-                                                                rawRel.includes('mentor') || rawRel.includes('teacher') ? 'mentor' :
-                                                                    'family';
-const envColor = parseEnvString(import.meta.env.VITE_BIRTHDAY_COLOR, import.meta.env.VITE_THEME_COLOR, import.meta.env.VITE_FAVORITE_COLOR) || '#FF6B6B';
+const rawRel = parseEnvString(
+    import.meta.env.VITE_BIRTHDAY_RELATIONSHIP,
+    import.meta.env.VITE_RELATIONSHIP,
+    import.meta.env.VITE_THEME,
+    import.meta.env.VITE_ROLE
+).toLowerCase();
+
+const envRelationship: RelationshipType =
+    rawRel.includes('partner') || rawRel.includes('love') || rawRel.includes('romantic') || rawRel.includes('girlfriend') || rawRel.includes('boyfriend') || rawRel.includes('wife') || rawRel.includes('husband') || rawRel.includes('soulmate') || rawRel.includes('crush') || rawRel === 'gf' || rawRel === 'bf' ? 'partner' :
+    rawRel.includes('friend') || rawRel.includes('bestie') || rawRel.includes('buddy') || rawRel.includes('fun') || rawRel.includes('energetic') ? 'friend' :
+    rawRel.includes('brother') ? 'brother' :
+    rawRel.includes('sister') ? 'sister' :
+    rawRel.includes('father') || rawRel.includes('dad') ? 'father' :
+    rawRel.includes('mother') || rawRel.includes('mom') ? 'mother' :
+    rawRel.includes('grandfather') || rawRel.includes('grandpa') ? 'grandfather' :
+    rawRel.includes('grandmother') || rawRel.includes('grandma') ? 'grandmother' :
+    rawRel.includes('uncle') ? 'uncle' :
+    rawRel.includes('aunt') ? 'aunt' :
+    rawRel.includes('cousin') ? 'cousin' :
+    rawRel.includes('son') ? 'son' :
+    rawRel.includes('daughter') ? 'daughter' :
+    rawRel.includes('guardian') ? 'guardian' :
+    rawRel.includes('sibling') ? 'sibling' :
+    rawRel.includes('colleague') || rawRel.includes('work') ? 'colleague' :
+    rawRel.includes('mentor') || rawRel.includes('teacher') ? 'mentor' :
+    'family';
+
+const rawGender = parseEnvString(import.meta.env.VITE_BIRTHDAY_GENDER, import.meta.env.VITE_GENDER).toLowerCase();
+const envGender: GenderType =
+    rawGender.includes('female') || rawGender.includes('girl') || rawGender.includes('woman') || rawGender.includes('she') || rawGender.includes('her') ? 'female' :
+    rawGender.includes('male') || rawGender.includes('boy') || rawGender.includes('man') || rawGender.includes('he') || rawGender.includes('him') ? 'male' :
+    'other';
+
+const envColor = parseEnvString(import.meta.env.VITE_BIRTHDAY_COLOR, import.meta.env.VITE_THEME_COLOR, import.meta.env.VITE_FAVORITE_COLOR) ||
+    (envRelationship === 'partner' ? '#FF2A6D' : envRelationship === 'friend' ? '#00D2FF' : '#FF6B6B');
 const envMessage = parseEnvString(import.meta.env.VITE_BIRTHDAY_CUSTOM_MESSAGE, import.meta.env.VITE_CUSTOM_MESSAGE);
 const envSenderName = parseEnvString(import.meta.env.VITE_BIRTHDAY_WISHER_NAME, import.meta.env.VITE_WISHER_NAME);
 const envAge = parseEnvNumber(import.meta.env.VITE_BIRTHDAY_AGE, null);
-const envGender = (import.meta.env.VITE_BIRTHDAY_GENDER as GenderType) || 'other';
 let envDate: Date | null = null;
 try {
     if (import.meta.env.VITE_BIRTHDAY_DATE) {

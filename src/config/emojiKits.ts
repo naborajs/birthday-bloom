@@ -25,6 +25,61 @@ export interface TemplateEmojiKit {
     captions: string[];
 }
 const unique = (items: string[]) => Array.from(new Set(items.filter(Boolean)));
+
+const emojiKeywordMap: Record<string, string> = {
+    heart: "💖",
+    hearts: "💕",
+    love: "🥰",
+    sparkle: "✨",
+    sparkles: "✨",
+    rose: "🌹",
+    roses: "🌹",
+    flower: "🌸",
+    flowers: "🌸",
+    butterfly: "🦋",
+    butterflies: "🦋",
+    star: "⭐",
+    stars: "✨",
+    fire: "🔥",
+    kiss: "😘",
+    cupid: "💘",
+    gift: "🎁",
+    cake: "🎂",
+    balloon: "🎈",
+    balloons: "🎈",
+    party: "🎉",
+    celebrate: "🥳",
+    crown: "👑",
+    queen: "👑",
+    king: "👑",
+    diamond: "💎",
+    ring: "💍",
+    teddy: "🧸",
+    bear: "🧸",
+    cat: "🐱",
+    dog: "🐶",
+    sun: "☀️",
+    moon: "🌙",
+    rocket: "🚀",
+    smile: "😊",
+    music: "🎵",
+    notes: "🎶",
+    magic: "🪄",
+    tulip: "🌷",
+    ribbon: "🎀",
+    letter: "💌",
+};
+
+export const normalizeToEmoji = (input: string): string => {
+    if (!input || !input.trim()) return "";
+    const trimmed = input.trim();
+    if (/\p{Extended_Pictographic}/u.test(trimmed)) {
+        return trimmed;
+    }
+    const lower = trimmed.toLowerCase();
+    return emojiKeywordMap[lower] || "";
+};
+
 const interestEmojiMap: Record<string, string[]> = {
     car: ["🚗", "🏎️", "⚙️", "🏁", "🏆"],
     music: ["🎵", "🎶", "🎸", "🎹", "🎧", "🎤"],
@@ -544,19 +599,44 @@ const kits: Record<RelationshipType, Omit<TemplateEmojiKit, "relationship">> = {
     },
 };
 export const getTemplateEmojiKit = (config: BirthdayConfig): TemplateEmojiKit => {
-    const base = kits[config.relationship] ?? kits.family;
+    const relationship = config.relationship ?? "family";
+    const base = kits[relationship] ?? kits.family;
+    const isFemale = config.gender === "female";
+    const isMale = config.gender === "male";
+
+    // Normalize any text emoji keywords (e.g. 'heart', 'butterfly', 'rose') into real emojis
+    const custom = (config.favoriteEmojis ?? []).map(normalizeToEmoji).filter(Boolean);
+
     const interestEmojis = (config.interests ?? []).flatMap((interest) => {
         const normalized = interest.toLowerCase().trim();
         const match = Object.keys(interestEmojiMap).find((key) => normalized.includes(key));
         return match ? interestEmojiMap[match] : [];
     });
-    const custom = config.favoriteEmojis ?? [];
+
+    if (relationship === "partner") {
+        const partnerFloating = isFemale
+            ? ["💖", "💕", "💞", "🌹", "🦋", "✨", "🌸", "🥰", "💝", "🌷", "🎀", "💌"]
+            : isMale
+            ? ["💖", "💕", "💞", "🌹", "✨", "⭐", "💫", "🥰", "💝", "👑", "💌"]
+            : ["💖", "💕", "💞", "🌹", "✨", "💫", "🥰", "💝", "🎀", "💌"];
+
+        return {
+            relationship: "partner",
+            ...base,
+            signature: unique([...custom, ...base.signature, ...partnerFloating, ...interestEmojis, ...birthdayBase]),
+            cursor: unique([...custom, ...base.cursor, "💖", "💕", "🌹", "✨", "🦋"]),
+            floating: unique([...custom, ...partnerFloating]),
+            celebration: unique([...custom, ...base.celebration, "💖", "💕", "🌹", "🎂", "✨", "🎉", ...interestEmojis]),
+            accent: unique([...base.accent, ...custom, "💌", "🌹", "✨", "💖"]),
+        };
+    }
+
     return {
-        relationship: config.relationship,
+        relationship,
         ...base,
         signature: unique([...custom, ...base.signature, ...interestEmojis, ...birthdayBase]),
         cursor: unique([...custom, ...base.cursor, ...interestEmojis, ...base.signature]),
-        floating: unique([...custom, ...base.floating, ...interestEmojis, ...base.signature]),
+        floating: unique([...custom, ...base.floating, ...(relationship === "friend" ? interestEmojis : []), ...base.signature]),
         celebration: unique([...custom, ...base.celebration, ...interestEmojis, ...birthdayBase]),
         accent: unique([...base.accent, ...custom, ...interestEmojis]),
     };
