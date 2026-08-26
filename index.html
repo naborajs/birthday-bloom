@@ -37,6 +37,13 @@
   <meta name="distribution" content="Global" />
   <meta name="revisit-after" content="7 days" />
   <link rel="canonical" href="https://birthday-bloom.vercel.app/" />
+  
+  <!-- Multilingual Hreflang Tags for International SEO -->
+  <link rel="alternate" hreflang="x-default" href="https://birthday-bloom.vercel.app/" />
+  <link rel="alternate" hreflang="en" href="https://birthday-bloom.vercel.app/?lang=en" />
+  <link rel="alternate" hreflang="bn" href="https://birthday-bloom.vercel.app/?lang=bn" />
+  <link rel="alternate" hreflang="hi" href="https://birthday-bloom.vercel.app/?lang=hi" />
+  <link rel="alternate" hreflang="fr" href="https://birthday-bloom.vercel.app/?lang=fr" />
 
   <!-- Open Graph / WhatsApp / Facebook / LinkedIn -->
   <meta property="og:title" content="A Magical Birthday Surprise Just For You ✨ — Birthday Bloom" />
@@ -84,7 +91,10 @@
         },
         "potentialAction": {
           "@type": "SearchAction",
-          "target": "https://birthday-bloom.vercel.app/?name={search_term_string}",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://birthday-bloom.vercel.app/?name={search_term_string}"
+          },
           "query-input": "required name=search_term_string"
         }
       },
