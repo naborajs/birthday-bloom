@@ -96,6 +96,30 @@ The repo uses a three-layer architecture: **data** (Zustand store + env parsing)
 
 ---
 
+## 🚀 The 10-Minute Contributor Fast-Track
+
+New to the project? Here is how to get your first contribution merged in minutes:
+
+1. **Pick an Issue**: Browse open issues labeled [`good first issue`](https://github.com/naborajs/birthday-bloom/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) or [`help wanted`](https://github.com/naborajs/birthday-bloom/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22).
+2. **Auto-Claim**: Comment `/assign` on the issue to be assigned automatically by our bot!
+3. **Local Setup**:
+   ```bash
+   git clone https://github.com/naborajs/birthday-bloom.git
+   cd birthday-bloom
+   npm install
+   cp .env.example .env.local
+   npm run dev
+   ```
+4. **Make Your Changes**: Clean component structure, proper typing, and cleanup on unmount.
+5. **Verify Locally with One Command**:
+   ```bash
+   npm run verify
+   ```
+   *(Executes `typecheck` + `lint` + `vitest` + `build` in one unified pipeline).*
+6. **Submit PR**: Open a pull request using our interactive PR template!
+
+---
+
 ## Development Setup
 
 ```bash
@@ -112,10 +136,12 @@ cp .env.example .env.local
 # Start dev server
 npm run dev
 
-# Run in another terminal for builds
+# Run verification suite before submitting PR
+npm run verify     # runs typecheck + lint + test + build
 npm run build      # production build
 npm run lint       # check lint
 npm test           # run tests
+npm run typecheck  # TypeScript validation
 ```
 
 The dev server runs on `http://localhost:5000` by default.
@@ -138,6 +164,7 @@ To keep issues moving quickly and ensure the project remains active:
 2. If there is no activity for 48 hours, our bot will ping you to check your status.
 3. If another **24 hours** pass (72 hours total) with no response, the bot will automatically **unassign** you.
 4. Don't worry! If you were just busy, you can always comment `/assign` again to take it back if no one else has claimed it.
+
 ---
 
 ## Making Changes
@@ -161,18 +188,19 @@ See [styleguide.md](../obsidian-docs/styleguide.md) for detailed conventions. Ke
 - Env variables: `VITE_UPPER_SNAKE_CASE`
 - Prefer interfaces over types for object shapes
 - Use Tailwind utility classes for styling
-- Clean up timeouts and event listeners on unmount
+- Clean up timeouts, RAF IDs, and event listeners on unmount
 
 ### What to Check Before Submitting
 
-1. Application runs locally (`npm run dev`)
-2. Production build succeeds (`npm run build`)
-3. No TypeScript errors (`npx tsc --noEmit`)
-4. Lint passes (`npm run lint`)
-5. Existing tests pass (`npm test`)
-6. Mobile responsiveness is reasonable
-7. If the change affects UI, test with multiple relationship types
-8. Documentation is updated if behavior changes
+1. One-click verification passes: `npm run verify`
+2. Application runs locally (`npm run dev`)
+3. Production build succeeds (`npm run build`)
+4. No TypeScript errors (`npm run typecheck`)
+5. Lint passes with 0 errors (`npm run lint`)
+6. Existing tests pass (`npm test`)
+7. Mobile responsiveness is verified
+8. If the change affects UI, test with multiple relationship types
+9. Documentation is updated if behavior changes
 
 ---
 
