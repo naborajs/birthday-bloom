@@ -1,6 +1,6 @@
-# === BIRTHDAY BLOOM — AI & LLM INGESTION GUIDE ===
+# === BIRTHDAY BLOOM — COMPLETE AI & LLM INGESTION GUIDE (FULL SPEC) ===
 
-This text document serves as a high-density, vector-embedding-friendly developer reference map for LLM coding agents (e.g., Gemini, Claude, GPT, Perplexity). It outlines the architecture, data layers, state machines, multi-language localization pipelines, SEO systems, and styling rules of the Birthday Bloom project.
+This text document serves as a high-density, vector-embedding-friendly developer and AI reference map for LLM coding agents (e.g., Gemini, Claude, GPT, Perplexity). It outlines the architecture, data layers, state machines, multi-language localization pipelines, SEO architecture, and styling rules of the Birthday Bloom project.
 
 ---
 
@@ -37,16 +37,7 @@ Birthday Bloom supports instantaneous URL customization for zero-code sharing:
 
 ---
 
-## 🌍 4. INTERNATIONALIZATION & FONT RENDERING
-* **Hindi (hi):** Culturally authentic honorifics and poetic blessings. Standardized font typography using Noto Sans Devanagari.
-* **Bengali (bn):** Authentic Bengali idioms and warm poetic phrasing. Standardized font typography using Noto Sans Bengali.
-* **French (fr):** Poetic elegance and cultural resonance with proper accents.
-* **English (en):** Expressive modern storytelling across partner, friend, and family archetypes.
-* **Grapheme cluster safe typing:** Custom typewriter and kinetic text animations operate on Unicode grapheme clusters (preventing diacritic/matra character splits).
-
----
-
-## 📂 5. WORKSPACE DIRECTORY STRUCTURE
+## 📂 4. WORKSPACE DIRECTORY STRUCTURE
 ```
 birthday-bloom/
 ├── .env.example                # Exhaustive 53 environment variables template
@@ -102,3 +93,27 @@ birthday-bloom/
         ├── Index.tsx               # Main celebration state machine
         └── NotFound.tsx            # 404 page
 ```
+
+---
+
+## 🎨 5. CINEMATIC FINITE STATE MACHINE (FSM)
+The narrative engine follows a 4-phase sequential state machine:
+1. `splash`: Full-screen welcome aura with "Tap to Begin". Initializes audio context and unlocks browser audio autoplay policies.
+2. `unlock`: Optional password protection check (if `passwordRequired` is active). Validates date passcodes (e.g. MMDD) with hints.
+3. `intro`: Cinematic storyline with kinetic typewriter text, heartfelt personalized messages, and phase transitions.
+4. `main`: The Grand Finale celebration scene featuring 3D cake cutting, floating balloons, canvas fireworks, photo album, emotional letter, trivia quiz, gift reveal, and social sharing.
+
+---
+
+## 🔍 6. SEO & GENERATIVE ENGINE OPTIMIZATION (GEO)
+Birthday Bloom implements industry-leading search engine and AI discoverability architecture:
+1. **Schema.org Structured Data**:
+   - `WebSite`: SearchAction query routing.
+   - `WebApplication`: Rating, softwareVersion (3.1.0), offers, features, and screenshots.
+   - `FAQPage`: Rich FAQ accordions in search engine results.
+   - `HowTo`: Step-by-step surprise generation instructions.
+   - `BreadcrumbList`: Structured site navigation.
+   - `SocialEvent`: Dynamically injected per recipient celebration.
+2. **Multilingual Sitemaps & Alternates**: Full `xhtml:link rel="alternate" hreflang` for all 4 languages across all pages, templates, and relationship archetypes.
+3. **Robots.txt AI Crawlers**: Explicit permissions for Googlebot, Bingbot, Applebot, DuckDuckBot, GPTBot, ClaudeBot, PerplexityBot, and social previewers.
+4. **Crawlable Semantic Noscript Fallback**: Full semantic HTML tags with features and links for crawlers without JavaScript execution.
