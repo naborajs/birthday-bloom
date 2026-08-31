@@ -76,7 +76,7 @@ Instead of relying solely on static HTML, Birthday Bloom features an active runt
 Birthday Bloom embeds a rich Schema.org `@graph` providing search engines with structured machine-readable knowledge:
 
 1. **`WebSite` Schema:** Site identification, multilingual support (`["en", "bn", "hi", "fr"]`), publisher info, and `SearchAction` search query routing.
-2. **`WebApplication` Schema:** Software version (`3.1.0`), `EntertainmentApplication` category, 5-star aggregate rating (`4.9/5` from 320 reviews), free pricing offer, screenshot references, and feature list.
+2. **`WebApplication` Schema:** Software version (`3.3.0`), `EntertainmentApplication` category, 5-star aggregate rating (`4.9/5` from 320+ reviews), free pricing offer, screenshot references, and feature list.
 3. **`FAQPage` Schema:** 6 high-value search queries targeting Google Rich Snippet FAQ accordions:
    - *What is Birthday Bloom?*
    - *How do I create a personalized birthday surprise website?*
