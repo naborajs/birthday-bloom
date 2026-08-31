@@ -50,4 +50,4 @@ Birthday Bloom is a modern, deeply emotional, high-performance birthday celebrat
 - `src/i18n/locales/`: `en.ts`, `bn.ts`, `hi.ts`, `fr.ts`
 - `obsidian-docs/`: 31 markdown technical, architectural, and user guides
 - `public/`: Assets, audio, favicon, `site.webmanifest`, `sitemap.xml`, `robots.txt`, `llms.txt`, `llms-full.txt`
-- `src/test/`: Unit, integration, stress, SEO, and E2E test suites (12 suites, 330 passing tests)
+- `src/test/`: Unit, integration, stress, SEO, and E2E test suites (17 suites, 408 passing tests)

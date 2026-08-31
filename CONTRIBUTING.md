@@ -42,7 +42,7 @@ Welcome! We are thrilled that you're interested in contributing to Birthday Bloo
 - **Animation Engine**: Framer Motion 12+ & HTML5 Canvas 2D particle simulation
 - **State Management**: Zustand 5+ (central store parsing URL query params & 53 env variables)
 - **Styling**: Tailwind CSS 3.4 + Dynamic HSL Theme Variables
-- **Testing**: Vitest 3+ (330+ automated tests)
+- **Testing**: Vitest 3+ (400+ automated tests)
 
 ---
 
