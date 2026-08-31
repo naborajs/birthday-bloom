@@ -27,6 +27,13 @@ The reactive Zustand store and i18n dispatcher automatically normalize the follo
 
 *(Case-insensitive and trimmed automatically)*
 
+### ⚡ Instant URL Testing (Zero Setup)
+
+Test the Hindi celebration experience immediately in your browser:
+👉 [https://birthday-bloom.vercel.app/?name=राहुल&rel=partner&lang=hi&color=%23FF2A6D&sender=प्रिया](https://birthday-bloom.vercel.app/?name=राहुल&rel=partner&lang=hi&color=%23FF2A6D&sender=प्रिया)
+
+---
+
 ### Switching Between Locales
 ```env
 # Switch to Hindi
@@ -35,11 +42,22 @@ VITE_LANGUAGE=hi
 # Switch to Bengali
 VITE_LANGUAGE=bn
 
+# Switch to French
+VITE_LANGUAGE=fr
+
 # Switch to English (default)
 VITE_LANGUAGE=en
 ```
 
 > **Fallback Guarantee**: If `VITE_LANGUAGE` is omitted, misspelled, or set to an invalid locale, the application safely falls back to English (`en`) without throwing runtime exceptions or breaking key lookups.
+
+---
+
+## 🔤 Devanagari Typography & Conjuncts (संयुक्त अक्षर)
+
+Hindi uses the Devanagari script, which contains complex ligature conjuncts (e.g. `क्ष`, `त्र`, `ज्ञ`, `श्र`) and halant (`्`) character combinations.
+- **Grapheme Segmentation**: The `TypeWriter.tsx` component is engineered with `Intl.Segmenter` to advance characters by grapheme cluster, ensuring matras (मात्राएं) and half-letters (आधे अक्षर) do not flicker or detach during typewriter animations.
+- **Font Stack**: Supported by `Noto Sans Devanagari` and `Rozha One` for elegant headings and high readability.
 
 ---
 
