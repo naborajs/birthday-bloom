@@ -65,11 +65,11 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 ## 3. Subsystem Specifications
 
 ### Models Layer — `src/features/core/models/familyTemplates.ts`
-- Base `FamilyMemberProfile` schema + 14 specialized member archetypes (`brother`, `sister`, `father`, `mother`, `grandfather`, `grandmother`, `uncle`, `aunt`, `cousin`, `son`, `daughter`, `guardian`, `friend`, `custom`) with typed factory functions.
+- Base `FamilyMemberProfile` schema + 18 specialized member archetypes (`brother`, `sister`, `father`, `mother`, `grandfather`, `grandmother`, `uncle`, `aunt`, `cousin`, `son`, `daughter`, `guardian`, `colleague`, `mentor`, `friend`, `partner`, `family`, `custom`) with typed factory functions.
 - Uses `FAMILY_TEMPLATE_REGISTRY` for scalable type mapping and metadata resolution.
 
 ### State & Env Parsing Layer — `src/features/core/store/useBirthdayStore.ts`
-- Parses, sanitizes, and type-coerces all 53 environment variables, URL query parameters, and aliases.
+- Parses, sanitizes, and type-coerces all 53 environment variables, URL query parameters (`urlParams.ts`), and aliases.
 - Computes reactive animation pacing (`slow`, `moderate`, `fast`), mood (`romantic`, `energetic`, `warm`), and language (`en`, `bn`, `hi`, `fr`).
 - Exposes `config` to all celebration components.
 
@@ -96,17 +96,17 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 | `src/components/birthday/` | 30 active cinematic, narrative, and sensory celebration components |
 | `src/components/ui/` | Design system primitives (`sonner.tsx`, `tooltip.tsx`) |
 | `src/components/ErrorBoundary.tsx` | Class-based error boundary with cinematic fallback UI |
-| `src/features/core/store/` | `useBirthdayStore.ts` (Zustand store, env parsing) + `SuperPersonalizedLogic.ts` |
-| `src/features/core/models/` | `familyTemplates.ts` (14 member archetypes, registry, factories) |
+| `src/features/core/store/` | `useBirthdayStore.ts` (Zustand store, env parsing) + `urlParams.ts` + `SuperPersonalizedLogic.ts` |
+| `src/features/core/models/` | `familyTemplates.ts` (18 member archetypes, registry, factories) |
 | `src/features/core/theme/` | `useDynamicTheme.ts` (dynamic CSS variable tokens injection) |
 | `src/features/core/seo/` | `useDynamicSEO.ts` (JSON-LD structured data and dynamic meta tags) |
 | `src/features/cinematic-story/` | Narrative intro scenes and animation variants |
 | `src/i18n/` | Multi-language translation engine & locale dictionaries (`en.ts`, `bn.ts`, `hi.ts`, `fr.ts`) |
-| `src/config/` | Audio assets (`birthday.ts`), emotional letters (`templates.ts`), cultural presets |
+| `src/config/` | Audio assets (`birthday.ts`), wish cards (`wishTemplates.ts`), emotional letters (`templates.ts`), cultural presets |
 | `src/utils/` | Password utilities (`password.ts`) |
 | `src/hooks/` | Responsive hooks (`use-mobile.tsx`) |
 | `src/lib/` | Tailwind class merging utilities (`utils.ts`) |
-| `src/test/` | Vitest unit, integration, stress, and challenge test suites |
+| `src/test/` | Vitest 3 test infrastructure (17 test files, 408 passing tests) |
 | `public/` | Static assets, web manifest, `robots.txt`, `sitemap.xml`, `llms.txt` |
 | `obsidian-docs/` | Comprehensive 32-note technical documentation vault |
 
