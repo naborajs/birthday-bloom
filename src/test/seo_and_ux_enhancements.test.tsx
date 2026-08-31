@@ -1,10 +1,16 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import React from "react";
-import { render, act } from "@testing-library/react";
+import { render, act, cleanup } from "@testing-library/react";
 import fs from "fs";
 import path from "path";
-import Index from "@/pages/Index";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
+import { useDynamicSEO } from "@/features/core/seo/useDynamicSEO";
+
+const SEOTestComponent = () => {
+  const config = useBirthdayStore((state) => state.config);
+  useDynamicSEO(config);
+  return null;
+};
 
 describe("SEO, UX, and PWA Enhancements Test Suite", () => {
   const initialConfig = useBirthdayStore.getState().config;
@@ -15,6 +21,7 @@ describe("SEO, UX, and PWA Enhancements Test Suite", () => {
   });
 
   afterEach(() => {
+    cleanup();
     useBirthdayStore.setState({ config: initialConfig });
   });
 
@@ -31,7 +38,7 @@ describe("SEO, UX, and PWA Enhancements Test Suite", () => {
       });
 
       act(() => {
-        render(<Index />);
+        render(<SEOTestComponent />);
       });
       expect(document.title).toBe("Happy Birthday Alice! | Birthday Bloom");
     });
@@ -48,7 +55,7 @@ describe("SEO, UX, and PWA Enhancements Test Suite", () => {
       });
 
       act(() => {
-        render(<Index />);
+        render(<SEOTestComponent />);
       });
       expect(document.title).toBe("শুভ জন্মদিন অনিন্দিতা! | Birthday Bloom");
     });
@@ -65,7 +72,7 @@ describe("SEO, UX, and PWA Enhancements Test Suite", () => {
       });
 
       act(() => {
-        render(<Index />);
+        render(<SEOTestComponent />);
       });
       expect(document.title).toBe("जन्मदिन मुबारक राहुल! | Birthday Bloom");
     });
@@ -82,7 +89,7 @@ describe("SEO, UX, and PWA Enhancements Test Suite", () => {
       });
 
       act(() => {
-        render(<Index />);
+        render(<SEOTestComponent />);
       });
       expect(document.title).toBe("Joyeux Anniversaire Camille! | Birthday Bloom");
     });
@@ -99,7 +106,7 @@ describe("SEO, UX, and PWA Enhancements Test Suite", () => {
       });
 
       act(() => {
-        render(<Index />);
+        render(<SEOTestComponent />);
       });
       expect(document.title).toBe("Birthday Bloom | Magical Cinematic Birthday Celebration Website");
     });
