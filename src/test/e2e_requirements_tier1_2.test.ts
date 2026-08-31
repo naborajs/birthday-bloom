@@ -850,7 +850,7 @@ describe("Tier 1: Feature Coverage (Opaque-Box Requirement Verification)", () =>
       const pkgPath = path.join(rootDir, "package.json");
       const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
       expect(pkg.name).toBe("birthday-bloom");
-      expect(pkg.version).toBe("3.1.0");
+      expect(pkg.version).toBe("3.3.0");
       expect(pkg.dependencies.zustand).toBeDefined();
       expect(pkg.dependencies["framer-motion"]).toBeDefined();
       expect(pkg.dependencies.three).toBeDefined();
