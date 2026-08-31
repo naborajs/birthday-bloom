@@ -42,6 +42,24 @@ server: { port: 5001 }
 
 ---
 
+### URL parameter encoding issues (Colors and Spaces)
+
+**Symptoms**: Custom theme color looks white/broken or spaces show as literal `+` or `%20`.  
+**Cause**: Hex hash symbol `#` starts a URL fragment if not percent-encoded as `%23`.  
+**Fix**:
+- For colors: use `%23FF2A6D` instead of `#FF2A6D` in URLs (e.g. `?color=%23FF2A6D`).
+- For spaces: use standard `+` or `%20` (e.g. `?name=Mary+Jane`).
+
+### WebGL Context Loss on Mobile
+
+**Symptoms**: 3D Cake turns into a black box or console logs `WebGL context lost`.  
+**Cause**: GPU memory pressure on low-power mobile devices with multiple browser tabs.  
+**Fix**:
+- Set `VITE_REDUCED_MOTION=true` to switch to lightweight 2D cake fallback.
+- Close unused background tabs in mobile Safari/Chrome.
+
+---
+
 ## Env Configuration Issues
 
 ### Env changes not reflected
