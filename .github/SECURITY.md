@@ -8,13 +8,16 @@
 | 2.x     | ⚠️ Limited support |
 | < 2.0   | ❌ Not supported   |
 
-## Reporting a Vulnerability
+## Security Architecture & Best Practices
 
-Birthday Bloom is a client-side application. All `VITE_` environment variables
-ship to the browser and are **public by design**. Do not store passwords, tokens,
-API keys, or personal secrets in env values.
+Birthday Bloom is a client-side single-page application (SPA). All `VITE_` environment variables and URL query parameters ship to the client browser and are **public by design**.
 
-If you discover a security vulnerability that goes beyond this design constraint,
+### Critical Guidelines:
+1. **Never Store Secrets**: Do not store database connection strings, private API keys, payment tokens, or backend credentials in `VITE_` variables or URL parameters.
+2. **XSS Shielding**: All user-supplied text (names, emotional letters, quiz answers) is rendered through React's native JSX escaping and validated without `dangerouslySetInnerHTML` to prevent Cross-Site Scripting (XSS).
+3. **Automated Vulnerability Scanning**: Repository dependencies are continuously monitored via **GitHub Dependabot** and security advisory databases.
+
+If you discover a security vulnerability that goes beyond these design constraints,
 please report it privately:
 
 - **Email**: nishant.ns.business@gmail.com
