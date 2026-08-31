@@ -1,38 +1,62 @@
 ---
-tags: [github, automation, ci, workflows, infrastructure]
-aliases: [GitHub Automation, CI/CD, Actions]
+tags: [github, automation, ci, workflows, infrastructure, dependabot]
+aliases: [GitHub Automation, CI/CD, Actions, Repository Workflows]
 ---
 
-# GitHub Automation Architecture
+# GitHub Automation & CI/CD Architecture
+
 [[DOCUMENTATION_INDEX|Back to Home]]
 
-Birthday Bloom features a robust GitHub automation setup, largely managed within the `.github/workflows` and `.github/ISSUE_TEMPLATE` directories.
-
-## Core Workflows
-1. **[[ci.yml|Continuous Integration]]**
-   - Triggers on push to `main` and pull requests.
-   - Runs `npm run lint` and `npx tsc --noEmit` to ensure strict typing.
-   - Executes Vitest tests.
-   - Builds the Vite application.
-   - **Tools Used**: GitHub Actions, ESLint, TypeScript, Vitest, Vite.
-
-2. **[[repo-health.yml|Repository Health]]**
-   - Automatically checks for stale issues and PRs.
-
-3. **[[triage-issues.yml|Issue Triage]] & [[triage-prs.yml|PR Triage]]**
-   - Connects to labels defined in `labeler.yml` and automatically routes issues/PRs to appropriate project boards based on paths modified or tags selected.
-
-## Issue Templates
-We use structured YAML issue templates to standardize bug reports and feature requests:
-- `bug_report.yml`
-- `feature_request.yml`
-- `customization_issue.yml`
-- `deployment_issue.yml`
-
-## Interconnections
-- The automation directly supports the codebase described in [[Website-Architecture]].
-- Strict PR policies are enforced as documented in [[PULL_REQUEST_POLICY]].
-- Dependency updates are fully automated via Dependabot (`dependabot.yml`).
+Birthday Bloom features a robust GitHub automation and continuous integration setup managed within the `.github/` directory.
 
 ---
-#obsidian #documentation #birthday-bloom #vault #github
+
+## 1. Core CI/CD Workflows
+
+### `ci.yml` — Continuous Integration Pipeline
+Triggers on every push to `main` and all pull requests:
+1. **Type Checking**: Runs `npm run typecheck` (`tsc --noEmit`) to verify zero TypeScript errors.
+2. **Linting**: Executes `npm run lint` (`eslint .`) using modern flat ESLint 9 configuration.
+3. **Automated Testing**: Runs `npm test` (`vitest run`) across all 17 test suites (408 unit and integration tests).
+4. **Production Build**: Executes `npm run build` (`vite build`) to guarantee clean chunk compilation and asset bundling.
+
+### `repo-health.yml` — Automated Maintenance
+- Stale issue and PR detection and gentle notifications after periods of inactivity.
+- Automatic closing of abandoned draft PRs.
+
+### `issue-assignment.yml` & `sync-labels.yml`
+- Contributor auto-assignment: Developers can claim issues by commenting `/assign` or "can I take this".
+- Label synchronization across standard GitHub labels, good first issues, and Hacktoberfest tags.
+
+---
+
+## 2. Dependabot Configuration & Major Update Safety Guards
+
+Automated dependency updates are managed via `.github/dependabot.yml`:
+
+### Grouped Update Schedules
+- **`radix-ui`**: Groups `@radix-ui/*` primitives.
+- **`linting-testing`**: Groups `eslint*`, `@eslint/*`, `typescript-eslint`, `globals`, `@testing-library/*`, `vitest*`.
+- **`build-tools`**: Groups `vite*`, `@vitejs/*`, `typescript`, `postcss`, `autoprefixer`, `tailwindcss`.
+- **`actions`**: Groups all GitHub Action runners monthly.
+
+### Semver-Major Safety Ignores
+To prevent noisy, breaking automated PRs from failing CI pipelines, semver-major updates are explicitly ignored for packages requiring manual architectural migration:
+- `@eslint/*` (major bump 10 requires ESLint core 10 ecosystem)
+- `tailwindcss` (major bump 4 is a complete rewrite without `tailwind.config.ts`)
+- `typescript` (major bump 7 requires `typescript-eslint` 9+ compatibility)
+- `jsdom` (major bump 30 requires Node 20.18+/22.12+ test runner changes)
+
+---
+
+## 3. Issue Templates & Triage Standards
+
+Standardized YAML issue forms ensure all community submissions contain necessary debug logs and reproduction steps:
+- `bug_report.yml`: Bug reports with browser version, OS, and console errors.
+- `feature_request.yml`: New 3D effects, soundscapes, or localization proposals.
+- `customization_issue.yml`: Assistance with environment variable configuration or URL parameters.
+- `deployment_issue.yml`: Assistance with Vercel, Netlify, Docker, or Cloudflare hosting.
+
+---
+#obsidian #documentation #birthday-bloom #vault #github #ci-cd #automation
+
