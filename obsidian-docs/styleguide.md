@@ -128,7 +128,7 @@ npm run dev
 Place in `src/assets/`. Reference with relative paths in docs.
 Keep screenshots under 500 KB. WebP format is preferred.
 
-## Commit Style
+## Commit & Incremental Workflow Style
 
 Use [Conventional Commits](https://www.conventionalcommits.org/):
 
@@ -139,19 +139,25 @@ docs: improve family system documentation
 refactor: simplify birthday template configuration
 perf: optimize particle rendering
 chore: update dependencies
+test: refine test mocks and act wrapping
 ```
 
-- Use the imperative mood ("add" not "added" / "adds")
-- Keep the first line under 72 characters
-- Reference issues in the body if applicable
+### Incremental Development Rules:
+1. Work in **small, reviewable increments** instead of massive uncommitted changes.
+2. After every milestone: verify with `npm run verify`, commit, and push immediately.
+3. Keep the commit subject line under 72 characters in the imperative mood ("add", not "added").
 
-## Pull Request Standards
+---
 
-- One PR per logical change
-- Keep PRs focused and reviewable (under ~400 lines when possible)
-- Include screenshots for UI changes
-- Update docs when behavior changes
-- Ensure the build passes before requesting review
+## Pull Request & Quality Standards
 
+- Run all-in-one verification before submitting:
+  ```bash
+  npm run verify
+  ```
+- Keep PRs focused and reviewable (under ~400 lines when possible).
+- Include screenshots or visual recordings for UI changes.
+- Update documentation in `obsidian-docs/` whenever behavior changes.
 
-#obsidian #documentation #birthday-bloom #vault
+---
+#obsidian #documentation #birthday-bloom #vault #styleguide #conventions
