@@ -3,11 +3,11 @@ tags: [index, home, overview, documentation, i18n, vault]
 aliases: [DOCUMENTATION_INDEX, index]
 ---
 
-# Birthday Bloom v3.1 — Documentation Index
+# Birthday Bloom v3.3 — Documentation Index
 
 [[quick-start|Quick Start]] | [[ENV_GUIDE|Env Customization Guide]] | [[URL-Parameters|URL Parameters]] | [[setup-french|French Guide]] | [[setup-hindi|Hindi Guide]] | [[setup-bengali|Bengali Guide]] | [[architecture-env|Env Architecture]] | [[deployment|Deployment Guide]]
 
-**Complete 32-note documentation suite for Birthday Bloom**, an env-first and zero-config cinematic birthday surprise engine built with React 18, TypeScript, Framer Motion, Three.js / React Three Fiber, Tailwind CSS, and Zustand.
+**Complete 32-note documentation suite for Birthday Bloom**, an env-first and zero-config cinematic birthday surprise engine built with React 18, TypeScript 5.8, Framer Motion 13, Three.js / React Three Fiber, Tailwind CSS, and Zustand 5.
 
 Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom)
 
