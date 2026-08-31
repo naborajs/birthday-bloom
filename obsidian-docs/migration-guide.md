@@ -20,27 +20,18 @@ You should read this if:
 
 ## Version History at a Glance
 
-| Feature | v1.x | v2.x | v3.x |
-|---|---|---|---|
-| Core birthday experience | Basic | Enhanced | Cinematic |
-| Environment variables | Minimal | 15 options | 40+ options |
-| Theme support | None | 6 themes | 6 themes + env override |
-| Relationship types | 1 | 6 | 8 + custom registry |
-| Multi-layer animations | None | 7 animation types | Enhanced + responsive |
-| Template system | None | 6 generic templates | 14 registered family types |
-| Audio integration | None | Architecture (v2.1 ready) | Full BGM + sound effects |
-| Video support | None | Limited | Full gallery |
-| Family profiles | None | Ad-hoc objects | Typed schemas, 14 member types |
-| Validation system | None | None | ConfigValidator + DataValidator |
-| Emotional letters | Static strings | Static strings | Template library in config |
-| Photo handling | Static imports | Static imports | Env-driven with fallback chain |
-| Section visibility | Manual code edits | Manual code edits | Env toggles (VITE_SHOW_*) |
-| Password unlock | None | None | Full implementation |
-| Accessibility | None | Basic | 6 env-controlled options, WCAG AA |
-| Type safety | None | Partial | Complete |
-| Documentation | None | Sparse | Full documentation suite (15+ files) |
-| Error handling | None | Error boundaries | Comprehensive |
-| Bundle size (gzipped) | ~150KB | ~180KB | ~200KB |
+| Feature | v1.x | v2.x | v3.0 | v3.3 (Current) |
+|---|---|---|---|---|
+| Core birthday experience | Basic | Enhanced | Cinematic | Full 4-Phase Sensory Immersion |
+| Environment variables | Minimal | 15 options | 40+ options | 53 validated keys & aliases |
+| Zero-Code URL Customization | None | None | None | Full Universal Parameter Engine |
+| Dynamic SEO & JSON-LD | Static | Static | Static | Real-time SocialEvent Schema |
+| Multi-language localization | English only | Partial | 3 languages | 4 languages (EN, BN, HI, FR) |
+| Relationship archetypes | 1 | 6 | 14 types | 18 full archetypes |
+| Audio engine | None | Prototype | Web Audio BGM | BGM + Sound Manager SFX |
+| Automated tests | None | None | ~120 tests | 17 suites, 408 tests |
+| Dependency footprint | Moderate | Heavy | Heavy (30+ Radix) | Streamlined (34 unused pruned) |
+| Build Toolchain | Vite 4 / 5 | Vite 5 | Vite 5 / 6 | Vite 8 + Rolldown |
 
 ---
 
