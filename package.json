@@ -84,12 +84,12 @@
     "cmdk": "^1.1.1",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.42.2",
-    "input-otp": "^1.4.2",
+    "input-otp": "^1.5.0",
     "lucide-react": "^0.462.0",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
-    "react-hook-form": "^7.84.0",
+    "react-hook-form": "^7.86.0",
     "react-resizable-panels": "^2.1.9",
     "react-router-dom": "^7.18.2",
     "recharts": "^3.10.1",
@@ -98,7 +98,7 @@
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.185.1",
     "vaul": "^1.1.2",
-    "zustand": "^5.0.14"
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
