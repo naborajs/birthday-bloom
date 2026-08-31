@@ -42,24 +42,28 @@ Shared fields include:
 
 Specialized fields live in the `specialized` property. This keeps the base stable while allowing each relationship to add meaning.
 
-## Supported Templates
+## Supported Templates (18 Archetypes)
 
-| Type | Category | Specialized Extension |
-| --- | --- | --- |
-| `brother` | sibling | `SiblingFields` |
-| `sister` | sibling | `SiblingFields` |
-| `father` | parent | `ParentFields` |
-| `mother` | parent | `ParentFields` |
-| `grandfather` | grandparent | `GrandparentFields` |
-| `grandmother` | grandparent | `GrandparentFields` |
-| `uncle` | relative | `RelativeFields` |
-| `aunt` | relative | `RelativeFields` |
-| `cousin` | relative | `RelativeFields` |
-| `son` | child | `ChildFields` |
-| `daughter` | child | `ChildFields` |
-| `guardian` | guardian | `GuardianFields` |
-| `friend` | friend | `FriendFields` |
-| `custom` | custom | `CustomMemberFields` |
+| Type | Category | Direction | Specialized Extension |
+| :--- | :--- | :--- | :--- |
+| `partner` | chosen | chosen | `PartnerFields` (Love language, anniversary, shared pet names) |
+| `brother` | sibling | sibling | `SiblingFields` (Childhood memories, nickname, rivalry jokes) |
+| `sister` | sibling | sibling | `SiblingFields` (Childhood memories, secrets, heart-to-hearts) |
+| `father` | parent | ancestor | `ParentFields` (Wisdom quotes, dad jokes, life lessons) |
+| `mother` | parent | ancestor | `ParentFields` (Unconditional warmth, recipes, comfort advice) |
+| `grandfather` | grandparent | ancestor | `GrandparentFields` (Legacy stories, generational blessings) |
+| `grandmother` | grandparent | ancestor | `GrandparentFields` (Lullabies, heirlooms, gentle warmth) |
+| `uncle` | relative | extended | `RelativeFields` (Fun adventures, family gatherings) |
+| `aunt` | relative | extended | `RelativeFields` (Caring advice, festive treats) |
+| `cousin` | relative | extended | `RelativeFields` (Partner-in-crime adventures) |
+| `son` | child | descendant | `ChildFields` (Pride milestones, future dreams) |
+| `daughter` | child | descendant | `ChildFields` (Pride milestones, treasured moments) |
+| `guardian` | guardian | ancestor | `GuardianFields` (Mentorship, guidance, protection) |
+| `colleague` | colleague | chosen | `ColleagueFields` (Team collaboration, project triumphs) |
+| `mentor` | guardian | ancestor | `MentorFields` (Career inspiration, guiding wisdom) |
+| `friend` | friend | chosen | `FriendFields` (Inside jokes, late-night talks, epic trips) |
+| `family` | family | family | `FamilyFields` (Shared heritage, holiday traditions) |
+| `custom` | custom | custom | `CustomMemberFields` (Arbitrary user-defined key-values) |
 
 ## Creating Profiles
 
