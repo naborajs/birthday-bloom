@@ -208,8 +208,9 @@ VITE_SHOW_FINAL_SURPRISE=true
 
 ## 🌈 Configuration 7: Colleague / Peer
 
-**Use Case:** Colleague, Teammate, Mentor  
-**Aesthetic:** Modern violet, celebratory, inspiring
+**Use Case:** Colleague, Teammate  
+**Aesthetic:** Modern violet, celebratory, inspiring  
+**Instant URL:** `https://birthday-bloom.vercel.app/?name=Jordan&rel=colleague&color=%238A2BE2&sender=The+Team`
 
 ```env
 # Identity & Relationship
@@ -235,7 +236,38 @@ VITE_SHOW_QUIZ_SECTION=true
 
 ---
 
+## 🌟 Configuration 8: Mentor & Guide
+
+**Use Case:** Mentor, Teacher, Professor, Coach  
+**Aesthetic:** Royal Amber Gold, respectful, deeply appreciative  
+**Instant URL:** `https://birthday-bloom.vercel.app/?name=Dr.+Sarkar&rel=mentor&color=%23FFC864&sender=Your+Students`
+
+```env
+# Identity & Relationship
+VITE_BIRTHDAY_NAME=Dr. Sarkar
+VITE_BIRTHDAY_GENDER=male
+VITE_BIRTHDAY_RELATIONSHIP=mentor
+VITE_LANGUAGE=en
+
+# Visual Styling & Interests
+VITE_BIRTHDAY_COLOR=#FFC864
+VITE_BIRTHDAY_INTERESTS=science,reading,teaching,innovation
+VITE_BIRTHDAY_WISHER_NAME=Your Grateful Students
+
+# Message & Content
+VITE_BIRTHDAY_CUSTOM_MESSAGE=Happy Birthday to an extraordinary mentor! Thank you for your endless guidance, wisdom, and encouragement that shape our futures every day. 🌟
+
+# Section Controls
+VITE_SHOW_CAKE_SECTION=true
+VITE_SHOW_HEART_TREE_SECTION=true
+```
+
+---
+
 ## 📋 How to Use These Configurations
+
+### Instant Sharing Without Hosting:
+Use the **Instant URL** provided above to test and send immediately without building or hosting.
 
 ### For Local Development:
 1. Copy the configuration block you want.
