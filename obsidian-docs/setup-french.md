@@ -29,6 +29,13 @@ Le store réactif Zustand et le répartiteur i18n normalisent automatiquement le
 
 *(Insensible à la casse et nettoyé automatiquement)*
 
+### ⚡ Test Instantané par URL (Sans Configuration)
+
+Testez l'expérience magique en français immédiatement dans votre navigateur :
+👉 [https://birthday-bloom.vercel.app/?name=Camille&rel=partner&lang=fr&color=%23FF2A6D&sender=Alexandre](https://birthday-bloom.vercel.app/?name=Camille&rel=partner&lang=fr&color=%23FF2A6D&sender=Alexandre)
+
+---
+
 ### Basculer entre les Langues
 ```env
 # Basculer vers le Français
@@ -45,6 +52,12 @@ VITE_LANGUAGE=bn
 ```
 
 > **Garantie de Secours (Fallback)** : Si `VITE_LANGUAGE` est omis, mal orthographié ou défini sur une langue non reconnue, l'application bascule automatiquement et de manière transparente sur l'anglais (`en`) sans lever d'erreur ni interrompre l'expérience utilisateur.
+
+---
+
+## ✍️ Typographie Française & Diacritiques
+
+Le moteur d'écriture cinétique prend en charge l'ensemble des caractères accentués et ligatures françaises (`é`, `è`, `ê`, `ë`, `à`, `ç`, `œ`, `î`, `ï`, `ô`, `ù`) sans coupure de mots ni décalage de curseur.
 
 ---
 
