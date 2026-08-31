@@ -49,10 +49,10 @@ https://birthday-bloom.vercel.app/?name=তনয়&age=25&rel=sibling&template
 
 ## 💻 Developer Implementation
 
-URL parameter parsing and fallback resolution are handled in [`src/features/core/config/urlParams.ts`](file:///d:/Projects/Website/birthday-bloom/src/features/core/config/urlParams.ts) and merged with environment defaults in [`src/features/core/store/useBirthdayStore.ts`](file:///d:/Projects/Website/birthday-bloom/src/features/core/store/useBirthdayStore.ts).
+URL parameter parsing and fallback resolution are handled in [`src/features/core/store/urlParams.ts`](file:///d:/Projects/Website/birthday-bloom/src/features/core/store/urlParams.ts) and merged with environment defaults in [`src/features/core/store/useBirthdayStore.ts`](file:///d:/Projects/Website/birthday-bloom/src/features/core/store/useBirthdayStore.ts).
 
 ```typescript
-import { parseUrlConfig } from '@/features/core/config/urlParams';
+import { parseUrlConfig } from '@/features/core/store/urlParams';
 
 // Example: extracting configuration from current URL search params
 const runtimeConfig = parseUrlConfig(window.location.search);
