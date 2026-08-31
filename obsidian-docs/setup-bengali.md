@@ -27,6 +27,13 @@ The reactive Zustand store and i18n dispatcher automatically normalize the follo
 
 *(Case-insensitive and trimmed automatically)*
 
+### ⚡ Instant URL Testing (Zero Setup)
+
+Test the Bengali celebration experience immediately in your browser:
+👉 [https://birthday-bloom.vercel.app/?name=অনিন্দিতা&rel=partner&lang=bn&color=%23FF2A6D&sender=নবরায়](https://birthday-bloom.vercel.app/?name=অনিন্দিতা&rel=partner&lang=bn&color=%23FF2A6D&sender=নবরায়)
+
+---
+
 ### Switching Between Locales
 ```env
 # Switch to Bengali
@@ -35,11 +42,22 @@ VITE_LANGUAGE=bn
 # Switch to Hindi
 VITE_LANGUAGE=hi
 
+# Switch to French
+VITE_LANGUAGE=fr
+
 # Switch to English (default)
 VITE_LANGUAGE=en
 ```
 
 > **Fallback Guarantee**: If `VITE_LANGUAGE` is omitted, misspelled, or set to an invalid locale, the application safely falls back to English (`en`) without throwing runtime exceptions or breaking key lookups.
+
+---
+
+## 🔤 Indic Typography & Grapheme Clusters
+
+Bengali text features complex conjuncts (যুক্তাক্ষর, e.g. `ক্ষ`, `জ্ঞ`, `হ্ন`) and vowel matras (হ্রস্ব-ই কার, দীর্ঘ-ঈ কার).
+- **Grapheme Segmenter**: The `TypeWriter.tsx` component utilizes `Intl.Segmenter` to advance typing by grapheme clusters rather than raw UTF-16 code units, preventing detached matras or broken conjunct characters.
+- **Font Stack**: Backed by `Noto Sans Bengali` and `Hind Siliguri` for clean rendering across Windows, macOS, Android, and iOS.
 
 ---
 
