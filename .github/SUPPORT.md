@@ -2,15 +2,23 @@
 
 Welcome to Birthday Bloom! Here's how to get the help you need.
 
+## Instant Live Demo & Quick Verification
+
+Before troubleshooting, verify whether the issue is reproducible on the official production deployment:
+👉 **Live Deployment:** [https://birthday-bloom.vercel.app](https://birthday-bloom.vercel.app)
+
+---
+
 ## Before Asking
 
-Most questions are already answered in our documentation:
+Most questions and setup errors are already documented in our guides:
 
 | Topic | Document |
 | --- | --- |
-| Customization & env setup | [ENV_GUIDE.md](../obsidian-docs/ENV_GUIDE.md) |
-| Local installation | [quick-start.md](../obsidian-docs/quick-start.md) |
-| Common issues | [troubleshooting.md](../obsidian-docs/troubleshooting.md) |
+| Zero-code customization | [ENV_GUIDE.md](../obsidian-docs/ENV_GUIDE.md) |
+| URL query parameters | [URL-Parameters.md](../obsidian-docs/URL-Parameters.md) |
+| Local installation (5-min) | [quick-start.md](../obsidian-docs/quick-start.md) |
+| Common issues & fixes | [troubleshooting.md](../obsidian-docs/troubleshooting.md) |
 | Frequently asked questions | [faq.md](../obsidian-docs/faq.md) |
 | Full documentation index | [DOCUMENTATION_INDEX.md](../obsidian-docs/DOCUMENTATION_INDEX.md) |
 
