@@ -23,7 +23,7 @@ Sound is the fastest pathway to the human emotional center (the amygdala). In Bi
 ### 1.1 Sound Categories & Psychological Functions
 
 | Sound Trigger | Acoustic Quality | Neurochemical Goal | Component Link |
-|---|---|---|---|
+| :--- | :--- | :--- | :--- |
 | **Background Music (`bgmUrl`)** | Warm piano, acoustic guitar, soft strings, lofi chill | Reduces cortisol, fosters emotional intimacy | [`SoundManager.tsx`](file:///d:/Projects/Website/birthday-bloom/src/components/birthday/SoundManager.tsx) |
 | **Typewriter Clicks (`playType`)** | Crisp, mechanical tactile taps (80–120ms) | Focuses attention word-by-word; dopamine anticipation | [`CinematicIntro.tsx`](file:///d:/Projects/Website/birthday-bloom/src/components/birthday/CinematicIntro.tsx) |
 | **Whoosh Transition (`playWhoosh`)** | Low-frequency stereo swoosh (200–500ms) | Signals narrative transition between acts | [`FakeChatScene.tsx`](file:///d:/Projects/Website/birthday-bloom/src/components/birthday/FakeChatScene.tsx) |
@@ -32,7 +32,25 @@ Sound is the fastest pathway to the human emotional center (the amygdala). In Bi
 
 ---
 
-## 2. Mobile Haptic Vibration Architecture
+## 2. Browser Autoplay & AudioContext Unlocking
+
+Modern browsers (Chrome, Safari, iOS WebKit) strictly enforce audio autoplay restrictions. Audio playback without a prior user gesture throws `NotAllowedError`.
+
+### 2.1 The Seamless Unlock Flow
+
+1. **User Interaction Gate**: The entry [[SplashScreen.tsx]] displays an inviting pulsating button ("Tap to Start the Magic").
+2. **AudioContext Activation**: The first touch/click event triggers:
+   ```typescript
+   // Immediate resume on user gesture
+   if (audioContext && audioContext.state === 'suspended') {
+     await audioContext.resume();
+   }
+   ```
+3. **Smooth Exponential Fade-In**: Rather than abruptly blaring audio, `SoundManager` ramps volume from `0.0` to target volume ($V_{\text{target}}=0.6$) over `1500ms` using exponential gain curves to prevent acoustic shock.
+
+---
+
+## 3. Mobile Haptic Vibration Architecture
 
 Mobile devices offer direct tactile feedback through the `navigator.vibrate()` API. Birthday Bloom synchronizes physical device pulses with on-screen visual climaxes:
 
@@ -50,16 +68,20 @@ export const HAPTIC_PATTERNS = {
 };
 ```
 
+### 3.1 Graceful Degradation
+- If `navigator.vibrate` is unsupported (e.g. desktop browsers, iOS Safari), haptic calls fail silently without breaking execution.
+- Visual micro-shakes (CSS keyframe transforms) provide visual parity on devices lacking physical vibration hardware.
+
 ---
 
-## 3. Visual Particle Physics & Performance Guardrails
+## 4. Visual Particle Physics & Performance Guardrails
 
 A common flaw in celebration websites is overwhelming the device with hundreds of un-optimized DOM nodes, causing stutters and device heating.
 
-### 3.1 The Golden Ratio of Celebration Elements
+### 4.1 The Golden Ratio of Celebration Elements
 
 | Phase | Particle Cap | Type | Frame Budget |
-|---|---|---|---|
+| :--- | :--- | :--- | :--- |
 | **Splash Screen** | 12 elements | Subtle twinkling stars + 3 CSS radial auras | 60 FPS (16.6ms) |
 | **Storytelling Intro** | 8 sparkles | Typewriter kinetic letters + floating emojis | 60 FPS (16.6ms) |
 | **Grand Climax** | 200–300 particles | Canvas-based multi-directional confetti + fireworks | 60 FPS (Canvas2D) |
@@ -67,9 +89,11 @@ A common flaw in celebration websites is overwhelming the device with hundreds o
 
 ---
 
-## 4. Sensory Checklist for Authors & Creators
+## 5. Sensory Checklist for Authors & Creators
 
 1. [x] Background music is soft, romantic, and loops seamlessly without clipping.
 2. [x] Sound effects can be toggled on/off instantly via `VITE_SOUND_EFFECTS`.
 3. [x] All heavy particle bursts are canvas-rendered (`canvas-confetti`) rather than DOM elements.
 4. [x] Screen shakes and flashes respect `VITE_REDUCED_MOTION=true` for accessibility.
+5. [x] Audio state is cleanly torn down on unmount to prevent background audio leaks.
+
