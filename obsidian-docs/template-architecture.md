@@ -12,22 +12,32 @@ Repo: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom)
 ## Data Flow
 
 ```text
-.env.local
-  -> import.meta.env
-  -> useBirthdayStore
-  -> dynamic theme and birthday components
-  -> optional FamilyMemberProfile schema
+.env.local / Host Variables (Static Defaults)
+  └─► import.meta.env
+        │
+window.location.search (URL Query Parameters)
+  └─► parseBirthdayUrlParams()
+        │
+        ▼ (URL overrides Env)
+useBirthdayStore (Zustand 5)
+  ├─► useDynamicTheme (Injects HSL/RGB CSS Variables)
+  ├─► useDynamicSEO (Injects OpenGraph, Meta, and JSON-LD SocialEvent)
+  ├─► useTranslation (Multi-language localization: EN, BN, HI, FR)
+  └─► Birthday Components (30 interactive celebration scenes)
 ```
 
 ## Key Files
 
 | File | Why It Exists |
-| --- | --- |
-| `src/features/core/store/useBirthdayStore.ts` | Parses 53 env values & aliases and exposes runtime `BirthdayConfig`. |
-| `src/features/core/models/familyTemplates.ts` | Defines 14 reusable family member templates, registry, and factories. |
-| `src/config/birthday.ts` | Keeps backward-compatible photo/audio env fallbacks. |
+| :--- | :--- |
+| `src/features/core/store/useBirthdayStore.ts` | Central Zustand 5 store parsing 53 env values, aliases, and runtime state. |
+| `src/features/core/store/urlParams.ts` | Universal URL query parameter parser (`?name=...&rel=...&lang=...`). |
+| `src/features/core/seo/useDynamicSEO.ts` | Reactive Schema.org `SocialEvent`, OpenGraph, and title generator. |
+| `src/features/core/models/familyTemplates.ts` | Defines 18 reusable member archetypes, registry, and factory functions. |
+| `src/config/wishTemplates.ts` | 100+ categorized wishes and handwriting cards across all 18 relationships. |
+| `src/config/birthday.ts` | Keeps audio assets configuration and static photo fallbacks. |
 | `src/config/templates.ts` | Cultural emotional letters, quotes, and tone presets. |
-| `src/components/birthday/*` | Renders the 29 active cinematic sections using store config. |
+| `src/components/birthday/*` | Renders the 30 active cinematic sections using store configuration. |
 
 ## Inheritance Model
 
