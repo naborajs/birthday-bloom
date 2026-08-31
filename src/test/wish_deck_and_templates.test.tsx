@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent, act, cleanup } from "@testing-library/react";
 import { WishDeck } from "@/components/birthday/WishDeck";
 import {
     WISH_TEMPLATES,
@@ -64,6 +64,7 @@ describe("WishDeck Component", () => {
     });
 
     afterEach(() => {
+        cleanup();
         useBirthdayStore.setState({
             config: {
                 name: "Alex",
@@ -81,16 +82,22 @@ describe("WishDeck Component", () => {
     });
 
     it("renders the heading and action buttons", () => {
-        render(<WishDeck />);
+        act(() => {
+            render(<WishDeck />);
+        });
         expect(screen.getByText(/Wishes for You/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/Skip this wish/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/Select this wish/i)).toBeInTheDocument();
     });
 
     it("allows selecting a wish and entering confirmation state", () => {
-        render(<WishDeck />);
+        act(() => {
+            render(<WishDeck />);
+        });
         const pickButton = screen.getByLabelText(/Select this wish/i);
-        fireEvent.click(pickButton);
+        act(() => {
+            fireEvent.click(pickButton);
+        });
 
         expect(screen.getByText(/Use This Wish/i)).toBeInTheDocument();
         expect(screen.getByText(/Customize It/i)).toBeInTheDocument();
@@ -98,16 +105,24 @@ describe("WishDeck Component", () => {
     });
 
     it("allows customizing a selected wish", () => {
-        render(<WishDeck />);
-        fireEvent.click(screen.getByLabelText(/Select this wish/i));
+        act(() => {
+            render(<WishDeck />);
+        });
+        act(() => {
+            fireEvent.click(screen.getByLabelText(/Select this wish/i));
+        });
 
         const customizeBtn = screen.getByText(/Customize It/i);
-        fireEvent.click(customizeBtn);
+        act(() => {
+            fireEvent.click(customizeBtn);
+        });
 
         const textarea = screen.getByPlaceholderText(/Write a birthday wish for Aria/i);
         expect(textarea).toBeInTheDocument();
 
-        fireEvent.change(textarea, { target: { value: "You mean the world to me, Aria! ❤️" } });
+        act(() => {
+            fireEvent.change(textarea, { target: { value: "You mean the world to me, Aria! ❤️" } });
+        });
         expect(textarea).toHaveValue("You mean the world to me, Aria! ❤️");
 
         const sendBtn = screen.getByText(/Send to the World/i);
@@ -115,9 +130,13 @@ describe("WishDeck Component", () => {
     });
 
     it("supports skipping through cards", () => {
-        render(<WishDeck />);
+        act(() => {
+            render(<WishDeck />);
+        });
         const skipButton = screen.getByLabelText(/Skip this wish/i);
-        fireEvent.click(skipButton);
+        act(() => {
+            fireEvent.click(skipButton);
+        });
         expect(screen.getByText(/Wishes for You/i)).toBeInTheDocument();
     });
 
@@ -154,15 +173,16 @@ describe("WishDeck Component", () => {
     });
 
     it("executes release flow and transitions to done state", async () => {
-        render(<WishDeck />);
-        fireEvent.click(screen.getByLabelText(/Select this wish/i));
+        act(() => {
+            render(<WishDeck />);
+        });
+        act(() => {
+            fireEvent.click(screen.getByLabelText(/Select this wish/i));
+        });
 
         const useWishBtn = screen.getByText(/Use This Wish/i);
-        fireEvent.click(useWishBtn);
-
-        // Fast forward release timer
         act(() => {
-            // Wait for release animation (2200ms)
+            fireEvent.click(useWishBtn);
         });
     });
 });

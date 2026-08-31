@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+
 Object.defineProperty(window, "matchMedia", {
     writable: true,
     value: (query: string) => ({
@@ -12,3 +13,8 @@ Object.defineProperty(window, "matchMedia", {
         dispatchEvent: () => { },
     }),
 });
+
+window.HTMLMediaElement.prototype.play = () => Promise.resolve();
+window.HTMLMediaElement.prototype.pause = () => { };
+window.HTMLMediaElement.prototype.load = () => { };
+

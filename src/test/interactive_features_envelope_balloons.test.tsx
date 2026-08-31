@@ -16,22 +16,41 @@ vi.mock("@/components/birthday/Confetti", () => ({
 // Mock framer-motion to render elements cleanly in jsdom
 vi.mock("framer-motion", async () => {
     const actual = await vi.importActual("framer-motion");
+    const filterMotionProps = (props: Record<string, unknown>) => {
+        const {
+            initial: _initial,
+            animate: _animate,
+            exit: _exit,
+            transition: _transition,
+            variants: _variants,
+            whileHover: _whileHover,
+            whileTap: _whileTap,
+            whileInView: _whileInView,
+            whileFocus: _whileFocus,
+            whileDrag: _whileDrag,
+            layout: _layout,
+            layoutId: _layoutId,
+            ...domProps
+        } = props;
+        return domProps;
+    };
+
     return {
         ...actual,
         AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
         motion: {
             div: ({ children, className, onClick, style, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-                <div className={className} onClick={onClick} style={style} {...props}>
+                <div className={className} onClick={onClick} style={style} {...filterMotionProps(props as Record<string, unknown>)}>
                     {children}
                 </div>
             ),
-            h1: ({ children, className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => <h1 className={className} {...props}>{children}</h1>,
-            h2: ({ children, className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => <h2 className={className} {...props}>{children}</h2>,
-            h3: ({ children, className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => <h3 className={className} {...props}>{children}</h3>,
-            span: ({ children, className, ...props }: React.HTMLAttributes<HTMLSpanElement>) => <span className={className} {...props}>{children}</span>,
-            p: ({ children, className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => <p className={className} {...props}>{children}</p>,
+            h1: ({ children, className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => <h1 className={className} {...filterMotionProps(props as Record<string, unknown>)}>{children}</h1>,
+            h2: ({ children, className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => <h2 className={className} {...filterMotionProps(props as Record<string, unknown>)}>{children}</h2>,
+            h3: ({ children, className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => <h3 className={className} {...filterMotionProps(props as Record<string, unknown>)}>{children}</h3>,
+            span: ({ children, className, ...props }: React.HTMLAttributes<HTMLSpanElement>) => <span className={className} {...filterMotionProps(props as Record<string, unknown>)}>{children}</span>,
+            p: ({ children, className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => <p className={className} {...filterMotionProps(props as Record<string, unknown>)}>{children}</p>,
             button: ({ children, className, onClick, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
-                <button className={className} onClick={onClick} {...props}>
+                <button className={className} onClick={onClick} {...filterMotionProps(props as Record<string, unknown>)}>
                     {children}
                 </button>
             ),

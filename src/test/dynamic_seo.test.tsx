@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import React from "react";
-import { render, act } from "@testing-library/react";
+import { render, act, cleanup } from "@testing-library/react";
 import { parseBirthdayUrlParams } from "@/features/core/store/urlParams";
 import { useDynamicSEO } from "@/features/core/seo/useDynamicSEO";
 import { useBirthdayStore, type BirthdayConfig } from "@/features/core/store/useBirthdayStore";
@@ -22,6 +22,7 @@ describe("Dynamic SEO, URL Parameters & Viral Sharing Test Suite", () => {
   });
 
   afterEach(() => {
+    cleanup();
     useBirthdayStore.setState({ config: initialConfig });
   });
 
