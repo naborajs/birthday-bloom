@@ -74,25 +74,38 @@ When a relationship is configured (via `VITE_BIRTHDAY_RELATIONSHIP` or `VITE_FAM
 
 ---
 
-## 📋 3. Supported Relationship Types
+## 📋 3. Supported Relationship Types (18 Archetypes)
 
-| Member Type | Category | Direction | Default Closeness | Supported Aliases |
+| Member Type | Category | Direction | Default Closeness | Supported Aliases / URL Params |
 | :--- | :--- | :--- | :---: | :--- |
-| `brother` | `sibling` | `sibling` | 8 | `brother`, `bro` |
-| `sister` | `sibling` | `sibling` | 8 | `sister`, `sis` |
-| `father` | `parent` | `ancestor` | 9 | `father`, `dad`, `papa` |
-| `mother` | `parent` | `ancestor` | 9 | `mother`, `mom`, `mama` |
-| `grandfather` | `grandparent` | `ancestor` | 9 | `grandfather`, `grandpa` |
-| `grandmother` | `grandparent` | `ancestor` | 9 | `grandmother`, `grandma` |
-| `uncle` | `relative` | `extended` | 7 | `uncle` |
-| `aunt` | `relative` | `extended` | 7 | `aunt` |
+| `partner` | `chosen` | `chosen` | 10 | `partner`, `love`, `spouse`, `wife`, `husband`, `boyfriend`, `girlfriend` |
+| `friend` | `friend` | `chosen` | 8 | `friend`, `bestie`, `buddy`, `pal`, `bff` |
+| `family` | `family` | `family` | 8 | `family`, `relative`, `kin` |
+| `brother` | `sibling` | `sibling` | 8 | `brother`, `bro`, `bhai` |
+| `sister` | `sibling` | `sibling` | 8 | `sister`, `sis`, `didi`, `bon` |
+| `father` | `parent` | `ancestor` | 9 | `father`, `dad`, `papa`, `baba` |
+| `mother` | `parent` | `ancestor` | 9 | `mother`, `mom`, `mama`, `maa` |
+| `grandfather` | `grandparent` | `ancestor` | 9 | `grandfather`, `grandpa`, `dadu`, `thakurda` |
+| `grandmother` | `grandparent` | `ancestor` | 9 | `grandmother`, `grandma`, `dida`, `thakuma` |
+| `uncle` | `relative` | `extended` | 7 | `uncle`, `kaka`, `mama`, `chacha` |
+| `aunt` | `relative` | `extended` | 7 | `aunt`, `kaki`, `mami`, `chachi`, `masi` |
 | `cousin` | `relative` | `extended` | 7 | `cousin` |
-| `son` | `child` | `descendant` | 10 | `son` |
-| `daughter` | `child` | `descendant` | 10 | `daughter` |
-| `guardian` | `guardian` | `ancestor` | 8 | `guardian`, `mentor` |
-| `friend` | `friend` | `chosen` | 8 | `friend`, `bestie`, `buddy` |
-| `partner` | `chosen` | `chosen` | 10 | `partner`, `love`, `spouse` |
-| `custom` | `custom` | `custom` | 7 | Any custom relationship label |
+| `son` | `child` | `descendant` | 10 | `son`, `chele`, `beta` |
+| `daughter` | `child` | `descendant` | 10 | `daughter`, `meye`, `beti` |
+| `guardian` | `guardian` | `ancestor` | 8 | `guardian`, `protector` |
+| `colleague` | `colleague` | `chosen` | 7 | `colleague`, `coworker`, `teammate` |
+| `mentor` | `guardian` | `ancestor` | 8 | `mentor`, `teacher`, `guide`, `coach` |
+| `custom` | `custom` | `custom` | 7 | Any arbitrary relationship string |
+
+---
+
+## 4. URL Parameter Resolution Hierarchy
+
+When a user visits via a share URL (e.g. `?name=Sam&rel=mentor&lang=fr`), the template engine resolves properties with strict precedence:
+
+$$\text{URL Query Parameters} \succ \text{Environment Variables (.env.local)} \succ \text{Built-in Archetype Defaults}$$
+
+This guarantees zero-code customization without needing code rebuilds or redeployment.
 
 ---
 
