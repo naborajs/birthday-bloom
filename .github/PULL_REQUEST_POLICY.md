@@ -9,6 +9,13 @@ This document defines the strict quality gates, review processes, and configurat
 To maintain a professional-grade codebase and prevent accidental or unauthorized code changes:
 - **No Automatic Merging**: Under no circumstances should pull requests be automatically merged by bots.
 - **Maintainer Approval**: Every pull request requires explicit review and approval from a designated repository owner or administrator.
+- **Pre-Submission Verification**: Every PR author must verify clean local runs of:
+  ```bash
+  npm run verify
+  ```
+  *(Runs `tsc --noEmit`, `eslint`, `vitest run`, and `vite build`)*
+- **Dependabot Group Merging**: Dependabot PRs are batched by update group (`minor-and-patch`, `github-actions`, etc.) and require maintainer review and clean test execution before merging.
+- **Semver-Major Protection**: Major version upgrades (e.g. `@eslint/*`, `tailwindcss@4`, `typescript@6`) must be planned, tested in branch isolation, and reviewed against breaking change matrices.
 - **Codeowner Review**: Any changes affecting core directories (like `.github/` or `src/`) must be reviewed and approved by the owner specified in the `.github/CODEOWNERS` file.
 - **CI Status Checks**: All automated quality checks, linting, type compilation, and unit tests must pass successfully before a pull request becomes eligible for merge.
 
