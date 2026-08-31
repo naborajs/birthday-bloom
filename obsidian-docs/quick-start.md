@@ -11,30 +11,29 @@ Get Birthday Bloom running locally in 5 minutes with zero code changes required.
 
 ---
 
-## Prerequisites
+## ⚡ 0-Second Instant Test (No Installation Required)
 
-- Node.js 18+ ([.nvmrc](../.nvmrc): 20)
-- npm 9+
-- Git (latest)
-
-Verify your environment:
-
-```bash
-node -v
-npm -v
-git --version
-```
+Don't have Node.js installed? Open the live surprise generator directly in your browser:
+👉 [https://birthday-bloom.vercel.app/?name=Sarah&rel=partner&lang=en&color=%23FF1493&sender=Alex](https://birthday-bloom.vercel.app/?name=Sarah&rel=partner&lang=en&color=%23FF1493&sender=Alex)
 
 ---
 
-## Setup
+## Prerequisites
+
+- Node.js 18+ ([.nvmrc](../.nvmrc): 20)
+- npm 9+, pnpm 8+, yarn, or bun
+- Git (latest)
+
+---
+
+## 5-Minute Local Setup
 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/naborajs/birthday-bloom.git
 cd birthday-bloom
 
-# 2. Install dependencies
+# 2. Install dependencies (npm, pnpm, yarn, or bun)
 npm install
 
 # 3. Copy the env template
@@ -44,7 +43,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-The app will be available at `http://localhost:5173` (or `http://localhost:5000`).
+The app will be live at `http://localhost:5000` (or `http://localhost:5173`).
 
 **PowerShell users**:
 ```powershell
