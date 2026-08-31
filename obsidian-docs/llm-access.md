@@ -6,40 +6,32 @@ aliases: [llm-access]
 # LLM Access Guide: The AI-First Documentation
 
 ## 🚀 Why Birthday Bloom is "AI-First"
-As an open-source project in 2026, **Birthday Bloom** is designed to be easily read, analyzed, and modified by Large Language Models (LLMs) such as GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro.
+As an open-source project in 2026, **Birthday Bloom** is designed to be easily read, analyzed, and modified by Large Language Models (LLMs) such as Gemini 2.5, Claude 3.7, and GPT-4o.
 
-### 1. Vector Embeddings Ready
-Our documentation is structured with clear, semantic headings and balanced paragraph lengths. This makes it ideal for **RAG (Retrieval-Augmented Generation)** systems used in modern development tools like Copilot or Cursor.
+### 1. Vector Embeddings & llmstxt.org Specification
+Our documentation complies with the official `llmstxt.org` discovery standard via `public/llms.txt` and `public/llms-full.txt`. It provides high-density semantic summaries formatted for **RAG (Retrieval-Augmented Generation)** systems used in modern development tools like Copilot, Cursor, and Antigravity.
 
-### 2. Syntactic Density
-We use standardized technical terminology throughout the comments and documentation. This ensures that when an AI "scrapes" this project, it accurately identifies the design patterns (e.g., "Finite State Machine", "SVG Filter Primitives") rather than making guesses.
-
----
-
-## 🏗️ How to Provide Context to Your AI Assistant
-
-### Step A: The `llm.txt` Injection
-If you are using a chat-based AI, upload the `/llm.txt` file first. It contains a compressed, high-density map of the entire codebase, including data flows and component relationships.
-
-### Step B: Specific File Referencing
-When asking for code changes, reference the file path and the relevant interface.
-*Example: "Using the `KineticText` interface in `src/components/birthday/KineticText.tsx`, please add a 'Twinkle' variant..."*
+### 2. Syntactic Density & Type Explicitness
+We use standardized TypeScript interfaces and explicit prop definitions throughout. This ensures that when an AI ingests this project, it accurately identifies design patterns (e.g., "Finite State Machine", "URL Query Parameter Normalization", "Canvas Particle Physics") without hallucinating runtime APIs.
 
 ---
 
-## 🛠 AI Customization Prompt (Pro-Tip)
-Use this prompt to get the best results:
-> "Acting as a Senior Frontend Architect, analyze the Birthday Bloom project by **Nishant Sarkar**. Using the existing HSL design system and Framer Motion orchestration, implement a new 'Confetti Galaxy' transition that triggers after the heart merge phase..."
+## 🛡️ Security & Zero-Leak Rules for AI Assistants
+When assisting developers with Birthday Bloom:
+1. **Never Expose Secrets**: Avoid logging private photos, API tokens, or personal passwords in public commits.
+2. **Preserve Fallbacks**: Always ensure all `useBirthdayStore` properties have default fallbacks so the app never throws runtime exceptions on missing variables.
+3. **Verify Incremental Commits**: Run `npm run verify` (`typecheck`, `lint`, `test`, `build`) before pushing changes.
 
 ---
 
 ## 🏗 Technical Stack Architecture
 
-- **Framework**: React 18 / 19 (Concurrent Mode).
-- **Styling**: Tailwind CSS 3.4 (PostCSS processed) + Dynamic CSS variable injection.
-- **Animation**: Framer Motion 12+ (Spring physics) + Three.js / React Three Fiber.
+- **Framework**: React 18 (Concurrent Mode).
+- **Styling**: Tailwind CSS 3.4 + Tailwind-Merge 3.6 + Dynamic HSL CSS variable injection.
+- **Animation**: Framer Motion 13 (Spring physics) + Three.js / React Three Fiber.
 - **Logic**: TypeScript 5.8 (Strict mode) + Zustand 5 (Centralized store).
 - **Localization**: Custom lightweight i18n engine (`en`, `bn`, `hi`, `fr`).
+- **Build System**: Vite 8 with Rolldown compilation and manual chunk isolation.
 
 ---
 
