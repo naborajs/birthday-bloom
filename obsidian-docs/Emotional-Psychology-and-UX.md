@@ -6,22 +6,22 @@
 
 ---
 
-## 1. The Neurochemistry of Celebration
+### 1. The Neurochemistry of Celebration
 
 A person's birthday comes only **once a year**. It is a unique psychological window where an individual is acutely aware of the passage of time, their identity, and how much they are valued by those around them. 
 
-To create an unforgettable, tear-jerking digital experience, the web application leverages four fundamental neurochemical drivers:
+To create an unforgettable, tear-jerking digital experience, the web application leverages five fundamental neurochemical and cognitive drivers:
 
 ```
-                  ┌─────────────────────────────────────┐
-                  │       THE CELEBRATION QUADRAD       │
-                  └─────────────────────────────────────┘
-                                     │
-         ┌───────────────┬───────────┴───────────┬───────────────┐
-         ▼               ▼                       ▼               ▼
-   [ DOPAMINE ]    [ OXYTOCIN ]            [ SEROTONIN ]   [ ENDORPHINS ]
-   Anticipation &   Vulnerability, Warmth  Personal Value,   Celebratory Joy,
-   Curiosity Tease  & Shared Memories      Acknowledgment    Playful Euphoria
+                  ┌─────────────────────────────────────────────────────┐
+                  │               THE CELEBRATION PENTAD                │
+                  └─────────────────────────────────────────────────────┘
+                                             │
+      ┌───────────────┬──────────────────────┼──────────────────────┬───────────────┐
+      ▼               ▼                      ▼                      ▼               ▼
+[ DOPAMINE ]    [ OXYTOCIN ]           [ SEROTONIN ]          [ ENDORPHINS ]  [ NOSTALGIA ]
+Anticipation &   Vulnerability, Warmth  Personal Value,        Celebratory Joy, Hippocampal
+Curiosity Tease  & Shared Memories     Acknowledgment         Playful Euphoria Memory Anchoring
 ```
 
 ### 1.1 Dopamine (Anticipation & Narrative Suspense)
@@ -30,12 +30,13 @@ To create an unforgettable, tear-jerking digital experience, the web application
   - *The Splash Screen*: Instead of immediately dumping confetti and names, the site opens with a mysterious, ambient frosted card: *"A special surprise awaits... Tap to begin"*.
   - *The Storytelling Tease*: Sentences appear one-by-one, slowly building intrigue (*"There's someone who has been the center of my world..."*).
   - *The Fake Chat*: A playful, interactive texting simulator creating realistic conversational suspense (*"Are you ready for your surprise?"*).
+  - *Micro-Interaction Rhythm*: Taps trigger immediate responsive feedback (25ms haptic / 120ms spring bounce) maintaining engagement momentum.
 
 ### 1.2 Oxytocin (Intimacy & Emotional Vulnerability)
 - **The Psychology**: Oxytocin builds trust and profound emotional connection when someone feels deeply understood and genuinely seen.
 - **Implementation in Birthday Bloom**:
   - *Specific Narrative Details*: Highlighting unique personal qualities rather than generic happy birthday wishes (*"The woman whose grace and beauty light up every room she enters..."*).
-  - *Multi-Font Highlighting*: Words of deep devotion (*"center of my world"*, *"safe haven"*, *"I love you infinitely"*) bloom in glowing cursive calligraphy, mimicking handwritten love letters.
+  - *Multi-Font Highlighting*: Words of deep devotion (*"center of my world"*, *"safe harbor"*, *"I love you infinitely"*) bloom in glowing cursive calligraphy, mimicking handwritten love letters.
 
 ### 1.3 Serotonin (Significance & Being Cherished)
 - **The Psychology**: Serotonin regulates mood and feelings of pride and status. Making someone feel like the most important person on Earth for a day spikes serotonin.
@@ -48,6 +49,12 @@ To create an unforgettable, tear-jerking digital experience, the web application
 - **Implementation in Birthday Bloom**:
   - *Interactive Cake Cutting*: Satisfying interactive knife physics, candle blowouts, and explosive confetti bursts.
   - *Sound Design*: Harmonic chord progressions, whooshes, chime cascades, and typewriter audio sync.
+
+### 1.5 Nostalgia & Memory Anchoring (Hippocampal Activation)
+- **The Psychology**: Pairing nostalgic media (Polaroid galleries, shared songs, childhood nicknames) with joyful sensory stimuli consolidates autobiographical memory.
+- **Implementation in Birthday Bloom**:
+  - *Polaroid Photo Gallery*: Nostalgic 3D card tilt with heartfelt handwritten captions.
+  - *The Wish Deck*: Categorized emotional cards allowing visitors to release personalized wishes into the digital sky.
 
 ---
 
