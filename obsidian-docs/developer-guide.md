@@ -55,6 +55,9 @@ This guide explains how Birthday Bloom is wired so new contributors and open-sou
 | `MainBirthday` | `MainBirthday.tsx` | Main celebration stage: hero header, interest icons, emotional letter card, wishes grid, and interactive triggers. | Phase = "main" |
 | `PhotoGallery` | `PhotoGallery.tsx` | 3D-tilt photo cards, auto-advance, lightbox with `AnimatePresence`. Localized placeholder if no photos. | `VITE_SHOW_PHOTO_SECTION` |
 | `VideoGallery` | `VideoGallery.tsx` | Renders YouTube and MP4 videos. Returns null if no videos configured. | `VITE_SHOW_VIDEO_SECTION` |
+| `WishDeck` | `WishDeck.tsx` | Swipeable physical greeting card deck with handwriting animation, customized text, and balloon release. | Interactive Activity |
+| `EnvelopeLetterScene` | `EnvelopeLetterScene.tsx` | Realistic wax seal envelope with filigree border and interactive parchment letter reveal. | Interactive Activity |
+| `BalloonPopGame` | `BalloonPopGame.tsx` | Gamified balloon popping activity revealing celebratory words with multi-touch audio feedback. | Interactive Activity |
 | `CakeCutting` | `CakeCutting.tsx` | 9-phase state machine: select cake -> blow candles -> wish -> cut -> burst -> quotes. SVG/3D composite. | `VITE_SHOW_CAKE_SECTION` |
 | `Cake3D` | `Cake3D.tsx` | Three.js / React Three Fiber procedural 3D WebGL cake model with dynamic slice physics. | Rendered inside `CakeCutting` |
 | `CakeVisuals` | `CakeVisuals.tsx` | 2D Framer Motion celebration particle overlays (`CutSparks` and `MagicDust`). | Rendered inside `CakeCutting` |
