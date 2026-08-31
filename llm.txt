@@ -71,6 +71,9 @@ birthday-bloom/
     │   │   ├── Cake3D.tsx             # Three.js / R3F procedural 3D cake model
     │   │   ├── CakeVisuals.tsx        # 2D celebration particle overlays (CutSparks and MagicDust)
     │   │   ├── CakeKnife.tsx          # Interactive slicing knife gesture tracker
+    │   │   ├── WishDeck.tsx           # Physical swipeable wish card deck & balloon release
+    │   │   ├── EnvelopeLetterScene.tsx # Wax seal unlock & animated letter unfolding
+    │   │   ├── BalloonPopGame.tsx     # Gamified popping game with celebratory words
     │   │   ├── BirthdayQuiz.tsx       # Interactive trivia quiz with score counters
     │   │   ├── HeartTree.tsx          # SVG physics balloon merges & grand finale tree
     │   │   ├── PhotoGallery.tsx       # Polaroid slider gallery grid
