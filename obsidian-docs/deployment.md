@@ -24,6 +24,18 @@ aliases: [deployment]
 
 Vercel is the native home for Vite-based projects and offers the easiest environment variable management.
 
+### Instant Zero-Hosting Option (URL Parameters)
+
+If you don't want to deploy your own instance, you can use the live public instance at [https://birthday-bloom.vercel.app](https://birthday-bloom.vercel.app) with URL parameters:
+
+```
+https://birthday-bloom.vercel.app/?name=Aria&rel=partner&lang=en&color=%23FF2A6D&sender=Leo
+```
+
+The app parses all configuration dynamically in the client browser with zero server latency.
+
+---
+
 ### Step-by-Step Vercel Setup
 
 1. **Push to GitHub** (public or private repository)
@@ -33,16 +45,26 @@ Vercel is the native home for Vite-based projects and offers the easiest environ
    - Output directory: `dist`
    - Node.js version: 18+ (see `.nvmrc`)
 4. **Environment Variables**: Go to Project Settings → Environment Variables and add every `VITE_*` key from your `.env.local`
-5. **Deploy**: Click deploy. Your site will be live in ~2 minutes
+5. **Deploy**: Click deploy. Your site will be live in ~1 minute
 6. **Update after changes**: Change env values in the dashboard, then trigger a fresh deploy
 
-### Vercel Tips
+### Asset Caching & Performance (`vercel.json`)
 
-- The free tier is sufficient for personal birthday surprises
-- Vercel automatically provides HTTPS and a CDN
-- Use the generated `*.vercel.app` URL or add a custom domain
-- For private surprises, keep the repo private and the URL unlisted
-- If you see a 404 after refresh, go to project settings and confirm Build Command is `npm run build` and Output Directory is `dist`
+```json
+{
+  "headers": [
+    {
+      "source": "/(.*)\\.(js|css|png|jpg|webp|svg|woff2)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}
+```
 
 ### Vercel CLI
 
