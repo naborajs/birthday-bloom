@@ -1,19 +1,20 @@
-# Complete Env Customization Guide — Birthday Bloom v3.1
+# Complete Env Customization Guide — Birthday Bloom v3.3
 
-Birthday Bloom is **env-first**. Names, relationship types, messages, colors, photos, captions, videos, audio, visible sections, animation behavior, accessibility, and family-template metadata are all controlled through environment variables without editing React source files.
+Birthday Bloom is **env-first and URL-first**. Names, relationship types, messages, colors, photos, captions, videos, audio, visible sections, animation behavior, accessibility, and family-template metadata are all controlled through environment variables or instant URL query parameters without editing React source files.
 
 **Important**: "Env" means environment variables. Locally, these live in `.env.local` or `.env`. On hosting platforms, they live in your provider's Environment Variables dashboard (Vercel, Netlify, AWS Amplify, Docker, etc.).
 
 ---
 
-## How Env Works
+## How Configuration & URL Resolution Works
 
-Vite exposes client-accessible variables prefixed with `VITE_`. The app parses and normalizes them in `src/features/core/store/useBirthdayStore.ts` and `src/config/birthday.ts` at module load time.
+Vite exposes client-accessible variables prefixed with `VITE_`. Dynamic URL query parameters evaluated in `src/features/core/store/urlParams.ts` can override static build environment variables in real time.
 
-**Priority Order**:
-1. Host environment variables (production hosting dashboard)
-2. `.env.local` / `.env` values (local development)
-3. Built-in static fallbacks in `src/features/core/store/useBirthdayStore.ts` and `src/config/birthday.ts`
+**Precedence Hierarchy**:
+1. **URL Query Parameters** (e.g. `?name=Aria&rel=partner&color=%23FF1493`)
+2. **Host Environment Variables** (production hosting dashboard: Vercel, Netlify)
+3. **Local `.env.local` / `.env` values** (local development server)
+4. **Built-in Static Fallbacks** in `useBirthdayStore.ts` and `src/config/birthday.ts`
 
 After editing `.env.local`, **restart the dev server**:
 ```bash
