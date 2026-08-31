@@ -95,6 +95,17 @@ accessibility improvements, and feature ideas are all welcome.
 Yes! Open a feature request, improve docs, report bugs, or share your experience.
 All contributions are valued.
 
+### Can I create a surprise without deploying or installing anything?
+Yes! Birthday Bloom supports instant client-side customization via **URL Query Parameters**. Visit [https://birthday-bloom.vercel.app](https://birthday-bloom.vercel.app) with parameters:
+`https://birthday-bloom.vercel.app/?name=Sarah&rel=partner&lang=en&color=%23FF1493&sender=Alex`
+All personalized cards, letters, and theme colors are generated in real-time.
+
+### Why doesn't background music play immediately when the site loads?
+Modern mobile and desktop browsers (iOS Safari, Chrome) block automatic audio playback until the user physically interacts with the page. The initial **Splash Screen** provides a tactile "Tap to Start" button that unlocks the Web Audio `AudioContext`.
+
+### How do I bypass or disable the passcode gatekeeper?
+Set `VITE_PASSWORD_REQUIRED=false` in `.env.local` or omit `&code=` in URL query parameters. The application will transition directly from the splash screen into the cinematic intro.
+
 ### Can I use this commercially?
 Yes, the MIT License permits commercial use. Attribution is appreciated but not required.
 
