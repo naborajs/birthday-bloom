@@ -51,6 +51,9 @@ updates:
           - "patch"
     ignore:
       - dependency-name: "@types/*"
+      - dependency-name: "@eslint/*"
+        update-types:
+          - "version-update:semver-major"
 
   - package-ecosystem: "github-actions"
     directory: "/"
