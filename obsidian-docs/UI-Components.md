@@ -1,23 +1,24 @@
 ---
-tags: [ui, components, shadcn, radix, tailwind, design-system]
-aliases: [UI Components, Shadcn Components]
+tags: [ui, components, shadcn, radix, tailwind, design-system, glassmorphism]
+aliases: [UI Components, Shadcn Components, Design System]
 ---
 
-# UI Components Engine
+# UI Components & Design System Architecture
+
 [[DOCUMENTATION_INDEX|Back to Home]]
 
 The Birthday Bloom codebase employs a streamlined, tree-shaken Design System built with **Tailwind CSS**, **Lucide Icons**, and **Radix UI Primitives**. 
 
-To maximize runtime performance and minimize bundle overhead, the active generic UI primitives in `src/components/ui/` are focused on essential interaction layers:
+To maximize runtime performance and minimize bundle overhead, the UI layer is structured into lightweight primitives and glassmorphism styling utilities:
 
 ---
 
-## 1. Active UI Components (`src/components/ui/`)
+## 1. Active UI Primitives (`src/components/ui/`)
 
 ### A. `sonner.tsx` — Toast Notification System
-* **Implementation:** Wrapper around the `sonner` toast library integrated with theme tokens.
-* **Usage:** Provides non-blocking notifications, feedback triggers, and status messages during celebration playback and user interactions.
-* **Theme Sync:** Automatically inherits theme colors and styling rules defined in `tailwind.config.ts`.
+* **Implementation:** Theme-integrated wrapper around the `sonner` toast library.
+* **Usage:** Provides non-blocking notifications, link copied toasts, and feedback triggers during celebration playback and user interactions.
+* **Theme Sync:** Automatically inherits dynamic HSL theme colors injected via `useDynamicTheme.ts`.
 
 ### B. `tooltip.tsx` — Accessible Tooltips
 * **Implementation:** Accessible tooltip primitive powered by `@radix-ui/react-tooltip`.
@@ -26,29 +27,44 @@ To maximize runtime performance and minimize bundle overhead, the active generic
 
 ---
 
-## 2. Birthday Celebration Components (`src/components/birthday/`)
+## 2. Utility Class Merging (`src/lib/utils.ts`)
 
-The primary cinematic experiences and interactive features are located in `src/components/birthday/`:
+Class name concatenation is managed via the standard `cn()` helper:
 
-- **`CinematicIntro.tsx`**: Typewriter text sequencing, story pacing, and unlock logic.
-- **`CakeCutting.tsx`**: 3D/SVG cake with candle blowout detection, wishes, and interactive cutting physics.
-- **`HeartTree.tsx`**: Procedural physics blossoming finale tree.
-- **`PhotoGallery.tsx`**: Polaroid-style 3D tilt photo grid with caption reveal and lightbox support.
-- **`MainBirthday.tsx`**: Central orchestration view coordinating ambient fireworks, audio playback, countdowns, and footer.
-- **`Balloons.tsx`**: Dynamic floating balloons with pop interactions and physics drift.
-- **`Confetti.tsx`**: High-performance canvas confetti engine.
-- **`PasswordUnlock.tsx`**: Gatekeeper passcode challenge for personalized surprise unlocks.
+```typescript
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+```
+
+This ensures conflict-free class overrides with **Tailwind-Merge 3.6** without bloated specificity hacks.
 
 ---
 
-## 3. Extending the UI Design System
+## 3. Glassmorphism Design Tokens
 
-Birthday Bloom is fully compatible with additional **Shadcn UI** and **Radix UI** primitives if you wish to expand functionality (such as adding custom dialogs, accordions, or drawer menus).
+To achieve modern iOS-grade frosted aesthetics across dark celebration backgrounds, the design system utilizes dedicated CSS classes:
+
+| Class Token | Visual Effect | CSS Composition |
+| :--- | :--- | :--- |
+| `.glass-panel` | Full frosted backdrop | `bg-black/60 backdrop-blur-2xl border border-white/10 shadow-2xl` |
+| `.glass-card` | Interactive card tile | `bg-white/5 backdrop-blur-xl border border-white/15 hover:bg-white/10 transition-all` |
+| `.glass-pill` | Floating badge / tag | `bg-white/10 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20` |
+
+---
+
+## 4. Extending the UI Design System
+
+Birthday Bloom is fully compatible with additional **Shadcn UI** and **Radix UI** primitives if you wish to expand functionality.
 
 To add new primitives to `src/components/ui/`:
-1. Use standard Radix UI primitives already installed in `package.json` (such as `@radix-ui/react-dialog`, `@radix-ui/react-popover`, `@radix-ui/react-accordion`).
+1. Use lightweight composable Radix primitives.
 2. Compose with Tailwind CSS utility classes and `cn()` helper from `@/lib/utils`.
 3. Follow the PascalCase component convention established in the project.
 
 ---
-#obsidian #documentation #birthday-bloom #vault #ui #components
+#obsidian #documentation #birthday-bloom #vault #ui #components #glassmorphism
+
