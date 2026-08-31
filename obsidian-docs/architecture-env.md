@@ -9,9 +9,9 @@ aliases: [Env Architecture, Store Flow, Configuration Lifecycle]
 
 Birthday Bloom is built around an **Environment-First Reactive Architecture**. The entire application — including theme colors, relationship tones, interactive scenes, and multi-language localization (English, French, Hindi, Bengali) — can be completely personalized without touching React components or JSX.
 
----
+-## 🏗 1. The Configuration Lifecycle & Dual-Hydration Flow
 
-## 🏗 1. The Configuration Lifecycle
+Birthday Bloom supports dual-channel runtime hydration: static environment variables compiled into the bundle, and real-time dynamic URL query parameters evaluated on browser load.
 
 ```
                        ┌───────────────────────────────┐
@@ -22,38 +22,46 @@ Birthday Bloom is built around an **Environment-First Reactive Architecture**. T
                                        ▼
                        ┌───────────────────────────────┐
                        │       import.meta.env         │
-                       │      (Browser-exposed)        │
+                       │      (Static Defaults)        │
                        └───────┬───────────────┬───────┘
                                │               │
-            ┌──────────────────┘               └──────────────────┐
-            ▼                                                     ▼
-┌───────────────────────────────┐             ┌───────────────────────────────────┐
-│     src/config/birthday.ts    │             │ src/features/core/store/          │
-│ - PHOTO_ASSETS (photo1..3)    │             │   useBirthdayStore.ts             │
-│ - AUDIO_ASSETS (bgmUrl, sfx)  │             │ - Type coercion & alias fallback  │
-└───────────────┬───────────────┘             │ - Language norm (en/fr/hi/bn)     │
-                │                             │ - Family template profile merge   │
-                │                             │ - Mood & pacing resolution        │
-                │                             └─────────────────┬─────────────────┘
-                │                                               │
-                │         ┌─────────────────────────────────────┤
-                ▼         ▼                                     ▼
-     ┌───────────────────────────────┐             ┌───────────────────────────────┐
-     │  src/features/core/theme/     │             │     src/i18n/ Translation     │
-     │      useDynamicTheme.ts       │             │   - getTranslation(lang)      │
-     │ - Generates HSL/RGB palettes  │             │   - getTranslationValue()     │
-     │ - Injects tokens into :root   │             │   - English fallback lookup   │
-     └───────────────┬───────────────┘             └────────────┬──────────────────┘
-                     │                                          │
-                     └────────────────────┬─────────────────────┘
-                                          ▼
-                             ┌───────────────────────────────┐
-                             │       React Scenes & UI       │
-                             │ - SplashScreen / Intro        │
-                             │ - CakeCutting (3D & physics)  │
-                             │ - PhotoGallery & VideoGallery │
-                             │ - HeartTree finale            │
-                             └───────────────────────────────┘
+                               │               │  ┌───────────────────────────────┐
+                               │               │  │    window.location.search     │
+                               │               │  │    (URL Query Parameters)     │
+                               │               │  └───────────────┬───────────────┘
+                               │               │                  │
+                               │               │                  ▼
+                               │               │  ┌───────────────────────────────┐
+                               │               │  │    src/features/core/store/   │
+                               │               │  │         urlParams.ts          │
+                               │               │  └───────────────┬───────────────┘
+                               │               │                  │ (Overrides)
+                               ▼               ▼                  ▼
+                       ┌──────────────────────────────────────────────────┐
+                       │      src/features/core/store/useBirthdayStore.ts │
+                       │ - Merges URL params over env static defaults     │
+                       │ - Language normalization (en / fr / hi / bn)     │
+                       │ - Family template profile merge & mood resolution│
+                       └───────────────────────┬──────────────────────────┘
+                                               │
+                               ┌───────────────┴───────────────┐
+                               ▼                               ▼
+               ┌───────────────────────────────┐ ┌───────────────────────────────┐
+               │   src/features/core/theme/    │ │     src/i18n/ Translation     │
+               │      useDynamicTheme.ts       │ │   - getTranslation(lang)      │
+               │ - Generates HSL/RGB palettes  │ │   - Fallback lookup & regex   │
+               │ - Injects tokens into :root   │ │   - Live locale reactivity    │
+               └───────────────┬───────────────┘ └───────────────┬───────────────┘
+                               │                                 │
+                               └────────────────┬────────────────┘
+                                                ▼
+                               ┌───────────────────────────────┐
+                               │       React Scenes & UI       │
+                               │ - SplashScreen / Intro        │
+                               │ - CakeCutting (3D & physics)  │
+                               │ - PhotoGallery & WishDeck     │
+                               │ - HeartTree finale            │
+                               └───────────────────────────────┘
 ```
 
 ---
