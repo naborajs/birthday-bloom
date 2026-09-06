@@ -16,6 +16,12 @@ Get Birthday Bloom running locally in 5 minutes with zero code changes required.
 Don't have Node.js installed? Open the live surprise generator directly in your browser:
 👉 [https://birthday-bloom.vercel.app/?name=Sarah&rel=partner&lang=en&color=%23FF1493&sender=Alex](https://birthday-bloom.vercel.app/?name=Sarah&rel=partner&lang=en&color=%23FF1493&sender=Alex)
 
+<p align="center">
+  <img src="../docs/screenshots/04-hero-celebration.png" alt="Birthday Bloom Live Experience" width="100%">
+</p>
+
+![Birthday Bloom Celebration Architecture](../docs/diagrams/01-celebration-architecture.jpg)
+
 ---
 
 ## Prerequisites
