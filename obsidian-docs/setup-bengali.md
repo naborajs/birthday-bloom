@@ -30,7 +30,13 @@ The reactive Zustand store and i18n dispatcher automatically normalize the follo
 ### ⚡ Instant URL Testing (Zero Setup)
 
 Test the Bengali celebration experience immediately in your browser:
-👉 [https://birthday-bloom.vercel.app/?name=অনিন্দিতা&rel=partner&lang=bn&color=%23FF2A6D&sender=নবরায়](https://birthday-bloom.vercel.app/?name=অনিন্দিতা&rel=partner&lang=bn&color=%23FF2A6D&sender=নবরায়)
+👉 [https://birthday-bloom.vercel.app/?phase=main&lang=bn&name=%E0%A6%B8%E0%A7%8C%E0%A6%B0%E0%A6%AD&age=25&rel=friend](https://birthday-bloom.vercel.app/?phase=main&lang=bn&name=%E0%A6%B8%E0%A7%8C%E0%A6%B0%E0%A6%AD&age=25&rel=friend)
+
+<p align="center">
+  <img src="../docs/screenshots/18-bengali-preset.png" alt="Bengali Celebration Preset Showcase" width="100%">
+</p>
+
+![Multilingual & Cultural Personalization Matrix](../docs/diagrams/02-multilingual-matrix.jpg)
 
 ---
 
