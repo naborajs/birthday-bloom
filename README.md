@@ -278,8 +278,8 @@ If you prefer a visual guide, click the thumbnail below to watch the complete st
 
 * [🚀 Deployment Guide](#-deployment-guide)
 1. [Key Features & Interactive Elements](#-key-features--interactive-elements)
-2. [Animation & Pacing Principles](#-animation--pacing-principles)
-3. [System Architecture](#-system-architecture)
+2. [📸 Visual Showcase & System Architecture](#-visual-showcase--system-architecture)
+3. [Animation & Pacing Principles](#-animation--pacing-principles)
 4. [Mastering the Lifecycle](#-mastering-the-lifecycle)
 5. [In-Depth Code Explanation](#-in-depth-code-explanation)
     1. [The Cinematic Intro](#1-cinematic-intro-cinematicintrotsx)
@@ -301,38 +301,121 @@ If you prefer a visual guide, click the thumbnail below to watch the complete st
 
 ---
 
-## 🎥 Animation & Pacing Principles
+## 📸 Visual Showcase & System Architecture
 
-The transitions and visual layers in Birthday Bloom are timed around natural reading speeds and sequence progression rather than immediate information layout.
+### 🏛️ Five-Phase Celebration Architecture
+Birthday Bloom orchestrates an end-to-end emotional narrative through a five-phase state machine:
 
-### 1. Focal Depth Simulation
-We simulate a camera lens depth shift using CSS `perspective` and Framer Motion's `rotateX/Y` tilt properties. This creates a clear hierarchy where active interactive elements (like the Cake or Polaroid frames) stand out visually from the floating ambient particles.
+<p align="center">
+  <img src="docs/diagrams/01-celebration-architecture.jpg" alt="Birthday Bloom Celebration Architecture" width="100%">
+</p>
 
-### 2. Chronological Pacing
-- **Interactive Elements**: 150ms transitions (such as button hover glows and button scales).
-- **Scene Transitions**: 800ms - 1.2s fades to separate typing screens, chat bubbles, and the final dashboard view cleanly.
-- **Text Staggering**: 4s delay per storyline line to ensure comfortable reading pacing.
+1. **Splash Gate**: Initial tap-to-begin gesture priming audio playback and haptic feedback.
+2. **Security Gate**: Secret birthday passcode verification with dynamic hint generation.
+3. **Cinematic Intro**: Storytelling kinetic typography, simulated chat messages, and wax-sealed parchment letter reveal.
+4. **Interactive Main Stage**: 3D Three.js WebGL cake cutting, candle blow interaction, balloon pop game, polaroid memories, trivia quiz, Tinder-style wishes deck, and mystery gift box.
+5. **Viral Sharing Hub**: Instant URL generation with query parameters and native multi-platform social sharing modal.
 
-### 3. Backdrop Filters and Vignettes
-A subtle background vignette gradient and a light noise overlay help blend the components together, providing a cohesive layout aesthetic.
+---
+
+### 🌟 Celebration Progression & Scenes
+
+| 1. Splash Screen Gate | 2. Secret Passcode Unlock |
+| :---: | :---: |
+| <img src="docs/screenshots/01-splash-screen.png" alt="Splash Screen Gate" width="100%"> | <img src="docs/screenshots/02-password-unlock.png" alt="Secret Passcode Gate" width="100%"> |
+| *Atmospheric welcome glass card priming audio playback.* | *Passcode entry with dynamic hint based on birthdate format.* |
+
+| 3. Cinematic Storyteller | 4. Grand Celebration Hero Stage |
+| :---: | :---: |
+| <img src="docs/screenshots/03-cinematic-intro.png" alt="Cinematic Intro Storyline" width="100%"> | <img src="docs/screenshots/04-hero-celebration.png" alt="Grand Celebration Hero Stage" width="100%"> |
+| *Heartfelt kinetic text with pulsing aura and particle rain.* | *Multi-color typography, 3D rotating cake, and dynamic confetti.* |
+
+---
+
+### 🎮 Interactive Celebration Modules
+
+| 3D Cake Flavor Selector | Real-Time 3D Candle Blow & Slice |
+| :---: | :---: |
+| <img src="docs/screenshots/07-cake-cutting.png" alt="Cake Flavor Selector" width="100%"> | <img src="docs/screenshots/08-cake-cutting-sliced.png" alt="3D Cake with Glowing Candle" width="100%"> |
+| *4 luxury cake flavors with procedural shaders & pedestals.* | *Interactive candle blowout detection with slice physics.* |
+
+| Balloon Pop Mini-Game | Wax-Sealed Parchment Love Letter |
+| :---: | :---: |
+| <img src="docs/screenshots/06-balloon-pop-game.png" alt="Balloon Pop Mini-Game" width="100%"> | <img src="docs/screenshots/10-envelope-letter-opened.png" alt="Opened Parchment Love Letter" width="100%"> |
+| *Floating balloons with pop physics and hidden message.* | *Interactive wax seal with unfolding vintage parchment letter.* |
+
+| Interactive Birthday Trivia Quiz | Tinder-Style Wishes Deck |
+| :---: | :---: |
+| <img src="docs/screenshots/11-birthday-quiz.png" alt="Birthday Quiz" width="100%"> | <img src="docs/screenshots/12-wishes-deck.png" alt="Tinder-Style Wishes Deck" width="100%"> |
+| *Gamified multiple-choice quiz tailored to recipient hobbies.* | *Swipeable card deck with love reactions and sweet wishes.* |
+
+| Mystery Gift Box & Party Tease | Surprise Unlocked Modal Dialog |
+| :---: | :---: |
+| <img src="docs/screenshots/13-mystery-gift-box.png" alt="Mystery Gift Tease" width="100%"> | <img src="docs/screenshots/14-mystery-gift-modal.png" alt="Surprise Unlocked Modal" width="100%"> |
+| *Glassmorphic teaser card with custom gift code.* | *Party hype tease followed by celebratory code reveal.* |
+
+| Interactive Celebration Action Buttons | Video Memories Gallery |
+| :---: | :---: |
+| <img src="docs/screenshots/15-celebration-buttons.png" alt="Celebration Buttons" width="100%"> | <img src="docs/screenshots/16-video-gallery.png" alt="Special Video Memories" width="100%"> |
+| *Interactive Cannon, Party, Love, and Share triggers.* | *Curated video clip gallery and cinematic memory reel.* |
+
+| 1-Click Viral Sharing Modal | Custom 404 Experience |
+| :---: | :---: |
+| <img src="docs/screenshots/17-share-modal.png" alt="Share Modal Dialog" width="100%"> | <img src="docs/screenshots/23-not-found-404.png" alt="404 Not Found Page" width="100%"> |
+| *Instant social sharing for WhatsApp, X, Telegram, and link copy.* | *Glassmorphic fallback screen with quick-navigation buttons.* |
+
+---
+
+### 🌍 Multilingual & Cultural Personalization Matrix
+
+Birthday Bloom provides culturally authentic celebrations in four languages, adjusting idioms, relationship themes, and typography:
+
+<p align="center">
+  <img src="docs/diagrams/02-multilingual-matrix.jpg" alt="Multilingual & Cultural Personalization Matrix" width="100%">
+</p>
+
+| Bengali Preset (বাংলা) | Hindi Preset (हिंदी) | French Preset (Français) |
+| :---: | :---: | :---: |
+| <img src="docs/screenshots/18-bengali-preset.png" alt="Bengali Celebration Preset" width="100%"> | <img src="docs/screenshots/19-hindi-preset.png" alt="Hindi Celebration Preset" width="100%"> |
+| <img src="docs/screenshots/20-french-preset.png" alt="French Celebration Preset" width="100%"> |
+| *শুভ জন্মদিন (Shuvo Jonmodin)* | *जन्मदिन की हार्दिक शुभकामनाएँ* | *Joyeux Anniversaire & Romance* |
+
+---
+
+### 📱 Responsive Mobile Touch Experience
+
+| Mobile Celebration Hero | Mobile 3D Cake Cutting |
+| :---: | :---: |
+| <img src="docs/screenshots/21-mobile-hero.png" alt="Mobile Hero Viewport" width="340"> | <img src="docs/screenshots/22-mobile-cake-cutting.png" alt="Mobile 3D Cake Cutting" width="340"> |
+| *Touch-first responsive layout with dynamic confetti.* | *Smooth WebGL rendering optimized for mobile GPUs.* |
 
 ---
 
 ## 🏗️ System Architecture
 
-Birthday Bloom operates as a structured timeline. The following diagram shows the chronological flow of scenes and interactive features from boot to the final reveal.
+Birthday Bloom operates as a structured timeline. The following diagram shows the chronological flow of scenes and interactive features from boot to the viral sharing stage:
 
 ```mermaid
 graph TD
-    Splash[Splash Screen] -->|Initialize| Intro[Cinematic Intro]
-    Intro -->|"Phase 1"| Story[Storyline Narrative]
-    Intro -->|"Phase 2"| Chat[Fake Chat Simulator]
-    Intro -->|"Phase 3"| Reveal[Birthday Reveal Screen]
-    Reveal -->|"Load Dashboard"| Main[Main Celebration View]
+    Splash[Splash Screen] -->|Tap to Begin| Gate{Password Required?}
+    Gate -->|Yes| Unlock[Password Unlock Gate]
+    Gate -->|No| Intro[Cinematic Intro]
+    Unlock -->|Passcode Verified| Intro
     
-    Main -->|Interact| Cake[Interactive SVG Cake]
-    Main -->|Interact| Gallery[Polaroid Memory Gallery]
-    Main -->|Interact| HeartTree[Growing Heart Tree]
+    Intro -->|Kinetic Text| Story[Storyline Narrative]
+    Story -->|Simulated Chat| Chat[Fake Chat Scene]
+    Chat -->|Wax Seal Letter| Letter[Envelope Love Letter]
+    Letter -->|Complete| Main[Main Celebration Experience]
+    
+    Main -->|WebGL Three.js| Cake[3D Cake Cutting & Candle Blow]
+    Main -->|Mini-Game| Balloons[Balloon Pop Mini-Game]
+    Main -->|Polaroid Tilt| Gallery[Memory Photo Gallery]
+    Main -->|Trivia| Quiz[Birthday Trivia Quiz]
+    Main -->|Swipe Cards| Deck[Wishes Deck]
+    Main -->|Tease & Reveal| Gift[Mystery Gift Box]
+    Main -->|Cinema Reel| Videos[Video Memories]
+    Main -->|SVG Climax| HeartTree[Heart Tree Finale]
+    Main -->|1-Click Share| Share[Viral Sharing Hub]
 ```
 *Figure: Scene progression flow and interactive features from boot to the grand finale.*
 
@@ -341,11 +424,11 @@ The project resolves environment variables and hydrates application state throug
 
 ```mermaid
 flowchart LR
-    Env[Environment Config] -->|"Load at runtime"| Config[Config Parser]
-    Config -->|"Hydrate state"| Store[State Store]
+    Env[Environment Config / URL Query] -->|"Load at runtime"| Config[Config Parser]
+    Config -->|"Hydrate state"| Store[Zustand State Store]
     Store -->|"Inject values as props"| Components[React Components]
 ```
-*Figure: The data flow from raw environment variables to component properties.*
+*Figure: The data flow from raw environment variables and URL parameters to component properties.*
 
 ### Sequence of Operations
 
