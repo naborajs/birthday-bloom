@@ -20,7 +20,15 @@ import { useTranslation } from "@/i18n";
 type Phase = "splash" | "unlock" | "intro" | "main";
 
 const Index = () => {
-    const [phase, setPhase] = useState<Phase>("splash");
+    const [phase, setPhase] = useState<Phase>(() => {
+        if (typeof window !== 'undefined') {
+            const param = new URLSearchParams(window.location.search).get('phase');
+            if (param === 'main' || param === 'intro' || param === 'unlock') {
+                return param;
+            }
+        }
+        return "splash";
+    });
     const [fireworksRunKey, setFireworksRunKey] = useState(0);
     const isMobile = useIsMobile();
     const config = useBirthdayStore((state) => state.config);
