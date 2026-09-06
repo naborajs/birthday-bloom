@@ -51,6 +51,10 @@ For tactile 3D celebration interactions, we utilize R3F alongside `@react-spring
 - **Lighting & Material Optimization**:
   - `ambientLight` ($I=0.7$) + `directionalLight` ($I=1.2$, position `[5, 8, 5]`) with mesh standard materials to ensure low memory footprint without HDR environment bloat.
 
+| 3D Cake Flavor Selector | 3D Candle Blow & Slicing |
+| :---: | :---: |
+| ![Cake Flavor Picker](../docs/screenshots/07-cake-cutting.png) | ![3D Cake with Candle](../docs/screenshots/08-cake-cutting-sliced.png) |
+
 ---
 
 ## 4. Canvas 2D Celebratory Physics Engines
@@ -63,9 +67,19 @@ High-particle effects run on isolated HTML5 Canvas 2D contexts to prevent DOM la
 - **[[EmojiCursorTrail]]**: Interactive touch/mouse trail spawning culturally authentic emojis that scale down and fade over 800ms.
 - **[[Confetti]]**: Multi-cannon confetti bursts powered by `canvas-confetti`.
 
+| Pop The Balloons Physics | Canvas Confetti & Hero Stage |
+| :---: | :---: |
+| ![Balloon Pop Game](../docs/screenshots/06-balloon-pop-game.png) | ![Hero Celebration Stage](../docs/screenshots/04-hero-celebration.png) |
+
 ---
 
-## 5. GPU Optimization & Performance Guidelines
+## 5. Procedural Climax: Blooming SVG Heart Tree
+
+![Growing Heart Tree](../docs/screenshots/16-heart-tree.png)
+
+---
+
+## 6. GPU Optimization & Performance Guidelines
 
 To prevent frame drops on low-power mobile devices:
 1. **Hardware Acceleration**: Use `transform-gpu`, `translate3d(0, 0, 0)`, and `will-change: transform, opacity` only on active motion layers.
