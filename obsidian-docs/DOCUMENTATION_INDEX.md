@@ -13,6 +13,19 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 
 ---
 
+## 📸 Visual Architecture & Multilingual Showcase
+
+### Celebration Lifecycle State Machine
+![Birthday Bloom Celebration Architecture](../docs/diagrams/01-celebration-architecture.jpg)
+
+### Multilingual & Cultural Personalization Matrix
+![Multilingual & Cultural Personalization Matrix](../docs/diagrams/02-multilingual-matrix.jpg)
+
+> [!TIP]
+> For high-resolution visual previews of every celebration module, see [[Birthday-Components|Birthday Components Catalog]] and [[URL-Parameters|URL Parameters Guide]].
+
+---
+
 ## 🌟 Essential Guides & Deep Dives
 
 | Document | Purpose & Summary | Read Time | Tags |
