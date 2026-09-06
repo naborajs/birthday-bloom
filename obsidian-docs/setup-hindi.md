@@ -30,7 +30,13 @@ The reactive Zustand store and i18n dispatcher automatically normalize the follo
 ### ⚡ Instant URL Testing (Zero Setup)
 
 Test the Hindi celebration experience immediately in your browser:
-👉 [https://birthday-bloom.vercel.app/?name=राहुल&rel=partner&lang=hi&color=%23FF2A6D&sender=प्रिया](https://birthday-bloom.vercel.app/?name=राहुल&rel=partner&lang=hi&color=%23FF2A6D&sender=प्रिया)
+👉 [https://birthday-bloom.vercel.app/?phase=main&lang=hi&name=%E0%A4%B0%E0%A4%BE%E0%A4%B9%E0%A5%81%E0%A4%B2&age=24&rel=partner](https://birthday-bloom.vercel.app/?phase=main&lang=hi&name=%E0%A4%B0%E0%A4%BE%E0%A4%B9%E0%A5%81%E0%A4%B2&age=24&rel=partner)
+
+<p align="center">
+  <img src="../docs/screenshots/19-hindi-preset.png" alt="Hindi Celebration Preset Showcase" width="100%">
+</p>
+
+![Multilingual & Cultural Personalization Matrix](../docs/diagrams/02-multilingual-matrix.jpg)
 
 ---
 
