@@ -91,28 +91,6 @@ Copy `.env.example` to `.env.local`, change values, restart the dev server, and 
 
 ---
 
-## 📚 Documentation Map
-
-Everything you need to get the most out of Birthday Bloom:
-
-| If you want to... | Start here |
-| --- | --- |
-| Customize names, colors, photos, sections | [ENV_GUIDE.md](./obsidian-docs/ENV_GUIDE.md) |
-| Run the project locally | [quick-start.md](./obsidian-docs/quick-start.md) |
-| Understand the codebase | [architecture.md](./obsidian-docs/architecture.md) |
-| Deploy to Vercel / Netlify / Docker | [deployment.md](./obsidian-docs/deployment.md) |
-| Set up family profiles (brother, sister, etc.) | [family-system.md](./obsidian-docs/family-system.md) |
-| Troubleshoot issues | [troubleshooting.md](./obsidian-docs/troubleshooting.md) |
-| Contribute to the project | [CONTRIBUTING.md](./.github/CONTRIBUTING.md) |
-| See what's coming next | [roadmap.md](./obsidian-docs/roadmap.md) |
-| Browse community standards | [CODE_OF_CONDUCT.md](./.github/CODE_OF_CONDUCT.md) |
-| Report a security issue | [SECURITY.md](./.github/SECURITY.md) |
-| Get help | [SUPPORT.md](./.github/SUPPORT.md) / [faq.md](./obsidian-docs/faq.md) |
-| View version history | [CHANGELOG.md](./CHANGELOG.md) |
-| Explore all docs | [DOCUMENTATION_INDEX.md](./obsidian-docs/DOCUMENTATION_INDEX.md) |
-
----
-
 <p align="center">
   <img src="https://img.shields.io/github/actions/workflow/status/naborajs/birthday-bloom/ci.yml?branch=main&style=for-the-badge&color=ff69b4&logo=github" alt="CI">
   <img src="https://img.shields.io/github/commit-activity/m/naborajs/birthday-bloom?style=for-the-badge&color=ff69b4" alt="Commit Activity">
