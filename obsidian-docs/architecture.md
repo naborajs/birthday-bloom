@@ -24,6 +24,16 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 | `intro` | `CinematicIntro.tsx` | Storyline sequence completion or "Skip Intro" click triggers transition to `main`. |
 | `main` | `MainBirthday.tsx` | Celebration dashboard (hero, cake cutting, quiz, heart tree, photo/video galleries, finale). |
 
+![Birthday Bloom Celebration Architecture](../docs/diagrams/01-celebration-architecture.jpg)
+
+| 1. Splash Screen Gate | 2. Secret Passcode Unlock |
+| :---: | :---: |
+| ![Splash Screen Gate](../docs/screenshots/01-splash-screen.png) | ![Password Unlock Screen](../docs/screenshots/02-password-unlock.png) |
+
+| 3. Cinematic Storyteller | 4. Grand Celebration Hero Stage |
+| :---: | :---: |
+| ![Cinematic Intro Storyline](../docs/screenshots/03-cinematic-intro.png) | ![Grand Celebration Hero Stage](../docs/screenshots/04-hero-celebration.png) |
+
 ---
 
 ## 2. Layer Architecture
