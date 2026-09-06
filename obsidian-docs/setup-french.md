@@ -32,7 +32,13 @@ Le store réactif Zustand et le répartiteur i18n normalisent automatiquement le
 ### ⚡ Test Instantané par URL (Sans Configuration)
 
 Testez l'expérience magique en français immédiatement dans votre navigateur :
-👉 [https://birthday-bloom.vercel.app/?name=Camille&rel=partner&lang=fr&color=%23FF2A6D&sender=Alexandre](https://birthday-bloom.vercel.app/?name=Camille&rel=partner&lang=fr&color=%23FF2A6D&sender=Alexandre)
+👉 [https://birthday-bloom.vercel.app/?phase=main&lang=fr&name=Camille&age=21&rel=partner](https://birthday-bloom.vercel.app/?phase=main&lang=fr&name=Camille&age=21&rel=partner)
+
+<p align="center">
+  <img src="../docs/screenshots/20-french-preset.png" alt="French Celebration Preset Showcase" width="100%">
+</p>
+
+![Multilingual & Cultural Personalization Matrix](../docs/diagrams/02-multilingual-matrix.jpg)
 
 ---
 
