@@ -299,10 +299,10 @@ export const useBirthdayStore = create<BirthdayStore>((set, get) => ({
         finalVideoUrl: envFinalVideo,
         specialMemories: envMemories,
         familyProfile: envFamilyProfile,
-        password: envPassword,
-        passwordHint: envPasswordHint,
+        password: urlOverrides.password !== undefined ? urlOverrides.password : envPassword,
+        passwordHint: urlOverrides.passwordHint !== undefined ? urlOverrides.passwordHint : envPasswordHint,
         passwordFormat: envPasswordFormat,
-        passwordRequired: envPasswordRequired,
+        passwordRequired: urlOverrides.passwordRequired !== undefined ? urlOverrides.passwordRequired : envPasswordRequired,
     },
     getAnimationPacing: () => {
         const { relationship, animationSpeed } = get().config;

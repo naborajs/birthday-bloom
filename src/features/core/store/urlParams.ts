@@ -131,6 +131,24 @@ export const parseBirthdayUrlParams = (searchString?: string): Partial<BirthdayC
       overrides.soundEffectsEnabled = !['false', '0', 'no', 'off', 'disabled'].includes(rawSound.toLowerCase().trim());
     }
 
+    // Password lock & hints
+    const rawPass = params.get('password') || params.get('pass');
+    if (rawPass && rawPass.trim()) {
+      overrides.password = rawPass.trim();
+      overrides.passwordRequired = true;
+    }
+    const rawLock = params.get('lock') || params.get('locked');
+    if (rawLock !== null) {
+      overrides.passwordRequired = !['false', '0', 'no', 'off'].includes(rawLock.toLowerCase().trim());
+      if (overrides.passwordRequired && !overrides.password) {
+        overrides.password = '1234';
+      }
+    }
+    const rawHint = params.get('hint') || params.get('passwordHint');
+    if (rawHint && rawHint.trim()) {
+      overrides.passwordHint = rawHint.trim();
+    }
+
     return overrides;
   } catch {
     return {};
