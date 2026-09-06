@@ -20,6 +20,10 @@ These components are conditionally orchestrated across the 4-phase state machine
 - **[[ShareCelebrationModal.tsx]]**: Modal dialog for sharing customized URLs across WhatsApp, X, Telegram, Facebook, and LinkedIn with native Web Share API integration.
 - **[[SoundManager.tsx]]**: Singleton `AudioManager` coordinating background music loop, fade-in/fade-out, and interactive sound effects (typewriter, chimes, pops, fireworks, cake cuts).
 
+| Splash Gate | Secret Passcode Gate | Share Celebration Modal |
+| :---: | :---: | :---: |
+| ![Splash Screen Gate](../docs/screenshots/01-splash-screen.png) | ![Password Unlock Screen](../docs/screenshots/02-password-unlock.png) | ![Share Celebration Modal](../docs/screenshots/17-share-modal.png) |
+
 ---
 
 ## 2. Interactive Activities & Storytelling
@@ -29,6 +33,14 @@ These components are conditionally orchestrated across the 4-phase state machine
 - **[[BirthdayQuiz.tsx]]**: Gamified trivia quiz that adapts questions dynamically based on the celebrant's interests and relationship archetype.
 - **[[CinematicIntro.tsx]]**: Multi-scene narrative timeline coordinating storytelling sequences, typing intervals, simulated chat dialogues, and grand reveal payoff.
 - **[[FakeChatScene.tsx]]**: Full-viewport mobile-first Instagram DM chat recreation with iOS status bar, midnight rose mesh wallpaper, and authentic typing indicators.
+
+| Cinematic Intro | Wax-Sealed Parchment Letter | Pop The Balloons Game |
+| :---: | :---: | :---: |
+| ![Cinematic Intro](../docs/screenshots/03-cinematic-intro.png) | ![Wax-Sealed Parchment Letter](../docs/screenshots/10-envelope-letter-opened.png) | ![Balloon Pop Game](../docs/screenshots/06-balloon-pop-game.png) |
+
+| Birthday Trivia Quiz | Tinder-Style Wishes Deck | Mystery Gift Reveal Modal |
+| :---: | :---: | :---: |
+| ![Birthday Quiz](../docs/screenshots/11-birthday-quiz.png) | ![Wishes Deck](../docs/screenshots/12-wishes-deck.png) | ![Mystery Gift Modal](../docs/screenshots/14-mystery-gift-modal.png) |
 
 ---
 
@@ -40,12 +52,20 @@ Powered by React Three Fiber (`@react-three/fiber`), Three.js Drei, and Framer M
 - **[[CakeKnife.tsx]]**: Interactive cursor-tracking knife and drag gesture controller.
 - **[[CakeTypes.ts]]**: TypeScript definitions for cake variants, geometries, and slice angles.
 
+| 3D Cake Flavor Selector | 3D Candle Blow & Slicing |
+| :---: | :---: |
+| ![Cake Flavor Picker](../docs/screenshots/07-cake-cutting.png) | ![3D Cake with Candle](../docs/screenshots/08-cake-cutting-sliced.png) |
+
 ---
 
 ## 4. Memories & Media
 - **[[PhotoGallery.tsx]]**: Polaroid-style 3D-tilt slider gallery with caption reveal, lightbox expansion, and automatic multi-language placeholder card when custom photos are omitted.
 - **[[VideoGallery.tsx]]**: Video memories carousel supporting YouTube embeds and direct MP4/WebM videos with sanitized responsive iframes.
 - **[[SpecialMemories]] / [[FinalSurprise.tsx]]**: Grand finale celebration screen with memory cards, closing video embed, and celebration replay button.
+
+| Polaroid Memories Gallery | Special Video Memories Gallery |
+| :---: | :---: |
+| ![Photo Memories](../docs/screenshots/05-photo-gallery.png) | ![Video Memories](../docs/screenshots/16-video-gallery.png) |
 
 ---
 
@@ -61,15 +81,27 @@ High-performance 60fps ambient visual effects running across mobile and desktop:
 - **[[FloatingElements.tsx]]**: Ambient floating emoji and token particles with parallax depth.
 - **[[Sparkles.tsx]]**: SVG star sparkles and glowing ambient orbs.
 
+| Hero Celebration Stage | Interactive Action Buttons |
+| :---: | :---: |
+| ![Grand Celebration Hero Stage](../docs/screenshots/04-hero-celebration.png) | ![Celebration Action Buttons](../docs/screenshots/15-celebration-buttons.png) |
+
 ---
 
 ## 6. Climax & Finale
 - **[[HeartTree.tsx]]**: The emotional visual climax of the celebration. Draws an SVG tree using `requestAnimationFrame` where branches bloom into hearts.
 - **[[HeartProgression.tsx]]**: Multi-stage SVG heart progress tracker used across splash and reveal screens.
 
+![Growing Heart Tree](../docs/screenshots/16-heart-tree.png)
+
 ---
 
-## 7. Accessibility & ARIA Specifications
+## 7. Architecture Overview
+
+![Birthday Bloom Celebration Architecture](../docs/diagrams/01-celebration-architecture.jpg)
+
+---
+
+## 8. Accessibility & ARIA Specifications
 
 All interactive components follow strict WAI-ARIA authoring practices:
 - **Interactive Triggers**: Explicit `aria-label`, `role="button"`, and `tabIndex={0}` for keyboard and screen reader parity.
