@@ -299,7 +299,7 @@ export const MainBirthday = () => {
                     {specialCode}
                   </div>
                   <button type="button" onClick={() => { setGiftStage('closed'); fireConfetti(); }} className="mx-auto rounded-full bg-primary px-10 py-4 text-xl font-black text-black transition-all hover:scale-105">
-                    {isBengali ? "উপহার বন্ধ করুন" : isHindi ? "उपहार बंद करें" : "Close Gift"}
+                    {isFrench ? "Fermer le cadeau" : isBengali ? "উপহার বন্ধ করুন" : isHindi ? "उपहार बंद करें" : "Close Gift"}
                   </button>
                 </div>)}
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/90 to-transparent"/>
@@ -311,11 +311,11 @@ export const MainBirthday = () => {
       {/* Interactive Celebration Buttons */}
       <section className="relative z-20 flex flex-wrap justify-center gap-4 sm:gap-6 px-4 pb-32">
         {[
-            { label: isBengali ? "🎊 কামান!" : isHindi ? "🎊 तोप!" : "🎊 Cannon!", color: primaryColor, action: fireCannon },
-            { label: isBengali ? "🎈 পার্টি!" : isHindi ? "🎈 पार्टी!" : "🎈 Party!", color: "hsl(45, 100%, 50%)", action: fireConfetti },
-            { label: isBengali ? "💫 ভালোবাসা!" : isHindi ? "💫 प्यार!" : "💫 Love!", color: "hsl(200, 80%, 50%)", action: () => { for (let i = 0; i < 5; i++)
+            { label: isFrench ? "🎊 Canon !" : isBengali ? "🎊 কামান!" : isHindi ? "🎊 तोप!" : "🎊 Cannon!", color: primaryColor, action: fireCannon },
+            { label: isFrench ? "🎈 Fête !" : isBengali ? "🎈 পার্টি!" : isHindi ? "🎈 पार्टी!" : "🎈 Party!", color: "hsl(45, 100%, 50%)", action: fireConfetti },
+            { label: isFrench ? "💫 Amour !" : isBengali ? "💫 ভালোবাসা!" : isHindi ? "💫 प्यार!" : "💫 Love!", color: "hsl(200, 80%, 50%)", action: () => { for (let i = 0; i < 5; i++)
                     setTimeout(addEmoji, i * 200); } },
-            { label: isFrench ? "💌 Partager!" : isBengali ? "💌 শেয়ার!" : isHindi ? "💌 शेयर!" : "💌 Share!", color: "hsl(320, 85%, 55%)", action: () => setShareOpen(true) }
+            { label: isFrench ? "💌 Partager !" : isBengali ? "💌 শেয়ার!" : isHindi ? "💌 शेयर!" : "💌 Share!", color: "hsl(320, 85%, 55%)", action: () => setShareOpen(true) }
         ].map((btn, i) => (<motion.button key={i} whileHover={shouldAnimate ? { scale: 1.08, y: -4 } : undefined} whileTap={{ scale: 0.94 }} onClick={() => { btn.action(); addEmoji(); }} className="px-8 sm:px-12 py-4 sm:py-6 rounded-full text-lg sm:text-2xl font-black text-white shadow-2xl transition-all border border-white/20 backdrop-blur-xl" style={{
                 background: `linear-gradient(135deg, ${btn.color}cc, ${btn.color}88)`,
                 boxShadow: `0 15px 40px -10px ${btn.color}50, inset 0 1px 0 rgba(255,255,255,0.4)`
