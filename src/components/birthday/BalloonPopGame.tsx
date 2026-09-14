@@ -84,7 +84,7 @@ export const BalloonPopGame = () => {
     const poppedCount = balloons.filter((b) => b.isPopped).length;
     const isGameComplete = poppedCount === balloons.length;
 
-    const handlePop = useCallback((id: number, event: React.MouseEvent | React.TouchEvent) => {
+    const handlePop = useCallback((id: number, event?: React.MouseEvent | React.TouchEvent | React.KeyboardEvent) => {
         setBalloons((prev) => {
             const current = prev.find((b) => b.id === id);
             if (!current || current.isPopped) return prev;
@@ -96,7 +96,7 @@ export const BalloonPopGame = () => {
             }
 
             // Directional confetti
-            const target = event?.currentTarget as HTMLElement | null;
+            const target = event && "currentTarget" in event ? (event.currentTarget as HTMLElement | null) : null;
             const rect = target?.getBoundingClientRect ? target.getBoundingClientRect() : null;
             const x = rect ? (rect.left + rect.width / 2) / (window.innerWidth || 1) : 0.5;
             const y = rect ? (rect.top + rect.height / 2) / (window.innerHeight || 1) : 0.5;
@@ -212,8 +212,16 @@ export const BalloonPopGame = () => {
                                         whileHover={{ scale: 1.15 }}
                                         whileTap={{ scale: 0.9 }}
                                         onClick={(e) => handlePop(balloon.id, e)}
-                                        onTouchStart={(e) => handlePop(balloon.id, e)}
-                                        className="cursor-pointer flex flex-col items-center group touch-manipulation"
+                                        onKeyDown={(e) => {
+                                            if (e.key === "Enter" || e.key === " ") {
+                                                e.preventDefault();
+                                                handlePop(balloon.id, e);
+                                            }
+                                        }}
+                                        role="button"
+                                        tabIndex={0}
+                                        aria-label={`Pop balloon ${balloon.id + 1}`}
+                                        className="cursor-pointer flex flex-col items-center group touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full"
                                     >
                                         {/* Balloon Bulb */}
                                         <div
