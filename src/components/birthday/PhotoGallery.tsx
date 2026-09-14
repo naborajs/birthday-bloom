@@ -134,12 +134,22 @@ export const PhotoGallery = () => {
             if (event.key === 'Escape') {
                 setLightbox(null);
             }
-            if (lightbox !== null && photos.length > 0) {
+            if (photos.length > 1) {
                 if (event.key === 'ArrowRight') {
-                    setActiveIndex((prev) => (prev + 1) % photos.length);
+                    if (lightbox !== null) {
+                        setLightbox((prev) => (prev !== null ? (prev + 1) % photos.length : null));
+                        setActiveIndex((prev) => (prev + 1) % photos.length);
+                    } else {
+                        setActiveIndex((prev) => (prev + 1) % photos.length);
+                    }
                 }
                 if (event.key === 'ArrowLeft') {
-                    setActiveIndex((prev) => (prev - 1 + photos.length) % photos.length);
+                    if (lightbox !== null) {
+                        setLightbox((prev) => (prev !== null ? (prev - 1 + photos.length) % photos.length : null));
+                        setActiveIndex((prev) => (prev - 1 + photos.length) % photos.length);
+                    } else {
+                        setActiveIndex((prev) => (prev - 1 + photos.length) % photos.length);
+                    }
                 }
             }
         };
