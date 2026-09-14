@@ -275,6 +275,18 @@ export const CakeCutting = () => {
         return () => clearTimeout(t);
     }, [phase, quoteIndex, quotes.length]);
 
+    // Accessible Escape key handler to exit cake experience
+    useEffect(() => {
+        if (phase === "select") return;
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                setPhase("select");
+            }
+        };
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [phase]);
+
     const cake = selectedCake || CAKE_OPTIONS[0];
     const dustCount = isMobile ? 16 : 40;
     const sparkCount = isMobile ? 16 : 30;
@@ -296,6 +308,14 @@ export const CakeCutting = () => {
                                 background: "radial-gradient(circle at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.95) 100%)"
                             }}
                         >
+                            <button
+                                type="button"
+                                aria-label={isFrench ? "Fermer l'expérience du gâteau" : isBengali ? "কেকের অভিজ্ঞতা বন্ধ করুন" : isHindi ? "केक का अनुभव बंद करें" : "Close cake experience"}
+                                onClick={() => setPhase("select")}
+                                className="fixed top-6 right-6 z-[110] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center text-xl transition-all shadow-xl backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-primary"
+                            >
+                                ✕
+                            </button>
                             <MagicDust count={dustCount} />
                             
                             <AnimatePresence mode="wait">
