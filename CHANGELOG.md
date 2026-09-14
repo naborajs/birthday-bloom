@@ -5,6 +5,22 @@ All notable changes to Birthday Bloom are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.4.0] — 2026-09-14
+
+### Added
+- **Modular Color Utilities (`src/utils/colorUtils.ts`)**: Hex color parsing, RGB and HSL conversion, WCAG relative luminance and contrast ratio calculations with safe fallbacks.
+- **Media Utilities (`src/utils/mediaUtils.ts`)**: Unified personal image validation (`isRealImageUrl`), direct video file identification, and comprehensive YouTube link parsing.
+- **Accessibility & Keyboard Suite (`accessibility_and_ux.test.tsx`)**: New automated test suite covering interactive components, keyboard controls, and dialog dismissal behaviors.
+- **Escape Key Modal Dismissal**: Added standardized `Escape` key listeners and accessible close controls to `CakeCutting` and `ShareCelebrationModal`.
+- **Keyboard Navigation in Photo Gallery**: Full arrow key (`ArrowRight` / `ArrowLeft`) navigation across photos in both fullscreen lightbox and carousel modes.
+- **Accessible Balloon Pop Game**: Full keyboard popping (`Enter` / `Space`), focus rings, ARIA roles, and resolved touch duplicate event handlers.
+
+### Changed
+- **Reduced Motion Support**: `Confetti` and `Balloons` now dynamically scale down active particle counts and rise durations when reduced motion is preferred or configured.
+- **Enhanced Mobile Audio Unlock**: `SoundManager` now attaches passive `touchstart` and `pointerdown` listeners to guarantee instantaneous audio unlocking on mobile Safari and iOS.
+- **Celebration Fireworks on Intro Skip**: Pressing "Skip Intro" on the landing page now triggers the celebration fireworks sequence immediately.
+- **Multilingual Completeness**: Added missing French localizations for interactive celebration buttons and gift box actions.
+
 ## [3.3.0] — 2026-08-26
 
 ### Added
