@@ -1,4 +1,4 @@
-# 🌸 Birthday Bloom — Configurable Birthday Landing Page v3.3
+# 🌸 Birthday Bloom — Configurable Birthday Landing Page v3.4.0
 
 <div align="center">
 
@@ -1107,4 +1107,4 @@ Thank you to all the incredible people who have contributed to making Birthday B
   <sub>Built with ❤️ by Naboraj Sarkar. © 2024-2026 Naboraj Sarkar.</sub>
 </div>
 
-**[Back to Top ↑](#-birthday-bloom--configurable-birthday-landing-page-v31)**
+**[Back to Top ↑](#-birthday-bloom--configurable-birthday-landing-page-v340)**
