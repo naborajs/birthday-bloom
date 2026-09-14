@@ -2,13 +2,13 @@
 
 ## Executive Summary
 
-The complete, rigorous test suite for **Birthday Bloom v3.3.0** has been successfully authored, verified, and integrated into the project's Vitest runner.
+The complete, rigorous test suite for **Birthday Bloom v3.4.0** has been successfully authored, verified, and integrated into the project's Vitest runner.
 
-- **Total Test Files**: 17
-- **Total Tests**: 408
-- **Pass Rate**: 100% (408 passing, 0 failing, 0 flaky)
-- **Execution Time**: ~2.55s
-- **Static Analysis**: TypeScript (`npm run typecheck`) passed with 0 errors; ESLint (`npm run lint`) passed with 0 warnings/errors; Vite production build (`npm run build`) succeeded in <900ms.
+- **Total Test Files**: 20
+- **Total Tests**: 436
+- **Pass Rate**: 100% (436 passing, 0 failing, 0 flaky)
+- **Execution Time**: ~3.0s
+- **Static Analysis**: TypeScript (`npm run typecheck`) passed with 0 errors; ESLint (`npm run lint`) passed with 0 warnings/errors; Vite production build (`npm run build`) succeeded in <1.3s.
 
 ---
 
