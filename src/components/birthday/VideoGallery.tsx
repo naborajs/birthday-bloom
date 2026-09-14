@@ -4,36 +4,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { getYouTubeEmbedUrl } from "@/lib/utils";
 import { useTranslation } from "@/i18n";
 import { Film, Sparkles, Heart, Video } from "lucide-react";
-
-/** Validate whether a URL is a genuine YouTube embed or video media file */
-const isValidVideoUrl = (url?: string): boolean => {
-    if (!url || typeof url !== "string") return false;
-    const trimmed = url.trim();
-    if (!trimmed || trimmed === "0" || trimmed === "null" || trimmed === "undefined" || trimmed === "false") return false;
-    // Exclude invalid short paths like "/0" or "/2" that trigger local 404 routes
-    if (/^\/?[0-9]+$/.test(trimmed)) return false;
-    if (trimmed.includes("example.com") || trimmed.includes("placeholder")) return false;
-
-    if (
-        trimmed.includes("youtube.com/watch") ||
-        trimmed.includes("youtu.be/") ||
-        trimmed.includes("youtube.com/embed") ||
-        trimmed.includes("youtube.com/shorts") ||
-        trimmed.endsWith(".mp4") ||
-        trimmed.endsWith(".webm") ||
-        trimmed.includes(".mp4?") ||
-        trimmed.includes(".webm?")
-    ) {
-        return true;
-    }
-
-    try {
-        const parsed = new URL(trimmed);
-        return parsed.protocol === "http:" || parsed.protocol === "https:";
-    } catch {
-        return false;
-    }
-};
+import { isValidVideoUrl } from "@/utils/mediaUtils";
 
 export const VideoGallery = () => {
     const { config } = useBirthdayStore();

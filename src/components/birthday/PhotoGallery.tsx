@@ -4,17 +4,7 @@ import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTranslation } from "@/i18n";
 import { Sparkles } from "lucide-react";
-
-/** Check if a URL looks like a real personal photo (not a stock/placeholder) */
-const isRealImageUrl = (url?: string): boolean => {
-    if (!url || !url.trim()) return false;
-    const lower = url.toLowerCase();
-    if (lower.includes('unsplash.com')) return false;
-    if (lower.includes('example.com')) return false;
-    if (lower.includes('placeholder')) return false;
-    if (lower.includes('picsum.photos')) return false;
-    return true;
-};
+import { isRealImageUrl } from "@/utils/mediaUtils";
 
 export const PhotoGallery = () => {
     const [activeIndex, setActiveIndex] = useState(0);
