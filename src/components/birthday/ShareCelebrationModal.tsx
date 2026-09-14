@@ -35,6 +35,17 @@ export const ShareCelebrationModal: React.FC<ShareCelebrationModalProps> = ({ is
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<'share' | 'customize'>('share');
 
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   // Build the share URL with query parameters
   const baseUrl = typeof window !== 'undefined' 
     ? `${window.location.origin}${window.location.pathname}`
