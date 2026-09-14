@@ -11,6 +11,8 @@ const AUDIO_URLS = {
 class AudioManager {
     private bgMusic: HTMLAudioElement | null = null;
     private started = false;
+    private fadeInterval: ReturnType<typeof setInterval> | null = null;
+
     start() {
         if (this.started)
             return;
@@ -24,10 +26,14 @@ class AudioManager {
             this.bgMusic.volume = 0.25;
             this.bgMusic.play().catch(() => {
                 const playOnInteraction = () => {
-                    this.bgMusic?.play();
-                    document.removeEventListener('click', playOnInteraction);
+                    this.bgMusic?.play().catch(() => {});
+                    ['click', 'touchstart', 'pointerdown'].forEach((evt) => {
+                        document.removeEventListener(evt, playOnInteraction);
+                    });
                 };
-                document.addEventListener('click', playOnInteraction);
+                ['click', 'touchstart', 'pointerdown'].forEach((evt) => {
+                    document.addEventListener(evt, playOnInteraction, { passive: true });
+                });
             });
         }
         catch (e) {
@@ -37,17 +43,24 @@ class AudioManager {
     fadeOutBgMusic(duration = 2000) {
         if (!this.bgMusic)
             return;
+        if (this.fadeInterval) {
+            clearInterval(this.fadeInterval);
+            this.fadeInterval = null;
+        }
         const steps = 20;
         const stepTime = duration / steps;
         const volumeStep = this.bgMusic.volume / steps;
         let step = 0;
-        const interval = setInterval(() => {
+        this.fadeInterval = setInterval(() => {
             if (this.bgMusic && step < steps) {
                 this.bgMusic.volume = Math.max(0, this.bgMusic.volume - volumeStep);
                 step++;
             }
             else {
-                clearInterval(interval);
+                if (this.fadeInterval) {
+                    clearInterval(this.fadeInterval);
+                    this.fadeInterval = null;
+                }
                 this.bgMusic?.pause();
             }
         }, stepTime);
@@ -69,6 +82,10 @@ class AudioManager {
         }
     }
     stop() {
+        if (this.fadeInterval) {
+            clearInterval(this.fadeInterval);
+            this.fadeInterval = null;
+        }
         this.bgMusic?.pause();
         this.bgMusic = null;
         this.started = false;
