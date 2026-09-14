@@ -15,9 +15,11 @@ export const Balloons = ({ count = 20 }: {
 }) => {
     const [balloons, setBalloons] = useState<Balloon[]>([]);
     const { config } = useBirthdayStore();
-    const { relationship } = config;
+    const { relationship, reducedMotion } = config;
     const isMobile = useIsMobile();
-    const activeCount = isMobile ? Math.min(count, 8) : count;
+    const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const shouldReduce = Boolean(reducedMotion || prefersReducedMotion);
+    const activeCount = shouldReduce ? Math.min(count, 4) : isMobile ? Math.min(count, 8) : count;
     const colors = useMemo(() => {
         if (relationship === 'partner')
             return ["hsl(340, 85%, 60%)", "hsl(320, 70%, 50%)", "hsl(0, 80%, 55%)", "hsl(45, 100%, 70%)"];

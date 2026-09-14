@@ -1,18 +1,24 @@
 import { useCallback, useMemo } from "react";
 import confetti from "canvas-confetti";
+import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
+
 export const useConfetti = () => {
+    const reducedMotionStore = useBirthdayStore((state) => state.config.reducedMotion);
+    const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isReducedMotion = Boolean(reducedMotionStore || prefersReducedMotion);
     const isMobile = typeof window !== "undefined" && (window.innerWidth < 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+
     const fireConfetti = useCallback((options?: confetti.Options) => {
         confetti({
-            particleCount: isMobile ? 30 : 100,
+            particleCount: isReducedMotion ? 15 : isMobile ? 30 : 100,
             spread: isMobile ? 55 : 70,
             origin: { y: 0.6 },
             scalar: isMobile ? 0.8 : 1,
-            ticks: isMobile ? 80 : undefined,
+            ticks: isReducedMotion ? 50 : isMobile ? 80 : undefined,
             colors: ["#e84393", "#a855f7", "#f59e0b", "#38bdf8", "#f97316", "#34d399"],
             ...options,
         });
-    }, [isMobile]);
+    }, [isMobile, isReducedMotion]);
     const fireCannon = useCallback(() => {
         const end = Date.now() + (isMobile ? 1200 : 2000);
         const fire = () => {
