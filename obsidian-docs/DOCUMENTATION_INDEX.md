@@ -3,7 +3,7 @@ tags: [index, home, overview, documentation, i18n, vault]
 aliases: [DOCUMENTATION_INDEX, index]
 ---
 
-# Birthday Bloom v3.3 — Documentation Index
+# Birthday Bloom v3.4.0 — Documentation Index
 
 [[quick-start|Quick Start]] | [[ENV_GUIDE|Env Customization Guide]] | [[URL-Parameters|URL Parameters]] | [[setup-french|French Guide]] | [[setup-hindi|Hindi Guide]] | [[setup-bengali|Bengali Guide]] | [[architecture-env|Env Architecture]] | [[deployment|Deployment Guide]]
 
