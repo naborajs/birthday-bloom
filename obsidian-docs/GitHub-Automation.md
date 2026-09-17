@@ -15,18 +15,34 @@ Birthday Bloom features a robust GitHub automation and continuous integration se
 
 ### `ci.yml` — Continuous Integration Pipeline
 Triggers on every push to `main` and all pull requests:
+- **Verified Action Versions**: Employs officially maintained `actions/checkout@v4` and `actions/setup-node@v4` with Node 20.x runtime.
 1. **Type Checking**: Runs `npm run typecheck` (`tsc --noEmit`) to verify zero TypeScript errors.
 2. **Linting**: Executes `npm run lint` (`eslint .`) using modern flat ESLint 9 configuration.
-3. **Automated Testing**: Runs `npm test` (`vitest run`) across all 17 test suites (408 unit and integration tests).
+3. **Automated Testing**: Runs `npm test` (`vitest run`) across 24 test suites (>450 unit and integration tests).
 4. **Production Build**: Executes `npm run build` (`vite build`) to guarantee clean chunk compilation and asset bundling.
+
+### `pr-verify.yml` — PR Verification & Concurrency Control
+Dedicated workflow running on all Pull Request events:
+- **Concurrency Guards**: Cancels superseded CI runs automatically using `concurrency: group: ${{ github.workflow }}-${{ github.ref }}, cancel-in-progress: true` to conserve GitHub Action compute minutes.
+- **Verification Matrix**: Executes typecheck, linting, tests, and production build in an isolated Node 20 environment.
+
+### `labeler.yml` — Automated PR Triage & Categorization
+Uses `actions/labeler@v5` with `.github/labeler.yml` to automatically classify PRs based on changed file paths:
+- `components`: Changes under `src/components/**`
+- `styles`: Changes to CSS, Tailwind styles, or `tailwind.config.ts`
+- `ci`: Changes to `.github/workflows/**` or dependabot configurations
+- `documentation`: Changes to Markdown files, Obsidian vault docs, or README
+- `tests`: Changes to `src/test/**` or test configuration files
 
 ### `repo-health.yml` — Automated Maintenance
 - Stale issue and PR detection and gentle notifications after periods of inactivity.
 - Automatic closing of abandoned draft PRs.
+- Powered by `actions/checkout@v4` and `actions/github-script@v7`.
 
 ### `issue-assignment.yml` & `sync-labels.yml`
 - Contributor auto-assignment: Developers can claim issues by commenting `/assign` or "can I take this".
 - Label synchronization across standard GitHub labels, good first issues, and Hacktoberfest tags.
+- Verified and modernized with `actions/checkout@v4` and `actions/github-script@v7`.
 
 ---
 
