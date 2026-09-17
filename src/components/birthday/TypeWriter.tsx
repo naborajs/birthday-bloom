@@ -60,9 +60,16 @@ export const TypeWriter = ({ text, speed = 45, delay = 0, className = "", onComp
 
     const displayed = graphemes.slice(0, currentIndex).join("");
 
-    return (<span className={className}>
-      {displayed}
-      {cursor && !done && (<span className="inline-block w-[3px] h-[1em] ml-1 bg-primary animate-blink align-middle"/>)}
-    </span>);
+    return (
+        <span className={className}>
+            <span className="sr-only">{text}</span>
+            <span aria-hidden="true">
+                {displayed}
+                {cursor && !done && (
+                    <span className="inline-block w-[3px] h-[1em] ml-1 bg-primary animate-blink align-middle" />
+                )}
+            </span>
+        </span>
+    );
 };
 
