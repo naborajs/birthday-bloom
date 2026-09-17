@@ -5,6 +5,28 @@ All notable changes to Birthday Bloom are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.5.0] — 2026-09-17
+
+### Added
+- **Date & Calendar Countdown Utilities (`src/utils/dateUtils.ts`)**: Pure leap year-safe functions for dynamic birthday countdown calculations (`calculateBirthdayCountdown`) and localized date formatting (`formatDisplayDate`).
+- **Date Utilities Test Suite (`src/test/date_utils.test.ts`)**: Comprehensive unit tests covering future birthdays, same-day celebrations, past dates, and leap year handling (11 tests).
+- **URL Query Parameter Engine Utilities (`src/utils/urlUtils.ts`)**: Zero-dependency URL query parameter encoder, serializer, and validator with URL length safety guards and automated fallback handling.
+- **URL Utilities Test Suite (`src/test/url_utils.test.ts`)**: Unit tests validating parameter extraction, edge cases, and query reconstruction (7 tests).
+- **Audio State & Soundscape Utilities (`src/utils/audioUtils.ts`)**: Pure state helpers for volume clamping (`clampVolume`), mute/unmute state toggling (`toggleMuteState`), and sound manager state serialization.
+- **Audio Utilities Test Suite (`src/test/audio_utils.test.ts`)**: Dedicated test coverage for audio clamping, NaN fallback protection, and mute toggle calculations (8 tests).
+- **Floating Audio Toggle Control (`src/components/birthday/SoundToggle.tsx`)**: Accessible, floating mute/unmute sound toggle button with volume memory, dynamic SVG icons, and ARIA labels.
+- **Audio Toggle UI Integration (`src/components/birthday/MainBirthday.tsx`)**: Mounted `SoundToggle` onto the main celebration viewport with responsive positioning.
+- **Interactive Component Test Suite (`src/test/sound_toggle_and_quiz.test.tsx`)**: Tested SoundToggle volume control integration and BirthdayQuiz accessibility options under Framer Motion in JSDOM (4 tests).
+- **Automated PR Triage Labeler Workflow (`.github/workflows/labeler.yml`)**: Automatic classification of pull requests using `actions/labeler@v5` mapped against `.github/labeler.yml` paths.
+- **PR Verification Pipeline (`.github/workflows/pr-verify.yml`)**: Continuous integration workflow for pull requests featuring concurrency guards (`cancel-in-progress: true`) to avoid redundant runner usage.
+
+### Changed
+- **Modernized GitHub Actions Runners**: Upgraded official action runners to `actions/checkout@v4`, `actions/setup-node@v4`, and `actions/github-script@v7` across `ci.yml`, `issue-assignment.yml`, `repo-health.yml`, and `sync-labels.yml`.
+- **Accessible Quiz Navigation (`BirthdayQuiz.tsx`)**: Enabled full keyboard interactivity (`Enter` / `Space`) on trivia option buttons and explicit button semantics.
+- **Accessible Surprise Modal (`FinalSurprise.tsx`)**: Added standard `Escape` key dismissal listener and ARIA dialog attributes (`role="dialog"`, `aria-modal="true"`).
+- **Live Screen Reader Announcements (`TypeWriter.tsx`)**: Introduced `aria-live="polite"` region and dynamic invisible status updates for screen reader users.
+- **Expanded Test Suite**: Reached 24 total test suites and 466 passing tests (100% pass rate).
+
 ## [3.4.0] — 2026-09-14
 
 ### Added

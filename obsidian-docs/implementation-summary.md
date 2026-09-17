@@ -3,10 +3,10 @@ tags: [summary, implementation, notes]
 aliases: [implementation-summary]
 ---
 
-# 🌸 Birthday Bloom v3.4.0 - Implementation Summary
+# 🌸 Birthday Bloom v3.5.0 - Implementation Summary
 
 **Project**: Birthday Bloom - Cinematic Birthday Surprise Platform  
-**Version Upgrade**: v3.3 → v3.4.0  
+**Version Upgrade**: v3.4.0 → v3.5.0  
 **Status**: ✅ **COMPLETE & PRODUCTION READY**  
 **Author**: Naboraj Sarkar  
 
@@ -14,15 +14,17 @@ aliases: [implementation-summary]
 
 ## Executive Summary
 
-**Birthday Bloom has been upgraded to v3.4.0**, introducing modular color & media utilities, enhanced WCAG accessibility, keyboard navigation parity across interactive scenes, and comprehensive testing.
+**Birthday Bloom has been upgraded to v3.5.0**, introducing modernized GitHub Actions workflows, automated PR labelers and verification pipelines, date & calendar countdown utilities, URL query parameter engine utilities, audio state helpers, a floating audio toggle component, and enhanced keyboard accessibility across interactive celebration scenes.
 
 ### Key Achievements
 
-✅ **Universal URL Query Parameter Engine (`urlParams.ts`)** - Instant zero-code sharing (`?name=...&rel=...&lang=...&sender=...`).  
-✅ **Dynamic SEO & Rich Structured Data (`useDynamicSEO.ts`)** - Live Schema.org `SocialEvent`, OpenGraph, Twitter Cards, and canonical tags.  
-✅ **Dependency Modernization & Pruning** - Removed 34 unused UI packages, cutting bundle size and eliminating false security alerts.  
-✅ **Zero-Warning Test Infrastructure** - 17 Vitest test files (408 unit/integration tests) executing in under 2.6 seconds.  
-✅ **Automated GitHub Governance** - Dependabot grouped updates with semver-major safety guards.  
+✅ **Modernized GitHub Actions CI/CD** - Upgraded all runners to `actions/checkout@v4`, `actions/setup-node@v4`, and `actions/github-script@v7`.  
+✅ **Automated PR Triage & Concurrency Guards** - Introduced `actions/labeler@v5` workflow and PR verification with automated cancel-in-progress concurrency.  
+✅ **Date & Countdown Engine (`dateUtils.ts`)** - Leap-year safe birthday countdown calculation and localized date formatting.  
+✅ **Universal URL Query Parameter Engine (`urlUtils.ts`)** - Zero-dependency URL query parameter serialization, validation, and URL length protection.  
+✅ **Audio Utilities & Floating Sound Toggle (`SoundToggle.tsx`)** - Accessible audio mute/unmute toggle button with dynamic icons, volume memory, and sound helper state managers.  
+✅ **Interactive Accessibility & WCAG Standards** - Full keyboard navigation on quiz options, Escape modal dismissal on final surprise, and polite screen reader announcements on typewriter scenes.  
+✅ **Zero-Warning Test Infrastructure** - 24 Vitest test suites (466 unit/integration tests) with 100% pass rate.  
 ✅ **100% Type Safety & Strict Linter Compliance** - Zero TypeScript errors, zero ESLint warnings, production build in <900ms.  
 
 ---

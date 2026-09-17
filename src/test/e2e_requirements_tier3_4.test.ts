@@ -1018,6 +1018,6 @@ describe("Tier 4: Real-World Celebration Workload Scenarios", () => {
     expect(llmText).toContain("BIRTHDAY BLOOM");
 
     const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
-    expect(pkg.version).toBe("3.4.0");
+    expect(pkg.version).toBe("3.5.0");
   });
 });
