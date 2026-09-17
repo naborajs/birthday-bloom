@@ -258,7 +258,7 @@ export const BirthdayQuiz = () => {
                     else
                         btnStyle = "bg-white/5 border-white/5 opacity-40";
                 }
-                return (<button key={i} disabled={selected !== null} onClick={() => handleSelect(i)} className={`p-5 rounded-2xl border text-lg md:text-xl font-medium transition-all duration-300 text-left flex items-center justify-between ${btnStyle}`}>
+                return (<button key={i} type="button" aria-label={`Option ${i + 1}: ${opt}`} aria-pressed={isSelected} disabled={selected !== null} onClick={() => handleSelect(i)} className={`p-5 rounded-2xl border text-lg md:text-xl font-medium transition-all duration-300 text-left flex items-center justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${btnStyle}`}>
                       <span>{opt}</span>
                       {selected !== null && isCorrect && <CheckCircle2 className="text-green-400 shrink-0"/>}
                       {selected !== null && isSelected && !isCorrect && <XCircle className="text-red-400 shrink-0"/>}
