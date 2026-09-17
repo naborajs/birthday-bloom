@@ -5,41 +5,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { getYouTubeEmbedUrl } from "@/lib/utils";
 import { useTranslation } from "@/i18n";
 
-/** Check if a URL looks like a real personal photo (not a stock/placeholder) */
-const isRealImageUrl = (url?: string): boolean => {
-    if (!url || !url.trim()) return false;
-    const lower = url.toLowerCase();
-    if (lower.includes('unsplash.com')) return false;
-    if (lower.includes('example.com')) return false;
-    if (lower.includes('placeholder')) return false;
-    if (lower.includes('picsum.photos')) return false;
-    return true;
-};
-
-/** Validate whether a URL is a genuine video URL */
-const isValidVideoUrl = (url?: string): boolean => {
-    if (!url || typeof url !== "string") return false;
-    const trimmed = url.trim();
-    if (!trimmed || trimmed === "0" || trimmed === "null" || trimmed === "undefined" || trimmed === "false") return false;
-    if (/^\/?[0-9]+$/.test(trimmed)) return false;
-    if (trimmed.includes("example.com") || trimmed.includes("placeholder")) return false;
-    if (
-        trimmed.includes("youtube.com/watch") ||
-        trimmed.includes("youtu.be/") ||
-        trimmed.includes("youtube.com/embed") ||
-        trimmed.includes("youtube.com/shorts") ||
-        trimmed.endsWith(".mp4") ||
-        trimmed.endsWith(".webm")
-    ) {
-        return true;
-    }
-    try {
-        const parsed = new URL(trimmed);
-        return parsed.protocol === "http:" || parsed.protocol === "https:";
-    } catch {
-        return false;
-    }
-};
+import { isRealImageUrl, isValidVideoUrl } from "@/utils/mediaUtils";
 
 export const FinalSurprise = () => {
     const { config } = useBirthdayStore();
