@@ -467,7 +467,7 @@ const CakeStand = ({ config }: { config: CakeOption["config"] }) => {
             </mesh>
 
             {/* Fine 24k Gold Rim Trim on Platter */}
-            <mesh position={[0, 0.06, 0]}>
+            <mesh position={[0, 0.11, 0]} rotation={[Math.PI / 2, 0, 0]}>
                 <torusGeometry args={[radius + 0.68, 0.032, 16, 64]} />
                 <meshStandardMaterial
                     color={trimColor}
@@ -497,7 +497,7 @@ const CakeStand = ({ config }: { config: CakeOption["config"] }) => {
                     clearcoat={0.8}
                 />
             </mesh>
-            <mesh position={[0, -0.52, 0]}>
+            <mesh position={[0, -0.52, 0]} rotation={[Math.PI / 2, 0, 0]}>
                 <torusGeometry args={[1.35, 0.028, 16, 48]} />
                 <meshStandardMaterial
                     color={trimColor}
@@ -553,7 +553,7 @@ const Scene = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
             <hemisphereLight args={["#ffffff", "#2b1810", 0.7]} />
 
             <Float speed={1.0} rotationIntensity={0.03} floatIntensity={0.08}>
-                <group position={[0, -0.9, 0]}>
+                <group position={[0, -0.62, 0]}>
                     {/* Artisanal Cake Stand */}
                     <CakeStand config={cake.config} />
 
@@ -575,7 +575,7 @@ const Scene = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
             </Float>
 
             {/* Soft Studio Floor Contact Shadows */}
-            <ContactShadows position={[0, -1.85, 0]} opacity={0.55} scale={11} blur={2.2} far={4} />
+            <ContactShadows position={[0, -1.50, 0]} opacity={0.55} scale={11} blur={2.2} far={4} />
 
             {/* Orbit Controls */}
             <OrbitControls

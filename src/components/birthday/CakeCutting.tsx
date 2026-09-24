@@ -364,7 +364,7 @@ export const CakeCutting = () => {
                             </AnimatePresence>
                             
                             <div className="w-full max-w-4xl mx-auto flex flex-col items-center justify-center min-h-[100dvh]">
-                                <div className="relative w-full h-[50vh] min-h-[400px] flex justify-center items-center mt-10">
+                                <div className="relative w-full h-[52vh] min-h-[440px] flex justify-center items-center mt-4">
                                     <Cake3D cake={cake} phase={phase} />
                                     
                                     {/* Overlays on top of the Cake */}

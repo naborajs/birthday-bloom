@@ -51,16 +51,16 @@ export const CAKE_OPTIONS: CakeOption[] = [
         layers: ["hsl(15,60%,30%)", "hsl(15,50%,40%)", "hsl(20,40%,50%)"],
         accent: "hsl(45,100%,60%)",
         config: {
-            spongeColor: "#2b1810",
-            crumbColor: "#3e2417",
-            fillingColor: "#4a2818",
-            innerCreamColor: "#5c331e",
-            frostingColor: "#361c12",
+            spongeColor: "#3a2014",
+            crumbColor: "#4f2b1b",
+            fillingColor: "#f5e6d3",
+            innerCreamColor: "#4e291a",
+            frostingColor: "#361b11",
             dripColor: "#1a0b06",
-            plateColor: "#f7f7f9",
+            plateColor: "#fdfbf7",
             plateTrimColor: "#d4af37",
             cherryColor: "#c1121f",
-            toppingColor: "#d4af37"
+            toppingColor: "#ffd700"
         }
     },
     {
