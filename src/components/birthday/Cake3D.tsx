@@ -105,12 +105,12 @@ const Rosettes = ({
                     <group key={r.idx} position={[x, y, 0]} rotation={[0, 0, r.angle]}>
                         {/* Piped Buttercream Swirl */}
                         <mesh castShadow position={[0, 0, 0.06]}>
-                            <torusKnotGeometry args={[0.09, 0.038, 32, 8, 2, 3]} />
+                            <torusKnotGeometry args={[0.11, 0.046, 36, 10, 2, 3]} />
                             <meshPhysicalMaterial
                                 color={creamColor}
-                                roughness={0.32}
-                                clearcoat={0.35}
-                                clearcoatRoughness={0.15}
+                                roughness={0.25}
+                                clearcoat={0.5}
+                                clearcoatRoughness={0.12}
                             />
                         </mesh>
 
@@ -120,37 +120,38 @@ const Rosettes = ({
                                 {cake.id === "chocolate" || cake.id === "royal" ? (
                                     /* Edible Gold Pearl / Dragée */
                                     <mesh castShadow>
-                                        <sphereGeometry args={[0.08, 16, 16]} />
+                                        <sphereGeometry args={[0.095, 20, 20]} />
                                         <meshStandardMaterial
-                                            color={config.toppingColor || "#d4af37"}
-                                            metalness={0.92}
-                                            roughness={0.14}
+                                            color={config.toppingColor || "#ffd700"}
+                                            metalness={0.96}
+                                            roughness={0.08}
                                         />
                                     </mesh>
                                 ) : (
                                     /* Glazed Fresh Strawberry */
-                                    <group scale={0.9}>
+                                    <group scale={1.05}>
                                         {/* Strawberry Body */}
                                         <mesh castShadow position={[0, 0, 0]}>
-                                            <sphereGeometry args={[0.095, 16, 16]} />
+                                            <sphereGeometry args={[0.10, 16, 16]} />
                                             <meshPhysicalMaterial
                                                 color={strawberryColor}
-                                                roughness={0.15}
-                                                clearcoat={0.9}
-                                                clearcoatRoughness={0.08}
+                                                roughness={0.12}
+                                                clearcoat={1.0}
+                                                clearcoatRoughness={0.05}
                                             />
                                         </mesh>
-                                        <mesh castShadow position={[0, -0.07, 0]}>
-                                            <coneGeometry args={[0.092, 0.16, 16]} />
+                                        <mesh castShadow position={[0, -0.075, 0]}>
+                                            <coneGeometry args={[0.098, 0.17, 16]} />
                                             <meshPhysicalMaterial
                                                 color={strawberryColor}
-                                                roughness={0.18}
-                                                clearcoat={0.85}
+                                                roughness={0.14}
+                                                clearcoat={0.95}
+                                                clearcoatRoughness={0.05}
                                             />
                                         </mesh>
                                         {/* Little Green Stem Calyx */}
-                                        <mesh position={[0, 0.09, 0]}>
-                                            <cylinderGeometry args={[0.05, 0.01, 0.02, 5]} />
+                                        <mesh position={[0, 0.095, 0]}>
+                                            <cylinderGeometry args={[0.055, 0.015, 0.025, 6]} />
                                             <meshStandardMaterial color="#2d6a4f" roughness={0.6} />
                                         </mesh>
                                     </group>
@@ -210,7 +211,7 @@ const Sprinkles = ({ accent, isSlice }: { accent: string; isSlice?: boolean }) =
 const CakeBody = ({ cake, isSlice }: { cake: CakeOption; isSlice?: boolean }) => {
     const config = cake.config;
 
-    // Generate precise wedge shape for main body or slice
+    // Full wedge shape for top frosting cap
     const shape = useMemo(() => {
         const s = new THREE.Shape();
         s.moveTo(0, 0);
@@ -220,6 +221,34 @@ const CakeBody = ({ cake, isSlice }: { cake: CakeOption; isSlice?: boolean }) =>
             s.arc(0, 0, radius, 0, Math.PI * 2 - cutAngle, false);
         }
         s.lineTo(0, 0);
+        return s;
+    }, [isSlice]);
+
+    // Inner wedge shape for interior sponge crumb and ganache tiers
+    const innerShape = useMemo(() => {
+        const s = new THREE.Shape();
+        const rInner = radius - 0.045;
+        s.moveTo(0, 0);
+        if (isSlice) {
+            s.arc(0, 0, rInner, Math.PI * 2 - cutAngle, Math.PI * 2, false);
+        } else {
+            s.arc(0, 0, rInner, 0, Math.PI * 2 - cutAngle, false);
+        }
+        s.lineTo(0, 0);
+        return s;
+    }, [isSlice]);
+
+    // Outer frosted perimeter wall shape (covers curved outer boundary)
+    const frostingWallShape = useMemo(() => {
+        const s = new THREE.Shape();
+        const startAngle = isSlice ? Math.PI * 2 - cutAngle : 0;
+        const endAngle = isSlice ? Math.PI * 2 : Math.PI * 2 - cutAngle;
+        const wallThickness = 0.05;
+
+        s.absarc(0, 0, radius, startAngle, endAngle, false);
+        s.lineTo(Math.cos(endAngle) * (radius - wallThickness), Math.sin(endAngle) * (radius - wallThickness));
+        s.absarc(0, 0, radius - wallThickness, endAngle, startAngle, true);
+        s.closePath();
         return s;
     }, [isSlice]);
 
@@ -236,42 +265,65 @@ const CakeBody = ({ cake, isSlice }: { cake: CakeOption; isSlice?: boolean }) =>
 
     return (
         <group rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+            {/* Smooth Outer Frosting Coating Mantle */}
+            <mesh castShadow receiveShadow position={[0, 0, 0]}>
+                <extrudeGeometry
+                    args={[
+                        frostingWallShape,
+                        {
+                            depth: height - 0.04,
+                            bevelEnabled: true,
+                            bevelSegments: 3,
+                            steps: 1,
+                            bevelSize: 0.015,
+                            bevelThickness: 0.015,
+                        }
+                    ]}
+                />
+                <meshPhysicalMaterial
+                    color={config.frostingColor}
+                    roughness={0.32}
+                    clearcoat={0.45}
+                    clearcoatRoughness={0.12}
+                />
+            </mesh>
+
             {/* Sponge Layer 1 (Base Tier) */}
             <mesh castShadow receiveShadow position={[0, 0, 0]}>
-                <extrudeGeometry args={[shape, getExtrudeSettings(layerH, 0.025)]} />
-                <meshStandardMaterial color={config.spongeColor} roughness={0.85} />
+                <extrudeGeometry args={[innerShape, getExtrudeSettings(layerH, 0.02)]} />
+                <meshStandardMaterial color={config.spongeColor} roughness={0.88} />
             </mesh>
 
             {/* Silky Ganache Filling Layer 1 */}
             <mesh castShadow position={[0, 0, layerH]}>
-                <extrudeGeometry args={[shape, getExtrudeSettings(layerH * 0.9, 0.015)]} />
+                <extrudeGeometry args={[innerShape, getExtrudeSettings(layerH * 0.9, 0.015)]} />
                 <meshPhysicalMaterial
                     color={config.fillingColor}
-                    roughness={0.22}
-                    clearcoat={0.3}
+                    roughness={0.18}
+                    clearcoat={0.4}
                 />
             </mesh>
 
             {/* Sponge Layer 2 (Middle Tier) */}
             <mesh castShadow receiveShadow position={[0, 0, layerH * 1.9]}>
-                <extrudeGeometry args={[shape, getExtrudeSettings(layerH, 0.02)]} />
-                <meshStandardMaterial color={config.spongeColor} roughness={0.85} />
+                <extrudeGeometry args={[innerShape, getExtrudeSettings(layerH, 0.02)]} />
+                <meshStandardMaterial color={config.spongeColor} roughness={0.88} />
             </mesh>
 
             {/* Silky Ganache Filling Layer 2 */}
             <mesh castShadow position={[0, 0, layerH * 2.9]}>
-                <extrudeGeometry args={[shape, getExtrudeSettings(layerH * 0.9, 0.015)]} />
+                <extrudeGeometry args={[innerShape, getExtrudeSettings(layerH * 0.9, 0.015)]} />
                 <meshPhysicalMaterial
                     color={config.fillingColor}
-                    roughness={0.22}
-                    clearcoat={0.3}
+                    roughness={0.18}
+                    clearcoat={0.4}
                 />
             </mesh>
 
             {/* Sponge Layer 3 (Top Sponge Tier) */}
             <mesh castShadow receiveShadow position={[0, 0, layerH * 3.8]}>
-                <extrudeGeometry args={[shape, getExtrudeSettings(layerH, 0.02)]} />
-                <meshStandardMaterial color={config.spongeColor} roughness={0.85} />
+                <extrudeGeometry args={[innerShape, getExtrudeSettings(layerH, 0.02)]} />
+                <meshStandardMaterial color={config.spongeColor} roughness={0.88} />
             </mesh>
 
             {/* Top Frosting Crown Layer with Velvety Sheen */}
@@ -279,9 +331,9 @@ const CakeBody = ({ cake, isSlice }: { cake: CakeOption; isSlice?: boolean }) =>
                 <extrudeGeometry args={[shape, getExtrudeSettings(0.14, 0.035)]} />
                 <meshPhysicalMaterial
                     color={config.frostingColor}
-                    roughness={0.38}
-                    clearcoat={0.35}
-                    clearcoatRoughness={0.15}
+                    roughness={0.32}
+                    clearcoat={0.5}
+                    clearcoatRoughness={0.12}
                 />
             </mesh>
 
@@ -347,6 +399,11 @@ const Candle = ({ lit, accent }: { lit: boolean; accent: string }) => {
             {/* Dynamic Flame */}
             {lit && (
                 <group ref={flameRef} position={[0, 0.98, 0]}>
+                    {/* Delicate Blue Flame Base at wick */}
+                    <mesh position={[0, 0.04, 0]}>
+                        <sphereGeometry args={[0.045, 12, 12]} />
+                        <meshBasicMaterial color="#38bdf8" transparent opacity={0.65} />
+                    </mesh>
                     {/* Inner Intense Core */}
                     <mesh position={[0, 0.14, 0]}>
                         <coneGeometry args={[0.07, 0.28, 16]} />
@@ -364,7 +421,7 @@ const Candle = ({ lit, accent }: { lit: boolean; accent: string }) => {
                         />
                     </mesh>
                     {/* Dynamic Point Light */}
-                    <pointLight color="#ffb703" intensity={2.2} distance={6} decay={2} />
+                    <pointLight color="#ffb703" intensity={2.8} distance={6} decay={2} />
                 </group>
             )}
 
@@ -468,17 +525,32 @@ const Scene = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
     return (
         <>
             {/* Gourmet Celebration Studio Lighting */}
-            <ambientLight intensity={0.7} />
+            <ambientLight intensity={0.9} color="#fffcf5" />
+            {/* Warm Key Light with Crisp Shadows */}
             <directionalLight
-                position={[5, 12, 6]}
-                intensity={1.3}
+                position={[4.5, 8, 5]}
+                intensity={2.6}
+                color="#fffaf0"
                 castShadow
                 shadow-mapSize={[1024, 1024]}
-                shadow-bias={-0.0006}
+                shadow-bias={-0.0004}
             />
-            <directionalLight position={[-6, 6, -4]} intensity={0.65} />
-            <hemisphereLight args={["#ffffff", "#332211", 0.55]} />
-            <pointLight position={[0, 4.5, 0]} intensity={0.8} />
+            {/* Soft Cool Fill Light */}
+            <directionalLight
+                position={[-4.5, 4, 3]}
+                intensity={1.2}
+                color="#e0f2fe"
+            />
+            {/* Golden Rim Backlight for Dramatic Edge Separation & Specular Halo */}
+            <directionalLight
+                position={[0, 6, -5]}
+                intensity={2.2}
+                color="#ffd166"
+            />
+            {/* Warm Top Spotlight on Cake Crown */}
+            <pointLight position={[0, 4.2, 0.5]} intensity={1.5} distance={8} color="#fff5ea" />
+            {/* Ambient Hemisphere for Deep Rich Shadows */}
+            <hemisphereLight args={["#ffffff", "#2b1810", 0.7]} />
 
             <Float speed={1.0} rotationIntensity={0.03} floatIntensity={0.08}>
                 <group position={[0, -0.9, 0]}>
@@ -524,7 +596,7 @@ export const Cake3D = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
             <Canvas
                 shadows
                 dpr={isMobile ? [1, 1.5] : [1, 2]}
-                camera={{ position: [0, 4.8, 7.8], fov: 44 }}
+                camera={{ position: [0, 3.2, 5.2], fov: 38 }}
                 gl={{ powerPreference: "high-performance", antialias: true, alpha: true }}
             >
                 <Suspense fallback={null}>

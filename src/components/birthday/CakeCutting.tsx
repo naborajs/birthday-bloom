@@ -387,7 +387,7 @@ export const CakeCutting = () => {
                                     
                                     {/* Countdown Overlay */}
                                     {phase === "countdown" && (
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm z-50 rounded-[2.5rem] pointer-events-none">
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center z-50 rounded-[2.5rem] pointer-events-none">
                                             <motion.span initial={{ opacity: 0, y: -10 }} animate={{ opacity: 0.5, y: 0 }} className="text-white/40 text-xs md:text-sm tracking-[0.3em] uppercase mb-4 font-bold">
                                                 {t('cake.prepareToCut')}
                                             </motion.span>
