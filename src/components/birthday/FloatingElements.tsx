@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { getTemplateEmojiKit } from '@/config/emojiKits';
 import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface FloatingItem {
     id: number;
@@ -21,13 +22,14 @@ export const FloatingElements = () => {
     const { relationship, gender, favoriteColor } = config;
     const emojiKit = useMemo(() => getTemplateEmojiKit(config), [config]);
     const { scrollY } = useScroll();
+    const isMobile = useIsMobile();
     const primaryColor = favoriteColor || '#FF2A6D';
 
     useEffect(() => {
         const particleSpeed = relationship === 'partner' ? 1.4 :
             relationship === 'friend' ? 0.6 : 1;
         
-        const count = relationship === 'partner' ? 16 : 12;
+        const count = isMobile ? 8 : (relationship === 'partner' ? 16 : 12);
         const newItems: FloatingItem[] = Array.from({ length: count }, (_, i) => {
             const isPartner = relationship === 'partner';
             const element = emojiKit.floating[Math.floor(Math.random() * emojiKit.floating.length)] || (isPartner ? '💖' : '✨');
@@ -44,19 +46,24 @@ export const FloatingElements = () => {
             };
         });
         setItems(newItems);
-    }, [emojiKit.floating, relationship, gender]);
+    }, [emojiKit.floating, relationship, gender, isMobile]);
 
     return (
         <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-            {/* Ambient Bokeh Aura */}
-            <div className="absolute inset-0 opacity-[0.1]">
+            {/* Ambient Bokeh Aura (Zero-Filter Radial Gradient) */}
+            <div className="absolute inset-0 opacity-[0.12]">
                 <div
-                    className="absolute top-1/4 -left-20 w-[32rem] h-[32rem] rounded-full blur-[130px] animate-bg-shift"
-                    style={{ background: relationship === 'partner' ? primaryColor : 'var(--color-primary, #FF6B6B)', backgroundSize: '200% 200%' }}
+                    className="absolute top-1/4 -left-20 w-[32rem] h-[32rem] rounded-full animate-bg-shift"
+                    style={{
+                        background: `radial-gradient(circle, ${relationship === 'partner' ? primaryColor : 'var(--color-primary, #FF6B6B)'} 0%, transparent 70%)`
+                    }}
                 />
                 <div
-                    className="absolute bottom-1/4 -right-20 w-[32rem] h-[32rem] rounded-full blur-[130px] animate-bg-shift"
-                    style={{ background: relationship === 'partner' ? '#FF69B4' : 'var(--color-secondary, #4ECDC4)', backgroundSize: '200% 200%', animationDelay: '-10s' }}
+                    className="absolute bottom-1/4 -right-20 w-[32rem] h-[32rem] rounded-full animate-bg-shift"
+                    style={{
+                        background: `radial-gradient(circle, ${relationship === 'partner' ? '#FF69B4' : 'var(--color-secondary, #4ECDC4)'} 0%, transparent 70%)`,
+                        animationDelay: '-10s'
+                    }}
                 />
             </div>
 
@@ -93,7 +100,7 @@ export const FloatingElements = () => {
 
             {/* Parallax Floating Emojis */}
             {items.map((item) => (
-                <ParallaxItem key={item.id} item={item} scrollY={scrollY} isPartner={relationship === 'partner'} />
+                <ParallaxItem key={item.id} item={item} scrollY={scrollY} isPartner={relationship === 'partner'} isMobile={isMobile} />
             ))}
         </div>
     );
@@ -103,13 +110,16 @@ const ParallaxItem = ({
     item,
     scrollY,
     isPartner,
+    isMobile,
 }: {
     item: FloatingItem;
     scrollY: MotionValue<number>;
     isPartner: boolean;
+    isMobile: boolean;
 }) => {
     const y = useTransform(scrollY, [0, 2000], [0, -item.depth * 250]);
     const baseOpacity = isPartner ? 0.35 / item.depth : 0.22 / item.depth;
+    const blurAmount = Math.max(0, item.depth - 1.4);
 
     return (
         <motion.div
@@ -118,7 +128,7 @@ const ParallaxItem = ({
                 top: `${item.y}%`,
                 fontSize: `${item.size}rem`,
                 opacity: baseOpacity,
-                filter: `blur(${Math.max(0, item.depth - 1.4)}px)`,
+                filter: (!isMobile && blurAmount > 0.2) ? `blur(${blurAmount}px)` : undefined,
                 y,
             }}
             initial={{ y: 0 }}

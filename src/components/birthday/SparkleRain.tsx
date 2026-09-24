@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 interface Sparkle {
     id: number;
@@ -8,14 +9,14 @@ interface Sparkle {
     opacity: number;
 }
 export const SparkleRain = ({ intensity = 20 }) => {
-    const sparkles: Sparkle[] = Array.from({ length: intensity }, (_, i) => ({
+    const sparkles: Sparkle[] = useMemo(() => Array.from({ length: intensity }, (_, i) => ({
         id: i,
         left: `${Math.random() * 100}%`,
         delay: Math.random() * 2,
         duration: 3 + Math.random() * 2,
         size: 2 + Math.random() * 4,
         opacity: 0.3 + Math.random() * 0.4,
-    }));
+    })), [intensity]);
     return (<div className="fixed inset-0 pointer-events-none overflow-hidden">
       {sparkles.map((sparkle) => (<motion.div key={sparkle.id} className="absolute rounded-full" style={{
                 left: sparkle.left,

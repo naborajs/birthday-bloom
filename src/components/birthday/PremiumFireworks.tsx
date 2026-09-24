@@ -142,11 +142,13 @@ export const PremiumFireworks = ({ runKey }: PremiumFireworksProps) => {
                 });
                 context.beginPath();
                 context.fillStyle = firework.color;
-                context.shadowBlur = 18;
-                context.shadowColor = firework.color;
                 context.arc(firework.x, firework.y, 2.8, 0, Math.PI * 2);
                 context.fill();
-                context.shadowBlur = 0;
+                // Lightweight luminous aura without software shadowBlur
+                context.beginPath();
+                context.fillStyle = `${firework.color}40`;
+                context.arc(firework.x, firework.y, 5.5, 0, Math.PI * 2);
+                context.fill();
                 if (firework.y <= firework.targetY || Math.hypot(firework.x - firework.targetX, firework.y - firework.targetY) < 28) {
                     explode(firework);
                     fireworks.splice(i, 1);
@@ -160,13 +162,19 @@ export const PremiumFireworks = ({ runKey }: PremiumFireworksProps) => {
                 particle.y += particle.vy * delta;
                 particle.maxLife -= delta;
                 particle.life = Math.max(0, particle.maxLife / 88);
+                const particleAlpha = Math.floor(particle.life * 220).toString(16).padStart(2, "0");
+                const haloAlpha = Math.floor(particle.life * 50).toString(16).padStart(2, "0");
+                const pRadius = particle.size * particle.life;
+                // Outer glow halo (GPU-accelerated, zero-software-blur)
                 context.beginPath();
-                context.fillStyle = `${particle.color}${Math.floor(particle.life * 220).toString(16).padStart(2, "0")}`;
-                context.shadowBlur = 12;
-                context.shadowColor = particle.color;
-                context.arc(particle.x, particle.y, particle.size * particle.life, 0, Math.PI * 2);
+                context.fillStyle = `${particle.color}${haloAlpha}`;
+                context.arc(particle.x, particle.y, pRadius * 2.2, 0, Math.PI * 2);
                 context.fill();
-                context.shadowBlur = 0;
+                // Core particle
+                context.beginPath();
+                context.fillStyle = `${particle.color}${particleAlpha}`;
+                context.arc(particle.x, particle.y, pRadius, 0, Math.PI * 2);
+                context.fill();
                 if (particle.life <= 0 || particle.y > window.innerHeight + 40)
                     particles.splice(i, 1);
             }

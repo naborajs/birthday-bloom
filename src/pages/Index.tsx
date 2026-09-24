@@ -37,10 +37,10 @@ const Index = () => {
     useDynamicSEO(config);
 
     return (<main aria-label="Birthday Celebration Experience" className="min-h-screen transition-colors duration-1000 relative overflow-hidden" style={{ background: 'var(--bg-gradient, #1a0515)' }}>
-      {/* Dreamy Ambient Bokeh Auras */}
-      <div className="fixed top-[5%] left-[8%] w-[38rem] h-[38rem] rounded-full bg-[radial-gradient(circle,rgba(255,75,130,0.2)_0%,transparent_70%)] blur-[120px] pointer-events-none animate-subtle-float" />
-      <div className="fixed top-[20%] right-[8%] w-[34rem] h-[34rem] rounded-full bg-[radial-gradient(circle,rgba(255,200,100,0.15)_0%,transparent_70%)] blur-[130px] pointer-events-none animate-pulse" />
-      <div className="fixed bottom-[10%] left-[25%] w-[42rem] h-[42rem] rounded-full bg-[radial-gradient(circle,rgba(180,60,140,0.18)_0%,transparent_70%)] blur-[140px] pointer-events-none" />
+      {/* Dreamy Ambient Bokeh Auras (Zero-filter GPU-optimized multi-stop radial gradients) */}
+      <div className="fixed top-[5%] left-[8%] w-[38rem] h-[38rem] rounded-full bg-[radial-gradient(circle,rgba(255,75,130,0.16)_0%,rgba(255,75,130,0.08)_40%,transparent_70%)] pointer-events-none animate-subtle-float" />
+      <div className="fixed top-[20%] right-[8%] w-[34rem] h-[34rem] rounded-full bg-[radial-gradient(circle,rgba(255,200,100,0.14)_0%,rgba(255,200,100,0.05)_40%,transparent_70%)] pointer-events-none animate-pulse" />
+      <div className="fixed bottom-[10%] left-[25%] w-[42rem] h-[42rem] rounded-full bg-[radial-gradient(circle,rgba(180,60,140,0.15)_0%,rgba(180,60,140,0.06)_40%,transparent_70%)] pointer-events-none" />
 
       {/* Lightweight ambient effects — reduced for performance */}
       <EmojiCursorTrail />

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 interface Firefly {
     id: number;
@@ -8,14 +9,14 @@ interface Firefly {
     size: number;
 }
 export const FireflyEffect = ({ intensity = 15 }) => {
-    const fireflies: Firefly[] = Array.from({ length: intensity }, (_, i) => ({
+    const fireflies: Firefly[] = useMemo(() => Array.from({ length: intensity }, (_, i) => ({
         id: i,
         x: Math.random() * 100,
         y: Math.random() * 100,
         delay: Math.random() * 2,
         duration: 4 + Math.random() * 2,
         size: 2 + Math.random() * 3,
-    }));
+    })), [intensity]);
     return (<div className="fixed inset-0 pointer-events-none overflow-hidden">
       {fireflies.map((firefly) => (<motion.div key={firefly.id} className="absolute rounded-full" style={{
                 left: `${firefly.x}%`,

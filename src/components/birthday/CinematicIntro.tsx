@@ -554,10 +554,10 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
             } ${shaking ? "animate-screen-shake" : ""}`}
             style={{ background: 'transparent' }}
         >
-            {/* Dreamy Ambient Bokeh Auras */}
-            <div className="absolute top-[8%] left-[12%] w-[32rem] h-[32rem] rounded-full bg-[radial-gradient(circle,rgba(255,75,130,0.22)_0%,transparent_70%)] blur-[100px] pointer-events-none animate-subtle-float" />
-            <div className="absolute top-[18%] right-[12%] w-[30rem] h-[30rem] rounded-full bg-[radial-gradient(circle,rgba(255,200,100,0.18)_0%,transparent_70%)] blur-[110px] pointer-events-none animate-pulse" />
-            <div className="absolute bottom-[10%] left-[25%] w-[36rem] h-[36rem] rounded-full bg-[radial-gradient(circle,rgba(180,60,140,0.2)_0%,transparent_70%)] blur-[120px] pointer-events-none" />
+            {/* Dreamy Ambient Bokeh Auras (GPU-optimized multi-stop radial gradients) */}
+            <div className="absolute top-[8%] left-[12%] w-[32rem] h-[32rem] rounded-full bg-[radial-gradient(circle,rgba(255,75,130,0.18)_0%,rgba(255,75,130,0.08)_40%,transparent_70%)] pointer-events-none animate-subtle-float" />
+            <div className="absolute top-[18%] right-[12%] w-[30rem] h-[30rem] rounded-full bg-[radial-gradient(circle,rgba(255,200,100,0.14)_0%,rgba(255,200,100,0.05)_40%,transparent_70%)] pointer-events-none animate-pulse" />
+            <div className="absolute bottom-[10%] left-[25%] w-[36rem] h-[36rem] rounded-full bg-[radial-gradient(circle,rgba(180,60,140,0.16)_0%,rgba(180,60,140,0.06)_40%,transparent_70%)] pointer-events-none" />
 
             <AnimatePresence mode="wait">
                 {scene === "storytelling" && (

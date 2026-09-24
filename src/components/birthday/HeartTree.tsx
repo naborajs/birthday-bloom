@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useSoundManager } from "./SoundManager";
@@ -120,7 +120,6 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
     const [stage, setStage] = useState(0);
     const [activeMsg, setActiveMsg] = useState<string | null>(null);
     const [scales, setScales] = useState<number[]>(Array(12).fill(0));
-    const rafRefs = useRef<number[]>([]);
     const { config } = useBirthdayStore();
     const { relationship, gender, photos = [] } = config;
     const validPhotos = useMemo(() => photos.filter(p => isRealImageUrl(p)), [photos]);
@@ -192,25 +191,32 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
 
     useEffect(() => {
         if (stage < 3) return;
-        const refs = rafRefs.current;
-        refs.forEach(cancelAnimationFrame);
-        LEAVES.forEach((leaf, i) => {
-            const target = leaf.s;
-            const startTime = performance.now() + leaf.d;
-            const dur = 700;
-            const tick = (now: number) => {
-                if (now < startTime) { refs[i] = requestAnimationFrame(tick); return; }
-                const t = Math.min((now - startTime) / dur, 1);
+        let rafId: number;
+        const startTime = performance.now();
+        const dur = 700;
+        const tick = (now: number) => {
+            let allDone = true;
+            const nextScales = LEAVES.map((leaf) => {
+                const leafStart = startTime + leaf.d;
+                if (now < leafStart) {
+                    allDone = false;
+                    return 0;
+                }
+                const t = Math.min((now - leafStart) / dur, 1);
+                if (t < 1) allDone = false;
                 const ease = 1 - Math.pow(1 - t, 3);
-                const overshoot = t < 0.7 ? 0 : Math.sin((t - 0.7) / 0.3 * Math.PI) * 0.12;
-                const sc = (ease + overshoot) * target;
-                setScales(prev => { const n = [...prev]; n[i] = sc; return n; });
-                if (t < 1) refs[i] = requestAnimationFrame(tick);
-                else setScales(prev => { const n = [...prev]; n[i] = target; return n; });
-            };
-            refs[i] = requestAnimationFrame(tick);
-        });
-        return () => refs.forEach(cancelAnimationFrame);
+                const overshoot = t < 0.7 ? 0 : Math.sin(((t - 0.7) / 0.3) * Math.PI) * 0.12;
+                return (ease + overshoot) * leaf.s;
+            });
+            setScales(nextScales);
+            if (!allDone) {
+                rafId = requestAnimationFrame(tick);
+            } else {
+                setScales(LEAVES.map((l) => l.s));
+            }
+        };
+        rafId = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(rafId);
     }, [stage]);
 
     const clickHeart = (e: React.MouseEvent<SVGGElement>, i: number) => {
@@ -236,8 +242,8 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
             }}>
                 <div style={{ position: "relative", width: "100%", aspectRatio: "1/1" }}>
 
-                    <div className="absolute inset-0 pointer-events-none rounded-full blur-[100px] transition-opacity"
-                        style={{ transitionDuration: '2000ms', background: `radial-gradient(circle at 50% 40%, ${primaryColor}40, transparent 70%)`, opacity: stage === 4 ? 1 : 0 }} />
+                    <div className="absolute inset-0 pointer-events-none rounded-full transition-opacity"
+                        style={{ transitionDuration: '2000ms', background: `radial-gradient(circle at 50% 40%, ${primaryColor}40 0%, ${primaryColor}15 45%, transparent 70%)`, opacity: stage === 4 ? 1 : 0 }} />
 
                     {stage >= 3 && <TreeSparks count={20} color={primaryColor} />}
 

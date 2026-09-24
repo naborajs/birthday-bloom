@@ -15,9 +15,7 @@ interface TrailParticle {
     duration: number;
 }
 const MAX_PARTICLES_DESKTOP = 28;
-const MAX_PARTICLES_MOBILE = 14;
 const MIN_DISTANCE_DESKTOP = 22;
-const MIN_DISTANCE_TOUCH = 34;
 export const EmojiCursorTrail = () => {
     const [particles, setParticles] = useState<TrailParticle[]>([]);
     const config = useBirthdayStore((state) => state.config);
@@ -38,11 +36,11 @@ export const EmojiCursorTrail = () => {
     const cleanupTimersRef = useRef<number[]>([]);
     const idRef = useRef(0);
     useEffect(() => {
-        if (reduceMotion || typeof window === "undefined")
+        if (reduceMotion || isMobile || typeof window === "undefined")
             return undefined;
-        const maxParticles = isMobile ? MAX_PARTICLES_MOBILE : MAX_PARTICLES_DESKTOP;
-        const minDistance = isMobile ? MIN_DISTANCE_TOUCH : MIN_DISTANCE_DESKTOP;
-        const minDelay = isMobile ? 80 : 45;
+        const maxParticles = MAX_PARTICLES_DESKTOP;
+        const minDistance = MIN_DISTANCE_DESKTOP;
+        const minDelay = 45;
         const emitParticle = () => {
             rafRef.current = null;
             const pointer = pointerRef.current;
@@ -59,9 +57,9 @@ export const EmojiCursorTrail = () => {
                 emoji: pickTemplateEmoji(kit.cursor),
                 x: pointer.x,
                 y: pointer.y,
-                size: isMobile ? 18 + Math.random() * 10 : 20 + Math.random() * 16,
-                drift: (Math.random() - 0.5) * (isMobile ? 46 : 72),
-                rise: isMobile ? 54 + Math.random() * 46 : 72 + Math.random() * 68,
+                size: 20 + Math.random() * 16,
+                drift: (Math.random() - 0.5) * 72,
+                rise: 72 + Math.random() * 68,
                 rotate: (Math.random() - 0.5) * 110,
                 duration: 0.85 + Math.random() * 0.45,
             };
@@ -73,7 +71,7 @@ export const EmojiCursorTrail = () => {
             cleanupTimersRef.current.push(timer);
         };
         const handlePointerMove = (event: PointerEvent) => {
-            if (event.pointerType === "touch" && !isMobile)
+            if (event.pointerType === "touch")
                 return;
             pointerRef.current = { x: event.clientX, y: event.clientY, type: event.pointerType };
             if (rafRef.current === null) {
@@ -97,7 +95,7 @@ export const EmojiCursorTrail = () => {
             cleanupTimersRef.current = [];
         };
     }, [isMobile, kit.cursor, reduceMotion]);
-    if (reduceMotion)
+    if (reduceMotion || isMobile)
         return null;
     return (<div className="fixed inset-0 pointer-events-none z-[90] overflow-hidden">
       <AnimatePresence>
