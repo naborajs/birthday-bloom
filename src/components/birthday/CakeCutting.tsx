@@ -9,9 +9,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 import { Phase, CakeOption, CAKE_OPTIONS, getCakeName } from "./CakeTypes";
-import { CutSparks, MagicDust } from "./CakeVisuals";
+import { CutSparks, MagicDust, PastryCrumbs } from "./CakeVisuals";
 import { Cake3D } from "./Cake3D";
-import { CakeKnife } from "./CakeKnife";
 import { useTranslation } from "@/i18n";
 
 const CakeCard = ({ cake, onSelect }: {
@@ -193,68 +192,79 @@ export const CakeCutting = () => {
         setPhase("baking"); // Start baking sequence
     }, [playPop]);
 
-    // Handle baking loading screen
+    // Handle baking loading screen (snappy 1.0s transition)
     useEffect(() => {
         if (phase === "baking") {
             const t = setTimeout(() => {
                 setPhase("blow-intro");
-            }, 2500); // Give 3D assets time to compile shaders and render
+            }, 1000);
             return () => clearTimeout(t);
         }
     }, [phase]);
+
+    const handleCut = useCallback(() => {
+        if (phase !== "knife-enter") return;
+        setPhase("cutting");
+        playWhoosh();
+        if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate([80, 50, 160]);
+
+        setTimeout(() => {
+            playBoom();
+            fireCinematicCelebration();
+            setPhase("burst");
+            playReveal();
+            setTimeout(() => {
+                setPhase("quotes");
+                setQuoteIndex(0);
+            }, 1400);
+        }, 1100);
+    }, [phase, playWhoosh, playBoom, fireCinematicCelebration, playReveal]);
 
     const handleBlow = useCallback(() => {
         if (phase !== "blow-intro") return;
         
         const runSequence = async () => {
-            // 1. Blow sequence
+            // 1. Blow sequence - candle flame extinguishes with realistic rising smoke wisp
             setPhase("blowing");
             if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate([100, 50, 100]);
             playWhoosh();
             
             // 2. Wish sent
-            await new Promise(r => setTimeout(r, 1500));
+            await new Promise(r => setTimeout(r, 1200));
             setPhase("wish");
             
-            // 3. Countdown Start
-            await new Promise(r => setTimeout(r, 3000));
+            // 3. Crisp, exciting countdown
+            await new Promise(r => setTimeout(r, 2200));
             setPhase("countdown");
             setCountdownVal(3);
             playPop();
             
-            await new Promise(r => setTimeout(r, 1000));
+            await new Promise(r => setTimeout(r, 800));
             setCountdownVal(2);
             playPop();
             
-            await new Promise(r => setTimeout(r, 1000));
+            await new Promise(r => setTimeout(r, 800));
             setCountdownVal(1);
             playPop();
             
-            // 4. Knife Enters
-            await new Promise(r => setTimeout(r, 1000));
+            // 4. True 3D Knife Enters & Hovers over cake
+            await new Promise(r => setTimeout(r, 800));
             playReveal();
             setPhase("knife-enter");
-            
-            // 5. Knife Cuts Down
-            await new Promise(r => setTimeout(r, 1500));
-            playBoom();
-            setPhase("cutting");
-            if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(200);
-            
-            // 6. Burst and Cake Split
-            await new Promise(r => setTimeout(r, 1000));
-            fireCinematicCelebration();
-            setPhase("burst");
-            playReveal();
-            
-            // 7. Quotes Sequence
-            await new Promise(r => setTimeout(r, 1500));
-            setPhase("quotes");
-            setQuoteIndex(0);
         };
         
         runSequence();
-    }, [phase, fireCinematicCelebration, playBoom, playReveal, playWhoosh, playPop]);
+    }, [phase, playWhoosh, playPop, playReveal]);
+
+    // Auto-cut fallback if user doesn't press button after knife enters
+    useEffect(() => {
+        if (phase === "knife-enter") {
+            const autoTimer = setTimeout(() => {
+                handleCut();
+            }, 5500);
+            return () => clearTimeout(autoTimer);
+        }
+    }, [phase, handleCut]);
 
     // Lock scroll when experience is active
     useEffect(() => {
@@ -359,16 +369,14 @@ export const CakeCutting = () => {
                                     
                                     {/* Overlays on top of the Cake */}
                                     
-                                    {/* Knife Overlay */}
-                                    {(phase === "knife-enter" || phase === "cutting" || phase === "burst") && (
-                                        <div className="absolute inset-0 z-50 pointer-events-none">
-                                            <CakeKnife phase={phase} />
-                                        </div>
-                                    )}
-                                    
-                                    {/* Sparks and Burst */}
+                                    {/* Sparks, Crumbs and Burst */}
                                     <AnimatePresence>
-                                        {phase === "cutting" && <CutSparks count={sparkCount} color={cake.accent} />}
+                                        {phase === "cutting" && (
+                                            <>
+                                                <CutSparks count={sparkCount} color={cake.accent} />
+                                                <PastryCrumbs count={isMobile ? 18 : 32} color={cake.config.crumbColor || cake.accent} />
+                                            </>
+                                        )}
                                         {phase === "burst" && <MagicDust count={60} />}
                                     </AnimatePresence>
                                     
@@ -436,6 +444,35 @@ export const CakeCutting = () => {
                                                 {t('cake.wishSentToStars')}
                                             </h2>
                                             <p className="text-white/60 text-xl mt-4 font-light italic">{t('cake.waitForCut')}</p>
+                                        </motion.div>
+                                    )}
+
+                                    {/* Interactive Slice Cake Action */}
+                                    {phase === "knife-enter" && (
+                                        <motion.div
+                                            initial={{ scale: 0.85, opacity: 0, y: 15 }}
+                                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                                            transition={{ duration: 0.35 }}
+                                            className="flex flex-col items-center gap-3"
+                                        >
+                                            <motion.button
+                                                whileHover={!reducedMotion ? { scale: 1.08, y: -2 } : undefined}
+                                                whileTap={{ scale: 0.94 }}
+                                                onClick={handleCut}
+                                                className="group relative px-10 py-4.5 rounded-full text-lg sm:text-xl font-black text-white overflow-hidden shadow-[0_10px_35px_rgba(255,255,255,0.25)] border border-white/20 backdrop-blur-xl transition-all"
+                                                style={{
+                                                    background: `linear-gradient(135deg, ${cake.accent}, #ff0080)`,
+                                                }}
+                                            >
+                                                <span className="relative z-10 flex items-center gap-2">
+                                                    <span>{isFrench ? "Couper le Gâteau ✨" : isBengali ? "কেক কাটুন ✨" : isHindi ? "केक काटिए ✨" : "Cut The Cake ✨"}</span>
+                                                    <span>🎂</span>
+                                                </span>
+                                                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-400" />
+                                            </motion.button>
+                                            <p className="text-white/60 text-xs sm:text-sm tracking-widest uppercase font-medium animate-pulse">
+                                                {isFrench ? "Touchez pour trancher le gâteau" : isBengali ? "কেকটি কাটতে স্পর্শ করুন" : isHindi ? "केक काटने के लिए टैप करें" : "Tap to slice the cake"}
+                                            </p>
                                         </motion.div>
                                     )}
                                     

@@ -12,6 +12,11 @@ export interface Cake3DConfig {
     dripColor: string;
     plateColor: string;
     cherryColor?: string;
+    trimColor?: string;
+    crumbColor?: string;
+    innerCreamColor?: string;
+    toppingColor?: string;
+    plateTrimColor?: string;
 }
 
 export interface CakeOption {
@@ -46,11 +51,16 @@ export const CAKE_OPTIONS: CakeOption[] = [
         layers: ["hsl(15,60%,30%)", "hsl(15,50%,40%)", "hsl(20,40%,50%)"],
         accent: "hsl(45,100%,60%)",
         config: {
-            spongeColor: "#3e2723",
-            fillingColor: "#4e342e",
-            frostingColor: "#3e2723",
-            dripColor: "#21100a",
-            plateColor: "#e0e0e0"
+            spongeColor: "#2b1810",
+            crumbColor: "#3e2417",
+            fillingColor: "#4a2818",
+            innerCreamColor: "#5c331e",
+            frostingColor: "#361c12",
+            dripColor: "#1a0b06",
+            plateColor: "#f7f7f9",
+            plateTrimColor: "#d4af37",
+            cherryColor: "#c1121f",
+            toppingColor: "#d4af37"
         }
     },
     {
@@ -64,11 +74,16 @@ export const CAKE_OPTIONS: CakeOption[] = [
         layers: ["hsl(340,60%,55%)", "hsl(330,55%,65%)", "hsl(340,50%,75%)"],
         accent: "hsl(340,80%,60%)",
         config: {
-            spongeColor: "#fce4ec",
-            fillingColor: "#f8bbd0",
-            frostingColor: "#ffccd5",
-            dripColor: "#ff4d6d",
-            plateColor: "#e0e0e0"
+            spongeColor: "#ffccd5",
+            crumbColor: "#ffb3c1",
+            fillingColor: "#ff4d6d",
+            innerCreamColor: "#fff0f3",
+            frostingColor: "#ffb3c6",
+            dripColor: "#c9184a",
+            plateColor: "#fffdfa",
+            plateTrimColor: "#f4a261",
+            cherryColor: "#e63946",
+            toppingColor: "#ff758f"
         }
     },
     {
@@ -82,11 +97,16 @@ export const CAKE_OPTIONS: CakeOption[] = [
         layers: ["hsl(270,50%,35%)", "hsl(280,45%,50%)", "hsl(290,40%,60%)"],
         accent: "hsl(45,100%,60%)",
         config: {
-            spongeColor: "#b71c1c",
-            fillingColor: "#ffffff",
-            frostingColor: "#ffffff",
-            dripColor: "#ffb300",
-            plateColor: "#e0e0e0"
+            spongeColor: "#7209b7",
+            crumbColor: "#560bad",
+            fillingColor: "#fff9ec",
+            innerCreamColor: "#ffffff",
+            frostingColor: "#3f37c9",
+            dripColor: "#ffd166",
+            plateColor: "#1e1e24",
+            plateTrimColor: "#ffd700",
+            cherryColor: "#f72585",
+            toppingColor: "#ffb703"
         }
     },
     {
@@ -100,11 +120,16 @@ export const CAKE_OPTIONS: CakeOption[] = [
         layers: ["hsl(120,40%,30%)", "hsl(100,30%,40%)", "hsl(140,40%,50%)"],
         accent: "hsl(140,60%,50%)",
         config: {
-            spongeColor: "#e8f5e9",
-            fillingColor: "#c8e6c9",
-            frostingColor: "#ffffff",
-            dripColor: "#81c784",
-            plateColor: "#e0e0e0"
+            spongeColor: "#d8f3dc",
+            crumbColor: "#b7e4c7",
+            fillingColor: "#52b788",
+            innerCreamColor: "#fefae0",
+            frostingColor: "#95d5b2",
+            dripColor: "#2d6a4f",
+            plateColor: "#fbfbf2",
+            plateTrimColor: "#b5e2fa",
+            cherryColor: "#e63946",
+            toppingColor: "#e76f51"
         }
     }
 ];
