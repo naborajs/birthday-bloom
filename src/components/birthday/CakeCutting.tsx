@@ -363,8 +363,8 @@ export const CakeCutting = () => {
                                 )}
                             </AnimatePresence>
                             
-                            <div className="w-full max-w-4xl mx-auto flex flex-col items-center justify-center min-h-[100dvh]">
-                                <div className="relative w-full h-[52vh] min-h-[440px] flex justify-center items-center mt-4">
+                            <div className="w-full max-w-4xl mx-auto flex flex-col items-center justify-center min-h-[100dvh] py-2">
+                                <div className="relative w-full h-[58vh] min-h-[460px] flex justify-center items-center mt-2 overflow-visible">
                                     <Cake3D cake={cake} phase={phase} />
                                     
                                     {/* Overlays on top of the Cake */}
@@ -415,7 +415,7 @@ export const CakeCutting = () => {
                                 </div>
 
                                 {/* Text Content Below the Cake */}
-                                <div className="w-full flex flex-col items-center mt-8 min-h-[150px]">
+                                <div className="w-full flex flex-col items-center mt-2 min-h-[140px]">
                                     {/* Blow Sequence Text */}
                                     {(phase === "blow-intro" || phase === "blowing") && (
                                         <motion.div initial={{ scale: 0.8, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} className="flex flex-col items-center gap-6">

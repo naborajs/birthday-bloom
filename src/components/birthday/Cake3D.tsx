@@ -553,7 +553,7 @@ const Scene = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
             <hemisphereLight args={["#ffffff", "#2b1810", 0.7]} />
 
             <Float speed={1.0} rotationIntensity={0.03} floatIntensity={0.08}>
-                <group position={[0, -0.62, 0]}>
+                <group position={[0, -0.25, 0]}>
                     {/* Artisanal Cake Stand */}
                     <CakeStand config={cake.config} />
 
@@ -575,12 +575,13 @@ const Scene = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
             </Float>
 
             {/* Soft Studio Floor Contact Shadows */}
-            <ContactShadows position={[0, -1.50, 0]} opacity={0.55} scale={11} blur={2.2} far={4} />
+            <ContactShadows position={[0, -1.08, 0]} opacity={0.5} scale={12} blur={2.4} far={4} />
 
             {/* Orbit Controls */}
             <OrbitControls
                 enableZoom={false}
                 enablePan={false}
+                target={[0, 0.7, 0]}
                 maxPolarAngle={Math.PI / 2 + 0.08}
                 minPolarAngle={Math.PI / 4}
             />
@@ -592,11 +593,11 @@ export const Cake3D = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
     return (
-        <div className="w-full h-full min-h-[420px] cursor-grab active:cursor-grabbing select-none">
+        <div className="w-full h-full min-h-[440px] cursor-grab active:cursor-grabbing select-none overflow-visible">
             <Canvas
                 shadows
                 dpr={isMobile ? [1, 1.5] : [1, 2]}
-                camera={{ position: [0, 3.2, 5.2], fov: 38 }}
+                camera={{ position: [0, 4.4, 8.4], fov: 42 }}
                 gl={{ powerPreference: "high-performance", antialias: true, alpha: true }}
             >
                 <Suspense fallback={null}>
