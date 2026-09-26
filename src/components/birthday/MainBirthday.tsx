@@ -21,6 +21,7 @@ import { BalloonPopGame } from "./BalloonPopGame";
 import { EnvelopeLetterScene } from "./EnvelopeLetterScene";
 import { WishDeck } from "./WishDeck";
 import { SoundToggle } from "./SoundToggle";
+import { getTemplateEmojiKit, normalizeToEmoji } from "@/config/emojiKits";
 
 export const MainBirthday = () => {
     const [visible, setVisible] = useState(false);
@@ -43,6 +44,7 @@ export const MainBirthday = () => {
     const reduceMotion = useReducedMotion();
     const shouldAnimate = !isMobile && !reduceMotion;
     const primaryColor = favoriteColor || '#FF6B6B';
+    const emojiKit = useMemo(() => getTemplateEmojiKit(config), [config]);
     const specialCode = useMemo(() => {
         const template = relationship === 'partner' ? 'LOVE' : relationship === 'friend' ? 'LEGEND' : 'HOME';
         const interestMap = [
@@ -105,32 +107,16 @@ export const MainBirthday = () => {
         if (typeof navigator !== 'undefined' && navigator.vibrate)
             navigator.vibrate(50);
         playPop();
-        let emojiList = relationship === 'partner'
-            ? ["💖", "💕", "💍", "💘", "💋", "🌹", "✨", "💫"]
-            : relationship === 'friend'
-                ? ["🎉", "😎", "🍻", "🍕", "⭐", "🔥", "🎈", "🥳"]
-                : ["🎉", "🥳", "💖", "⭐", "🎈", "🎊", "🎁", "🎂", "✨", "💫"];
-        const interestEmojis: Record<string, string[]> = {
-            car: ["🚗", "🏎️", "🏎", "🏎️", "⚙️", "🏁"],
-            music: ["🎵", "🎶", "🎸", "🎹", "🎧", "🎤"],
-            art: ["🎨", "🖌️", "🖼️", "✨", "🌈"],
-            coding: ["💻", "⌨️", "🚀", "⚡", "👾"],
-            nature: ["🌿", "🌸", "🦋", "🍄", "🌙", "⭐"],
-            travel: ["✈️", "🗺️", "🏔️", "🏝️", "🗼", "🗽"],
-            food: ["🍕", "🍔", "🍣", "🍦", "🍩", "🧁"],
-            sport: ["⚽", "🏀", "🎾", "⛳", "🏆", "🏃"],
-            space: ["🚀", "🪐", "🛸", "☄️", "🌌", "👽"]
-        };
+        let emojiList = emojiKit.celebration?.length > 0
+            ? [...emojiKit.celebration]
+            : relationship === 'partner'
+                ? ["💖", "💕", "💍", "💘", "💋", "🌹", "✨", "💫"]
+                : relationship === 'friend'
+                    ? ["🎉", "😎", "🍻", "🍕", "⭐", "🔥", "🎈", "🥳"]
+                    : ["🎉", "🥳", "💖", "⭐", "🎈", "🎊", "🎁", "🎂", "✨", "💫"];
         if (config.favoriteEmojis?.length > 0) {
-            emojiList = [...emojiList, ...config.favoriteEmojis];
-        }
-        if (config.interests && config.interests.length > 0) {
-            config.interests.forEach(interest => {
-                const lowerInterest = interest.toLowerCase().trim();
-                if (interestEmojis[lowerInterest]) {
-                    emojiList = [...emojiList, ...interestEmojis[lowerInterest]];
-                }
-            });
+            const normalizedFavs = config.favoriteEmojis.map(normalizeToEmoji).filter(Boolean);
+            emojiList = [...emojiList, ...normalizedFavs];
         }
         const newEmoji = {
             id: Date.now(),
@@ -203,9 +189,32 @@ export const MainBirthday = () => {
           </span>
         </motion.h1>
 
-        <motion.h2 variants={itemVariants} className="font-display text-5xl sm:text-7xl md:text-[10rem] lg:text-[13rem] font-black text-foreground animate-glow-pulse mb-10 break-words leading-none px-2">
+        <motion.h2 variants={itemVariants} className="font-display text-5xl sm:text-7xl md:text-[10rem] lg:text-[13rem] font-black text-foreground animate-glow-pulse mb-6 break-words leading-none px-2">
           <TypeWriter text={`${name}!`} speed={120} delay={1500} cursor={false}/>
         </motion.h2>
+
+        {/* Env-Driven Personalization & Interests Pill Strip */}
+        <motion.div variants={itemVariants} className="relative z-10 flex flex-wrap items-center justify-center gap-2.5 max-w-2xl mx-auto px-4 mt-2">
+          {(emojiKit.signature || []).slice(0, 5).map((em, idx) => (
+            <span
+              key={`sig-${idx}`}
+              className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-xl flex items-center justify-center text-lg shadow-lg"
+            >
+              {em}
+            </span>
+          ))}
+          {(config.interests || []).slice(0, 5).map((interest, idx) => (
+            <span
+              key={`int-${idx}`}
+              className="px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase text-white/85 border border-white/15 backdrop-blur-xl shadow-md"
+              style={{
+                background: `linear-gradient(135deg, ${primaryColor}2E, rgba(255,255,255,0.04))`,
+              }}
+            >
+              ✦ {interest}
+            </span>
+          ))}
+        </motion.div>
       </motion.header>
 
       
