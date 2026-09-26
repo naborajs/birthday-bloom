@@ -21,20 +21,12 @@ export default defineConfig(() => ({
             id.includes('Cake3D') ||
             id.includes('CakeKnife3D') ||
             id.includes('CakeVisuals') ||
-            id.includes('CakeTypes')
-          ) {
-            return 'three';
-          }
-          if (
+            id.includes('CakeTypes') ||
             id.includes('hindiTemplates') ||
             id.includes('bengaliTemplates') ||
-            id.includes('frenchTemplates') ||
-            id.includes('wishTemplates') ||
-            id.includes('emojiKits') ||
-            id.includes('src/config/templates') ||
-            id.includes('src\\config\\templates')
+            id.includes('frenchTemplates')
           ) {
-            return 'vendor';
+            return 'three';
           }
           if (id.includes('node_modules')) {
             if (
