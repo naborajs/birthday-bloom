@@ -392,8 +392,8 @@ export const EnvelopeLetterScene = ({
                                 )}
                             </h2>
                             <div className="flex justify-center items-center gap-2 mt-1.5 text-purple-600 text-base sm:text-lg">
-                                <span>{emojiKit.envelope.seal || "💜"}</span>
-                                {emojiKit.signature[0] && (
+                                <span>{emojiKit.labels?.message || "💜"}</span>
+                                {emojiKit.signature?.[0] && (
                                     <span className="text-sm opacity-80">{emojiKit.signature[0]}</span>
                                 )}
                             </div>
@@ -413,8 +413,8 @@ export const EnvelopeLetterScene = ({
                                 {senderName ? `— ${senderName}` : `— Yours Forever 💕`}
                             </div>
                             <div className="flex items-center gap-1.5 text-3xl sm:text-4xl filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)] select-none animate-subtle-float">
-                                {emojiKit.envelope.stickers.length > 0
-                                    ? emojiKit.envelope.stickers.slice(0, 2).join("")
+                                {emojiKit.accent?.length > 0
+                                    ? emojiKit.accent.slice(0, 2).join("")
                                     : relationship === "friend" ? "🎉😎" : relationship === "family" ? "💐💝" : "🧸🧸"}
                             </div>
                         </div>
