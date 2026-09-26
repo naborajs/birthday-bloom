@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useSoundManager } from "./SoundManager";
@@ -12,6 +12,28 @@ interface EnvelopeLetterSceneProps {
     autoOpen?: boolean;
     compact?: boolean;
 }
+
+interface GraphemeSegmenter {
+    segment(input: string): Iterable<{ segment: string }>;
+}
+
+interface IntlWithSegmenter {
+    Segmenter: new (
+        locales?: string | string[],
+        options?: { granularity: "grapheme" | "word" | "sentence" }
+    ) => GraphemeSegmenter;
+}
+
+const splitGraphemes = (str: string): string[] => {
+    if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
+        const segmenter = new (Intl as unknown as IntlWithSegmenter).Segmenter(undefined, {
+            granularity: "grapheme",
+        });
+        return Array.from(segmenter.segment(str), (s) => s.segment);
+    }
+    const match = str.match(/[\s\S][\u0300-\u036f\u0900-\u097f\u0980-\u09ff]*/g);
+    return match || Array.from(str);
+};
 
 export const EnvelopeLetterScene = ({
     onComplete,
@@ -147,6 +169,7 @@ export const EnvelopeLetterScene = ({
     })();
 
     const fullLetterText = paragraphs.join("\n\n");
+    const letterGraphemes = useMemo(() => splitGraphemes(fullLetterText), [fullLetterText]);
 
     const handleOpen = () => {
         if (isOpen) return;
@@ -170,11 +193,11 @@ export const EnvelopeLetterScene = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [autoOpen]);
 
-    // Live typewriter typing effect for the letter
+    // Grapheme-safe typewriter typing effect for the letter (prevents splitting 4-byte emojis into )
     useEffect(() => {
         if (!isExtracted) return;
 
-        if (typedLength < fullLetterText.length) {
+        if (typedLength < letterGraphemes.length) {
             typingTimerRef.current = setTimeout(() => {
                 setTypedLength((prev) => {
                     const next = prev + 1;
@@ -189,12 +212,15 @@ export const EnvelopeLetterScene = ({
         } else {
             setIsTypingDone(true);
         }
-    }, [isExtracted, typedLength, fullLetterText.length, isMobile, playType]);
+    }, [isExtracted, typedLength, letterGraphemes.length, isMobile, playType]);
 
-    const displayedContent = fullLetterText.slice(0, typedLength);
+    const displayedContent = useMemo(
+        () => letterGraphemes.slice(0, typedLength).join(""),
+        [letterGraphemes, typedLength]
+    );
 
     return (
-        <div className="relative w-full max-w-xl mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[520px]">
+        <div className="relative w-full max-w-xl mx-auto px-4 py-6 sm:py-8 flex flex-col items-center justify-center min-h-[480px] sm:min-h-[520px]">
             <AnimatePresence mode="wait">
                 {!isExtracted ? (
                     /* The Luxury 3D Envelope */
@@ -205,6 +231,7 @@ export const EnvelopeLetterScene = ({
                         exit={{ scale: 0.9, opacity: 0, y: -40, filter: "blur(10px)" }}
                         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                         className="relative flex flex-col items-center cursor-pointer select-none"
+                        style={{ perspective: "1200px" }}
                         onClick={handleOpen}
                     >
                         <motion.div
@@ -283,7 +310,7 @@ export const EnvelopeLetterScene = ({
                         initial={{ opacity: 0, scale: 0.88, y: 60 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                        className="relative w-full max-w-lg rounded-[2.5rem] p-7 sm:p-11 shadow-[0_35px_100px_-15px_rgba(0,0,0,0.95),0_0_0_1px_rgba(218,165,32,0.3),inset_0_0_60px_rgba(180,130,70,0.14)] border-2 border-[#D4AF37]/50 text-[#2B1B17] overflow-hidden select-none"
+                        className="relative w-full max-w-lg max-h-[84dvh] overflow-y-auto rounded-[2.5rem] p-6 sm:p-11 shadow-[0_35px_100px_-15px_rgba(0,0,0,0.95),0_0_0_1px_rgba(218,165,32,0.3),inset_0_0_60px_rgba(180,130,70,0.14)] border-2 border-[#D4AF37]/50 text-[#2B1B17] select-none"
                         style={{
                             backgroundColor: "#FAF3E3",
                             backgroundImage: `
