@@ -6,6 +6,7 @@ import { useTranslation } from "@/i18n";
 import { Heart, Sparkles, ArrowRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getHighlySpecificLetter } from "@/features/core/store/SuperPersonalizedLogic";
+import { getTemplateEmojiKit } from "@/config/emojiKits";
 
 interface EnvelopeLetterSceneProps {
     onComplete?: () => void;
@@ -53,16 +54,14 @@ export const EnvelopeLetterScene = ({
 
     const relationship = config.relationship || "partner";
     const senderName = config.senderName || "";
+    const emojiKit = useMemo(() => getTemplateEmojiKit(config), [config]);
 
     const paragraphs = (() => {
         if (config.letterOverride && config.letterOverride.trim().length > 5) {
             return config.letterOverride.split("\n\n").map(p => p.trim()).filter(Boolean);
         }
-        if (config.customMessage && config.customMessage.trim().length > 10) {
-            return config.customMessage.split("\n\n").map(p => p.trim()).filter(Boolean);
-        }
 
-        // Get highly specific tailored letter for recipient archetype and gender
+        // Get highly specific tailored letter for recipient archetype, gender, and interests
         const generated = getHighlySpecificLetter(
             config.name || (isFrench ? "Mon Amour" : isBengali ? "প্রিয়" : isHindi ? "प्रिय" : "My Dearest"),
             relationship,
@@ -73,7 +72,22 @@ export const EnvelopeLetterScene = ({
         );
 
         if (generated && generated.trim().length > 10) {
-            return generated.split("\n\n").map(p => p.trim()).filter(Boolean);
+            const templateParts = generated.split("\n\n").map(p => p.trim()).filter(Boolean);
+            if (config.customMessage && config.customMessage.trim().length > 10) {
+                const customTrimmed = config.customMessage.trim();
+                if (!generated.includes(customTrimmed)) {
+                    return [
+                        templateParts[0],
+                        customTrimmed,
+                        ...templateParts.slice(1),
+                    ].filter(Boolean);
+                }
+            }
+            return templateParts;
+        }
+
+        if (config.customMessage && config.customMessage.trim().length > 10) {
+            return config.customMessage.split("\n\n").map(p => p.trim()).filter(Boolean);
         }
 
         if (isFrench) {
@@ -377,8 +391,11 @@ export const EnvelopeLetterScene = ({
                                                 : "A Message From My Heart"
                                 )}
                             </h2>
-                            <div className="flex justify-center mt-1.5 text-purple-600 text-base sm:text-lg">
-                                💜
+                            <div className="flex justify-center items-center gap-2 mt-1.5 text-purple-600 text-base sm:text-lg">
+                                <span>{emojiKit.envelope.seal || "💜"}</span>
+                                {emojiKit.signature[0] && (
+                                    <span className="text-sm opacity-80">{emojiKit.signature[0]}</span>
+                                )}
                             </div>
                         </div>
 
@@ -396,7 +413,9 @@ export const EnvelopeLetterScene = ({
                                 {senderName ? `— ${senderName}` : `— Yours Forever 💕`}
                             </div>
                             <div className="flex items-center gap-1.5 text-3xl sm:text-4xl filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)] select-none animate-subtle-float">
-                                {relationship === "friend" ? "🎉😎" : relationship === "family" ? "💐💝" : "🧸🧸"}
+                                {emojiKit.envelope.stickers.length > 0
+                                    ? emojiKit.envelope.stickers.slice(0, 2).join("")
+                                    : relationship === "friend" ? "🎉😎" : relationship === "family" ? "💐💝" : "🧸🧸"}
                             </div>
                         </div>
 
