@@ -170,31 +170,35 @@ export const MainBirthday = () => {
       </AnimatePresence>
 
       
-      <motion.header initial="hidden" animate="visible" variants={containerVariants} className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 py-20 overflow-hidden">
+      <motion.header initial="hidden" animate="visible" variants={containerVariants} className="relative min-h-[92vh] flex flex-col items-center justify-center text-center px-4 py-10 overflow-hidden">
         <motion.div style={{ x: springX, y: springY }} className="absolute inset-0 pointer-events-none flex items-center justify-center">
           <div className="w-[150%] h-[150%] bg-[radial-gradient(circle,var(--color-primary)_0%,transparent_70%)] opacity-[0.05]"/>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="mb-6 relative z-10">
-          <div className="flex justify-center mb-8"><HeartProgression stage={4}/></div>
-          <motion.div whileHover={shouldAnimate ? { scale: 1.2, rotate: relationship === 'friend' ? [0, -10, 10, 0] : [0, -5, 5, 0] } : undefined} whileTap={{ scale: 0.9 }} className="text-8xl md:text-[10rem] mb-6 cursor-pointer drop-shadow-[0_0_50px_var(--color-primary)]" onClick={handleCakeClick}>
+        <motion.div variants={itemVariants} className="mb-3 relative z-10">
+          <div className="flex justify-center mb-3 scale-90 sm:scale-95"><HeartProgression stage={4}/></div>
+          <motion.div whileHover={shouldAnimate ? { scale: 1.2, rotate: relationship === 'friend' ? [0, -10, 10, 0] : [0, -5, 5, 0] } : undefined} whileTap={{ scale: 0.9 }} className="text-6xl sm:text-7xl md:text-8xl mb-2 cursor-pointer drop-shadow-[0_0_50px_var(--color-primary)]" onClick={handleCakeClick}>
             🎂
           </motion.div>
           {cakeClicks > 0 && cakeClicks < 7 && (<p className="text-primary font-bold animate-pulse">{t('common.clickMoreTimes', { count: 7 - cakeClicks })}</p>)}
         </motion.div>
 
-        <motion.h1 variants={itemVariants} className="font-display text-4xl sm:text-5xl md:text-8xl lg:text-9xl font-black mb-4 break-words leading-tight px-2">
+        <motion.h1 variants={itemVariants} className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-2 break-words leading-tight px-2">
           <span className="bg-gradient-to-r from-[var(--color-primary)] via-[hsl(45,100%,75%)] to-[hsl(200,80%,70%)] bg-clip-text text-transparent animate-gradient-shift drop-shadow-[0_4px_30px_rgba(255,255,255,0.3)]">
-            {age ? t('common.happyNthBirthday', { age }) : t('common.happyBirthday')}
+            {age
+              ? (!isHindi && !isBengali && !isFrench
+                  ? `Happy ${age}${age % 100 >= 11 && age % 100 <= 13 ? 'th' : age % 10 === 1 ? 'st' : age % 10 === 2 ? 'nd' : age % 10 === 3 ? 'rd' : 'th'} Birthday`
+                  : t('common.happyNthBirthday', { age }))
+              : t('common.happyBirthday')}
           </span>
         </motion.h1>
 
-        <motion.h2 variants={itemVariants} className="font-display text-5xl sm:text-7xl md:text-[10rem] lg:text-[13rem] font-black text-foreground animate-glow-pulse mb-6 break-words leading-none px-2">
+        <motion.h2 variants={itemVariants} className="font-display text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black text-foreground animate-glow-pulse mb-5 break-words leading-none px-2">
           <TypeWriter text={`${name}!`} speed={120} delay={1500} cursor={false}/>
         </motion.h2>
 
         {/* Env-Driven Personalization & Interests Pill Strip */}
-        <motion.div variants={itemVariants} className="relative z-10 flex flex-wrap items-center justify-center gap-2.5 max-w-2xl mx-auto px-4 mt-2">
+        <motion.div variants={itemVariants} className="relative z-10 flex flex-wrap items-center justify-center gap-2.5 max-w-2xl mx-auto px-4 mt-1">
           {(emojiKit.signature || []).slice(0, 5).map((em, idx) => (
             <span
               key={`sig-${idx}`}
