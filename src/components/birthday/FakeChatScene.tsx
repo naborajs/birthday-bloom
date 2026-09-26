@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useSoundManager } from "./SoundManager";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useTranslation } from "@/i18n";
+import { getTemplateEmojiKit } from "@/config/emojiKits";
 import {
     ChevronLeft,
     Phone,
@@ -358,8 +359,13 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
         };
     }, [onComplete, playType, playWhoosh, playReveal, playPop, basicText, heartfeltText]);
 
+    const emojiKit = useMemo(() => getTemplateEmojiKit(config), [config]);
     const contactName = name || (relationship === "partner" ? "My Love" : relationship === "friend" ? "Bestie 🔥" : "Family 🌟");
-    const avatarEmoji = relationship === "partner" ? "💖" : relationship === "friend" ? "😎" : "👑";
+    const avatarEmoji = emojiKit.chat?.avatar || (relationship === "partner" ? "💖" : relationship === "friend" ? "😎" : "👑");
+    const floatingBadges = useMemo(
+        () => (emojiKit.floating?.length >= 4 ? emojiKit.floating.slice(0, 4) : ["💖", "✨", "🌹", "🦋"]),
+        [emojiKit.floating]
+    );
 
     const isKeyboardOpen =
         phase === "incoming" ||
@@ -415,6 +421,36 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                 }}
                 className="relative w-[92vw] max-w-[362px] h-[83dvh] max-h-[720px] sm:max-w-[388px] sm:h-[87vh] sm:max-h-[790px] mb-8 sm:mb-2 p-[4px] sm:p-[5px] rounded-[44px] sm:rounded-[50px] bg-gradient-to-br from-[#7c6270] via-[#2b2228] to-[#523b47] shadow-[0_30px_80px_rgba(0,0,0,0.8),0_0_45px_rgba(255,42,109,0.18),inset_0_1px_2px_rgba(255,255,255,0.45)] flex flex-col"
             >
+                {/* 3D Parallax Floating Template Emoji Orbs Around Smartphone Bezel */}
+                <div
+                    aria-hidden="true"
+                    style={{ transform: "translateZ(28px)" }}
+                    className="pointer-events-none hidden sm:flex absolute -left-8 top-14 w-11 h-11 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-xl shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
+                >
+                    {floatingBadges[0]}
+                </div>
+                <div
+                    aria-hidden="true"
+                    style={{ transform: "translateZ(34px)" }}
+                    className="pointer-events-none hidden sm:flex absolute -right-8 top-28 w-11 h-11 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-xl shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
+                >
+                    {floatingBadges[1]}
+                </div>
+                <div
+                    aria-hidden="true"
+                    style={{ transform: "translateZ(24px)" }}
+                    className="pointer-events-none hidden sm:flex absolute -left-7 bottom-28 w-10 h-10 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-lg shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
+                >
+                    {floatingBadges[2]}
+                </div>
+                <div
+                    aria-hidden="true"
+                    style={{ transform: "translateZ(30px)" }}
+                    className="pointer-events-none hidden sm:flex absolute -right-7 bottom-16 w-10 h-10 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-lg shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
+                >
+                    {floatingBadges[3]}
+                </div>
+
                 {/* 3D Hardware Left Buttons (Action + Volume Up/Down) */}
                 <div className="pointer-events-none absolute -left-[3px] top-[96px] w-[3px] h-6 rounded-l-md bg-gradient-to-b from-[#8e7281] to-[#3d2e36] shadow-sm" />
                 <div className="pointer-events-none absolute -left-[3px] top-[136px] w-[3px] h-11 rounded-l-md bg-gradient-to-b from-[#8e7281] to-[#3d2e36] shadow-sm" />
