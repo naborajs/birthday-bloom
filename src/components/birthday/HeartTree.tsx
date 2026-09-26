@@ -128,56 +128,23 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
     const { playPop } = useSoundManager();
 
     const quotesPool = useMemo(() => {
-        if (isFrench) {
-            if (relationship === 'partner')
-                return FRENCH_SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || FRENCH_SPECIAL_QUOTES.family;
-            if (relationship === 'friend')
-                return (gender === 'male' ? FRENCH_SPECIAL_QUOTES.friend.legend : FRENCH_SPECIAL_QUOTES.friend.friendly) || FRENCH_SPECIAL_QUOTES.family;
-            if (relationship === 'brother' || relationship === 'sibling') return FRENCH_SPECIAL_QUOTES.brother || FRENCH_SPECIAL_QUOTES.family;
-            if (relationship === 'sister') return FRENCH_SPECIAL_QUOTES.sister || FRENCH_SPECIAL_QUOTES.family;
-            if (relationship === 'father') return FRENCH_SPECIAL_QUOTES.father || FRENCH_SPECIAL_QUOTES.family;
-            if (relationship === 'mother') return FRENCH_SPECIAL_QUOTES.mother || FRENCH_SPECIAL_QUOTES.family;
-            if (relationship === 'colleague') return FRENCH_SPECIAL_QUOTES.colleague || FRENCH_SPECIAL_QUOTES.family;
-            if (relationship === 'mentor') return FRENCH_SPECIAL_QUOTES.mentor || FRENCH_SPECIAL_QUOTES.family;
-            return FRENCH_SPECIAL_QUOTES.family;
-        }
-        if (isBengali) {
-            if (relationship === 'partner')
-                return BENGALI_SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || BENGALI_SPECIAL_QUOTES.family;
-            if (relationship === 'friend')
-                return (gender === 'male' ? BENGALI_SPECIAL_QUOTES.friend.legend : BENGALI_SPECIAL_QUOTES.friend.friendly) || BENGALI_SPECIAL_QUOTES.family;
-            if (relationship === 'brother' || relationship === 'sibling') return BENGALI_SPECIAL_QUOTES.brother || BENGALI_SPECIAL_QUOTES.family;
-            if (relationship === 'sister') return BENGALI_SPECIAL_QUOTES.sister || BENGALI_SPECIAL_QUOTES.family;
-            if (relationship === 'father') return BENGALI_SPECIAL_QUOTES.father || BENGALI_SPECIAL_QUOTES.family;
-            if (relationship === 'mother') return BENGALI_SPECIAL_QUOTES.mother || BENGALI_SPECIAL_QUOTES.family;
-            if (relationship === 'colleague') return BENGALI_SPECIAL_QUOTES.colleague || BENGALI_SPECIAL_QUOTES.family;
-            if (relationship === 'mentor') return BENGALI_SPECIAL_QUOTES.mentor || BENGALI_SPECIAL_QUOTES.family;
-            return BENGALI_SPECIAL_QUOTES.family;
-        }
-        if (isHindi) {
-            if (relationship === 'partner')
-                return HINDI_SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || HINDI_SPECIAL_QUOTES.family;
-            if (relationship === 'friend')
-                return (gender === 'male' ? HINDI_SPECIAL_QUOTES.friend.legend : HINDI_SPECIAL_QUOTES.friend.friendly) || HINDI_SPECIAL_QUOTES.family;
-            if (relationship === 'brother' || relationship === 'sibling') return HINDI_SPECIAL_QUOTES.brother || HINDI_SPECIAL_QUOTES.family;
-            if (relationship === 'sister') return HINDI_SPECIAL_QUOTES.sister || HINDI_SPECIAL_QUOTES.family;
-            if (relationship === 'father') return HINDI_SPECIAL_QUOTES.father || HINDI_SPECIAL_QUOTES.family;
-            if (relationship === 'mother') return HINDI_SPECIAL_QUOTES.mother || HINDI_SPECIAL_QUOTES.family;
-            if (relationship === 'colleague') return HINDI_SPECIAL_QUOTES.colleague || HINDI_SPECIAL_QUOTES.family;
-            if (relationship === 'mentor') return HINDI_SPECIAL_QUOTES.mentor || HINDI_SPECIAL_QUOTES.family;
-            return HINDI_SPECIAL_QUOTES.family;
-        }
-        if (relationship === 'partner')
-            return SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || SPECIAL_QUOTES.family;
-        if (relationship === 'friend')
-            return (gender === 'male' ? SPECIAL_QUOTES.friend.legend : SPECIAL_QUOTES.friend.friendly) || SPECIAL_QUOTES.family;
-        if (relationship === 'brother' || relationship === 'sibling') return SPECIAL_QUOTES.brother || SPECIAL_QUOTES.family;
-        if (relationship === 'sister') return SPECIAL_QUOTES.sister || SPECIAL_QUOTES.family;
-        if (relationship === 'father') return SPECIAL_QUOTES.father || SPECIAL_QUOTES.family;
-        if (relationship === 'mother') return SPECIAL_QUOTES.mother || SPECIAL_QUOTES.family;
-        if (relationship === 'colleague') return SPECIAL_QUOTES.colleague || SPECIAL_QUOTES.family;
-        if (relationship === 'mentor') return SPECIAL_QUOTES.mentor || SPECIAL_QUOTES.family;
-        return SPECIAL_QUOTES.family;
+        const resolveFromMap = (map: typeof SPECIAL_QUOTES) => {
+            if (relationship === 'partner') {
+                return map.partner[gender as 'male' | 'female'] || map.family;
+            }
+            if (relationship === 'friend') {
+                return (gender === 'male' ? map.friend.legend : map.friend.friendly) || map.family;
+            }
+            if (relationship === 'brother' || relationship === 'sibling') return map.brother || map.family;
+            const keyed = map[relationship as keyof typeof map];
+            if (Array.isArray(keyed) && keyed.length > 0) return keyed;
+            return map.family;
+        };
+
+        if (isFrench) return resolveFromMap(FRENCH_SPECIAL_QUOTES);
+        if (isBengali) return resolveFromMap(BENGALI_SPECIAL_QUOTES);
+        if (isHindi) return resolveFromMap(HINDI_SPECIAL_QUOTES);
+        return resolveFromMap(SPECIAL_QUOTES);
     }, [relationship, gender, isHindi, isBengali, isFrench]);
     useEffect(() => {
         const timers = [
@@ -223,7 +190,8 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
         e.stopPropagation();
         if (stage < 3) return;
         const messages = isFrench ? FRENCH_HEART_MESSAGES : isBengali ? BENGALI_HEART_MESSAGES : isHindi ? HINDI_HEART_MESSAGES : HEART_MESSAGES;
-        setActiveMsg(messages[i] ?? quotesPool[i % quotesPool.length]);
+        const quoteFromTemplate = quotesPool.length > 0 ? quotesPool[Math.floor(i / 2) % quotesPool.length] : undefined;
+        setActiveMsg(i % 2 === 0 && quoteFromTemplate ? quoteFromTemplate : (messages[i] ?? quoteFromTemplate ?? messages[0]));
         playPop();
         setTimeout(() => setActiveMsg(null), 5000);
     };
