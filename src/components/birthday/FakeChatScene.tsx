@@ -196,6 +196,23 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
     }, [playPop]);
 
     const lastTapRef = useRef<number>(0);
+    const chatStreamRef = useRef<HTMLElement | null>(null);
+
+    useEffect(() => {
+        if (chatStreamRef.current && typeof chatStreamRef.current.scrollTo === "function") {
+            chatStreamRef.current.scrollTo({
+                top: chatStreamRef.current.scrollHeight,
+                behavior: "smooth",
+            });
+        }
+    }, [typedInputText, sentMessageText, phase]);
+
+    const currentTypedWord = useMemo(() => {
+        if (!typedInputText) return "";
+        const parts = typedInputText.trimEnd().split(/\s+/);
+        return parts[parts.length - 1] || "";
+    }, [typedInputText]);
+
     const handleDoubleTapMessage = (e: React.MouseEvent | React.TouchEvent) => {
         const now = Date.now();
         if (now - lastTapRef.current < 320) {
@@ -538,7 +555,10 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                     </header>
 
                     {/* ── Scrollable Chat Message Stream ── */}
-                    <main className="relative z-10 flex-1 px-3.5 py-2.5 flex flex-col justify-end gap-2.5 overflow-y-auto min-h-0">
+                    <main
+                        ref={chatStreamRef}
+                        className="relative z-10 flex-1 px-3.5 py-2.5 flex flex-col justify-end gap-2.5 overflow-y-auto min-h-0"
+                    >
                         {/* Centered Timestamp Pill */}
                         <div className="text-center my-0.5">
                             <span className="px-2.5 py-0.5 rounded-full bg-white/5 text-[10px] text-white/55 tracking-normal normal-case font-medium backdrop-blur-md border border-white/5">
@@ -758,13 +778,36 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                 animate={{ height: "auto", opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
                                 transition={{ duration: 0.28, ease: "easeInOut" }}
-                                className="relative z-20 bg-[#18181D]/95 border-t border-white/10 backdrop-blur-2xl px-1.5 pt-2 pb-1.5 select-none shrink-0 overflow-hidden"
+                                className="relative z-20 bg-[#18181D]/95 border-t border-white/10 backdrop-blur-2xl px-1.5 pt-1.5 pb-1.5 select-none shrink-0 overflow-hidden"
                             >
+                                {/* Live iOS Predictive Text Suggestion Bar */}
+                                <div
+                                    data-testid="keypad-predictive-bar"
+                                    className="grid grid-cols-3 items-center text-center pb-1.5 mb-1 border-b border-white/5 text-[11px] text-white/75"
+                                >
+                                    <span className="truncate px-2 border-r border-white/10 text-white/60">
+                                        {currentTypedWord ? `"${currentTypedWord}"` : '"Happy"'}
+                                    </span>
+                                    <span
+                                        className={`truncate px-2 border-r border-white/10 font-medium transition-colors ${
+                                            activeKey === "space"
+                                                ? "text-rose-300 bg-white/10 rounded py-0.5"
+                                                : "text-white/90"
+                                        }`}
+                                    >
+                                        {currentTypedWord || "Birthday"}
+                                    </span>
+                                    <span className="truncate px-2 text-white/80">
+                                        {phase === "typing-heartfelt" ? "💝 🌟" : "🎂 ✨"}
+                                    </span>
+                                </div>
+
                                 <div className="flex flex-col gap-1.5">
                                     {/* Row 1: Q - P */}
                                     <div className="grid grid-cols-10 gap-1">
                                         {KEYBOARD_ROW_1.map((key) => {
                                             const isPressed = activeKey === key;
+                                            const displayChar = isShiftActive ? key.toUpperCase() : key;
                                             return (
                                                 <button
                                                     key={key}
@@ -772,13 +815,21 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                                     data-key={key}
                                                     data-active={isPressed ? "true" : "false"}
                                                     onClick={() => handleManualKeyPress(key)}
-                                                    className={`h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
+                                                    className={`relative h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
                                                         isPressed
                                                             ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
                                                             : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
                                                     }`}
                                                 >
-                                                    {isShiftActive ? key.toUpperCase() : key}
+                                                    {isPressed && (
+                                                        <span
+                                                            data-testid="key-callout-popup"
+                                                            className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg bg-[#4A4A58] border border-rose-400/50 text-white font-bold text-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.85)] z-30"
+                                                        >
+                                                            {displayChar}
+                                                        </span>
+                                                    )}
+                                                    {displayChar}
                                                 </button>
                                             );
                                         })}
@@ -788,6 +839,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                     <div className="grid grid-cols-9 gap-1 px-3">
                                         {KEYBOARD_ROW_2.map((key) => {
                                             const isPressed = activeKey === key;
+                                            const displayChar = isShiftActive ? key.toUpperCase() : key;
                                             return (
                                                 <button
                                                     key={key}
@@ -795,13 +847,21 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                                     data-key={key}
                                                     data-active={isPressed ? "true" : "false"}
                                                     onClick={() => handleManualKeyPress(key)}
-                                                    className={`h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
+                                                    className={`relative h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
                                                         isPressed
                                                             ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
                                                             : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
                                                     }`}
                                                 >
-                                                    {isShiftActive ? key.toUpperCase() : key}
+                                                    {isPressed && (
+                                                        <span
+                                                            data-testid="key-callout-popup"
+                                                            className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg bg-[#4A4A58] border border-rose-400/50 text-white font-bold text-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.85)] z-30"
+                                                        >
+                                                            {displayChar}
+                                                        </span>
+                                                    )}
+                                                    {displayChar}
                                                 </button>
                                             );
                                         })}
@@ -828,6 +888,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                         <div className="flex-1 grid grid-cols-7 gap-1">
                                             {KEYBOARD_ROW_3.map((key) => {
                                                 const isPressed = activeKey === key;
+                                                const displayChar = isShiftActive ? key.toUpperCase() : key;
                                                 return (
                                                     <button
                                                         key={key}
@@ -835,13 +896,21 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                                         data-key={key}
                                                         data-active={isPressed ? "true" : "false"}
                                                         onClick={() => handleManualKeyPress(key)}
-                                                        className={`h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
+                                                        className={`relative h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
                                                             isPressed
                                                                 ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
                                                                 : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
                                                         }`}
                                                     >
-                                                        {isShiftActive ? key.toUpperCase() : key}
+                                                        {isPressed && (
+                                                            <span
+                                                                data-testid="key-callout-popup"
+                                                                className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg bg-[#4A4A58] border border-rose-400/50 text-white font-bold text-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.85)] z-30"
+                                                            >
+                                                                {displayChar}
+                                                            </span>
+                                                        )}
+                                                        {displayChar}
                                                     </button>
                                                 );
                                             })}
