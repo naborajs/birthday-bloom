@@ -5,6 +5,23 @@ All notable changes to Birthday Bloom are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.6.0] — 2026-09-27
+
+### Added
+- **3D Smartphone Hardware Chassis (`src/components/birthday/FakeChatScene.tsx`)**: Perspective-tilted (`perspective: 1400px`) 3D smartphone model featuring a brushed rose-titanium metallic bezel, physical left-side Action & Volume buttons, right-side Power button, Dynamic Island, and diagonal OLED glass screen reflection across both Desktop and Mobile viewports.
+- **Interactive On-Screen Mobile Keypad with Live Key-Press Darkening (`src/components/birthday/FakeChatScene.tsx`)**: Full iOS dark-glass virtual QWERTY keypad (`q`–`p`, `a`–`l`, `⇧`, `z`–`m`, `⌫`, `123`, `😊`, `space`, `Send ↵`) with live key-press darkening (`data-active="true"`), physical key depression, floating iOS key callout pop-up magnifiers, and a 3-column real-time predictive text suggestion bar.
+- **True 3D Stainless Steel Pastry Knife (`src/components/birthday/CakeKnife3D.tsx`)**: WebGL 3D pastry knife with a mirror-polished beveled blade, brass bolster, and ergonomic walnut handle with 3 golden rivets, driven by `@react-spring/three` physics during the cake-cutting ceremony.
+- **Artisanal 5-Layer 3D Cake & Porcelain Pedestal Platter (`src/components/birthday/Cake3D.tsx`, `src/components/birthday/CakeTypes.ts`)**: Sculpted porcelain pedestal cake stand with 24K gold rim inlay, smooth frosted outer mantle, 5 alternating interior sponge and mascarpone ganache filling layers, organic teardrop ganache drips, piped buttercream rosettes, and studio 3-point lighting.
+
+### Changed
+- **Theme-Harmonious Chat Backdrop & Sans-Serif Typography Isolation (`src/components/birthday/FakeChatScene.tsx`)**: Replaced the pitch-black overlay with a translucent blurred stage and radial theme-colored atmospheric glow, isolated chat typography from the global `Cinzel` serif font, and redesigned the input bar to prevent multi-line oval bloating.
+- **Grapheme-Safe Typewriter Slicing (`FakeChatScene.tsx`, `EnvelopeLetterScene.tsx`)**: Replaced raw UTF-16 `.slice(0, i)` with `Array.from(...)` and `Intl.Segmenter` grapheme segmentation so 4-byte emojis (`💝`, `🌟`, `💖`) and Indic combining marks never split into replacement characters (``).
+- **Site-Wide 60 FPS Mobile & Desktop GPU Optimization (`Index.tsx`, `CinematicIntro.tsx`, `FloatingElements.tsx`, `HeartTree.tsx`, `PremiumFireworks.tsx`, `EmojiCursorTrail.tsx`, `SparkleRain.tsx`, `FireflyEffect.tsx`, `ShootingStars.tsx`)**: Replaced expensive CSS `blur-[100px+]` filter layers with zero-filter multi-stop radial gradients, consolidated 12 concurrent `HeartTree` RAF loops into 1 atomic loop, removed Canvas 2D `shadowBlur` stalls, and memoized ambient particle arrays.
+
+### Fixed
+- **3D Cake Platter Frustum Framing (`src/components/birthday/CakeCutting.tsx`)**: Adjusted camera framing (`[0, 3.0, 7.6]`, `fov: 42`) and OrbitControls target (`[0, -0.35, 0]`) so the entire porcelain pedestal platter and severed cake slice remain 100% visible without bottom clipping.
+- **Hindi Devanagari Unicode String Integrity (`src/components/birthday/FinalSurprise.tsx`)**: Fixed corrupted mixed-script Bengali-in-Devanagari Unicode escape sequences in the Hindi closing message.
+
 ## [3.5.0] — 2026-09-17
 
 ### Added
