@@ -25,6 +25,17 @@ export default defineConfig(() => ({
           ) {
             return 'three';
           }
+          if (
+            id.includes('hindiTemplates') ||
+            id.includes('bengaliTemplates') ||
+            id.includes('frenchTemplates') ||
+            id.includes('wishTemplates') ||
+            id.includes('emojiKits') ||
+            id.includes('src/config/templates') ||
+            id.includes('src\\config\\templates')
+          ) {
+            return 'vendor';
+          }
           if (id.includes('node_modules')) {
             if (
               id.includes('three') ||
