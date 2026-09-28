@@ -127,13 +127,15 @@ const WishCard = ({
                             : "0 4px 15px -4px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.06)",
                     }}
                 >
-                    {/* SVG paper grain noise */}
-                    <svg className="absolute inset-0 w-full h-full opacity-[0.04] mix-blend-multiply pointer-events-none" aria-hidden="true">
-                        <filter id="wishCardGrain">
-                            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
-                        </filter>
-                        <rect width="100%" height="100%" filter="url(#wishCardGrain)" />
-                    </svg>
+                    {/* Subtle paper grain texture (zero-filter GPU-friendly pattern) */}
+                    <div
+                        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+                        aria-hidden="true"
+                        style={{
+                            backgroundImage: "radial-gradient(#8B7355 0.75px, transparent 0.75px)",
+                            backgroundSize: "14px 14px",
+                        }}
+                    />
                 </div>
 
                 {/* Swipe direction indicators (only on top card) */}
@@ -403,12 +405,14 @@ export const WishDeck = () => {
                             boxShadow: "0 16px 50px -10px rgba(0,0,0,0.3), 0 3px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.9)",
                         }}
                     >
-                        <svg className="absolute inset-0 w-full h-full opacity-[0.04] mix-blend-multiply pointer-events-none" aria-hidden="true">
-                            <filter id="confirmGrain">
-                                <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
-                            </filter>
-                            <rect width="100%" height="100%" filter="url(#confirmGrain)" />
-                        </svg>
+                        <div
+                            className="absolute inset-0 opacity-[0.04] pointer-events-none"
+                            aria-hidden="true"
+                            style={{
+                                backgroundImage: "radial-gradient(#8B7355 0.75px, transparent 0.75px)",
+                                backgroundSize: "14px 14px",
+                            }}
+                        />
                         <div className="relative z-10 p-7 sm:p-9">
                             <div className="text-4xl mb-4">{selectedWish.icon}</div>
                             <p className="font-handwritten text-xl sm:text-2xl text-[#2B1B0E] leading-relaxed">
@@ -458,12 +462,14 @@ export const WishDeck = () => {
                             boxShadow: "0 16px 50px -10px rgba(0,0,0,0.3), 0 3px 8px rgba(0,0,0,0.1)",
                         }}
                     >
-                        <svg className="absolute inset-0 w-full h-full opacity-[0.04] mix-blend-multiply pointer-events-none" aria-hidden="true">
-                            <filter id="editGrain">
-                                <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
-                            </filter>
-                            <rect width="100%" height="100%" filter="url(#editGrain)" />
-                        </svg>
+                        <div
+                            className="absolute inset-0 opacity-[0.04] pointer-events-none"
+                            aria-hidden="true"
+                            style={{
+                                backgroundImage: "radial-gradient(#8B7355 0.75px, transparent 0.75px)",
+                                backgroundSize: "14px 14px",
+                            }}
+                        />
                         <div className="relative z-10 p-7 sm:p-9">
                             <div className="text-3xl mb-4">✍️</div>
                             <textarea

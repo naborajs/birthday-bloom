@@ -334,11 +334,12 @@ export const EnvelopeLetterScene = ({
                             `,
                         }}
                     >
-                        {/* Realistic Hand-Crafted Paper Grain Noise Texture Layer */}
+                        {/* Realistic Hand-Crafted Paper Grain Texture Layer (Zero-Filter CSS Pattern) */}
                         <div
-                            className="absolute inset-0 pointer-events-none opacity-[0.065] mix-blend-multiply"
+                            className="absolute inset-0 pointer-events-none opacity-[0.055]"
                             style={{
-                                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+                                backgroundImage: "radial-gradient(#8B5A2B 0.75px, transparent 0.75px)",
+                                backgroundSize: "14px 14px",
                             }}
                         />
 
