@@ -46,14 +46,23 @@ const WishCard = ({
     // Handwriting animation state
     const [displayedChars, setDisplayedChars] = useState(0);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const startedWritingRef = useRef(false);
     const fullText = wish.text;
     const isBlankCard = wish.id === "write-your-own";
 
-    // Reset and replay handwriting when card becomes the top and section is visible in viewport
+    // Reset handwriting only when the card identity/text changes or becomes the top card
+    useEffect(() => {
+        if (!isTop || isBlankCard) return;
+        startedWritingRef.current = false;
+        setDisplayedChars(0);
+    }, [isTop, fullText, isBlankCard]);
+
+    // Advance handwriting while the top card is visible in the viewport (pauses offscreen without resetting completed text)
     useEffect(() => {
         if (!isTop || !isInView || isBlankCard) return;
-        setDisplayedChars(0);
+        const initialDelay = startedWritingRef.current ? 0 : 300;
         const delay = setTimeout(() => {
+            startedWritingRef.current = true;
             timerRef.current = setInterval(() => {
                 setDisplayedChars((prev) => {
                     if (prev >= fullText.length) {
@@ -63,7 +72,7 @@ const WishCard = ({
                     return prev + 1;
                 });
             }, 28);
-        }, 300);
+        }, initialDelay);
         return () => {
             clearTimeout(delay);
             if (timerRef.current) clearInterval(timerRef.current);

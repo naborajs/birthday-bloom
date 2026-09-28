@@ -59,14 +59,10 @@ const Drips = ({ config, isSlice }: { config: CakeOption["config"]; isSlice?: bo
         [config.dripColor]
     );
 
-    useEffect(() => {
-        return () => {
-            drips.forEach((d) => d.stemGeo.dispose());
-            beadGeometry.dispose();
-            stemMaterial.dispose();
-            beadMaterial.dispose();
-        };
-    }, [drips, beadGeometry, stemMaterial, beadMaterial]);
+    useEffect(() => () => drips.forEach((d) => d.stemGeo.dispose()), [drips]);
+    useEffect(() => () => beadGeometry.dispose(), [beadGeometry]);
+    useEffect(() => () => stemMaterial.dispose(), [stemMaterial]);
+    useEffect(() => () => beadMaterial.dispose(), [beadMaterial]);
 
     return (
         <group>
@@ -171,12 +167,8 @@ const Rosettes = ({
         [creamColor, toppingColor, strawberryColor]
     );
 
-    useEffect(() => {
-        return () => {
-            Object.values(sharedGeos).forEach((g) => g.dispose());
-            Object.values(sharedMats).forEach((m) => m.dispose());
-        };
-    }, [sharedGeos, sharedMats]);
+    useEffect(() => () => Object.values(sharedGeos).forEach((g) => g.dispose()), [sharedGeos]);
+    useEffect(() => () => Object.values(sharedMats).forEach((m) => m.dispose()), [sharedMats]);
 
     return (
         <group position={[0, 0, bottom ? 0.08 : height]}>
@@ -268,12 +260,8 @@ const Sprinkles = ({ accent, isSlice }: { accent: string; isSlice?: boolean }) =
 
     const pearlGeometry = useMemo(() => new THREE.SphereGeometry(0.035, 12, 12), []);
 
-    useEffect(() => {
-        return () => {
-            pearlGeometry.dispose();
-            pearlMaterial.dispose();
-        };
-    }, [pearlGeometry, pearlMaterial]);
+    useEffect(() => () => pearlGeometry.dispose(), [pearlGeometry]);
+    useEffect(() => () => pearlMaterial.dispose(), [pearlMaterial]);
 
     return (
         <Instances range={sprinkleData.length} material={pearlMaterial} geometry={pearlGeometry}>
@@ -385,12 +373,8 @@ const CakeBody = ({ cake, isSlice }: { cake: CakeOption; isSlice?: boolean }) =>
         [config.frostingColor, config.spongeColor, config.fillingColor]
     );
 
-    useEffect(() => {
-        return () => {
-            Object.values(cakeGeos).forEach((g) => g.dispose());
-            Object.values(cakeMats).forEach((m) => m.dispose());
-        };
-    }, [cakeGeos, cakeMats]);
+    useEffect(() => () => Object.values(cakeGeos).forEach((g) => g.dispose()), [cakeGeos]);
+    useEffect(() => () => Object.values(cakeMats).forEach((m) => m.dispose()), [cakeMats]);
 
     return (
         <group rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
@@ -683,13 +667,13 @@ const CelebrationOrbs3D = ({ primaryColor }: { primaryColor: string }) => {
         [primaryColor]
     );
 
+    useEffect(() => () => orbGeometries.forEach((g) => g.dispose()), [orbGeometries]);
     useEffect(() => {
         return () => {
-            orbGeometries.forEach((g) => g.dispose());
             orbMaterials.gold.dispose();
             orbMaterials.primary.dispose();
         };
-    }, [orbGeometries, orbMaterials]);
+    }, [orbMaterials]);
 
     const orbs = useMemo(() => {
         return Array.from({ length: 18 }, (_, i) => {

@@ -515,13 +515,46 @@ describe("Adversarial Stress Test: Performance, Physics & Lifecycle Safety", () 
       window.Audio = originalAudio;
     });
 
-    it("renders HeartTree with radialGradient leaf halos instead of expensive SVG feGaussianBlur filters", () => {
+    it("renders HeartTree with radialGradient leaf halos instead of expensive SVG feGaussianBlur filters and blooms leaves once across stages 3 -> 4", () => {
+      vi.useFakeTimers();
+      const rafCallbacks: FrameRequestCallback[] = [];
+      vi.spyOn(window, "requestAnimationFrame").mockImplementation((cb) => {
+        rafCallbacks.push(cb);
+        return rafCallbacks.length;
+      });
+
       const { container, unmount } = render(React.createElement(HeartTree));
       const radialGradient = container.querySelector("radialGradient#hg-halo");
       const gaussianBlur = container.querySelector("feGaussianBlur");
       expect(radialGradient).not.toBeNull();
       expect(gaussianBlur).toBeNull();
+
+      // Advance to stage 3 (3000ms) where leaves bloom
+      act(() => {
+        vi.advanceTimersByTime(3100);
+      });
+      expect(rafCallbacks.length).toBeGreaterThan(0);
+
+      // Run bloom rAF at t = 2000ms after start so all leaves reach full scale
+      const latestCb = rafCallbacks[rafCallbacks.length - 1];
+      act(() => {
+        latestCb(performance.now() + 2000);
+      });
+
+      const leafGroups = container.querySelectorAll("svg > g[transform*='scale(']");
+      expect(leafGroups.length).toBe(12);
+      const scaleAtStage3 = leafGroups[0].getAttribute("transform");
+      expect(scaleAtStage3).not.toContain("scale(0)");
+
+      // Advance to stage 4 (4500ms) — leaves must NOT snap back to scale(0)
+      act(() => {
+        vi.advanceTimersByTime(1600);
+      });
+      const scaleAtStage4 = leafGroups[0].getAttribute("transform");
+      expect(scaleAtStage4).toBe(scaleAtStage3);
+
       unmount();
+      vi.useRealTimers();
     });
   });
 
@@ -641,7 +674,7 @@ describe("Adversarial Stress Test: Performance, Physics & Lifecycle Safety", () 
   describe("4. Production Build Bundle Size & Asset Integrity Verification", () => {
     const distDir = path.resolve(__dirname, "../../dist");
 
-    it("verifies production build artifacts and chunk isolation exist on disk", () => {
+    it("verifies production build artifacts, chunk isolation, and lazy Three.js loading (no modulepreload for three.*.js)", () => {
       expect(fs.existsSync(distDir)).toBe(true);
 
       const files = fs.readdirSync(distDir);
@@ -650,6 +683,7 @@ describe("Adversarial Stress Test: Performance, Physics & Lifecycle Safety", () 
       const indexJs = files.find((f) => /^index\..*\.js$/.test(f));
       const vendorJs = files.find((f) => /^vendor\..*\.js$/.test(f));
       const threeJs = files.find((f) => /^three\..*\.js$/.test(f));
+      const templatesJs = files.find((f) => /^templates\..*\.js$/.test(f));
       const framerMotionJs = files.find((f) => /^framer-motion\..*\.js$/.test(f));
       const radixUiJs = files.find((f) => /^radix-ui\..*\.js$/.test(f));
 
@@ -658,8 +692,13 @@ describe("Adversarial Stress Test: Performance, Physics & Lifecycle Safety", () 
       expect(indexJs).toBeDefined();
       expect(vendorJs).toBeDefined();
       expect(threeJs).toBeDefined();
+      expect(templatesJs).toBeDefined();
       expect(framerMotionJs).toBeDefined();
       expect(radixUiJs).toBeDefined();
+
+      // Verify three.*.js is NOT preloaded in index.html (it must only load when Cake3D is rendered)
+      const htmlContent = fs.readFileSync(path.join(distDir, "index.html"), "utf-8");
+      expect(htmlContent).not.toMatch(/href="\/three\..*\.js"/);
     });
 
     it("validates bundle chunk sizes satisfy performance budgets", () => {
@@ -687,7 +726,7 @@ describe("Adversarial Stress Test: Performance, Physics & Lifecycle Safety", () 
       expect(vendorJsSizeKb).toBeLessThan(200); // Vendor bundle < 200 kB (actual ~105 kB)
       expect(framerMotionJsSizeKb).toBeLessThan(200); // Framer Motion < 200 kB (actual ~141 kB)
       expect(radixUiJsSizeKb).toBeLessThan(250); // Radix UI < 250 kB (actual ~177 kB)
-      expect(threeJsSizeKb).toBeLessThan(1100); // Three.js chunk < 1.1 MB (actual ~918 kB)
+      expect(threeJsSizeKb).toBeLessThan(1000); // Three.js chunk < 1,000 kB (actual ~935 kB)
     });
 
     it("validates static SEO and PWA webmanifest assets are well-formed", () => {

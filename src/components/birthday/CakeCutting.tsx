@@ -280,14 +280,19 @@ export const CakeCutting = () => {
         }
     }, [phase, handleCut]);
 
-    // Lock scroll when experience is active
+    // Lock scroll and pause background ambient layers when 3D cake experience is active
     useEffect(() => {
         if (phase !== "select") {
             document.body.style.overflow = 'hidden';
+            document.body.classList.add('cake-modal-active');
         } else {
             document.body.style.overflow = 'unset';
+            document.body.classList.remove('cake-modal-active');
         }
-        return () => { document.body.style.overflow = 'unset'; };
+        return () => {
+            document.body.style.overflow = 'unset';
+            document.body.classList.remove('cake-modal-active');
+        };
     }, [phase]);
 
     // Auto-advance quotes
@@ -327,7 +332,7 @@ export const CakeCutting = () => {
                             initial={{ opacity: 0 }} 
                             animate={{ opacity: 1 }} 
                             exit={{ opacity: 0 }} 
-                            className="fixed inset-0 z-[100] flex flex-col items-center justify-start md:justify-center backdrop-blur-md overflow-y-auto overscroll-none py-10 md:py-8" 
+                            className={`fixed inset-0 z-[100] flex flex-col items-center justify-start md:justify-center ${isMobile ? "" : "backdrop-blur-md"} overflow-y-auto overscroll-none py-10 md:py-8`} 
                             style={{
                                 background: "radial-gradient(circle at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.95) 100%)"
                             }}

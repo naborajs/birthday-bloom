@@ -525,12 +525,12 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                             }}
                         />
                         <div
-                            className="absolute top-[16%] -left-16 w-64 h-64 rounded-full blur-[85px] opacity-25"
-                            style={{ background: primaryColor }}
+                            className="absolute top-[6%] -left-24 w-80 h-80 rounded-full opacity-35"
+                            style={{ background: `radial-gradient(circle, ${primaryColor} 0%, transparent 70%)` }}
                         />
                         <div
-                            className="absolute bottom-[28%] -right-16 w-64 h-64 rounded-full blur-[90px] opacity-20"
-                            style={{ background: "#A855F7" }}
+                            className="absolute bottom-[18%] -right-24 w-80 h-80 rounded-full opacity-30"
+                            style={{ background: "radial-gradient(circle, #A855F7 0%, transparent 70%)" }}
                         />
                     </div>
 

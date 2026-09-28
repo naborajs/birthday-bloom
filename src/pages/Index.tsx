@@ -66,7 +66,7 @@ const Index = () => {
         </button>)}
 
       <AnimatePresence mode="wait">
-        {phase === "splash" && (<motion.div key="splash" initial={{ opacity: 1 }} exit={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }} transition={{ duration: 1 }}>
+        {phase === "splash" && (<motion.div key="splash" initial={{ opacity: 1 }} exit={{ opacity: 0, scale: 1.06 }} transition={{ duration: 0.85, ease: "easeOut" }}>
             <SplashScreen onStart={() => {
                 if (isPasswordRequired(config)) {
                     setPhase("unlock");
@@ -81,7 +81,7 @@ const Index = () => {
             <PasswordUnlock onUnlock={() => setPhase("intro")}/>
           </motion.div>)}
 
-        {phase === "intro" && (<motion.div key="intro" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 0.9, filter: "blur(20px)" }} transition={{ duration: 1 }}>
+        {phase === "intro" && (<motion.div key="intro" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.85, ease: "easeOut" }}>
             <CinematicIntro onComplete={() => {
                 setPhase("main");
                 setFireworksRunKey((key) => key + 1);

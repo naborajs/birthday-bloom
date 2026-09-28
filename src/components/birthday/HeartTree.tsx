@@ -184,8 +184,9 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
         return () => timers.forEach(clearTimeout);
     }, [delay, isInView]);
 
+    const hasLeaves = stage >= 3;
     useEffect(() => {
-        if (stage < 3) return;
+        if (!hasLeaves) return;
         let rafId: number;
         const startTime = performance.now();
         const dur = 700;
@@ -222,7 +223,7 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
         };
         rafId = requestAnimationFrame(tick);
         return () => cancelAnimationFrame(rafId);
-    }, [stage]);
+    }, [hasLeaves]);
 
     const clickHeart = (e: React.MouseEvent<SVGGElement>, i: number) => {
         e.stopPropagation();

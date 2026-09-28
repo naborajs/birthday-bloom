@@ -19,14 +19,16 @@ export default defineConfig(() => ({
         manualChunks(id) {
           if (
             id.includes('Cake3D') ||
-            id.includes('CakeKnife3D') ||
-            id.includes('CakeVisuals') ||
-            id.includes('CakeTypes') ||
+            id.includes('CakeKnife3D')
+          ) {
+            return 'three';
+          }
+          if (
             id.includes('hindiTemplates') ||
             id.includes('bengaliTemplates') ||
             id.includes('frenchTemplates')
           ) {
-            return 'three';
+            return 'templates';
           }
           if (id.includes('node_modules')) {
             if (

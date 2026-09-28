@@ -124,10 +124,23 @@ export const PhotoGallery = () => {
     };
 
     useEffect(() => {
+        cachedRectRef.current = null;
+    }, [activeIndex]);
+
+    useEffect(() => {
         if (typeof window === 'undefined')
             return;
         setSupportsTilt(window.matchMedia('(pointer:fine)').matches && window.innerWidth >= 768);
         setIsReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+        const invalidateRect = () => {
+            cachedRectRef.current = null;
+        };
+        window.addEventListener('scroll', invalidateRect, { passive: true });
+        window.addEventListener('resize', invalidateRect, { passive: true });
+        return () => {
+            window.removeEventListener('scroll', invalidateRect);
+            window.removeEventListener('resize', invalidateRect);
+        };
     }, []);
 
     // Viewport-gate auto-advance interval so offscreen slide changes don't trigger layout/paint work

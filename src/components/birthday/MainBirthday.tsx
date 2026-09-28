@@ -148,8 +148,8 @@ export const MainBirthday = () => {
         visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.5 } },
     };
     const itemVariants = {
-        hidden: { y: 30, opacity: 0, filter: "blur(10px)" },
-        visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.8, ease: "easeOut" as const } },
+        hidden: { y: 30, opacity: 0 },
+        visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" as const } },
     };
     const sparkleCount = isMobile ? 4 : 6;
     const balloonCount = isMobile ? 4 : 6;
@@ -263,7 +263,7 @@ export const MainBirthday = () => {
 
       {config.showGiftSection && <section className="relative z-20 px-4 pb-20">
         <div className="max-w-6xl mx-auto">
-          <motion.button type="button" onClick={openGift} whileHover={shouldAnimate ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.98 }} transition={{ duration: 0.3 }} className="w-full rounded-[3rem] border border-white/10 bg-gradient-to-r from-primary/15 to-transparent p-8 text-left shadow-2xl backdrop-blur-3xl hover:border-primary/40">
+          <motion.button type="button" onClick={openGift} whileHover={shouldAnimate ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.98 }} transition={{ duration: 0.3 }} className="w-full rounded-[3rem] border border-white/10 bg-gradient-to-r from-primary/15 to-transparent p-8 text-left shadow-2xl backdrop-blur-xl hover:border-primary/40">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div>
                 <p className="text-2xl md:text-3xl font-display font-black text-white">{t('gift.title')}</p>
@@ -284,7 +284,7 @@ export const MainBirthday = () => {
       </section>}
 
       <AnimatePresence>
-        {giftStage !== 'closed' && (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-3xl p-6" onClick={() => setGiftStage('closed')}>
+        {giftStage !== 'closed' && (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/95 ${isMobile ? "" : "backdrop-blur-md"} p-6`} onClick={() => setGiftStage('closed')}>
             <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.35 }} className="relative w-full max-w-3xl rounded-[2.5rem] border border-white/10 bg-black/90 p-6 sm:p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)] max-h-[calc(100vh-4rem)] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
               {giftStage === 'party' ? (<div className="flex flex-col gap-6 text-center min-h-[42vh] justify-center">
                   <div className="text-6xl">🎂🎉✨</div>

@@ -40,8 +40,19 @@ const HeartSVG = ({ stage, glowing }: {
     </svg>);
 };
 const evalMergeEase = (t: number): number => {
-    const clamped = Math.max(0, Math.min(1, t));
-    return 1 - Math.pow(1 - clamped, 4);
+    if (t <= 0) return 0;
+    if (t >= 1) return 1;
+    // Exact parametric solver for CSS cubic-bezier(0.19, 1, 0.22, 1)
+    let u = t;
+    for (let i = 0; i < 5; i++) {
+        const inv = 1 - u;
+        const x = 3 * inv * inv * u * 0.19 + 3 * inv * u * u * 0.22 + u * u * u - t;
+        const dx = 3 * inv * inv * 0.19 + 6 * inv * u * 0.03 + 3 * u * u * 0.78;
+        if (Math.abs(dx) < 1e-6) break;
+        u = Math.max(0, Math.min(1, u - x / dx));
+    }
+    const inv = 1 - u;
+    return 1 - inv * inv * inv;
 };
 
 const FourCornerMerge = ({ onDone }: {
@@ -99,10 +110,15 @@ const FourCornerMerge = ({ onDone }: {
         if (!ctx)
             return undefined;
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const width = container.clientWidth || window.innerWidth;
-        const height = container.clientHeight || 300;
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        // Size canvas to encompass the full ±60vw × ±60vh flight trajectory centered on containerRef
+        const width = Math.max(container.clientWidth || 0, Math.ceil(vw * 1.3));
+        const height = Math.max(container.clientHeight || 0, Math.ceil(vh * 1.3));
         canvas.width = Math.floor(width * dpr);
         canvas.height = Math.floor(height * dpr);
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
         const particles: TrailParticle[] = [];
@@ -111,20 +127,19 @@ const FourCornerMerge = ({ onDone }: {
         let lastSpawn = 0;
         const mergeStart = performance.now();
         const MERGE_DURATION = 2200;
+        const SPAWN_WINDOW = 1700;
         const LIFETIME = 1600;
 
         const loop = (now: number) => {
             if (!active)
                 return;
             const elapsed = now - mergeStart;
-            if (elapsed <= 1800 && now - lastSpawn > 50) {
+            if (elapsed <= SPAWN_WINDOW && now - lastSpawn > 50) {
                 lastSpawn = now;
                 const progress = evalMergeEase(elapsed / MERGE_DURATION);
                 const rem = 1 - progress;
                 const cx = width / 2;
                 const cy = height / 2;
-                const vw = window.innerWidth;
-                const vh = window.innerHeight;
                 for (let idx = 0; idx < corners.length; idx++) {
                     const c = corners[idx];
                     const hx = cx + c.dx * vw * rem;
@@ -166,7 +181,7 @@ const FourCornerMerge = ({ onDone }: {
             }
             ctx.globalAlpha = 1;
 
-            if (elapsed <= 1800 || particles.length > 0) {
+            if (elapsed <= SPAWN_WINDOW || particles.length > 0) {
                 rafRef.current = requestAnimationFrame(loop);
             }
         };
@@ -185,7 +200,7 @@ const FourCornerMerge = ({ onDone }: {
         </div>)}
 
       
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-[5]" aria-hidden="true"/>
+      <canvas ref={canvasRef} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[5]" aria-hidden="true"/>
 
       
       {isMerged && (<div className="absolute w-64 h-64 md:w-80 md:h-80 rounded-full opacity-40 animate-pulse" style={{ background: "radial-gradient(circle, hsl(330,85%,60%), hsl(330,85%,40%), transparent)" }}/>)}

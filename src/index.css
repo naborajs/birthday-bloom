@@ -71,6 +71,10 @@
     pointer-events: none;
     background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.4) 100%);
   }
+
+  body.cake-modal-active #root * {
+    animation-play-state: paused !important;
+  }
 }
 
 /* ── Core birthday animations ── */
