@@ -113,8 +113,7 @@ export const EmojiCursorTrail = () => {
                 rotate: particle.rotate,
             }} exit={{ opacity: 0, scale: 0.5 }} transition={{ duration: particle.duration, ease: [0.22, 1, 0.36, 1] }} className="absolute left-0 top-0 select-none will-change-transform" style={{
                 fontSize: particle.size,
-                filter: "drop-shadow(0 10px 18px rgba(0,0,0,0.24))",
-                transform: "translate3d(0,0,0)",
+                textShadow: "0 6px 12px rgba(0,0,0,0.24)",
             }}>
             {particle.emoji}
           </motion.span>))}

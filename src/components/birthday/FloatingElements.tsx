@@ -53,16 +53,16 @@ export const FloatingElements = () => {
             {/* Ambient Bokeh Aura (Zero-Filter Radial Gradient) */}
             <div className="absolute inset-0 opacity-[0.12]">
                 <div
-                    className="absolute top-1/4 -left-20 w-[32rem] h-[32rem] rounded-full animate-bg-shift"
+                    className="absolute top-1/4 -left-20 w-[32rem] h-[32rem] rounded-full animate-subtle-float"
                     style={{
                         background: `radial-gradient(circle, ${relationship === 'partner' ? primaryColor : 'var(--color-primary, #FF6B6B)'} 0%, transparent 70%)`
                     }}
                 />
                 <div
-                    className="absolute bottom-1/4 -right-20 w-[32rem] h-[32rem] rounded-full animate-bg-shift"
+                    className="absolute bottom-1/4 -right-20 w-[32rem] h-[32rem] rounded-full animate-subtle-float"
                     style={{
                         background: `radial-gradient(circle, ${relationship === 'partner' ? '#FF69B4' : 'var(--color-secondary, #4ECDC4)'} 0%, transparent 70%)`,
-                        animationDelay: '-10s'
+                        animationDelay: '-2.5s'
                     }}
                 />
             </div>
@@ -100,7 +100,7 @@ export const FloatingElements = () => {
 
             {/* Parallax Floating Emojis */}
             {items.map((item) => (
-                <ParallaxItem key={item.id} item={item} scrollY={scrollY} isPartner={relationship === 'partner'} isMobile={isMobile} />
+                <ParallaxItem key={item.id} item={item} scrollY={scrollY} isPartner={relationship === 'partner'} />
             ))}
         </div>
     );
@@ -110,44 +110,43 @@ const ParallaxItem = ({
     item,
     scrollY,
     isPartner,
-    isMobile,
 }: {
     item: FloatingItem;
     scrollY: MotionValue<number>;
     isPartner: boolean;
-    isMobile: boolean;
 }) => {
     const y = useTransform(scrollY, [0, 2000], [0, -item.depth * 250]);
     const baseOpacity = isPartner ? 0.35 / item.depth : 0.22 / item.depth;
-    const blurAmount = Math.max(0, item.depth - 1.4);
 
     return (
         <motion.div
             style={{
                 left: `${item.x}%`,
                 top: `${item.y}%`,
-                fontSize: `${item.size}rem`,
-                opacity: baseOpacity,
-                filter: (!isMobile && blurAmount > 0.2) ? `blur(${blurAmount}px)` : undefined,
                 y,
             }}
-            initial={{ y: 0 }}
-            animate={{
-                x: [0, 18, -12, 0],
-                y: [0, -22, 0],
-                rotate: [0, 12, -12, 0],
-            }}
-            transition={{
-                duration: item.duration,
-                repeat: Infinity,
-                delay: item.delay,
-                ease: "easeInOut",
-            }}
-            className={`absolute select-none pointer-events-none ${
-                item.isHeart ? 'drop-shadow-[0_0_12px_rgba(255,42,109,0.5)]' : ''
-            }`}
+            className="absolute select-none pointer-events-none will-change-transform"
         >
-            {item.element}
+            <motion.div
+                style={{
+                    fontSize: `${item.size}rem`,
+                    opacity: baseOpacity,
+                    textShadow: item.isHeart ? '0 0 12px rgba(255,42,109,0.5)' : undefined,
+                }}
+                animate={{
+                    x: [0, 18, -12, 0],
+                    y: [0, -22, 0],
+                    rotate: [0, 12, -12, 0],
+                }}
+                transition={{
+                    duration: item.duration,
+                    repeat: Infinity,
+                    delay: item.delay,
+                    ease: "easeInOut",
+                }}
+            >
+                {item.element}
+            </motion.div>
         </motion.div>
     );
 };
