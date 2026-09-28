@@ -119,7 +119,7 @@ export const PremiumFireworks = ({ runKey }: PremiumFireworksProps) => {
         const draw = (time: number) => {
             const delta = Math.min(32, time - lastTime) / 16.67;
             lastTime = time;
-            context.globalCompositeOperation = "source-over";
+            context.globalCompositeOperation = "destination-out";
             context.fillStyle = "rgba(0, 0, 0, 0.18)";
             context.fillRect(0, 0, window.innerWidth, window.innerHeight);
             context.globalCompositeOperation = "lighter";
@@ -131,15 +131,19 @@ export const PremiumFireworks = ({ runKey }: PremiumFireworksProps) => {
                 firework.x += firework.vx * delta;
                 firework.y += firework.vy * delta;
                 firework.vy += 0.025 * delta;
-                firework.trail.forEach((point, index) => {
-                    point.alpha *= 0.9;
+                if (firework.trail.length > 0) {
                     context.beginPath();
-                    context.strokeStyle = `${firework.color}${Math.floor(point.alpha * 180).toString(16).padStart(2, "0")}`;
-                    context.lineWidth = Math.max(1, index / 2);
-                    context.moveTo(point.x, point.y);
+                    context.strokeStyle = `${firework.color}b4`;
+                    context.lineWidth = 2;
+                    context.moveTo(firework.trail[0].x, firework.trail[0].y);
+                    for (let t = 0; t < firework.trail.length; t += 1) {
+                        const point = firework.trail[t];
+                        point.alpha *= 0.9;
+                        context.lineTo(point.x, point.y);
+                    }
                     context.lineTo(firework.x, firework.y);
                     context.stroke();
-                });
+                }
                 context.beginPath();
                 context.fillStyle = firework.color;
                 context.arc(firework.x, firework.y, 2.8, 0, Math.PI * 2);
@@ -151,7 +155,8 @@ export const PremiumFireworks = ({ runKey }: PremiumFireworksProps) => {
                 context.fill();
                 if (firework.y <= firework.targetY || Math.hypot(firework.x - firework.targetX, firework.y - firework.targetY) < 28) {
                     explode(firework);
-                    fireworks.splice(i, 1);
+                    fireworks[i] = fireworks[fireworks.length - 1];
+                    fireworks.pop();
                 }
             }
             for (let i = particles.length - 1; i >= 0; i -= 1) {
@@ -175,8 +180,10 @@ export const PremiumFireworks = ({ runKey }: PremiumFireworksProps) => {
                 context.fillStyle = `${particle.color}${particleAlpha}`;
                 context.arc(particle.x, particle.y, pRadius, 0, Math.PI * 2);
                 context.fill();
-                if (particle.life <= 0 || particle.y > window.innerHeight + 40)
-                    particles.splice(i, 1);
+                if (particle.life <= 0 || particle.y > window.innerHeight + 40) {
+                    particles[i] = particles[particles.length - 1];
+                    particles.pop();
+                }
             }
             for (let i = flashes.length - 1; i >= 0; i -= 1) {
                 const flash = flashes[i];
@@ -190,8 +197,10 @@ export const PremiumFireworks = ({ runKey }: PremiumFireworksProps) => {
                 context.fill();
                 flash.radius += 6 * delta;
                 flash.life -= 0.055 * delta;
-                if (flash.life <= 0)
-                    flashes.splice(i, 1);
+                if (flash.life <= 0) {
+                    flashes[i] = flashes[flashes.length - 1];
+                    flashes.pop();
+                }
             }
             const elapsed = time - startTime;
             if (elapsed > totalDuration && fireworks.length === 0 && particles.length === 0 && flashes.length === 0) {
@@ -217,5 +226,5 @@ export const PremiumFireworks = ({ runKey }: PremiumFireworksProps) => {
             context.clearRect(0, 0, window.innerWidth, window.innerHeight);
         };
     }, [isMobile, reduceMotion, runKey]);
-    return (<canvas ref={canvasRef} className="fixed inset-0 z-[95] pointer-events-none mix-blend-screen" aria-hidden="true"/>);
+    return (<canvas ref={canvasRef} className="fixed inset-0 z-[95] pointer-events-none" aria-hidden="true"/>);
 };
