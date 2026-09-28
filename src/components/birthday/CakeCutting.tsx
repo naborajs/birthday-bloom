@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, lazy, Suspense } from "react";
 import { createPortal } from "react-dom";
 import { Cake as CakeIcon } from "lucide-react";
 import { useConfetti } from "./Confetti";
@@ -10,12 +10,13 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 import { Phase, CakeOption, CAKE_OPTIONS, getCakeName } from "./CakeTypes";
 import { CutSparks, MagicDust, PastryCrumbs } from "./CakeVisuals";
-import { Cake3D } from "./Cake3D";
 import { useTranslation } from "@/i18n";
 import { SPECIAL_QUOTES } from "@/config/templates";
 import { HINDI_SPECIAL_QUOTES } from "@/config/hindiTemplates";
 import { BENGALI_SPECIAL_QUOTES } from "@/config/bengaliTemplates";
 import { FRENCH_SPECIAL_QUOTES } from "@/config/frenchTemplates";
+
+const LazyCake3D = lazy(() => import("./Cake3D").then((m) => ({ default: m.Cake3D })));
 
 const CakeCard = ({ cake, onSelect }: {
     cake: CakeOption;
@@ -326,7 +327,7 @@ export const CakeCutting = () => {
                             initial={{ opacity: 0 }} 
                             animate={{ opacity: 1 }} 
                             exit={{ opacity: 0 }} 
-                            className="fixed inset-0 z-[100] flex flex-col items-center justify-start md:justify-center backdrop-blur-2xl overflow-y-auto overscroll-none py-10 md:py-8" 
+                            className="fixed inset-0 z-[100] flex flex-col items-center justify-start md:justify-center backdrop-blur-md overflow-y-auto overscroll-none py-10 md:py-8" 
                             style={{
                                 background: "radial-gradient(circle at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.95) 100%)"
                             }}
@@ -335,7 +336,7 @@ export const CakeCutting = () => {
                                 type="button"
                                 aria-label={isFrench ? "Fermer l'expérience du gâteau" : isBengali ? "কেকের অভিজ্ঞতা বন্ধ করুন" : isHindi ? "केक का अनुभव बंद करें" : "Close cake experience"}
                                 onClick={() => setPhase("select")}
-                                className="fixed top-6 right-6 z-[110] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center text-xl transition-all shadow-xl backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-primary"
+                                className="fixed top-6 right-6 z-[110] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center text-xl transition-all shadow-xl backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-primary"
                             >
                                 ✕
                             </button>
@@ -347,13 +348,18 @@ export const CakeCutting = () => {
                                         key="baking"
                                         initial={{ opacity: 0, scale: 0.9 }}
                                         animate={{ opacity: 1, scale: 1 }}
-                                        exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
+                                        exit={{ opacity: 0, scale: 1.1 }}
                                         transition={{ duration: 0.5 }}
-                                        className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-xl"
+                                        className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-md"
                                     >
                                         <div className="relative flex flex-col items-center gap-6">
                                             <div className="relative">
-                                                <div className="absolute inset-0 bg-primary/30 blur-2xl rounded-full animate-pulse" />
+                                                <div
+                                                    className="absolute -inset-6 rounded-full animate-pulse pointer-events-none"
+                                                    style={{
+                                                        background: "radial-gradient(circle, rgba(var(--color-primary-rgb, 255,42,109), 0.35) 0%, transparent 70%)",
+                                                    }}
+                                                />
                                                 <CakeIcon className="w-16 h-16 text-primary animate-bounce relative z-10" />
                                             </div>
                                             <div className="flex flex-col items-center gap-2">
@@ -378,7 +384,7 @@ export const CakeCutting = () => {
                             
                             <div className="w-full max-w-4xl mx-auto flex flex-col items-center justify-center min-h-[100dvh] py-2">
                                 <div
-                                    className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-white/15 backdrop-blur-xl text-xs font-bold tracking-widest uppercase text-white/90 shadow-lg mb-1"
+                                    className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-white/15 backdrop-blur-md text-xs font-bold tracking-widest uppercase text-white/90 shadow-lg mb-1"
                                     style={{
                                         background: `linear-gradient(135deg, ${primaryColor}33, rgba(255,255,255,0.06))`,
                                         boxShadow: `0 0 24px ${primaryColor}33`
@@ -402,7 +408,9 @@ export const CakeCutting = () => {
                                     )}
                                 </div>
                                 <div className="relative w-full h-[58vh] min-h-[460px] flex justify-center items-center mt-1 overflow-visible">
-                                    <Cake3D cake={cake} phase={phase} primaryColor={primaryColor} />
+                                    <Suspense fallback={null}>
+                                        <LazyCake3D cake={cake} phase={phase} primaryColor={primaryColor} />
+                                    </Suspense>
                                     
                                     {/* Overlays on top of the Cake */}
                                     
@@ -419,7 +427,14 @@ export const CakeCutting = () => {
                                     
                                     {/* Wish Overlay Glow */}
                                     {phase === "wish" && (
-                                        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity }} className="absolute inset-0 rounded-full bg-white/10 blur-3xl pointer-events-none" />
+                                        <motion.div
+                                            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+                                            transition={{ duration: 2, repeat: Infinity }}
+                                            className="absolute inset-0 rounded-full pointer-events-none"
+                                            style={{
+                                                background: "radial-gradient(circle, rgba(255,255,255,0.14) 0%, transparent 70%)",
+                                            }}
+                                        />
                                     )}
                                     
                                     {/* Countdown Overlay */}
@@ -433,14 +448,13 @@ export const CakeCutting = () => {
                                                     role="status"
                                                     aria-live="polite"
                                                     key={countdownVal} 
-                                                    initial={{ scale: 0.3, opacity: 0, filter: "blur(10px)" }} 
+                                                    initial={{ scale: 0.3, opacity: 0 }} 
                                                     animate={{
                                                         scale: [0.3, 1.4, 1],
                                                         opacity: 1,
-                                                        filter: "blur(0px)",
                                                         textShadow: `0 0 40px ${primaryColor}, 0 0 80px ${primaryColor}`
                                                     }} 
-                                                    exit={{ scale: 1.8, opacity: 0, filter: "blur(15px)" }} 
+                                                    exit={{ scale: 1.8, opacity: 0 }} 
                                                     transition={{ duration: 0.7, ease: "easeOut" }} 
                                                     className="font-display text-8xl md:text-[10rem] font-black text-white"
                                                 >
@@ -496,7 +510,7 @@ export const CakeCutting = () => {
                                                 whileHover={!reducedMotion ? { scale: 1.08, y: -2 } : undefined}
                                                 whileTap={{ scale: 0.94 }}
                                                 onClick={handleCut}
-                                                className="group relative px-10 py-4.5 rounded-full text-lg sm:text-xl font-black text-white overflow-hidden shadow-[0_10px_35px_rgba(255,255,255,0.25)] border border-white/20 backdrop-blur-xl transition-all"
+                                                className="group relative px-10 py-4.5 rounded-full text-lg sm:text-xl font-black text-white overflow-hidden shadow-[0_10px_35px_rgba(255,255,255,0.25)] border border-white/20 backdrop-blur-md transition-all"
                                                 style={{
                                                     background: `linear-gradient(135deg, ${cake.accent}, #ff0080)`,
                                                 }}
@@ -518,7 +532,7 @@ export const CakeCutting = () => {
                                         <div className="text-center w-full max-w-2xl">
                                             <AnimatePresence mode="wait">
                                                 {quoteIndex >= 0 && (
-                                                    <motion.div key={quoteIndex} initial={{ y: 20, opacity: 0, filter: "blur(10px)" }} animate={{ y: 0, opacity: 1, filter: "blur(0px)" }} exit={{ y: -20, opacity: 0, filter: "blur(10px)" }} transition={{ duration: 0.8 }} className="flex items-center justify-center">
+                                                    <motion.div key={quoteIndex} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -20, opacity: 0 }} transition={{ duration: 0.8 }} className="flex items-center justify-center">
                                                         <p className={`text-3xl sm:text-4xl md:text-6xl font-display font-black leading-tight ${
                                                             quoteIndex === quotes.length - 1 
                                                                 ? "bg-gradient-to-r from-primary via-white to-primary bg-clip-text text-transparent animate-gradient-shift drop-shadow-[0_0_30px_var(--color-primary)]" 
