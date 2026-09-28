@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useSoundManager } from "./SoundManager";
@@ -119,13 +119,40 @@ const isRealImageUrl = (url?: string): boolean => {
 export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
     const [stage, setStage] = useState(0);
     const [activeMsg, setActiveMsg] = useState<string | null>(null);
-    const [scales, setScales] = useState<number[]>(Array(12).fill(0));
+    const [isInView, setIsInView] = useState(() => (
+        typeof window === "undefined" ||
+        typeof IntersectionObserver === "undefined" ||
+        (typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent))
+    ));
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const leafRefs = useRef<(SVGGElement | null)[]>([]);
+    const scalesRef = useRef<number[]>(Array(12).fill(0));
     const { config } = useBirthdayStore();
     const { relationship, gender, photos = [] } = config;
     const validPhotos = useMemo(() => photos.filter(p => isRealImageUrl(p)), [photos]);
     const { isHindi, isBengali, isFrench } = useTranslation();
     const primaryColor = config.favoriteColor || 'hsl(330, 90%, 75%)';
     const { playPop } = useSoundManager();
+
+    useEffect(() => {
+        if (isInView) return undefined;
+        const el = containerRef.current;
+        if (!el || typeof IntersectionObserver === "undefined") {
+            setIsInView(true);
+            return undefined;
+        }
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries.some((entry) => entry.isIntersecting)) {
+                    setIsInView(true);
+                    observer.disconnect();
+                }
+            },
+            { rootMargin: "200px" }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [isInView]);
 
     const quotesPool = useMemo(() => {
         const resolveFromMap = (map: typeof SPECIAL_QUOTES) => {
@@ -147,6 +174,7 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
         return resolveFromMap(SPECIAL_QUOTES);
     }, [relationship, gender, isHindi, isBengali, isFrench]);
     useEffect(() => {
+        if (!isInView) return undefined;
         const timers = [
             setTimeout(() => setStage(1), delay),
             setTimeout(() => setStage(2), delay + 1500),
@@ -154,7 +182,7 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
             setTimeout(() => setStage(4), delay + 4500),
         ];
         return () => timers.forEach(clearTimeout);
-    }, [delay]);
+    }, [delay, isInView]);
 
     useEffect(() => {
         if (stage < 3) return;
@@ -163,23 +191,33 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
         const dur = 700;
         const tick = (now: number) => {
             let allDone = true;
-            const nextScales = LEAVES.map((leaf) => {
+            for (let i = 0; i < LEAVES.length; i++) {
+                const leaf = LEAVES[i];
+                const el = leafRefs.current[i];
                 const leafStart = startTime + leaf.d;
+                let sc = 0;
                 if (now < leafStart) {
                     allDone = false;
-                    return 0;
+                } else {
+                    const t = Math.min((now - leafStart) / dur, 1);
+                    if (t < 1) allDone = false;
+                    const ease = 1 - Math.pow(1 - t, 3);
+                    const overshoot = t < 0.7 ? 0 : Math.sin(((t - 0.7) / 0.3) * Math.PI) * 0.12;
+                    sc = (ease + overshoot) * leaf.s;
                 }
-                const t = Math.min((now - leafStart) / dur, 1);
-                if (t < 1) allDone = false;
-                const ease = 1 - Math.pow(1 - t, 3);
-                const overshoot = t < 0.7 ? 0 : Math.sin(((t - 0.7) / 0.3) * Math.PI) * 0.12;
-                return (ease + overshoot) * leaf.s;
-            });
-            setScales(nextScales);
+                scalesRef.current[i] = sc;
+                if (el) {
+                    el.setAttribute("transform", `translate(${leaf.cx},${leaf.cy}) scale(${sc.toFixed(3)})`);
+                }
+            }
             if (!allDone) {
                 rafId = requestAnimationFrame(tick);
             } else {
-                setScales(LEAVES.map((l) => l.s));
+                for (let i = 0; i < LEAVES.length; i++) {
+                    const leaf = LEAVES[i];
+                    scalesRef.current[i] = leaf.s;
+                    leafRefs.current[i]?.setAttribute("transform", `translate(${leaf.cx},${leaf.cy}) scale(${leaf.s})`);
+                }
             }
         };
         rafId = requestAnimationFrame(tick);
@@ -197,7 +235,7 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
     };
 
     return (
-        <div className="relative w-full max-w-[500px] mx-auto mb-20">
+        <div ref={containerRef} className="relative w-full max-w-[500px] mx-auto mb-20">
             <div style={{
                 borderRadius: 20,
                 background: "rgba(255,255,255,0.05)",
@@ -220,10 +258,11 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
                         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "visible", zIndex: 10 }}
                     >
                         <defs>
-                            <filter id="hg" x="-80%" y="-80%" width="260%" height="260%">
-                                <feGaussianBlur stdDeviation="5" result="b" />
-                                <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-                            </filter>
+                            <radialGradient id="hg-halo" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stopColor="hsl(345, 90%, 70%)" stopOpacity="0.45" />
+                                <stop offset="60%" stopColor="hsl(345, 88%, 65%)" stopOpacity="0.18" />
+                                <stop offset="100%" stopColor="hsl(345, 85%, 60%)" stopOpacity="0" />
+                            </radialGradient>
                             <linearGradient id="bark" x1="0%" y1="0%" x2="100%" y2="0%">
                                 <stop offset="0%"   stopColor="hsl(22,35%,18%)" />
                                 <stop offset="35%"  stopColor="hsl(22,44%,36%)" />
@@ -295,11 +334,12 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
                         ))}
 
                         {LEAVES.map((leaf, i) => {
-                            const sc = scales[i];
+                            const sc = scalesRef.current[i] || 0;
                             const hasPhoto = validPhotos.length > 0 && i < validPhotos.length;
                             return (
                                 <g
                                     key={`h-${i}`}
+                                    ref={(el) => { leafRefs.current[i] = el; }}
                                     role="button"
                                     tabIndex={0}
                                     aria-label={`Open wish leaf ${i + 1}`}
@@ -321,7 +361,8 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
                                         </g>
                                     ) : (
                                         <g>
-                                            <path d={HEART} fill="url(#hf)" filter="url(#hg)" />
+                                            <circle cx="0" cy="2" r="20" fill="url(#hg-halo)" style={{ pointerEvents: "none" }} />
+                                            <path d={HEART} fill="url(#hf)" />
                                             <path d={HEART} fill="url(#hs)" style={{ pointerEvents: "none" }} />
                                         </g>
                                     )}
