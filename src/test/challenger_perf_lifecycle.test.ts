@@ -12,6 +12,9 @@ import { ShootingStars } from "@/components/birthday/ShootingStars";
 import { Sparkles } from "@/components/birthday/Sparkles";
 import { TypeWriter } from "@/components/birthday/TypeWriter";
 import { useConfetti } from "@/components/birthday/Confetti";
+import { useSoundManager } from "@/components/birthday/SoundManager";
+import { HeartTree } from "@/components/birthday/HeartTree";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useDynamicTheme } from "@/features/core/theme/useDynamicTheme";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import confetti from "canvas-confetti";
@@ -434,6 +437,91 @@ describe("Adversarial Stress Test: Performance, Physics & Lifecycle Safety", () 
       expect(clearIntervalSpy).toHaveBeenCalledWith(intervalId);
 
       vi.useRealTimers();
+    });
+
+    it("initializes useIsMobile synchronously on first render without desktop flash", () => {
+      Object.defineProperty(window, "innerWidth", { writable: true, configurable: true, value: 375 });
+      const observedRenders: boolean[] = [];
+
+      const MobileProbe = () => {
+        const isMobile = useIsMobile();
+        observedRenders.push(isMobile);
+        return React.createElement("div", { "data-mobile": String(isMobile) });
+      };
+
+      const { unmount } = render(React.createElement(MobileProbe));
+      expect(observedRenders[0]).toBe(true);
+      unmount();
+    });
+
+    it("pools HTMLAudioElement instances, throttles rapid typeClick bursts, and respects global mute in SoundManager", () => {
+      const playMock = vi.fn().mockResolvedValue(undefined);
+      const originalAudio = window.Audio;
+      let createdAudioCount = 0;
+
+      class MockAudio {
+        src: string;
+        volume = 1;
+        loop = false;
+        preload = "";
+        currentTime = 0;
+        constructor(src = "") {
+          this.src = src;
+          createdAudioCount++;
+        }
+        play = playMock;
+        pause = vi.fn();
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      window.Audio = MockAudio as any;
+
+      let soundApi: ReturnType<typeof useSoundManager> | null = null;
+      const SoundHarness = () => {
+        soundApi = useSoundManager();
+        return null;
+      };
+
+      const { unmount } = render(React.createElement(SoundHarness));
+      expect(soundApi).not.toBeNull();
+
+      // 1. Rapid typeClick burst (20 calls within same frame) should be throttled to 1 play
+      for (let i = 0; i < 20; i++) {
+        soundApi!.playType();
+      }
+      expect(playMock).toHaveBeenCalledTimes(1);
+
+      // 2. Calling playPop 10 times should reuse at most 3 pooled Audio instances for 'pop'
+      const beforePopCount = createdAudioCount;
+      for (let i = 0; i < 10; i++) {
+        soundApi!.playPop();
+      }
+      const popAudioAllocated = createdAudioCount - beforePopCount;
+      expect(popAudioAllocated).toBeLessThanOrEqual(3);
+
+      // 3. Muting via setMuted(true) or setBgVolume(0) silences subsequent sound effects
+      const playsBeforeMute = playMock.mock.calls.length;
+      soundApi!.setMuted(true);
+      soundApi!.playBoom();
+      soundApi!.playReveal();
+      expect(playMock.mock.calls.length).toBe(playsBeforeMute);
+
+      // Unmute restores playback
+      soundApi!.setMuted(false);
+      soundApi!.playBoom();
+      expect(playMock.mock.calls.length).toBe(playsBeforeMute + 1);
+
+      unmount();
+      window.Audio = originalAudio;
+    });
+
+    it("renders HeartTree with radialGradient leaf halos instead of expensive SVG feGaussianBlur filters", () => {
+      const { container, unmount } = render(React.createElement(HeartTree));
+      const radialGradient = container.querySelector("radialGradient#hg-halo");
+      const gaussianBlur = container.querySelector("feGaussianBlur");
+      expect(radialGradient).not.toBeNull();
+      expect(gaussianBlur).toBeNull();
+      unmount();
     });
   });
 

@@ -18,6 +18,7 @@ import { Heart, X, Send, Pencil, RotateCcw } from "lucide-react";
 interface WishCardProps {
     wish: WishTemplate;
     isTop: boolean;
+    isInView: boolean;
     stackIndex: number; // 0 = top, 1 = behind, 2 = further back
     onSwipeLeft: () => void;
     onSwipeRight: () => void;
@@ -31,6 +32,7 @@ const EXIT_X = 400;
 const WishCard = ({
     wish,
     isTop,
+    isInView,
     stackIndex,
     onSwipeLeft,
     onSwipeRight,
@@ -47,9 +49,9 @@ const WishCard = ({
     const fullText = wish.text;
     const isBlankCard = wish.id === "write-your-own";
 
-    // Reset and replay handwriting when card becomes the top
+    // Reset and replay handwriting when card becomes the top and section is visible in viewport
     useEffect(() => {
-        if (!isTop || isBlankCard) return;
+        if (!isTop || !isInView || isBlankCard) return;
         setDisplayedChars(0);
         const delay = setTimeout(() => {
             timerRef.current = setInterval(() => {
@@ -66,7 +68,7 @@ const WishCard = ({
             clearTimeout(delay);
             if (timerRef.current) clearInterval(timerRef.current);
         };
-    }, [isTop, fullText, isBlankCard]);
+    }, [isTop, isInView, fullText, isBlankCard]);
 
     const handleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
         if (Math.abs(info.offset.x) > SWIPE_THRESHOLD || Math.abs(info.velocity.x) > SWIPE_VELOCITY) {
@@ -236,7 +238,27 @@ export const WishDeck = () => {
     const [customText, setCustomText] = useState("");
     const [exitDirection, setExitDirection] = useState<"left" | "right" | null>(null);
     const [releaseParticles, setReleaseParticles] = useState<{ id: number; x: number; y: number; emoji: string }[]>([]);
+    const [isInView, setIsInView] = useState(false);
+    const sectionRef = useRef<HTMLElement>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    // Viewport-gate the 28ms handwriting interval so offscreen cards don't trigger 35Hz state updates
+    useEffect(() => {
+        const el = sectionRef.current;
+        const isJsdom = typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent);
+        if (!el || typeof IntersectionObserver === "undefined" || isJsdom) {
+            setIsInView(true);
+            return;
+        }
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsInView(entry.isIntersecting);
+            },
+            { threshold: 0.1 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
 
     // Heading text
     const heading = isBengali
@@ -322,7 +344,7 @@ export const WishDeck = () => {
     const visibleCards = deck.slice(currentIndex, currentIndex + 3);
 
     return (
-        <section className="relative z-20 px-4 pb-32">
+        <section ref={sectionRef} className="relative z-20 px-4 pb-32">
             {/* Section heading */}
             <h2
                 className="font-display text-4xl sm:text-6xl md:text-8xl font-black text-center mb-12 sm:mb-16 drop-shadow-xl"
@@ -354,6 +376,7 @@ export const WishDeck = () => {
                                         key={`${wish.id}-${realIndex}`}
                                         wish={wish}
                                         isTop={isCurrentTop}
+                                        isInView={isInView}
                                         stackIndex={exitDirection && i === 0 ? -1 : i}
                                         onSwipeLeft={swipeLeft}
                                         onSwipeRight={swipeRight}

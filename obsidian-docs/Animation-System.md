@@ -20,15 +20,17 @@ The Birthday Bloom project is a highly visual, cinematic experience engineered f
 
 ---
 
-## 2. Framer Motion 13 Implementation
+## 2. Framer Motion 13 & CSS Keyframe Implementation
 
-Framer Motion is used for 2D UI animations, phase transitions, and interactive gesture feedback:
+Framer Motion 13 and GPU-composited CSS keyframes power 2D UI animations, phase transitions, and interactive gesture feedback:
 
 - **[[dynamicVariants]]**: A central configuration module (`src/features/cinematic-story/animations/dynamicVariants.ts`) provides standardized spring curves and transition tokens.
 - **[[TypeWriter]]**: The `TypeWriter.tsx` component orchestrates grapheme-safe staggered character and word reveals without breaking Indic conjuncts or French diacritics.
 - **[[KineticText]]**: High-impact kinetic typography transitions for celebratory headlines with spring bounce.
-- **[[HeartTree]]**: Combines Framer Motion and SVG stroke-dashoffset path animations for a procedural multi-stage blooming memory tree.
-- **[[WishDeck]]**: Physics-based card drag and fling mechanics with velocity thresholding and directional exit animations.
+- **[[HeartProgression]]**: 5-variant romantic intro choreography (`SingleDraw`, `DoubleOrbit`, `TripleCascade`, `FourCornerMerge`, `FiveStarConstellation`). `FourCornerMerge` computes mathematical cubic-bezier coordinates directly into a single `<canvas>` trail renderer instead of querying DOM `getBoundingClientRect()` or spawning React particle arrays.
+- **[[HeartTree]]**: Combines viewport-gated (`IntersectionObserver`) SVG path drawing with direct `<g>` DOM ref scale transforms and `<radialGradient>` leaf halos (avoiding per-leaf `<feGaussianBlur>` SVG filters and 60 FPS React state reconciliations).
+- **[[WishDeck]]**: Physics-based card drag and fling mechanics with velocity thresholding, directional exit animations, and an `IntersectionObserver`-gated handwriting reveal.
+- **[[FakeChatScene]]**: Interactive 3D-tilted smartphone DM story with `React.memo`-isolated virtual keyboard keys and message-count-gated scroll tracking (avoiding per-keystroke synchronous `scrollHeight` reflows).
 
 ### Standard Spring Physics Tokens
 
@@ -45,11 +47,12 @@ Framer Motion is used for 2D UI animations, phase transitions, and interactive g
 
 For tactile 3D celebration interactions, we utilize R3F alongside `@react-spring/three`:
 
-- **[[Cake3D]]**: Renders a procedural 3D cake (`src/components/birthday/Cake3D.tsx`) utilizing:
-  - `Float` and `ContactShadows` from `@react-three/drei` for ambient floating effects and grounded soft shadows.
-  - `@react-spring/three` to animate the cake slice separating dynamically during the cutting phase with spring-based spatial displacement (`x: 0.8`, `z: 0.6`, `rotationY: 0.25`).
-- **Lighting & Material Optimization**:
-  - `ambientLight` ($I=0.7$) + `directionalLight` ($I=1.2$, position `[5, 8, 5]`) with mesh standard materials to ensure low memory footprint without HDR environment bloat.
+- **[[Cake3D]]**: Lazy-loaded via `React.lazy` + `<Suspense>` when the user selects a cake flavor (`src/components/birthday/Cake3D.tsx`), utilizing:
+  - `Float` and single-frame baked `ContactShadows` (`frames={1} resolution={256}`) from `@react-three/drei` for grounded soft shadows without 60 FPS offscreen shadow-map re-baking.
+  - `@react-spring/three` to animate the cake slice separating dynamically during the cutting phase with spring-based spatial displacement (`[1.32, 0.0, 0.66]`).
+  - Shared memoized `THREE.ExtrudeGeometry`, `THREE.TorusKnotGeometry`, `THREE.SphereGeometry`, and `THREE.MeshPhysicalMaterial` instances across `CakeBody`, `Drips`, `Rosettes`, `Sprinkles`, and `CelebrationOrbs3D` with explicit `.dispose()` WebGL cleanup on unmount.
+- **Lighting & Shadow Optimization**:
+  - Adaptive shadow map resolution (`[512, 512]` on mobile, `[1024, 1024]` on desktop) and DPR clamping (`[1, 1.5]` mobile, `[1, 2]` desktop).
 
 | 3D Cake Flavor Selector | 3D Candle Blow & Slicing |
 | :---: | :---: |
@@ -61,11 +64,11 @@ For tactile 3D celebration interactions, we utilize R3F alongside `@react-spring
 
 High-particle effects run on isolated HTML5 Canvas 2D contexts to prevent DOM layout thrashing:
 
-- **[[PremiumFireworks]]**: Canvas 2D fireworks engine with multi-stage explosion physics, gravity vectors ($g=0.08$), velocity decay ($\mu=0.96$), and spark trail dissipation.
-- **[[SparkleRain]]**: Ambient vertical particle field with dynamic alpha falloff and sinusoidal drift.
-- **[[FireflyEffect]]**: Ambient floating light orbs with Perlin-like random velocity wandering.
-- **[[EmojiCursorTrail]]**: Interactive touch/mouse trail spawning culturally authentic emojis that scale down and fade over 800ms.
-- **[[Confetti]]**: Multi-cannon confetti bursts powered by `canvas-confetti`.
+- **[[PremiumFireworks]]**: Canvas 2D fireworks engine with multi-stage explosion physics, `destination-out` alpha trail fading (avoiding full-screen `mix-blend-screen` compositing), batched polyline rocket trails, and $O(1)$ swap-and-pop particle lifecycle management.
+- **[[SparkleRain]]**: Ambient vertical particle field with dynamic alpha falloff and sinusoidal drift, using CSS-scaled logical canvas coordinates on mobile.
+- **[[FireflyEffect]]**: Ambient floating light orbs with Perlin-like random velocity wandering and pre-rendered offscreen sprite stamps.
+- **[[EmojiCursorTrail]]**: Interactive touch/mouse trail spawning culturally authentic emojis driven purely by Framer Motion `x`/`y`/`scale`/`rotate` transforms and lightweight `textShadow`.
+- **[[Confetti]]**: Multi-cannon confetti bursts powered by `canvas-confetti` with mobile particle budgets, throttled `requestAnimationFrame` cadence (`45ms` desktop / `80ms` mobile), and full `disableForReducedMotion` propagation.
 
 | Pop The Balloons Physics | Canvas Confetti & Hero Stage |
 | :---: | :---: |
@@ -79,25 +82,27 @@ High-particle effects run on isolated HTML5 Canvas 2D contexts to prevent DOM la
 
 ---
 
-## 6. GPU Optimization & Performance Guidelines
+## 6. GPU Optimization & Performance Architecture
 
-To prevent frame drops on low-power mobile devices:
-1. **Hardware Acceleration**: Use `transform-gpu`, `translate3d(0, 0, 0)`, and `will-change: transform, opacity` only on active motion layers.
-2. **Batch Render Cycles**: Canvas animations utilize `requestAnimationFrame` with delta time normalization ($\Delta t$) to ensure constant velocity across 60Hz, 90Hz, and 120Hz displays.
-3. **Automatic Cleanup**: Unmounted scenes cancel animation frames and clear timers immediately to prevent memory leaks.
+To guarantee smooth 60 FPS rendering across both desktop and mobile GPUs:
+1. **Zero Live SVG `<feTurbulence>` / `<feGaussianBlur>` Overlays**: Film grain and paper textures use zero-filter CSS micro-patterns (`repeating-radial-gradient` / `radial-gradient`), and ambient glows use pre-blended multi-stop radial gradients instead of expensive runtime `filter: blur(100px+)` or SVG `<feGaussianBlur>` passes.
+2. **Separated Scroll & Keyframe Transforms**: Components like `FloatingElements` isolate Framer Motion scroll-driven `style={{ y }}` on an outer wrapper while CSS float keyframes animate an inner child, preventing 60 FPS main-thread vs. compositor transform clobbering.
+3. **Synchronous Mobile Tier Detection**: `useIsMobile()` initializes synchronously from `window.innerWidth < 768` on first render so mobile devices never flash a heavy desktop particle pass before effect hydration.
+4. **Viewport-Gated Offscreen Timers**: Below-the-fold animations (`HeartTree` bloom, `PhotoGallery` auto-advance, `WishDeck` handwriting) are gated via `IntersectionObserver` so they consume 0% CPU/GPU while offscreen.
+5. **Pooled Audio Elements**: `SoundManager` reuses a bounded pool of `HTMLAudioElement` instances per sound effect and throttles rapid `typeClick` triggers to `>= 45ms`.
 
 ---
 
-## 6. Accessibility & Reduced Motion
+## 7. Accessibility & Reduced Motion
 
 The animation engine automatically respects the user's OS preference (`prefers-reduced-motion: reduce`) and supports explicit overrides via `VITE_REDUCED_MOTION=true`:
-- Complex 3D spring displacements in `CakeCutting.tsx` and 3D rotations are simplified to immediate states.
-- Canvas particle counts are drastically reduced or substituted with subtle CSS fades.
+- Complex spring displacements and 3D rotations are simplified or disabled when reduced motion is active.
+- Canvas particle counts are reduced and `canvas-confetti` calls pass `disableForReducedMotion: true`.
 - Grapheme typewriters render full text immediately without motion lag.
 
 ---
 
-## 7. Global Phase State Synchronization
+## 8. Global Phase State Synchronization
 
 Animations are synchronized with the state machine managed in [[useBirthdayStore]]. The `phase` variable coordinates clean mount/unmount lifecycles:
 

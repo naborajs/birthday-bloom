@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -12,6 +12,9 @@ export const PhotoGallery = () => {
     const [photoRatios, setPhotoRatios] = useState<Record<string, number>>({});
     const [supportsTilt, setSupportsTilt] = useState(false);
     const [isReducedMotion, setIsReducedMotion] = useState(false);
+    const [isInView, setIsInView] = useState(false);
+    const sectionRef = useRef<HTMLElement>(null);
+    const cachedRectRef = useRef<DOMRect | null>(null);
     const isMobile = useIsMobile();
     const { config, getAnimationPacing } = useBirthdayStore();
     const { t, isHindi, isBengali, isFrench } = useTranslation();
@@ -91,10 +94,16 @@ export const PhotoGallery = () => {
     const rotateX = useSpring(useTransform(y, [-100, 100], [10, -10]), { damping: 20, stiffness: 150 });
     const rotateY = useSpring(useTransform(x, [-100, 100], [-10, 10]), { damping: 20, stiffness: 150 });
 
+    const handleMouseEnter = (e: React.MouseEvent) => {
+        if (!supportsTilt || isMobile) return;
+        cachedRectRef.current = e.currentTarget.getBoundingClientRect();
+    };
+
     const handleMouseMove = (e: React.MouseEvent) => {
         if (!supportsTilt || isMobile)
             return;
-        const rect = e.currentTarget.getBoundingClientRect();
+        const rect = cachedRectRef.current || e.currentTarget.getBoundingClientRect();
+        cachedRectRef.current = rect;
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         x.set(e.clientX - centerX);
@@ -102,6 +111,7 @@ export const PhotoGallery = () => {
     };
 
     const handleMouseLeave = () => {
+        cachedRectRef.current = null;
         x.set(0);
         y.set(0);
     };
@@ -120,14 +130,31 @@ export const PhotoGallery = () => {
         setIsReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     }, []);
 
+    // Viewport-gate auto-advance interval so offscreen slide changes don't trigger layout/paint work
     useEffect(() => {
-        if (lightbox !== null || photos.length <= 1)
+        const el = sectionRef.current;
+        if (!el || typeof IntersectionObserver === "undefined") {
+            setIsInView(true);
+            return;
+        }
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsInView(entry.isIntersecting);
+            },
+            { threshold: 0.1 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [photos.length]);
+
+    useEffect(() => {
+        if (!isInView || lightbox !== null || photos.length <= 1)
             return;
         const interval = setInterval(() => {
             setActiveIndex((prev) => (prev + 1) % photos.length);
         }, autoAdvanceDelay);
         return () => clearInterval(interval);
-    }, [lightbox, photos.length, autoAdvanceDelay]);
+    }, [isInView, lightbox, photos.length, autoAdvanceDelay]);
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
@@ -166,7 +193,7 @@ export const PhotoGallery = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                    className="relative rounded-[2.5rem] border border-white/10 p-8 sm:p-14 text-center overflow-hidden backdrop-blur-3xl"
+                    className="relative rounded-[2.5rem] border border-white/10 p-8 sm:p-14 text-center overflow-hidden backdrop-blur-2xl"
                     style={{
                         background: "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
                         boxShadow: "0 30px 100px -20px rgba(0,0,0,0.6)",
@@ -197,15 +224,15 @@ export const PhotoGallery = () => {
     }
 
     return (<>
-      <section className="relative z-20 px-4 py-32 max-w-7xl mx-auto overflow-hidden" aria-label="Photo Memories Gallery">
+      <section ref={sectionRef} className="relative z-20 px-4 py-32 max-w-7xl mx-auto overflow-hidden" aria-label="Photo Memories Gallery">
         <motion.h2 initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="font-display text-6xl md:text-8xl lg:text-[10rem] font-black text-center mb-24 bg-gradient-to-b from-white via-white/80 to-white/20 bg-clip-text text-transparent drop-shadow-2xl">
           {t('memories.title')}
         </motion.h2>
 
-        <motion.div onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ rotateX, rotateY, perspective: 1000 }} className={`relative group ${isMobile ? '' : 'cursor-none'}`}>
+        <motion.div onMouseEnter={handleMouseEnter} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ rotateX, rotateY, perspective: 1000 }} className={`relative group ${isMobile ? '' : 'cursor-none'}`}>
           <AnimatePresence mode="wait">
-            <motion.div key={activeIndex} initial={isMobile ? { opacity: 1, scale: 1, rotateY: 0, filter: "blur(0px)" } : { opacity: 0, scale: 0.9, rotateY: -15, filter: "blur(20px)" }} animate={{ opacity: 1, scale: 1, rotateY: 0, filter: "blur(0px)" }} exit={isMobile ? undefined : { opacity: 0, scale: 1.1, rotateY: 15, filter: "blur(20px)" }} transition={{ duration: transitionDuration, ease: [0.22, 1, 0.36, 1] }} style={{ aspectRatio: photoRatios[photos[activeIndex].key] ?? 16 / 9 }} className="relative rounded-[3rem] overflow-hidden shadow-[0_60px_120px_-20px_rgba(0,0,0,0.8)] border border-white/10" onClick={() => setLightbox(activeIndex)}>
-              <img src={photos[activeIndex].src} alt={photos[activeIndex].caption} onLoad={(e) => handleImageLoad(photos[activeIndex].key, e)} loading="lazy" className={`w-full h-full object-cover transition-transform [transition-duration:3000ms] ${!isMobile ? "group-hover:scale-110" : ""}`}/>
+            <motion.div key={activeIndex} initial={isMobile ? { opacity: 1, scale: 1, rotateY: 0 } : { opacity: 0, scale: 0.94, rotateY: -12 }} animate={{ opacity: 1, scale: 1, rotateY: 0 }} exit={isMobile ? undefined : { opacity: 0, scale: 1.06, rotateY: 12 }} transition={{ duration: transitionDuration, ease: [0.22, 1, 0.36, 1] }} style={{ aspectRatio: photoRatios[photos[activeIndex].key] ?? 16 / 9 }} className="relative rounded-[3rem] overflow-hidden shadow-[0_60px_120px_-20px_rgba(0,0,0,0.8)] border border-white/10" onClick={() => setLightbox(activeIndex)}>
+              <img src={photos[activeIndex].src} alt={photos[activeIndex].caption} onLoad={(e) => handleImageLoad(photos[activeIndex].key, e)} loading="lazy" decoding="async" className={`w-full h-full object-cover transition-transform [transition-duration:3000ms] ${!isMobile ? "group-hover:scale-110" : ""}`}/>
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"/>
               
               <div className="absolute bottom-0 inset-x-0 p-8 sm:p-16 text-center">
@@ -243,7 +270,7 @@ export const PhotoGallery = () => {
         {photos.length > 1 && (
           <div className="flex justify-center mt-20 gap-8">
             {photos.map((photo, i) => (<motion.div key={i} role="button" tabIndex={0} aria-label={`View photo ${i + 1}: ${photo.caption}`} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveIndex(i); } }} onClick={() => setActiveIndex(i)} whileHover={!isMobile ? { scale: 1.15, y: -10, rotate: i % 2 === 0 ? 2 : -2 } : undefined} whileTap={{ scale: 0.9 }} className={`relative cursor-pointer rounded-3xl overflow-hidden w-28 h-28 md:w-40 md:h-40 border-4 transition-all duration-700 focus:outline-none focus:ring-2 focus:ring-primary ${i === activeIndex ? "border-primary scale-110 shadow-[0_20px_50px_rgba(var(--color-primary-rgb,255,107,107),0.4)]" : "border-transparent opacity-30 hover:opacity-100"}`}>
-                <img src={photo.src} alt={photo.caption || `Celebration photo memory thumbnail ${i + 1}`} className="w-full h-full object-cover"/>
+                <img src={photo.src} alt={photo.caption || `Celebration photo memory thumbnail ${i + 1}`} loading="lazy" decoding="async" className="w-full h-full object-cover"/>
                 {i === activeIndex && (<motion.div layoutId="active-thumb-glow" className="absolute inset-0 bg-primary/10 pointer-events-none"/>)}
               </motion.div>))}
           </div>
@@ -251,15 +278,15 @@ export const PhotoGallery = () => {
       </section>
 
       <AnimatePresence>
-        {lightbox !== null && (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center bg-black/98 backdrop-blur-3xl p-8" onClick={() => setLightbox(null)}>
-            <motion.div initial={{ scale: 0.7, opacity: 0, rotateX: 20 }} animate={{ scale: 1, opacity: 1, rotateX: 0 }} exit={{ scale: 1.3, opacity: 0, filter: "blur(20px)" }} className="relative max-w-7xl w-full" onClick={(e) => e.stopPropagation()}>
-              <img src={photos[lightbox].src} alt={photos[lightbox].caption} className="w-full max-h-[85vh] object-contain rounded-[2.5rem] shadow-[0_100px_200px_-50px_rgba(0,0,0,1)] border border-white/10"/>
+        {lightbox !== null && (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center bg-black/98 backdrop-blur-md p-8" onClick={() => setLightbox(null)}>
+            <motion.div initial={{ scale: 0.7, opacity: 0, rotateX: 20 }} animate={{ scale: 1, opacity: 1, rotateX: 0 }} exit={{ scale: 1.2, opacity: 0 }} className="relative max-w-7xl w-full" onClick={(e) => e.stopPropagation()}>
+              <img src={photos[lightbox].src} alt={photos[lightbox].caption} decoding="async" className="w-full max-h-[85vh] object-contain rounded-[2.5rem] shadow-[0_100px_200px_-50px_rgba(0,0,0,1)] border border-white/10"/>
               <div className="text-center mt-12">
                 <p className="font-display text-4xl md:text-6xl text-white font-black italic tracking-tighter drop-shadow-2xl">
                   {photos[lightbox].caption}
                 </p>
               </div>
-              <button aria-label="Close enlarged photo view" onClick={() => setLightbox(null)} className="absolute top-4 right-4 md:-top-12 md:-right-12 w-12 h-12 md:w-20 md:h-20 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-2xl border border-white/10 flex items-center justify-center text-white text-xl md:text-3xl transition-all shadow-2xl z-50">
+              <button aria-label="Close enlarged photo view" onClick={() => setLightbox(null)} className="absolute top-4 right-4 md:-top-12 md:-right-12 w-12 h-12 md:w-20 md:h-20 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white text-xl md:text-3xl transition-all shadow-2xl z-50">
                 ✕
               </button>
             </motion.div>

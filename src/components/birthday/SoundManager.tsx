@@ -8,10 +8,19 @@ const AUDIO_URLS = {
     pop: "https://cdn.pixabay.com/audio/2022/03/15/audio_c8c836a148.mp3",
     boom: "https://cdn.pixabay.com/audio/2022/03/10/audio_783d4a0231.mp3",
 };
+type SoundEffectType = "typeClick" | "whoosh" | "reveal" | "pop" | "boom";
+
+const MAX_POOL_SIZE = 3;
+const TYPE_CLICK_MIN_INTERVAL_MS = 45;
+
 class AudioManager {
     private bgMusic: HTMLAudioElement | null = null;
     private started = false;
+    private muted = false;
     private fadeInterval: ReturnType<typeof setInterval> | null = null;
+    private effectPools: Partial<Record<SoundEffectType, HTMLAudioElement[]>> = {};
+    private poolCursors: Partial<Record<SoundEffectType, number>> = {};
+    private lastTypeClickTime = 0;
 
     start() {
         if (this.started)
@@ -23,7 +32,7 @@ class AudioManager {
         try {
             this.bgMusic = new Audio(AUDIO_URLS.bgMusic);
             this.bgMusic.loop = true;
-            this.bgMusic.volume = 0.25;
+            this.bgMusic.volume = this.muted ? 0 : 0.25;
             this.bgMusic.play().catch(() => {
                 const playOnInteraction = () => {
                     this.bgMusic?.play().catch(() => {});
@@ -66,14 +75,48 @@ class AudioManager {
         }, stepTime);
     }
     setBgVolume(vol: number) {
+        const clamped = Math.max(0, Math.min(1, vol));
+        this.muted = clamped === 0;
         if (this.bgMusic)
-            this.bgMusic.volume = Math.max(0, Math.min(1, vol));
+            this.bgMusic.volume = clamped;
     }
-    playEffect(type: "typeClick" | "whoosh" | "reveal" | "pop" | "boom", volume = 0.4) {
-        if (AUDIO_ASSETS.soundEffectsEnabled === false)
+    setMuted(muted: boolean) {
+        this.muted = muted;
+        if (this.bgMusic) {
+            this.bgMusic.volume = muted ? 0 : 0.25;
+        }
+    }
+    playEffect(type: SoundEffectType, volume = 0.4) {
+        if (this.muted || AUDIO_ASSETS.soundEffectsEnabled === false)
             return;
+        if (type === "typeClick") {
+            const now = typeof performance !== "undefined" ? performance.now() : Date.now();
+            if (now - this.lastTypeClickTime < TYPE_CLICK_MIN_INTERVAL_MS) {
+                return;
+            }
+            this.lastTypeClickTime = now;
+        }
         try {
-            const audio = new Audio(AUDIO_URLS[type]);
+            let pool = this.effectPools[type];
+            if (!pool) {
+                pool = [];
+                this.effectPools[type] = pool;
+            }
+            let audio: HTMLAudioElement;
+            if (pool.length < MAX_POOL_SIZE) {
+                audio = new Audio(AUDIO_URLS[type]);
+                audio.preload = "auto";
+                pool.push(audio);
+            } else {
+                const cursor = (this.poolCursors[type] ?? 0) % MAX_POOL_SIZE;
+                this.poolCursors[type] = cursor + 1;
+                audio = pool[cursor];
+                try {
+                    audio.currentTime = 0;
+                } catch {
+                    // Ignore currentTime reset errors if audio metadata is not yet loaded
+                }
+            }
             audio.volume = volume;
             audio.play().catch(() => { });
         }
@@ -118,6 +161,9 @@ export const useSoundManager = () => {
     const setBgVolume = useCallback((vol: number) => {
         managerRef.current.setBgVolume(vol);
     }, []);
+    const setMuted = useCallback((muted: boolean) => {
+        managerRef.current.setMuted(muted);
+    }, []);
     return useMemo(() => ({
         startMusic,
         playType,
@@ -127,5 +173,6 @@ export const useSoundManager = () => {
         playBoom,
         fadeOut,
         setBgVolume,
-    }), [startMusic, playType, playWhoosh, playReveal, playPop, playBoom, fadeOut, setBgVolume]);
+        setMuted,
+    }), [startMusic, playType, playWhoosh, playReveal, playPop, playBoom, fadeOut, setBgVolume, setMuted]);
 };
