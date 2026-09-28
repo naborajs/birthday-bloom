@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSoundManager } from "./SoundManager";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
@@ -35,6 +35,41 @@ const KEYBOARD_ROW_1 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
 const KEYBOARD_ROW_2 = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
 const KEYBOARD_ROW_3 = ["z", "x", "c", "v", "b", "n", "m"];
 const ALL_LETTER_KEYS = [...KEYBOARD_ROW_1, ...KEYBOARD_ROW_2, ...KEYBOARD_ROW_3];
+
+interface KeyButtonProps {
+    keyId: string;
+    isPressed: boolean;
+    isShiftActive: boolean;
+    onPress: (keyId: string) => void;
+}
+
+const KeyButton = memo(({ keyId, isPressed, isShiftActive, onPress }: KeyButtonProps) => {
+    const displayChar = isShiftActive ? keyId.toUpperCase() : keyId;
+    return (
+        <button
+            type="button"
+            data-key={keyId}
+            data-active={isPressed ? "true" : "false"}
+            onClick={() => onPress(keyId)}
+            className={`relative h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
+                isPressed
+                    ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
+                    : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
+            }`}
+        >
+            {isPressed && (
+                <span
+                    data-testid="key-callout-popup"
+                    className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg bg-[#4A4A58] border border-rose-400/50 text-white font-bold text-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.85)] z-30"
+                >
+                    {displayChar}
+                </span>
+            )}
+            {displayChar}
+        </button>
+    );
+});
+KeyButton.displayName = "KeyButton";
 
 /**
  * Maps a typed character (Latin, accented French, emoji, or Indic script)
@@ -206,7 +241,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                 behavior: "smooth",
             });
         }
-    }, [typedInputText, sentMessageText, phase]);
+    }, [sentMessageText, phase]);
 
     const currentTypedWord = useMemo(() => {
         if (!typedInputText) return "";
@@ -225,13 +260,13 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
         lastTapRef.current = now;
     };
 
-    const handleManualKeyPress = (keyId: string) => {
+    const handleManualKeyPress = useCallback((keyId: string) => {
         playType();
         setActiveKey(keyId);
         setTimeout(() => {
             setActiveKey((prev) => (prev === keyId ? null : prev));
         }, 120);
-    };
+    }, [playType]);
 
     useEffect(() => {
         let isMounted = true;
@@ -392,9 +427,9 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                 }}
             />
             <div
-                className="absolute w-[340px] h-[580px] sm:w-[500px] sm:h-[760px] rounded-full blur-[110px] opacity-35 pointer-events-none"
+                className="absolute w-[340px] h-[580px] sm:w-[500px] sm:h-[760px] rounded-full opacity-35 pointer-events-none"
                 style={{
-                    background: `radial-gradient(circle, ${primaryColor} 0%, rgba(252,176,69,0.45) 55%, transparent 75%)`,
+                    background: `radial-gradient(circle, ${primaryColor}66 0%, rgba(252,176,69,0.28) 45%, transparent 70%)`,
                 }}
             />
 
@@ -408,7 +443,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                     rotateY: [-2.5, 2, -2.5],
                     y: [0, -4, 0],
                 }}
-                exit={{ opacity: 0, scale: 1.05, filter: "blur(18px)" }}
+                exit={{ opacity: 0, scale: 1.05 }}
                 transition={{
                     opacity: { duration: 0.45, ease: "easeOut" },
                     scale: { duration: 0.5, ease: "easeOut" },
@@ -841,66 +876,28 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                 <div className="flex flex-col gap-1.5">
                                     {/* Row 1: Q - P */}
                                     <div className="grid grid-cols-10 gap-1">
-                                        {KEYBOARD_ROW_1.map((key) => {
-                                            const isPressed = activeKey === key;
-                                            const displayChar = isShiftActive ? key.toUpperCase() : key;
-                                            return (
-                                                <button
-                                                    key={key}
-                                                    type="button"
-                                                    data-key={key}
-                                                    data-active={isPressed ? "true" : "false"}
-                                                    onClick={() => handleManualKeyPress(key)}
-                                                    className={`relative h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
-                                                        isPressed
-                                                            ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
-                                                            : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
-                                                    }`}
-                                                >
-                                                    {isPressed && (
-                                                        <span
-                                                            data-testid="key-callout-popup"
-                                                            className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg bg-[#4A4A58] border border-rose-400/50 text-white font-bold text-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.85)] z-30"
-                                                        >
-                                                            {displayChar}
-                                                        </span>
-                                                    )}
-                                                    {displayChar}
-                                                </button>
-                                            );
-                                        })}
+                                        {KEYBOARD_ROW_1.map((key) => (
+                                            <KeyButton
+                                                key={key}
+                                                keyId={key}
+                                                isPressed={activeKey === key}
+                                                isShiftActive={isShiftActive}
+                                                onPress={handleManualKeyPress}
+                                            />
+                                        ))}
                                     </div>
 
                                     {/* Row 2: A - L */}
                                     <div className="grid grid-cols-9 gap-1 px-3">
-                                        {KEYBOARD_ROW_2.map((key) => {
-                                            const isPressed = activeKey === key;
-                                            const displayChar = isShiftActive ? key.toUpperCase() : key;
-                                            return (
-                                                <button
-                                                    key={key}
-                                                    type="button"
-                                                    data-key={key}
-                                                    data-active={isPressed ? "true" : "false"}
-                                                    onClick={() => handleManualKeyPress(key)}
-                                                    className={`relative h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
-                                                        isPressed
-                                                            ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
-                                                            : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
-                                                    }`}
-                                                >
-                                                    {isPressed && (
-                                                        <span
-                                                            data-testid="key-callout-popup"
-                                                            className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg bg-[#4A4A58] border border-rose-400/50 text-white font-bold text-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.85)] z-30"
-                                                        >
-                                                            {displayChar}
-                                                        </span>
-                                                    )}
-                                                    {displayChar}
-                                                </button>
-                                            );
-                                        })}
+                                        {KEYBOARD_ROW_2.map((key) => (
+                                            <KeyButton
+                                                key={key}
+                                                keyId={key}
+                                                isPressed={activeKey === key}
+                                                isShiftActive={isShiftActive}
+                                                onPress={handleManualKeyPress}
+                                            />
+                                        ))}
                                     </div>
 
                                     {/* Row 3: Shift + Z - M + Backspace */}
@@ -922,34 +919,15 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                         </button>
 
                                         <div className="flex-1 grid grid-cols-7 gap-1">
-                                            {KEYBOARD_ROW_3.map((key) => {
-                                                const isPressed = activeKey === key;
-                                                const displayChar = isShiftActive ? key.toUpperCase() : key;
-                                                return (
-                                                    <button
-                                                        key={key}
-                                                        type="button"
-                                                        data-key={key}
-                                                        data-active={isPressed ? "true" : "false"}
-                                                        onClick={() => handleManualKeyPress(key)}
-                                                        className={`relative h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
-                                                            isPressed
-                                                                ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
-                                                                : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
-                                                        }`}
-                                                    >
-                                                        {isPressed && (
-                                                            <span
-                                                                data-testid="key-callout-popup"
-                                                                className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg bg-[#4A4A58] border border-rose-400/50 text-white font-bold text-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.85)] z-30"
-                                                            >
-                                                                {displayChar}
-                                                            </span>
-                                                        )}
-                                                        {displayChar}
-                                                    </button>
-                                                );
-                                            })}
+                                            {KEYBOARD_ROW_3.map((key) => (
+                                                <KeyButton
+                                                    key={key}
+                                                    keyId={key}
+                                                    isPressed={activeKey === key}
+                                                    isShiftActive={isShiftActive}
+                                                    onPress={handleManualKeyPress}
+                                                />
+                                            ))}
                                         </div>
 
                                         {/* Backspace Key (Darkens & depresses during deleting phase) */}
@@ -1047,9 +1025,9 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                     <AnimatePresence>
                         {phase === "climax" && (
                             <motion.div
-                                initial={{ opacity: 0, y: 40, scale: 0.9, filter: "blur(12px)" }}
-                                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                                exit={{ opacity: 0, scale: 1.08, filter: "blur(16px)" }}
+                                initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, scale: 1.08 }}
                                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
                                 className="absolute inset-x-3.5 top-[28%] z-30 p-5 sm:p-6 rounded-[24px] bg-black/90 border border-white/25 backdrop-blur-3xl text-center shadow-[0_25px_80px_rgba(0,0,0,0.95)]"
                             >
