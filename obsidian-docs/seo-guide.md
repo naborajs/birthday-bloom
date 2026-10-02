@@ -5,6 +5,9 @@ aliases: [seo-guide]
 
 # 🔍 SEO, Social Reach & Generative Engine Optimization (GEO) Guide
 
+
+🌐 **Canonical Web Documentation**: [Search Engine & LLM Discoverability Guide](https://naborajs.me/projects/birthday-bloom/docs/seo-guide)
+
 Birthday Bloom implements a multi-layer, enterprise-grade SEO and viral distribution architecture designed to maximize organic visibility across search engines (Google, Bing, Yahoo, Yandex, DuckDuckGo), generative AI engines (ChatGPT Search, Perplexity, Claude, Gemini), and social messaging platforms (WhatsApp, X/Twitter, Telegram, Facebook, LinkedIn, iMessage).
 
 ---
@@ -109,3 +112,13 @@ To accelerate reach organically, Birthday Bloom includes a built-in sharing and 
 ---
 
 #obsidian #documentation #birthday-bloom #seo #geo #social #schema
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Answer-First SEO & AGO Specifications, JSON-LD structured schema markup (`TechArticle`, `WebApplication`), semantic header hierarchies, crawl optimization.
+
+### What is NOT Present:
+- Low-level WebGL 3D vertex math (see [[Birthday-Components#3D-WebGL-Canvas-and-Component-Hierarchy|Birthday Components]]), Video tutorial curriculum details (see [[video-tutorials#Official-Masterclass-Curriculum|Video Tutorials]]).

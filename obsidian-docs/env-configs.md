@@ -5,6 +5,9 @@ aliases: [env-configs, ready-made-configurations]
 
 # Ready-Made Environment Configurations
 
+
+🌐 **Canonical Web Documentation**: [Pre-built Persona Configurations](https://naborajs.me/projects/birthday-bloom/docs/env-configs)
+
 7 complete, ready-to-copy `.env.local` configurations for different celebration scenarios. Copy, paste, and deploy!
 
 ---
@@ -290,3 +293,13 @@ Use the **Instant URL** provided above to test and send immediately without buil
 - [[architecture|System Architecture & State Flow]]
 
 #obsidian #documentation #birthday-bloom #vault #environment
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Ready-to-Use `.env.local` Snippets for 10 distinct relationship scenarios, Color Hex & Music Pairings.
+
+### What is NOT Present:
+- Vite bundle code-splitting mechanics (see [[Website-Architecture#Vite-5-Rollup-Compilation-Graph|Website Architecture]]), Vitest unit test suite execution commands (see [[test-infrastructure#Running-Test-Suites-Locally|Test Infrastructure]]).

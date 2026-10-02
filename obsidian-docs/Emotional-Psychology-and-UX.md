@@ -1,5 +1,8 @@
 # Emotional Psychology & Celebration UX Framework
 
+
+🌐 **Canonical Web Documentation**: [Emotional Psychology & Narrative Arc](https://naborajs.me/projects/birthday-bloom/docs/emotional-psychology)
+
 > **Status**: Comprehensive Research & Architecture Guide  
 > **Topic**: Human Neurochemistry, Romantic Psychology, Celebratory Pacing & Aesthetics  
 > **Target Audience**: Birthday Bloom Designers, Developers & Content Creators
@@ -161,3 +164,13 @@ Typography in Birthday Bloom is treated as **voice modulation in text**:
 - [x] One-thought-at-a-time transition pacing with `AnimatePresence mode="wait"`.
 - [x] Template-specific empty-state memory cards in `VideoGallery.tsx` and `FinalSurprise.tsx`.
 - [x] Rich OpenGraph and structured data in `index.html`.
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Pacing & Tension Theory (mystery → anticipation → intimacy → euphoria), Typewriter Pacing Constants.
+
+### What is NOT Present:
+- Low-level Web Audio API gain calculations (see [[Celebration-Sound-and-Sensory-Design#Web-Audio-API-Graph-Architecture|Sound & Sensory Design]]), Production CI/CD YAML configurations (see [[GitHub-Automation#Automated-CI-Workflow-Architecture|GitHub Automation]]).

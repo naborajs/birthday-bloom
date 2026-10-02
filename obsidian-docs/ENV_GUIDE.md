@@ -5,6 +5,9 @@ aliases: [ENV_GUIDE, env-guide]
 
 # Complete Env Customization Guide
 
+
+🌐 **Canonical Web Documentation**: [Environment Variables Master Guide](https://naborajs.me/projects/birthday-bloom/docs/env-guide)
+
 Birthday Bloom is **env-first**. Names, relationship types, messages, colors, photos, captions, videos, audio, visible sections, animation behavior, accessibility, and family-template metadata are all controlled through environment variables without editing React source files.
 
 **Important**: "Env" means environment variables. Locally, these live in `.env.local` or `.env`. On hosting platforms, they live in your provider's Environment Variables dashboard (Vercel, Netlify, AWS Amplify, Docker, etc.).
@@ -235,3 +238,13 @@ VITE_PARTICLE_COUNT=10
 ---
 
 #obsidian #documentation #birthday-bloom #vault #env #configuration
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- 53-Variable Comprehensive Registry, Vite `VITE_` Invariant, Multi-Environment Hierarchy, Full Studio Configurator Modal.
+
+### What is NOT Present:
+- Deployment-specific dashboard instructions for Vercel/Netlify (see [[deployment#Vercel-Deployment-Walkthrough|deployment]]), Internationalization font loading specifics (see [[setup-hindi|setup-hindi]], [[setup-bengali|setup-bengali]], [[setup-french|setup-french]]).

@@ -5,6 +5,9 @@ aliases: [developer-guide]
 
 # Developer Guide & Contributor Handbook
 
+
+🌐 **Canonical Web Documentation**: [Developer Reference & Hooks](https://naborajs.me/projects/birthday-bloom/docs/developer-guide)
+
 This guide explains how Birthday Bloom is wired so new contributors and open-source developers can make changes quickly, safely, and confidently. Read this before modifying source code.
 
 ---
@@ -263,3 +266,13 @@ npm run verify
 - [[env-configs|Environment Variables & Configuration Matrix]]
 
 #obsidian #documentation #birthday-bloom #developer #guide
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Custom Hooks API Reference (`useBirthdayStore`, `useDynamicTheme`, `useSoundEffects`, `useMobile`), Zustand Action Contracts (`setPhase()`, `unlockAudio()`, `setTheme()`, `triggerConfetti()`).
+
+### What is NOT Present:
+- End-user quickstart guides (see [[quick-start#5-Minute-Local-Setup|Quick Start]]), External hosting provider billing tiers.

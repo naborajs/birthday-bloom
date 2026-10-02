@@ -5,6 +5,9 @@ aliases: [architecture]
 
 # System Architecture & Finite State Machine
 
+
+🌐 **Canonical Web Documentation**: [System Architecture & FSM](https://naborajs.me/projects/birthday-bloom/docs/architecture)
+
 Birthday Bloom operates as an **environment-driven interactive state machine**. This document details the runtime orchestration, scene lifecycle, state flow, and component layers.
 
 ---
@@ -140,3 +143,13 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 ---
 
 #obsidian #documentation #birthday-bloom #vault #architecture
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- 4-Phase Deterministic State Machine, Hardware & Browser Autoplay Mitigation, Interactive FSM Stepper Lab, Memory Leak Prevention.
+
+### What is NOT Present:
+- WebGL vertex/fragment shader implementations (see [[Birthday-Components#3D-WebGL-Canvas-and-Component-Hierarchy|Birthday Components]]), Git branching and repository management (see [[contributing#Branch-Management-Standards|contributing]]).

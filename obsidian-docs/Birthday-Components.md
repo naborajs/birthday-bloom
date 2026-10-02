@@ -7,6 +7,9 @@ aliases: [Birthday Components, Cinematic Experience, Component Suite]
 
 [[DOCUMENTATION_INDEX|Back to Home]]
 
+
+🌐 **Canonical Web Documentation**: [3D WebGL Canvas & Component Hierarchy](https://naborajs.me/projects/birthday-bloom/docs/birthday-components)
+
 The Birthday Bloom cinematic experience relies on an optimized suite of specialized components located inside the `src/components/birthday/` directory.
 
 These components are conditionally orchestrated across the 4-phase state machine (`splash` $\rightarrow$ `unlock` $\rightarrow$ `intro` $\rightarrow$ `main`) via [[Index.tsx]] and [[MainBirthday.tsx]].
@@ -111,3 +114,12 @@ All interactive components follow strict WAI-ARIA authoring practices:
 ---
 #obsidian #documentation #birthday-bloom #vault #components #accessibility
 
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- React Three Fiber (R3F) Scene Graph (`<Canvas>`, `Cake3D.tsx`, `CakeKnife3D.tsx`, `ParticleField.tsx`), Raycast Physics & Slicing Math, Contact Shadows & Procedural Lighting.
+
+### What is NOT Present:
+- Audio synthesis and frequency modulation (see [[Celebration-Sound-and-Sensory-Design#Web-Audio-API-Graph-Architecture|Sound & Sensory Design]]), Text template token substitution (see [[template-architecture#Token-Replacement-Lexer|Template Architecture]]).

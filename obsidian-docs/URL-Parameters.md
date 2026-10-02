@@ -1,5 +1,8 @@
 # URL Parameters & Query Configurations
 
+
+🌐 **Canonical Web Documentation**: [Zero-Config URL Parameters](https://naborajs.me/projects/birthday-bloom/docs/url-parameters)
+
 Birthday Bloom supports dynamic zero-config personalization via URL query parameters. This allows users and developers to share customized birthday experiences instantly without requiring environment changes, builds, or server redeployments.
 
 ---
@@ -79,3 +82,13 @@ const runtimeConfig = parseUrlConfig(window.location.search);
 - [[developer-guide|Developer Guide & Contributor Walkthroughs]]
 - [[env-configs|Environment Variables Reference]]
 - [[architecture|System Architecture & State Flow]]
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- URL-First Hydration Invariant (`src/features/core/store/urlParams.ts`), Complete Query Parameter Matrix (`?name=`, `?rel=`, `?color=`, `?passcode=`, `?lang=`, `?audio=`, `?skipIntro=`, `?wisher=`), Sanitization & Hex Normalization Rules, Interactive URL Simulator Lab.
+
+### What is NOT Present:
+- Server-side environment variable build-time baking processes (see [[ENV_GUIDE#53-Variable-Comprehensive-Registry|env-guide]]), Database schemas or persistent user accounts (Birthday Bloom is strictly stateless).

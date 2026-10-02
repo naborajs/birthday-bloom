@@ -7,6 +7,9 @@ aliases: [setup-hindi, hindi-setup, hindi-guide]
 
 [[DOCUMENTATION_INDEX|Back to Home]] | [[quick-start|Quick Start]] | [[setup-bengali|Bengali Setup]] | [[ENV_GUIDE|Env Customization Guide]] | [[architecture-env|Env Architecture]]
 
+
+🌐 **Canonical Web Documentation**: [Hindi (हिंदी) Localization & Devanagari Typography](https://naborajs.me/projects/birthday-bloom/docs/setup-hindi)
+
 Birthday Bloom features comprehensive **Hindi (हिन्दी) Multi-Language Localization** with deep emotional nuance, authentic cultural warmth, respectful Indic honorifics, and automated layout-safe text adaptations across every page and component.
 
 ---
@@ -266,3 +269,13 @@ npm run build
 ---
 
 #obsidian #documentation #birthday-bloom #hindi #localization #i18n #devanagari
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Devanagari Font Loading (Google Noto Sans Devanagari), Shirorekha Protections, Culturally Authentic Micro-copy.
+
+### What is NOT Present:
+- Bengali or French linguistic rules (see [[setup-bengali|Bengali]], [[setup-french|French]]), WebGL shadow map filter algorithms (see [[Birthday-Components#Procedural-Lighting-and-Contact-Shadows|Birthday Components]]).

@@ -5,6 +5,9 @@ aliases: [roadmap]
 
 # 🌸 Birthday Bloom — Detailed Project Roadmap
 
+
+🌐 **Canonical Web Documentation**: [Architectural Roadmap & Milestones](https://naborajs.me/projects/birthday-bloom/docs/roadmap)
+
 Welcome to the official roadmap for **Birthday Bloom**. This document details our planned future, ongoing work, and ultimate vision for this interactive birthday landing page platform.
 
 > [!NOTE]
@@ -126,3 +129,13 @@ We prioritize features that align with our core values:
 
 
 #obsidian #documentation #birthday-bloom #vault
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Future Technical Milestones (WebGPU rendering pipelines, procedural audio synthesis, additional language locales, offline PWA capabilities).
+
+### What is NOT Present:
+- Legacy changelog records (see [[changelog#Release-History-Highlights|Changelog]]), Immediate installation instructions (see [[quick-start#5-Minute-Local-Setup|Quick Start]]).

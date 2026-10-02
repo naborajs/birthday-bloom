@@ -1,5 +1,8 @@
 # Celebration Sound, Haptic & Sensory Design Guide
 
+
+🌐 **Canonical Web Documentation**: [Audio Synthesis & Sensory Design](https://naborajs.me/projects/birthday-bloom/docs/sound-and-sensory)
+
 > **Status**: Core Sensory Architecture Document  
 > **Topic**: Acoustic Neuro-Triggers, Mobile Haptics, Particle Physics & Sensory Harmony  
 > **Target Audience**: Birthday Bloom Designers & Audio/UX Engineers
@@ -97,3 +100,12 @@ A common flaw in celebration websites is overwhelming the device with hundreds o
 4. [x] Screen shakes and flashes respect `VITE_REDUCED_MOTION=true` for accessibility.
 5. [x] Audio state is cleanly torn down on unmount to prevent background audio leaks.
 
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Web Audio API Graph Architecture, Interactive Audio & Physics Lab, Autoplay Unlock State Machine.
+
+### What is NOT Present:
+- 3D camera matrices (see [[Birthday-Components#3D-WebGL-Canvas-and-Component-Hierarchy|Birthday Components]]), Internationalization font fallbacks (see [[setup-hindi|Hindi]], [[setup-bengali|Bengali]], [[setup-french|French]]).

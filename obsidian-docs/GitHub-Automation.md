@@ -7,6 +7,9 @@ aliases: [GitHub Automation, CI/CD, Actions, Repository Workflows]
 
 [[DOCUMENTATION_INDEX|Back to Home]]
 
+
+🌐 **Canonical Web Documentation**: [GitHub Actions & CI/CD Pipelines](https://naborajs.me/projects/birthday-bloom/docs/github-automation)
+
 Birthday Bloom features a robust GitHub automation and continuous integration setup managed within the `.github/` directory.
 
 ---
@@ -76,3 +79,12 @@ Standardized YAML issue forms ensure all community submissions contain necessary
 ---
 #obsidian #documentation #birthday-bloom #vault #github #ci-cd #automation
 
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Automated CI Workflow Architecture (TypeScript checking, ESLint, 400+ Vitest tests), Automated Release Packaging.
+
+### What is NOT Present:
+- Manual step-by-step Netlify dashboard setup (see [[deployment#Netlify-Guide|Deployment]]), Storyline emotional arc theory (see [[Emotional-Psychology-and-UX#Pacing-and-Tension-Theory|Emotional Psychology]]).

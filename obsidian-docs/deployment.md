@@ -5,6 +5,9 @@ aliases: [deployment]
 
 # Deployment Guide
 
+
+🌐 **Canonical Web Documentation**: [Production Deployment Guide](https://naborajs.me/projects/birthday-bloom/docs/deployment)
+
 ## 🚀 Deployment Guide
 
 <p align="center">
@@ -829,3 +832,13 @@ npm audit
 
 
 #obsidian #documentation #birthday-bloom #vault
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Vercel Step-by-Step Walkthrough, Netlify Guide, Cloudflare Pages Walkthrough, Dockerized Sovereign Container.
+
+### What is NOT Present:
+- React hook code examples (see [[developer-guide#Custom-Hooks-API-Reference|Developer Reference]]), Linguistic translation guides (see [[setup-hindi|Hindi]], [[setup-bengali|Bengali]], [[setup-french|French]]).

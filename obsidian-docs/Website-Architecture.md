@@ -7,6 +7,9 @@ aliases: [Website Architecture, Codebase Architecture, Build System]
 
 [[DOCUMENTATION_INDEX|Back to Home]]
 
+
+🌐 **Canonical Web Documentation**: [Build Toolchain & Rendering Pipeline](https://naborajs.me/projects/birthday-bloom/docs/website-architecture)
+
 The Birthday Bloom website is engineered on a modern React 18 / TypeScript 5.8 stack, optimized for instant client-side loads and cinematic visual performance.
 
 ---
@@ -70,3 +73,12 @@ Application state is governed by **Zustand 5** (`useBirthdayStore.ts`):
 ---
 #obsidian #documentation #birthday-bloom #vault #architecture #vite #performance
 
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Vite 5 / Rollup Compilation Graph, Bundle Budget Analysis (~42 KB gzipped core vs. ~38 KB WebGL lazy chunk), CSS JIT Tree-Shaking.
+
+### What is NOT Present:
+- Step-by-step local clone commands (see [[quick-start#5-Minute-Local-Setup|Quick Start]]), Translation lexicons (see [[setup-hindi|Hindi]], [[setup-bengali|Bengali]], [[setup-french|French]]).

@@ -7,6 +7,9 @@ aliases: [Animation System, Animations, Visuals, Motion Engine]
 
 [[DOCUMENTATION_INDEX|Back to Home]]
 
+
+🌐 **Canonical Web Documentation**: [Animation & Physics Engine](https://naborajs.me/projects/birthday-bloom/docs/animation-system)
+
 The Birthday Bloom project is a highly visual, cinematic experience engineered for silky **60 FPS** rendering across mobile and desktop. It is powered by an optimized, multi-tier animation architecture:
 
 ---
@@ -112,3 +115,13 @@ $$\text{Splash} \xrightarrow{\text{timer / click}} \text{Unlock} \xrightarrow{\t
 
 ---
 #obsidian #documentation #birthday-bloom #vault #animation #physics #framer-motion
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Framer Motion 13 Physics Configs, 2D Canvas Confetti Engine, Hardware Acceleration Rules (`translate3d`, `will-change`).
+
+### What is NOT Present:
+- Audio context gain scheduling (see [[Celebration-Sound-and-Sensory-Design#Web-Audio-API-Graph-Architecture|Sound & Sensory Design]]), Security lock validation (see [[security#Passcode-Architecture-and-Verification|Security Model]]).

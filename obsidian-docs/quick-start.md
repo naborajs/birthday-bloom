@@ -7,6 +7,9 @@ aliases: [quick-start, quickstart]
 
 [[DOCUMENTATION_INDEX|Back to Home]] | [[ENV_GUIDE|Env Customization Guide]] | [[setup-french|French Setup Guide]] | [[setup-hindi|Hindi Setup Guide]] | [[setup-bengali|Bengali Setup Guide]] | [[deployment|Deployment Guide]]
 
+
+🌐 **Canonical Web Documentation**: [Quick Start Guide](https://naborajs.me/projects/birthday-bloom/docs/quick-start)
+
 Get Birthday Bloom running locally in 5 minutes with zero code changes required.
 
 ---
@@ -299,3 +302,13 @@ For more help, see the full [[troubleshooting|Troubleshooting Guide]].
 ---
 
 #obsidian #documentation #birthday-bloom #vault #quickstart #localization
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Node.js 20 LTS Platform Setup, Terminal Lifecycle Commands, Local Port & Network Configuration (5000/5173/4173), 6 Subsystem Connection Architecture, Advanced Error Diagnostic Matrix, Interactive `.env.local` Generator.
+
+### What is NOT Present:
+- Production cloud provider deploy procedures for Vercel/Netlify (see [[deployment#Vercel-Deployment-Walkthrough|deployment]]), Git commit conventions or CI automation workflows (see [[contributing#Branch-Management-Standards|contributing]] and [[GitHub-Automation#Automated-CI-Workflow-Architecture|github-automation]]).

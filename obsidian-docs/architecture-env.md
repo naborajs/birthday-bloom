@@ -7,6 +7,9 @@ aliases: [Env Architecture, Store Flow, Configuration Lifecycle]
 
 [[DOCUMENTATION_INDEX|Back to Home]] | [[ENV_GUIDE|Env Customization Guide]] | [[setup-french|French Localization]] | [[setup-bengali|Bengali Localization]] | [[setup-hindi|Hindi Localization]] | [[Template-System-Deep-Dive|Template System]]
 
+
+🌐 **Canonical Web Documentation**: [Env Lifecycle & Store Hydration](https://naborajs.me/projects/birthday-bloom/docs/architecture-env)
+
 Birthday Bloom is built around an **Environment-First Reactive Architecture**. The entire application — including theme colors, relationship tones, interactive scenes, and multi-language localization (English, French, Hindi, Bengali) — can be completely personalized without touching React components or JSX.
 
 -## 🏗 1. The Configuration Lifecycle & Dual-Hydration Flow
@@ -167,3 +170,13 @@ For relationship-driven customization:
 
 ---
 #obsidian #documentation #birthday-bloom #vault #architecture #env #i18n
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- 3-Tier Hierarchy of Truth (URL Query Params > `.env.local` Variables > Zustand Defaults), Interactive Cable Patching & Wiring Lab, Type Coercion Logic.
+
+### What is NOT Present:
+- High-level aesthetic discussions (see [[Emotional-Psychology-and-UX#Pacing-and-Tension-Theory|Emotional Psychology]]), CSS design token class lists (see [[UI-Components#Component-Token-Specifications|UI Components]]).
