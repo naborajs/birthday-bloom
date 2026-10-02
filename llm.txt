@@ -2,6 +2,8 @@
 
 This text document serves as a high-density, vector-embedding-friendly developer reference map for LLM coding agents (e.g., Gemini, Claude, GPT, Perplexity). It outlines the architecture, data layers, state machines, multi-language localization pipelines, SEO systems, and styling rules of the Birthday Bloom project.
 
+Official Documentation Portal: https://naborajs.me/projects/birthday-bloom/docs
+
 ---
 
 ## 🚀 1. SYSTEM OVERVIEW & MISSION
@@ -34,6 +36,7 @@ Birthday Bloom supports instantaneous URL customization for zero-code sharing:
 - `color`: Custom hex theme color (`?color=%23FF6B6B`)
 - `speed`: Pacing (`slow`, `moderate`, `fast`)
 - `sound`: Sound effects toggle (`true`/`false`)
+- `passcode` / `pin`: Optional gate password (`?passcode=1024`)
 
 ---
 
@@ -61,17 +64,20 @@ birthday-bloom/
 │   ├── robots.txt              # Search, Social & AI crawler rules
 │   ├── sitemap.xml             # Multilingual XML sitemap with hreflang
 │   └── site.webmanifest        # PWA web manifest with shortcuts
+├── obsidian-docs/              # Complete 38-note Obsidian documentation vault
+│   └── DOCUMENTATION_INDEX.md  # Central documentation index
 └── src/                        # Source Code
     ├── components/
     │   ├── birthday/           # Interactive celebration scene components
     │   │   ├── SplashScreen.tsx       # Tap-to-begin welcome screen & audio unlock
     │   │   ├── PasswordUnlock.tsx     # Security lock screen with date format hints
     │   │   ├── CinematicIntro.tsx     # Cinematic typewriter & message storyline
-    │   │   ├── CakeCutting.tsx        # 2D/3D composite cake cutting with reduced motion support
+    │   │   ├── FakeChatScene.tsx      # 3D tilted phone & iOS glass keypad simulator
+    │   │   ├── CakeCutting.tsx        # 2D/3D composite cake cutting
     │   │   ├── Cake3D.tsx             # Three.js / R3F procedural 3D cake model
-    │   │   ├── CakeVisuals.tsx        # 2D celebration particle overlays (CutSparks and MagicDust)
-    │   │   ├── CakeKnife.tsx          # Interactive slicing knife gesture tracker
-    │   │   ├── WishDeck.tsx           # Physical swipeable wish card deck & balloon release
+    │   │   ├── CakeKnife3D.tsx        # Three.js 3D steel pastry knife with drag physics
+    │   │   ├── CakeVisuals.tsx        # 2D celebration particle overlays
+    │   │   ├── WishDeck.tsx           # Physical swipeable wish card deck
     │   │   ├── EnvelopeLetterScene.tsx # Wax seal unlock & animated letter unfolding
     │   │   ├── BalloonPopGame.tsx     # Gamified popping game with celebratory words
     │   │   ├── BirthdayQuiz.tsx       # Interactive trivia quiz with score counters
@@ -81,12 +87,7 @@ birthday-bloom/
     │   │   ├── FinalSurprise.tsx      # Final gift reveal & special wishes
     │   │   ├── ShareCelebrationModal.tsx # Viral social sharing & link generator
     │   │   ├── PremiumFireworks.tsx   # HTML5 Canvas 2D celebratory fireworks
-    │   │   ├── SparkleRain.tsx        # Falling sparkle canvas field
-    │   │   ├── FireflyEffect.tsx      # Glowing organic fireflies
-    │   │   ├── ShootingStars.tsx      # Streaking star trails
-    │   │   ├── EmojiCursorTrail.tsx   # Reactive cursor emoji particles
-    │   │   ├── Balloons.tsx           # Floating interactive pop balloons
-    │   │   ├── Confetti.tsx           # Multi-cannon confetti bursts
+    │   │   ├── SoundToggle.tsx        # Floating accessible sound mute toggle
     │   │   ├── SoundManager.tsx       # Singleton Web Audio manager
     │   │   └── MainBirthday.tsx       # Main celebration stage orchestration
     │   └── ui/                     # Sonner, Tooltip primitives
@@ -105,3 +106,74 @@ birthday-bloom/
         ├── Index.tsx               # Main celebration state machine
         └── NotFound.tsx            # 404 page
 ```
+
+---
+
+## 🎨 6. CINEMATIC FINITE STATE MACHINE (FSM)
+The narrative engine follows a 4-phase sequential state machine:
+1. `splash`: Full-screen welcome aura with "Tap to Begin". Initializes audio context and unlocks browser audio autoplay policies.
+2. `unlock`: Optional password protection check (if `passwordRequired` is active). Validates date passcodes (e.g. MMDD) with hints.
+3. `intro`: Cinematic storyline with kinetic typewriter text, heartfelt personalized messages, and phase transitions.
+4. `main`: The Grand Finale celebration scene featuring 3D cake cutting, floating balloons, canvas fireworks, photo album, emotional letter, trivia quiz, gift reveal, and social sharing.
+
+---
+
+## 📚 7. OFFICIAL 38-PAGE DOCUMENTATION SYSTEM
+
+Canonical Web URL Base: `https://naborajs.me/projects/birthday-bloom/docs/*`
+
+### Category 1: Get Started
+- `https://naborajs.me/projects/birthday-bloom/docs/introduction`: Executive Vision, Storyline Lab, Video Tour, 4 Phases, Tech Manifest.
+- `https://naborajs.me/projects/birthday-bloom/docs/quick-start`: 5-minute setup, ports 5000/5173, terminal lifecycle, diagnostic matrix.
+- `https://naborajs.me/projects/birthday-bloom/docs/url-parameters`: Zero-config query parameter matrix, sanitization, hex validation.
+- `https://naborajs.me/projects/birthday-bloom/docs/env-guide`: Exhaustive 53-variable registry, Vite bundling, multi-environment hierarchy.
+
+### Category 2: Architecture & Core
+- `https://naborajs.me/projects/birthday-bloom/docs/architecture`: 4-Phase deterministic FSM (`src/pages/Index.tsx`), autoplay mitigation, timer cleanup.
+- `https://naborajs.me/projects/birthday-bloom/docs/architecture-env`: 3-Tier truth hierarchy (URL > `.env.local` > Defaults), type coercion.
+- `https://naborajs.me/projects/birthday-bloom/docs/website-architecture`: Vite 5/Rollup chunking (`three-[hash].js`), CSS JIT tree-shaking.
+- `https://naborajs.me/projects/birthday-bloom/docs/codebase-map`: File manifest and single-responsibility boundaries.
+
+### Category 3: Components & Visuals
+- `https://naborajs.me/projects/birthday-bloom/docs/birthday-components`: 3D WebGL scene graph, procedural cake, knife drag slicing math.
+- `https://naborajs.me/projects/birthday-bloom/docs/animation-system`: Framer Motion 13 springs, Canvas 2D confetti physics, 60 FPS mobile optimization.
+- `https://naborajs.me/projects/birthday-bloom/docs/sound-and-sensory`: Web Audio API graph, singleton audio manager, autoplay unlocks.
+- `https://naborajs.me/projects/birthday-bloom/docs/emotional-psychology`: Neurochemical pacing (mystery → anticipation → intimacy → euphoria).
+
+### Category 4: Persona & Customization
+- `https://naborajs.me/projects/birthday-bloom/docs/family-system`: 14 relationship archetypes, tone triggers, dynamic color palettes.
+- `https://naborajs.me/projects/birthday-bloom/docs/template-architecture`: Token lexer (`{name}`, `{age}`, `{wisher}`), grapheme-safe emoji slicing.
+- `https://naborajs.me/projects/birthday-bloom/docs/template-deep-dive`: Full emotional letter transcripts across tone engines.
+- `https://naborajs.me/projects/birthday-bloom/docs/env-configs`: Pre-built `.env.local` copy-paste presets for 10 relationships.
+
+### Category 5: Internationalization (i18n)
+- `https://naborajs.me/projects/birthday-bloom/docs/setup-hindi`: Noto Sans Devanagari typography, Shirorekha protections, authentic blessings.
+- `https://naborajs.me/projects/birthday-bloom/docs/setup-bengali`: Noto Sans Bengali typography, Eastern Nagari conjuncts, cultural nuance.
+- `https://naborajs.me/projects/birthday-bloom/docs/setup-french`: French orthography, accent preservation, non-breaking punctuation spaces.
+
+### Category 6: Developer & Tooling
+- `https://naborajs.me/projects/birthday-bloom/docs/developer-guide`: Custom hooks API (`useBirthdayStore`, `useDynamicTheme`, `useSoundEffects`), contributor guides.
+- `https://naborajs.me/projects/birthday-bloom/docs/ui-components`: Radix UI primitives, glassmorphic styling, CSS variable tokens.
+- `https://naborajs.me/projects/birthday-bloom/docs/styleguide`: Strict TypeScript standards, zero `@ts-ignore`, ESLint conventions.
+
+### Category 7: Operations & Contribution
+- `https://naborajs.me/projects/birthday-bloom/docs/github-automation`: CI/CD workflows, automated PR labeler and triage scripts.
+- `https://naborajs.me/projects/birthday-bloom/docs/deployment`: Vercel, Netlify, Cloudflare Pages, and Docker container deployment.
+- `https://naborajs.me/projects/birthday-bloom/docs/contributing`: Branching rules (`feat/`, `fix/`, `docs/`), Conventional Commits, PR checklist.
+
+### Category 8: Masterclasses & Video Tutorials
+- `https://naborajs.me/projects/birthday-bloom/docs/video-tutorials`: 5 official walkthroughs (`R3XNhP9hSjw`, `VBgtLDP-vco`, `gwq1IaHXUn4`, `V4XZRRvcxgk`, `a9-ndTkD8IE`).
+
+### Category 9: Reference & Support
+- `https://naborajs.me/projects/birthday-bloom/docs/troubleshooting`: Diagnostics for WebGL context loss, audio autoplay, port collisions.
+- `https://naborajs.me/projects/birthday-bloom/docs/faq`: Stateless architecture, zero backend, zero cookies, mobile support.
+- `https://naborajs.me/projects/birthday-bloom/docs/security`: Zero-telemetry invariant, passcode validation, vulnerability disclosure.
+- `https://naborajs.me/projects/birthday-bloom/docs/code-of-conduct`: Contributor Covenant v2.1 community pledge.
+- `https://naborajs.me/projects/birthday-bloom/docs/pull-request-policy`: Quality gates, branch protection, SLAs.
+- `https://naborajs.me/projects/birthday-bloom/docs/support`: Community support channels, GitHub issues, direct maintainer contact.
+- `https://naborajs.me/projects/birthday-bloom/docs/license`: MIT License text and third-party open-source attributions.
+- `https://naborajs.me/projects/birthday-bloom/docs/test-infrastructure`: 400+ Vitest test architecture, JSDOM mocks for Web Audio and WebGL.
+- `https://naborajs.me/projects/birthday-bloom/docs/roadmap`: Future milestones including WebGPU pipelines and offline PWA.
+- `https://naborajs.me/projects/birthday-bloom/docs/seo-guide`: Answer-first SEO/GEO, JSON-LD Schema.org structured data, crawl optimization.
+- `https://naborajs.me/projects/birthday-bloom/docs/migration-guide`: Version upgrade paths v1 → v2 → v3 and breaking changes.
+- `https://naborajs.me/projects/birthday-bloom/docs/changelog`: Chronological SemVer version history.
