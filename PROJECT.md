@@ -1,5 +1,7 @@
 # Project: Birthday Bloom
 
+🌐 **Official Documentation Portal**: [https://naborajs.me/projects/birthday-bloom/docs](https://naborajs.me/projects/birthday-bloom/docs)
+
 ## Architecture
 Birthday Bloom is a modern, deeply emotional, high-performance birthday celebration web experience.
 - **Frontend Core**: React 18 + TypeScript + Vite + Tailwind CSS + Radix UI + Lucide Icons.

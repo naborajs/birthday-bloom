@@ -1,5 +1,7 @@
 # Pull Request and Merge Policy
 
+🌐 **Canonical Web Documentation**: [Pull Request Policy & Quality Gates](https://naborajs.me/projects/birthday-bloom/docs/pull-request-policy) | [Contributor Guide](https://naborajs.me/projects/birthday-bloom/docs/contributing)
+
 This document defines the strict quality gates, review processes, and configuration requirements for merging code into the `main` branch of **Birthday Bloom**.
 
 ---

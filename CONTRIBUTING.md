@@ -2,7 +2,7 @@
 
 Welcome! We are thrilled that you're interested in contributing to Birthday Bloom. Whether you're a first-time contributor, a creative developer looking to build 3D WebGL scenes, or polishing UI and accessibility — you are welcome here!
 
-👉 **[Read the Full Contributing Guide](.github/CONTRIBUTING.md)**
+👉 **[Read the Full Contributing Guide](.github/CONTRIBUTING.md)** | 🌐 **[Official Web Contributor Guide](https://naborajs.me/projects/birthday-bloom/docs/contributing)**
 
 ---
 
@@ -25,7 +25,7 @@ Welcome! We are thrilled that you're interested in contributing to Birthday Bloo
    # Start dev server
    npm run dev
    ```
-4. **Make Your Changes**: Follow our clean code conventions in [`obsidian-docs/styleguide.md`](obsidian-docs/styleguide.md).
+4. **Make Your Changes**: Follow our clean code conventions in [`obsidian-docs/styleguide.md`](obsidian-docs/styleguide.md) or online at [TypeScript & Code Standards](https://naborajs.me/projects/birthday-bloom/docs/styleguide).
 5. **Verify Locally (All-in-One)**:
    ```bash
    npm run verify
@@ -48,9 +48,10 @@ Welcome! We are thrilled that you're interested in contributing to Birthday Bloo
 
 ## 📚 Essential Developer Documentation
 
-- [Complete Architecture Guide](obsidian-docs/architecture.md)
-- [Master Environment Variable Guide (53 Keys)](ENV_GUIDE.md)
-- [URL Query Parameters Reference](obsidian-docs/URL-Parameters.md)
-- [Developer Guide & Contributor Walkthroughs](obsidian-docs/developer-guide.md)
-- [Pull Request Policy](.github/PULL_REQUEST_POLICY.md)
-- [Code of Conduct](.github/CODE_OF_CONDUCT.md)
+- [Official Web Documentation Portal (38 Guides)](https://naborajs.me/projects/birthday-bloom/docs)
+- [Complete Architecture Guide](https://naborajs.me/projects/birthday-bloom/docs/architecture) ([Local](obsidian-docs/architecture.md))
+- [Master Environment Variable Guide (53 Keys)](https://naborajs.me/projects/birthday-bloom/docs/env-guide) ([Local](ENV_GUIDE.md))
+- [URL Query Parameters Reference](https://naborajs.me/projects/birthday-bloom/docs/url-parameters) ([Local](obsidian-docs/URL-Parameters.md))
+- [Developer Guide & Contributor Walkthroughs](https://naborajs.me/projects/birthday-bloom/docs/developer-guide) ([Local](obsidian-docs/developer-guide.md))
+- [Pull Request Policy](https://naborajs.me/projects/birthday-bloom/docs/pull-request-policy) ([Local](.github/PULL_REQUEST_POLICY.md))
+- [Code of Conduct](https://naborajs.me/projects/birthday-bloom/docs/code-of-conduct) ([Local](.github/CODE_OF_CONDUCT.md))

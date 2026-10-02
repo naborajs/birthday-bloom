@@ -1,5 +1,7 @@
 # Contributor Covenant Code of Conduct
 
+🌐 **Canonical Web Documentation**: [Contributor Code of Conduct](https://naborajs.me/projects/birthday-bloom/docs/code-of-conduct)
+
 ## Our Pledge
 
 We as members, contributors, and leaders pledge to make participation in the

@@ -1,4 +1,6 @@
-# Complete Env Customization Guide — Birthday Bloom v3.3
+# Complete Env Customization Guide — Birthday Bloom
+
+🌐 **Canonical Web Documentation**: [Environment Variables Master Guide](https://naborajs.me/projects/birthday-bloom/docs/env-guide) | [Pre-built Persona Configurations](https://naborajs.me/projects/birthday-bloom/docs/env-configs)
 
 Birthday Bloom is **env-first and URL-first**. Names, relationship types, messages, colors, photos, captions, videos, audio, visible sections, animation behavior, accessibility, and family-template metadata are all controlled through environment variables or instant URL query parameters without editing React source files.
 

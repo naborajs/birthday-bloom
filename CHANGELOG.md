@@ -1,5 +1,7 @@
 # Changelog
 
+🌐 **Canonical Web Documentation**: [Project Changelog & Release Notes](https://naborajs.me/projects/birthday-bloom/docs/changelog) | [Migration Guide](https://naborajs.me/projects/birthday-bloom/docs/migration-guide)
+
 All notable changes to Birthday Bloom are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
