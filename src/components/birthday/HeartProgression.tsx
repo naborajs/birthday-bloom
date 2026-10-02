@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useTranslation } from "@/i18n";
 interface HeartProgressionProps {
@@ -39,38 +39,28 @@ const HeartSVG = ({ stage, glowing }: {
       {glowing && <circle cx="100" cy="65" r="50" fill="hsl(330,85%,60%)" opacity="0.15" className="animate-pulse"/>}
     </svg>);
 };
-const TrailCanvas = ({ particles }: {
-    particles: TrailParticle[];
-}) => {
-    const now = Date.now();
-    const LIFETIME = 2200;
-    return (<div className="absolute inset-0 pointer-events-none z-[5] overflow-hidden">
-      {particles.map((p) => {
-            const age = now - p.born;
-            const progress = Math.min(age / LIFETIME, 1);
-            const opacity = 1 - progress;
-            const scale = 1 + progress * 0.6;
-            if (opacity <= 0)
-                return null;
-            return (<div key={p.id} className="absolute rounded-full" style={{
-                    left: p.x, top: p.y,
-                    width: p.size, height: p.size,
-                    background: p.color,
-                    opacity: opacity * 0.7,
-                    transform: `translate(-50%, -50%) scale(${scale})`,
-                    boxShadow: `0 0 ${6 + p.size}px ${p.color}, 0 0 ${12 + p.size * 2}px ${p.color}`,
-                }}/>);
-        })}
-    </div>);
+const evalMergeEase = (t: number): number => {
+    if (t <= 0) return 0;
+    if (t >= 1) return 1;
+    // Exact parametric solver for CSS cubic-bezier(0.19, 1, 0.22, 1)
+    let u = t;
+    for (let i = 0; i < 5; i++) {
+        const inv = 1 - u;
+        const x = 3 * inv * inv * u * 0.19 + 3 * inv * u * u * 0.22 + u * u * u - t;
+        const dx = 3 * inv * inv * 0.19 + 6 * inv * u * 0.03 + 3 * u * u * 0.78;
+        if (Math.abs(dx) < 1e-6) break;
+        u = Math.max(0, Math.min(1, u - x / dx));
+    }
+    const inv = 1 - u;
+    return 1 - inv * inv * inv;
 };
+
 const FourCornerMerge = ({ onDone }: {
     onDone: () => void;
 }) => {
     const [phase, setPhase] = useState<"fly-in" | "merging" | "merged" | "pop" | "text">("fly-in");
-    const [particles, setParticles] = useState<TrailParticle[]>([]);
     const containerRef = useRef<HTMLDivElement>(null);
-    const heartRefs = useRef<(HTMLDivElement | null)[]>([null, null, null, null]);
-    const particleIdRef = useRef(0);
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const rafRef = useRef<number>(0);
     const { name } = useBirthdayStore(state => state.config);
     const { isHindi, isBengali, isFrench } = useTranslation();
@@ -90,141 +80,179 @@ const FourCornerMerge = ({ onDone }: {
         return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); clearTimeout(t5); };
     }, [onDone]);
     const corners = useMemo(() => [
-        { id: "tl", start: { x: "-60vw", y: "-60vh", rotate: -45 }, color: "hsl(330, 85%, 65%)" },
-        { id: "tr", start: { x: "60vw", y: "-60vh", rotate: 45 }, color: "hsl(350, 80%, 60%)" },
-        { id: "br", start: { x: "60vw", y: "60vh", rotate: 135 }, color: "hsl(330, 85%, 55%)" },
-        { id: "bl", start: { x: "-60vw", y: "60vh", rotate: -135 }, color: "hsl(345, 85%, 62%)" },
+        { id: "tl", start: { x: "-60vw", y: "-60vh", rotate: -45 }, dx: -0.6, dy: -0.6, color: "hsl(330, 85%, 65%)" },
+        { id: "tr", start: { x: "60vw", y: "-60vh", rotate: 45 }, dx: 0.6, dy: -0.6, color: "hsl(350, 80%, 60%)" },
+        { id: "br", start: { x: "60vw", y: "60vh", rotate: 135 }, dx: 0.6, dy: 0.6, color: "hsl(330, 85%, 55%)" },
+        { id: "bl", start: { x: "-60vw", y: "60vh", rotate: -135 }, dx: -0.6, dy: 0.6, color: "hsl(345, 85%, 62%)" },
     ], []);
-    const spawnParticles = useCallback(() => {
-        if (!containerRef.current)
-            return;
-        const containerRect = containerRef.current.getBoundingClientRect();
-        const newParticles: TrailParticle[] = [];
-        heartRefs.current.forEach((el, idx) => {
-            if (!el)
-                return;
-            const rect = el.getBoundingClientRect();
-            const cx = rect.left + rect.width / 2 - containerRect.left;
-            const cy = rect.top + rect.height / 2 - containerRect.top;
-            for (let j = 0; j < 2; j++) {
-                newParticles.push({
-                    id: particleIdRef.current++,
-                    x: cx + (Math.random() - 0.5) * 16,
-                    y: cy + (Math.random() - 0.5) * 16,
-                    color: corners[idx].color,
-                    size: 3 + Math.random() * 5,
-                    born: Date.now(),
-                });
-            }
-        });
-        setParticles(prev => {
-            const now = Date.now();
-            const alive = prev.filter(p => now - p.born < 2200);
-            return [...alive, ...newParticles].slice(-200);
-        });
-    }, [corners]);
-    useEffect(() => {
-        if (phase !== "merging")
-            return;
-        let active = true;
-        let lastSpawn = 0;
-        const loop = (time: number) => {
-            if (!active)
-                return;
-            if (time - lastSpawn > 50) {
-                spawnParticles();
-                lastSpawn = time;
-            }
-            rafRef.current = requestAnimationFrame(loop);
-        };
-        rafRef.current = requestAnimationFrame(loop);
-        return () => { active = false; cancelAnimationFrame(rafRef.current); };
-    }, [phase, spawnParticles]);
-    const hasParticles = particles.length > 0;
-    useEffect(() => {
-        if (!hasParticles)
-            return;
-        const interval = setInterval(() => {
-            setParticles(prev => {
-                const alive = prev.filter(p => Date.now() - p.born < 2200);
-                if (alive.length === 0) {
-                    clearInterval(interval);
-                    return [];
-                }
-                return alive;
-            });
-        }, 100);
-        return () => clearInterval(interval);
-    }, [hasParticles]);
+    const burstParticles = useMemo(() => Array.from({ length: 16 }, (_, i) => ({
+        id: i,
+        w: 10 + ((i * 7) % 14),
+        h: 10 + ((i * 7) % 14),
+        dist: 50 + ((i * 11) % 40),
+        angle: (360 / 16) * i,
+        color: `hsl(${330 + i * 3}, 85%, ${55 + i * 2}%)`,
+    })), []);
     const isMerging = phase === "merging" || phase === "merged" || phase === "pop" || phase === "text";
     const isMerged = phase === "merged" || phase === "pop" || phase === "text";
     const isPopped = phase === "pop" || phase === "text";
     const showText = phase === "text";
+    useEffect(() => {
+        if (!isMerging)
+            return undefined;
+        if (typeof window === "undefined" || (typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent)))
+            return undefined;
+        const canvas = canvasRef.current;
+        const container = containerRef.current;
+        if (!canvas || !container)
+            return undefined;
+        const ctx = canvas.getContext("2d", { alpha: true });
+        if (!ctx)
+            return undefined;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        // Size canvas to encompass the full ±60vw × ±60vh flight trajectory centered on containerRef
+        const width = Math.max(container.clientWidth || 0, Math.ceil(vw * 1.3));
+        const height = Math.max(container.clientHeight || 0, Math.ceil(vh * 1.3));
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        const particles: TrailParticle[] = [];
+        let particleId = 0;
+        let active = true;
+        let lastSpawn = 0;
+        const mergeStart = performance.now();
+        const MERGE_DURATION = 2200;
+        const SPAWN_WINDOW = 1700;
+        const LIFETIME = 1600;
+
+        const loop = (now: number) => {
+            if (!active)
+                return;
+            const elapsed = now - mergeStart;
+            if (elapsed <= SPAWN_WINDOW && now - lastSpawn > 50) {
+                lastSpawn = now;
+                const progress = evalMergeEase(elapsed / MERGE_DURATION);
+                const rem = 1 - progress;
+                const cx = width / 2;
+                const cy = height / 2;
+                for (let idx = 0; idx < corners.length; idx++) {
+                    const c = corners[idx];
+                    const hx = cx + c.dx * vw * rem;
+                    const hy = cy + c.dy * vh * rem;
+                    for (let j = 0; j < 2; j++) {
+                        particles.push({
+                            id: particleId++,
+                            x: hx + (Math.random() - 0.5) * 16,
+                            y: hy + (Math.random() - 0.5) * 16,
+                            color: c.color,
+                            size: 3 + Math.random() * 5,
+                            born: now,
+                        });
+                    }
+                }
+            }
+
+            ctx.clearRect(0, 0, width, height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                const age = now - p.born;
+                if (age >= LIFETIME) {
+                    particles[i] = particles[particles.length - 1];
+                    particles.pop();
+                    continue;
+                }
+                const progress = age / LIFETIME;
+                const alpha = (1 - progress) * 0.7;
+                const radius = (p.size * (1 + progress * 0.6)) / 2;
+                ctx.globalAlpha = alpha * 0.35;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, radius * 2.2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = alpha;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+
+            if (elapsed <= SPAWN_WINDOW || particles.length > 0) {
+                rafRef.current = requestAnimationFrame(loop);
+            }
+        };
+        rafRef.current = requestAnimationFrame(loop);
+        return () => {
+            active = false;
+            cancelAnimationFrame(rafRef.current);
+            ctx.clearRect(0, 0, width, height);
+        };
+    }, [isMerging, corners]);
     return (<div ref={containerRef} className="relative flex flex-col items-center justify-center w-full h-full overflow-visible" style={{ minHeight: "300px" }}>
       
       {isMerging && (<div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center pointer-events-none">
-          <div className="w-[150%] h-1 bg-[hsl(330,85%,60%)] blur-[80px] opacity-40 animate-pulse"/>
-          <div className="absolute w-[200px] h-[200px] rounded-full bg-[hsl(330,85%,60%)] blur-[100px] opacity-20 animate-heart-glow-expand"/>
+          <div className="w-[150%] h-24 opacity-40 animate-pulse" style={{ background: "radial-gradient(ellipse at center, hsla(330,85%,60%,0.45) 0%, transparent 70%)" }}/>
+          <div className="absolute w-[260px] h-[260px] rounded-full opacity-30 animate-heart-glow-expand" style={{ background: "radial-gradient(circle, hsla(330,85%,60%,0.5) 0%, transparent 70%)" }}/>
         </div>)}
 
       
-      <TrailCanvas particles={particles}/>
+      <canvas ref={canvasRef} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[5]" aria-hidden="true"/>
 
       
       {isMerged && (<div className="absolute w-64 h-64 md:w-80 md:h-80 rounded-full opacity-40 animate-pulse" style={{ background: "radial-gradient(circle, hsl(330,85%,60%), hsl(330,85%,40%), transparent)" }}/>)}
 
       
-      {!isMerged && corners.map((c, idx) => (<div key={c.id} ref={el => { heartRefs.current[idx] = el; }} className="absolute" style={{
+      {!isMerged && corners.map((c) => (<div key={c.id} className="absolute" style={{
                 transform: isMerging
                     ? "translate(0, 0) rotate(0deg) scale(1.2)"
                     : `translate(${c.start.x}, ${c.start.y}) rotate(${c.start.rotate}deg) scale(0.5)`,
-                transition: "all 2.2s cubic-bezier(0.19, 1, 0.22, 1)",
+                transition: "transform 2.2s cubic-bezier(0.19, 1, 0.22, 1)",
+                willChange: "transform",
                 zIndex: 10,
             }}>
           
-          {[0.1, 0.2, 0.3, 0.4].map((delay, i) => (<svg key={i} viewBox="0 0 20 18" className="absolute inset-0 w-12 h-12 md:w-16 md:h-16" style={{
-                    opacity: isMerging ? 0.5 - i * 0.1 : 0,
-                    filter: `blur(${3 + i * 3}px) drop-shadow(0 0 15px ${c.color})`,
-                    transition: `all 2s cubic-bezier(0.19, 1, 0.22, 1) ${delay}s`,
-                    transform: isMerging ? `scale(${1.2 - i * 0.15})` : `scale(0.5)`,
+          {[0.08, 0.16].map((delay, i) => (<svg key={i} viewBox="0 0 20 18" className="absolute inset-0 w-12 h-12 md:w-16 md:h-16" style={{
+                    opacity: isMerging ? 0.38 - i * 0.14 : 0,
+                    transition: `transform 2s cubic-bezier(0.19, 1, 0.22, 1) ${delay}s, opacity 2s cubic-bezier(0.19, 1, 0.22, 1) ${delay}s`,
+                    transform: isMerging ? `scale(${1.1 - i * 0.2})` : `scale(0.5)`,
                 }}>
               <path d={HeartPath} fill={c.color}/>
             </svg>))}
           
           <svg viewBox="0 0 20 18" className="relative w-12 h-12 md:w-16 md:h-16" style={{
-                filter: `drop-shadow(0 0 20px ${c.color}) drop-shadow(0 0 40px ${c.color}80)`,
+                filter: `drop-shadow(0 0 18px ${c.color})`,
             }}>
             <path d={HeartPath} fill={c.color}/>
           </svg>
         </div>))}
 
       
-      {isMerged && (<div className={`relative z-20 transition-all duration-800 ${isPopped ? "scale-0 opacity-0" : "scale-100 opacity-100"}`} style={{ transition: isPopped ? "all 0.6s cubic-bezier(0.6, -0.28, 0.735, 0.045)" : "all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)", transform: isPopped ? "scale(2.5)" : undefined }}>
+      {isMerged && (<div className={`relative z-20 transition-all duration-800 ${isPopped ? "scale-0 opacity-0" : "scale-100 opacity-100"}`} style={{ transition: isPopped ? "transform 0.6s cubic-bezier(0.6, -0.28, 0.735, 0.045), opacity 0.6s ease" : "transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.8s ease", transform: isPopped ? "scale(2.5)" : undefined }}>
           <div className="animate-heart-merge-appear">
-            <svg viewBox="0 0 200 140" className="w-32 h-28 md:w-48 md:h-40" style={{ filter: "drop-shadow(0 0 40px hsl(330,85%,60%)) drop-shadow(0 0 80px hsl(330,85%,50%))" }}>
+            <svg viewBox="0 0 200 140" className="w-32 h-28 md:w-48 md:h-40" style={{ filter: "drop-shadow(0 0 36px hsl(330,85%,60%))" }}>
               <defs>
                 <linearGradient id="mergedGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="hsl(330, 85%, 70%)"/>
                   <stop offset="50%" stopColor="hsl(350, 80%, 65%)"/>
                   <stop offset="100%" stopColor="hsl(330, 85%, 60%)"/>
                 </linearGradient>
-                <filter id="glow">
-                  <feGaussianBlur stdDeviation="3" result="blur"/>
-                  <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-                </filter>
               </defs>
-              <path d={FullHeartPath} fill="url(#mergedGrad)" filter="url(#glow)"/>
+              <path d={FullHeartPath} fill="url(#mergedGrad)"/>
             </svg>
           </div>
         </div>)}
 
       
-      {isPopped && Array.from({ length: 16 }, (_, i) => (<div key={i} className="absolute z-30 pointer-events-none" style={{ animation: `heart-burst-particle 1.2s ease-out ${i * 0.04}s forwards` }}>
+      {isPopped && burstParticles.map((bp) => (<div key={bp.id} className="absolute z-30 pointer-events-none" style={{ animation: `heart-burst-particle 1.2s ease-out ${bp.id * 0.04}s forwards` }}>
           <svg viewBox="0 0 20 18" style={{
-                width: 10 + Math.random() * 14, height: 10 + Math.random() * 14,
-                transform: `rotate(${(360 / 16) * i}deg) translateY(-${50 + Math.random() * 40}px)`
+                width: bp.w, height: bp.h,
+                transform: `rotate(${bp.angle}deg) translateY(-${bp.dist}px)`
             }}>
-            <path d={HeartPath} fill={`hsl(${330 + i * 3}, 85%, ${55 + i * 2}%)`}/>
+            <path d={HeartPath} fill={bp.color}/>
           </svg>
         </div>))}
 

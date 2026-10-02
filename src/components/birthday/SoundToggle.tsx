@@ -6,16 +6,17 @@ import { useTranslation } from "@/i18n";
 
 export const SoundToggle = () => {
     const [isMuted, setIsMuted] = useState(false);
-    const { setBgVolume } = useSoundManager();
+    const { setBgVolume, setMuted } = useSoundManager();
     const { isFrench, isBengali, isHindi } = useTranslation();
 
     const handleToggle = useCallback(() => {
         setIsMuted((prev) => {
             const next = !prev;
             setBgVolume(next ? 0 : 0.25);
+            setMuted?.(next);
             return next;
         });
-    }, [setBgVolume]);
+    }, [setBgVolume, setMuted]);
 
     const label = isMuted
         ? isFrench

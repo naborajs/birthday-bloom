@@ -1,15 +1,16 @@
 ---
-tags: [index, home, overview, documentation, i18n, vault]
-aliases: [DOCUMENTATION_INDEX, index]
+tags: [index, home, overview, documentation, i18n, vault, master-index]
+aliases: [DOCUMENTATION_INDEX, index, docs]
 ---
 
-# Birthday Bloom v3.5.0 — Documentation Index
+# Birthday Bloom — Master Documentation Index
 
-[[quick-start|Quick Start]] | [[ENV_GUIDE|Env Customization Guide]] | [[URL-Parameters|URL Parameters]] | [[setup-french|French Guide]] | [[setup-hindi|Hindi Guide]] | [[setup-bengali|Bengali Guide]] | [[architecture-env|Env Architecture]] | [[deployment|Deployment Guide]]
+🌐 **Official Online Documentation Portal**: [https://naborajs.me/projects/birthday-bloom/docs](https://naborajs.me/projects/birthday-bloom/docs)  
+Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom) | Live Demo: [birthday-bloom.vercel.app](https://birthday-bloom.vercel.app)
 
-**Complete 32-note documentation suite for Birthday Bloom**, an env-first and zero-config cinematic birthday surprise engine built with React 18, TypeScript 5.8, Framer Motion 13, Three.js / React Three Fiber, Tailwind CSS, and Zustand 5.
+Welcome to the **complete 38-page documentation system for Birthday Bloom**, an env-first, zero-config cinematic birthday surprise engine built with React 18.3, TypeScript 5.8, Three.js 0.171 / React Three Fiber, Framer Motion 13, Tailwind CSS, and Zustand 5.
 
-Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom)
+Every page is available both as an interconnected Obsidian note in this vault and online at `https://naborajs.me/projects/birthday-bloom/docs/*`.
 
 ---
 
@@ -21,57 +22,110 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
 ### Multilingual & Cultural Personalization Matrix
 ![Multilingual & Cultural Personalization Matrix](../docs/diagrams/02-multilingual-matrix.jpg)
 
-> [!TIP]
-> For high-resolution visual previews of every celebration module, see [[Birthday-Components|Birthday Components Catalog]] and [[URL-Parameters|URL Parameters Guide]].
+---
+
+## 🗂️ Complete 38-Page Documentation Directory (9 Categories)
+
+### Category 1: Get Started
+| # | Document & Local Note | Canonical Web Route | Purpose & Key Contents |
+|---|---|---|---|
+| 1 | [[introduction\|introduction.md]] | [/docs/introduction](https://naborajs.me/projects/birthday-bloom/docs/introduction) | **Introduction to Birthday Bloom**: Executive vision, 4-phase sequence table, tech manifest, audience pathways, and intro video. |
+| 2 | [[quick-start\|quick-start.md]] | [/docs/quick-start](https://naborajs.me/projects/birthday-bloom/docs/quick-start) | **Quick Start Guide**: 5-minute local setup, port configurations, terminal commands, and error diagnostic matrix. |
+| 3 | [[URL-Parameters\|URL-Parameters.md]] | [/docs/url-parameters](https://naborajs.me/projects/birthday-bloom/docs/url-parameters) | **Zero-Config URL Parameters**: Instant sharing via query strings (`?name=`, `?rel=`, `?color=`, `?passcode=`), hex validation, and URL-first hydration. |
+| 4 | [[ENV_GUIDE\|ENV_GUIDE.md]] | [/docs/env-guide](https://naborajs.me/projects/birthday-bloom/docs/env-guide) | **Environment Variables Master Guide**: Comprehensive 53-variable registry, Vite `VITE_` bundling rules, and situation recipes. |
 
 ---
 
-## 🌟 Essential Guides & Deep Dives
-
-| Document | Purpose & Summary | Read Time | Tags |
+### Category 2: Architecture & Core
+| # | Document & Local Note | Canonical Web Route | Purpose & Key Contents |
 |---|---|---|---|
-| [[quick-start\|quick-start.md]] | Get running locally in 5 minutes with zero code changes | 5 min | `setup`, `quickstart` |
-| [[URL-Parameters\|URL-Parameters.md]] | Zero-config URL query parameter matrix and live sharing examples | 6 min | `url`, `config`, `parameters` |
-| [[Emotional-Psychology-and-UX\|Emotional-Psychology-and-UX.md]] | Human Neurochemistry, Romantic Psychology, Celebratory Pacing & Aesthetics | 12 min | `ux`, `psychology`, `emotion` |
-| [[Celebration-Sound-and-Sensory-Design\|Celebration-Sound-and-Sensory-Design.md]] | Acoustic Neuro-Triggers, Mobile Haptics & Visual Sensory Harmony | 8 min | `audio`, `sound`, `haptics` |
-| [[ENV_GUIDE\|ENV_GUIDE.md]] | Exhaustive reference for all 53 environment variables, aliases & recipes | 15 min | `environment`, `configuration` |
-| [[setup-french\|setup-french.md]] | Multi-Language Localization (French / Français) setup & European typography | 5 min | `i18n`, `french`, `localization` |
-| [[setup-hindi\|setup-hindi.md]] | Multi-Language Localization (Hindi / हिन्दी) setup, Indic typography & recipes | 5 min | `i18n`, `hindi`, `localization` |
-| [[setup-bengali\|setup-bengali.md]] | Multi-Language Localization (Bengali / বাংলা) setup, Indic typography & recipes | 5 min | `i18n`, `bengali`, `localization` |
-| [[architecture\|architecture.md]] | Finite state machine, scene timeline, and system architecture | 10 min | `architecture`, `fsm`, `state` |
-| [[architecture-env\|architecture-env.md]] | Environment variable lifecycle, Zustand store hydration & normalization | 8 min | `store`, `zustand`, `env` |
-| [[Website-Architecture\|Website-Architecture.md]] | Core technologies, build toolchain, and rendering pipeline | 7 min | `react`, `vite`, `structure` |
-| [[developer-guide\|developer-guide.md]] | Component API reference, hooks, and 4 step-by-step contributor walkthroughs | 15 min | `developer`, `api`, `components` |
-| [[family-system\|family-system.md]] | Dedicated family templates (brother, sister, parents, grandparents, etc.) | 10 min | `family`, `templates`, `profiles` |
-| [[Template-System-Deep-Dive\|Template-System-Deep-Dive.md]] | Deep dive & extension guide for relationship templates & tone engines | 10 min | `templates`, `tone`, `narrative` |
-| [[template-architecture\|template-architecture.md]] | Template and config architecture data flow | 8 min | `templates`, `models`, `config` |
-| [[Animation-System\|Animation-System.md]] | Framer Motion, 3D WebGL (R3F), Canvas 2D fireworks, and reduced motion | 8 min | `animation`, `3d`, `physics` |
-| [[Birthday-Components\|Birthday-Components.md]] | Exhaustive catalog of all 30 active celebration scene components | 12 min | `components`, `scenes`, `ui` |
-| [[UI-Components\|UI-Components.md]] | Design system primitives (`sonner.tsx`, `tooltip.tsx`) and UI extensions | 6 min | `ui`, `radix`, `tailwind` |
-| [[Codebase-Map\|Codebase-Map.md]] | Complete map of all repository folders, scripts, and modules | 6 min | `map`, `codebase`, `files` |
-| [[GitHub-Automation\|GitHub-Automation.md]] | CI/CD pipelines, issue triage workflows, and repository automation | 6 min | `github`, `ci-cd`, `actions` |
-| [[troubleshooting\|troubleshooting.md]] | Common issues, audio autoplay, mobile viewport, and animation fixes | 10 min | `troubleshooting`, `fixes` |
-| [[migration-guide\|migration-guide.md]] | Version-by-version migration v1 → v2 → v3 | 8 min | `migration`, `upgrade` |
-| [[deployment\|deployment.md]] | Production deployment on Vercel, Netlify, AWS, Docker & mobile checklists | 10 min | `deployment`, `hosting`, `vercel` |
-| [[seo-guide\|seo-guide.md]] | SEO, Open Graph, Twitter cards, and JSON-LD schema optimization | 5 min | `seo`, `opengraph`, `schema` |
-| [[llm-access\|llm-access.md]] | AI-first documentation guide and context ingestion for LLMs | 5 min | `llm`, `ai`, `context` |
-| [[env-configs\|env-configs.md]] | Pre-built `.env.local` configuration recipes for diverse relationships | 8 min | `recipes`, `env`, `presets` |
-| [[styleguide\|styleguide.md]] | TypeScript conventions, CSS tokens, and design standards | 6 min | `styleguide`, `conventions` |
-| [[roadmap\|roadmap.md]] | Planned features, milestones, and release pipeline | 5 min | `roadmap`, `features` |
-| [[faq\|faq.md]] | Frequently asked questions and common configuration queries | 6 min | `faq`, `questions` |
-| [[implementation-summary\|implementation-summary.md]] | Historical engineering implementation summary | 8 min | `summary`, `engineering` |
-| [[upgrade-summary\|upgrade-summary.md]] | Architecture modernization and feature upgrade log | 8 min | `upgrade`, `changelog` |
+| 5 | [[architecture\|architecture.md]] | [/docs/architecture](https://naborajs.me/projects/birthday-bloom/docs/architecture) | **System Architecture & FSM**: 4-phase deterministic state machine (`splash` → `unlock` → `intro` → `main`), browser autoplay mitigation, and memory safety. |
+| 6 | [[architecture-env\|architecture-env.md]] | [/docs/architecture-env](https://naborajs.me/projects/birthday-bloom/docs/architecture-env) | **Env Lifecycle & Store Hydration**: 3-tier hierarchy of truth (URL > `.env.local` > Defaults), type coercion, and Zustand store hydration. |
+| 7 | [[Website-Architecture\|Website-Architecture.md]] | [/docs/website-architecture](https://naborajs.me/projects/birthday-bloom/docs/website-architecture) | **Build Toolchain & Rendering Pipeline**: Vite 5 compilation graph, Three.js chunk isolation (`three-[hash].js`), and CSS tree-shaking. |
+| 8 | [[Codebase-Map\|Codebase-Map.md]] | [/docs/codebase-map](https://naborajs.me/projects/birthday-bloom/docs/codebase-map) | **Codebase Directory Map & File Manifest**: Complete file tree and single responsibility architectural boundaries across `src/`, `public/`, and configs. |
+
+---
+
+### Category 3: Components & Visuals
+| # | Document & Local Note | Canonical Web Route | Purpose & Key Contents |
+|---|---|---|---|
+| 9 | [[Birthday-Components\|Birthday-Components.md]] | [/docs/birthday-components](https://naborajs.me/projects/birthday-bloom/docs/birthday-components) | **3D WebGL Canvas & Component Hierarchy**: R3F scene graph, procedural 3D cake, stainless steel knife, raycast drag slicing math, and contact lighting. |
+| 10 | [[Animation-System\|Animation-System.md]] | [/docs/animation-system](https://naborajs.me/projects/birthday-bloom/docs/animation-system) | **Animation & Physics Engine**: Framer Motion 13 springs, HTML5 Canvas 2D confetti physics, fireworks engines, and 60 FPS mobile optimizations. |
+| 11 | [[Celebration-Sound-and-Sensory-Design\|Celebration-Sound-and-Sensory-Design.md]] | [/docs/sound-and-sensory](https://naborajs.me/projects/birthday-bloom/docs/sound-and-sensory) | **Audio Synthesis & Sensory Design**: Web Audio API singleton graph, gain staging, SFX bus, biquad filters, and iOS Safari autoplay unlocking. |
+| 12 | [[Emotional-Psychology-and-UX\|Emotional-Psychology-and-UX.md]] | [/docs/emotional-psychology](https://naborajs.me/projects/birthday-bloom/docs/emotional-psychology) | **Emotional Psychology & Narrative Arc**: Neurochemical pacing (mystery → anticipation → intimacy → euphoria), typewriter constants, and emotional UX. |
+
+---
+
+### Category 4: Persona & Customization
+| # | Document & Local Note | Canonical Web Route | Purpose & Key Contents |
+|---|---|---|---|
+| 13 | [[family-system\|family-system.md]] | [/docs/family-system](https://naborajs.me/projects/birthday-bloom/docs/family-system) | **14-Persona Relationship Engine**: Archetype matrix (Partner, Friend, Mother, Father, Brother, Sister, Mentor, Custom) and token triggers. |
+| 14 | [[template-architecture\|template-architecture.md]] | [/docs/template-architecture](https://naborajs.me/projects/birthday-bloom/docs/template-architecture) | **Template Engine & Letter Synthesis**: Token replacement lexer (`{name}`, `{age}`, `{wisher}`) and surrogate-safe emoji typewriter slicing. |
+| 15 | [[Template-System-Deep-Dive\|Template-System-Deep-Dive.md]] | [/docs/template-deep-dive](https://naborajs.me/projects/birthday-bloom/docs/template-deep-dive) | **Deep Dive: Letter Engine & Micro-copy**: Full emotional letter transcripts across tone engines and override precedence rules. |
+| 16 | [[env-configs\|env-configs.md]] | [/docs/env-configs](https://naborajs.me/projects/birthday-bloom/docs/env-configs) | **Pre-built Persona Configurations**: Ready-to-use copy-paste `.env.local` snippets and color hex/music pairings for 10 celebration scenarios. |
+
+---
+
+### Category 5: Internationalization (i18n)
+| # | Document & Local Note | Canonical Web Route | Purpose & Key Contents |
+|---|---|---|---|
+| 17 | [[setup-hindi\|setup-hindi.md]] | [/docs/setup-hindi](https://naborajs.me/projects/birthday-bloom/docs/setup-hindi) | **Hindi (हिंदी) Localization & Devanagari Typography**: Noto Sans Devanagari loading, Shirorekha ligature protections, and culturally authentic blessings. |
+| 18 | [[setup-bengali\|setup-bengali.md]] | [/docs/setup-bengali](https://naborajs.me/projects/birthday-bloom/docs/setup-bengali) | **Bengali (বাংলা) Cultural Nuances & Shirorekha**: Noto Sans Bengali typography, Eastern Nagari conjunct rendering, and poetic greetings. |
+| 19 | [[setup-french\|setup-french.md]] | [/docs/setup-french](https://naborajs.me/projects/birthday-bloom/docs/setup-french) | **French (Français) Elegant Locales & Accents**: French orthography, accents (`é`, `è`, `ç`), non-breaking punctuation spacing, and formal/informal tones. |
+
+---
+
+### Category 6: Developer & Tooling
+| # | Document & Local Note | Canonical Web Route | Purpose & Key Contents |
+|---|---|---|---|
+| 20 | [[developer-guide\|developer-guide.md]] | [/docs/developer-guide](https://naborajs.me/projects/birthday-bloom/docs/developer-guide) | **Developer Reference & Hooks**: Custom hooks API reference (`useBirthdayStore`, `useDynamicTheme`, `useSoundEffects`, `useMobile`) and contributor walkthroughs. |
+| 21 | [[UI-Components\|UI-Components.md]] | [/docs/ui-components](https://naborajs.me/projects/birthday-bloom/docs/ui-components) | **Design System Primitives**: Radix UI tokens, glassmorphic styling (`backdrop-blur-xl`), and CSS variable injection. |
+| 22 | [[styleguide\|styleguide.md]] | [/docs/styleguide](https://naborajs.me/projects/birthday-bloom/docs/styleguide) | **TypeScript & Code Standards**: Strict mode conventions, zero `@ts-ignore` policy, explicit interface declarations, and naming conventions. |
+
+---
+
+### Category 7: Operations & Contribution
+| # | Document & Local Note | Canonical Web Route | Purpose & Key Contents |
+|---|---|---|---|
+| 23 | [[GitHub-Automation\|GitHub-Automation.md]] | [/docs/github-automation](https://naborajs.me/projects/birthday-bloom/docs/github-automation) | **GitHub Actions & CI/CD Pipelines**: Automated pull request gates, labeler workflows, quality checks, and release packaging. |
+| 24 | [[deployment\|deployment.md]] | [/docs/deployment](https://naborajs.me/projects/birthday-bloom/docs/deployment) | **Production Deployment Guide**: Step-by-step walkthrough for Vercel, Netlify, Cloudflare Pages, and sovereign Docker containerization. |
+| 25 | [[contributing\|contributing.md]] | [/docs/contributing](https://naborajs.me/projects/birthday-bloom/docs/contributing) | **Contributor Guide & Workflow Standards**: Branch management (`feat/`, `fix/`, `docs/`), Conventional Commits, and PR verification checklist. |
+
+---
+
+### Category 8: Masterclasses & Video Tutorials
+| # | Document & Local Note | Canonical Web Route | Purpose & Key Contents |
+|---|---|---|---|
+| 26 | [[video-tutorials\|video-tutorials.md]] | [/docs/video-tutorials](https://naborajs.me/projects/birthday-bloom/docs/video-tutorials) | **Official Video Tutorials & Masterclasses**: 5 high-definition YouTube walkthroughs (`R3XNhP9hSjw`, `VBgtLDP-vco`, `gwq1IaHXUn4`, `V4XZRRvcxgk`, `a9-ndTkD8IE`). |
+
+---
+
+### Category 9: Reference & Support
+| # | Document & Local Note | Canonical Web Route | Purpose & Key Contents |
+|---|---|---|---|
+| 27 | [[troubleshooting\|troubleshooting.md]] | [/docs/troubleshooting](https://naborajs.me/projects/birthday-bloom/docs/troubleshooting) | **Troubleshooting & Error Diagnostics**: Solutions for WebGL context loss, audio autoplay blocks, port collisions, and terminal recovery commands. |
+| 28 | [[faq\|faq.md]] | [/docs/faq](https://naborajs.me/projects/birthday-bloom/docs/faq) | **Frequently Asked Questions (FAQ)**: Privacy assurances, zero-backend model, free hosting limits, mobile support, and commercial licensing. |
+| 29 | [[security\|security.md]] | [/docs/security](https://naborajs.me/projects/birthday-bloom/docs/security) | **Security Model & Privacy Guarantees**: Zero-telemetry invariant, passcode validation mechanics, and responsible vulnerability disclosure. |
+| 30 | [[code-of-conduct\|code-of-conduct.md]] | [/docs/code-of-conduct](https://naborajs.me/projects/birthday-bloom/docs/code-of-conduct) | **Contributor Code of Conduct**: Contributor Covenant v2.1 standards, inclusive community pledge, and enforcement procedures. |
+| 31 | [[pull-request-policy\|pull-request-policy.md]] | [/docs/pull-request-policy](https://naborajs.me/projects/birthday-bloom/docs/pull-request-policy) | **Pull Request Policy & Quality Gates**: Merge requirements, branch protection rules, automated PR labeling, and review turnaround SLAs. |
+| 32 | [[support\|support.md]] | [/docs/support](https://naborajs.me/projects/birthday-bloom/docs/support) | **Community Support & Channels**: GitHub Issues, Discord, direct maintainer email, WhatsApp, and social communication channels. |
+| 33 | [[license\|license.md]] | [/docs/license](https://naborajs.me/projects/birthday-bloom/docs/license) | **MIT License & Legal Attribution**: Permissive open-source license text, commercial reuse rights, and third-party attributions. |
+| 34 | [[test-infrastructure\|test-infrastructure.md]] | [/docs/test-infrastructure](https://naborajs.me/projects/birthday-bloom/docs/test-infrastructure) | **Test Infrastructure & Vitest Architecture**: 400+ automated Vitest tests, JSDOM mocks for Web Audio / WebGL, and execution commands. |
+| 35 | [[roadmap\|roadmap.md]] | [/docs/roadmap](https://naborajs.me/projects/birthday-bloom/docs/roadmap) | **Architectural Roadmap & Milestones**: Future milestones including WebGPU pipelines, procedural audio synthesis, and offline PWA capabilities. |
+| 36 | [[seo-guide\|seo-guide.md]] | [/docs/seo-guide](https://naborajs.me/projects/birthday-bloom/docs/seo-guide) | **Search Engine & LLM Discoverability Guide**: Answer-first SEO/GEO, JSON-LD Schema.org structured metadata, Open Graph, and crawler directives. |
+| 37 | [[migration-guide\|migration-guide.md]] | [/docs/migration-guide](https://naborajs.me/projects/birthday-bloom/docs/migration-guide) | **Migration & Breaking Changes Guide**: Step-by-step upgrade guides from v1 → v2 → v3 and deprecated parameter mappings. |
+| 38 | [[changelog\|changelog.md]] | [/docs/changelog](https://naborajs.me/projects/birthday-bloom/docs/changelog) | **Project Changelog & Release Notes**: Full SemVer-compliant release history detailing Added, Changed, Fixed, and Removed features. |
 
 ---
 
 ## 🎯 Documentation by Use Case
 
 ### 1. New to Birthday Bloom?
-1. [[quick-start|quick-start.md]] — Install dependencies and run locally in 5 minutes.
-2. [[URL-Parameters|URL-Parameters.md]] — Zero-config personalization via query parameters.
-3. [[ENV_GUIDE|ENV_GUIDE.md]] — Learn all 53 customizable settings and situation recipes.
-4. [[faq|faq.md]] — Frequently asked questions.
-5. Copy `.env.example` to `.env.local` and restart the dev server.
+1. [[introduction|Introduction]] — Project vision, 4-phase sequence, and video walkthrough.
+2. [[quick-start|Quick Start Guide]] — Install dependencies and run locally in 5 minutes.
+3. [[URL-Parameters|URL Parameters Guide]] — Instant zero-code personalization via query strings.
+4. [[ENV_GUIDE|ENV Guide]] — Learn all 53 customizable settings and situation recipes.
+5. [[faq|Frequently Asked Questions]] — Common inquiries and zero-backend guarantees.
 
 ### 2. Customizing for a Specific Person or Language
 1. **Multi-Language Setup**:
@@ -80,28 +134,30 @@ Repository: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom
    - Hindi (हिन्दी): [[setup-hindi|setup-hindi.md]]
    - Bengali (বাংলা): [[setup-bengali|setup-bengali.md]]
 2. **Relationships & Tone**:
-   - Romantic Partner: [[ENV_GUIDE#Situation-Recipes|ENV_GUIDE.md]]
-   - Sibling / Brother / Sister: [[family-system|family-system.md]]
-   - Parents & Grandparents: [[ENV_GUIDE#Situation-Recipes|ENV_GUIDE.md]]
+   - Romantic Partner: [[ENV_GUIDE#Situation-Recipes|ENV_GUIDE.md]] & [[family-system#Romantic-Partner-Archetype|family-system.md]]
+   - Sibling / Brother / Sister: [[family-system#Sibling-Archetype|family-system.md]]
+   - Parents & Grandparents: [[family-system#Parental-Archetypes|family-system.md]]
    - Best Friend: [[ENV_GUIDE#Situation-Recipes|ENV_GUIDE.md]]
-3. [[Template-System-Deep-Dive|Template-System-Deep-Dive.md]] — Cultural tone engines and letter generation.
+3. [[Template-System-Deep-Dive|Template Deep Dive]] — Cultural tone engines and letter generation.
+4. [[env-configs|Pre-built Persona Configurations]] — 10 ready-to-copy `.env.local` snippets.
 
 ### 3. Contributing & Code Development
-1. [[styleguide|styleguide.md]] — TypeScript, CSS, and component conventions.
-2. [[architecture|architecture.md]] — Runtime finite state machine.
-3. [[developer-guide|developer-guide.md]] — Component API, hooks, and contributor walkthroughs.
-4. [[Birthday-Components|Birthday-Components.md]] — Component breakdown (30 components).
-5. [[roadmap|roadmap.md]] — Planned features and improvements.
+1. [[contributing|Contributor Guide]] & [[pull-request-policy|Pull Request Policy]] — Git workflow and quality gates.
+2. [[styleguide|TypeScript & Code Standards]] — Strict mode, naming conventions, and CSS tokens.
+3. [[architecture|System Architecture & FSM]] — 4-phase finite state machine orchestration.
+4. [[developer-guide|Developer Reference]] — Custom hooks API and component walkthroughs.
+5. [[Birthday-Components|Birthday Components]] — 3D WebGL cake, knife physics, and particle overlays.
+6. [[test-infrastructure|Test Infrastructure]] — Vitest test suites, JSDOM mocks, and verification gates.
 
 ### 4. Deploying to Production
-1. [[deployment|deployment.md]] — Vercel, Netlify, AWS S3, and Docker deployment steps.
-2. [[ENV_GUIDE|ENV_GUIDE.md]] — Hosting environment variables configuration.
-3. [[seo-guide|seo-guide.md]] — Open Graph, Twitter cards, and JSON-LD metadata.
-4. [[troubleshooting|troubleshooting.md]] — Pre-launch checklist & production troubleshooting.
+1. [[deployment|Deployment Guide]] — Walkthroughs for Vercel, Netlify, Cloudflare Pages, and Docker.
+2. [[ENV_GUIDE|ENV Guide]] — Production environment variable configuration.
+3. [[seo-guide|SEO & GEO Guide]] — Open Graph, Twitter cards, and JSON-LD schema metadata.
+4. [[troubleshooting|Troubleshooting]] — Pre-launch checklist & production troubleshooting.
 
 ---
 
-## 📂 Repository File Map
+## 📂 Repository File Structure
 
 ```
 birthday-bloom/
@@ -112,70 +168,54 @@ birthday-bloom/
 ├── CHANGELOG.md                # Version history
 ├── LICENSE                     # MIT License
 ├── llm.txt                     # AI-friendly root developer map
-├── .github/
-│   ├── CONTRIBUTING.md         # Contribution workflow
-│   ├── CODE_OF_CONDUCT.md     # Community standards
-│   ├── SECURITY.md            # Security policy
-│   ├── SUPPORT.md             # Support and contact
-│   ├── PULL_REQUEST_POLICY.md # Pull request policy
-│   └── workflows/              # CI/CD automation pipelines
-├── obsidian-docs/              # Complete 32-note Obsidian documentation vault
-│   ├── DOCUMENTATION_INDEX.md  # Central documentation index (this file)
-│   ├── ENV_GUIDE.md            # Master environment variable reference & recipes
-│   ├── URL-Parameters.md       # Zero-config URL query parameters guide
-│   ├── quick-start.md          # Local dev setup guide
-│   ├── setup-french.md         # French setup & European typography
-│   ├── setup-hindi.md          # Hindi setup & Devanagari typography
-│   ├── setup-bengali.md        # Bengali setup & Eastern Nagari typography
-│   ├── architecture.md         # Finite state machine & runtime orchestration
-│   ├── architecture-env.md     # Env lifecycle & Zustand store hydration
-│   ├── Website-Architecture.md # Tech stack & rendering pipeline
-│   ├── developer-guide.md      # Developer reference & 4 contributor walkthroughs
-│   ├── Birthday-Components.md  # Exhaustive 30-component catalog
-│   ├── Animation-System.md     # 2D, 3D WebGL & Canvas animation system
-│   ├── UI-Components.md        # Design system primitives & extensions
-│   ├── Codebase-Map.md         # Repository structure index
-│   ├── GitHub-Automation.md    # CI/CD & Actions architecture
-│   ├── family-system.md        # 14-archetype family template system
-│   ├── Template-System-Deep-Dive.md # Tone engines & cultural letters
-│   ├── template-architecture.md# Data model architecture
-│   ├── env-configs.md          # Prebuilt .env.local templates
-│   ├── styleguide.md           # Code styles and token conventions
-│   ├── roadmap.md              # Development roadmap
-│   ├── faq.md                  # Frequently asked questions
-│   ├── troubleshooting.md      # Comprehensive troubleshooting
-│   ├── migration-guide.md      # Version migration guide
-│   ├── deployment.md           # Deployment & hosting guides
-│   ├── seo-guide.md            # SEO & social sharing optimization
-│   ├── llm-access.md           # AI context ingestion
-│   ├── implementation-summary.md # Historical implementation log
-│   └── upgrade-summary.md      # Architecture modernization log
-├── public/
-│   ├── llms.txt                # Public LLM context index
-│   ├── llms-full.txt           # Comprehensive public LLM context index
-│   ├── robots.txt              # Search engine crawler directives
-│   ├── sitemap.xml             # XML Sitemap with multilingual alternates
-│   └── site.webmanifest        # PWA web manifest
-└── src/                        # Application source code
-    ├── components/birthday/    # 30 interactive celebration scenes & components
-    ├── components/ui/          # Design system primitives (sonner, tooltip)
-    ├── features/core/          # Zustand store, dynamic theme, SEO & family models
-    ├── i18n/                   # Multi-language translation engine & locales (EN, BN, HI, FR)
-    └── config/                 # Templates, wishes & cultural presets
+├── .github/                    # GitHub actions, workflows, and governance policies
+├── obsidian-docs/              # Complete 38-note Obsidian documentation vault
+│   ├── DOCUMENTATION_INDEX.md  # Master documentation index (this file)
+│   ├── introduction.md         # Introduction to Birthday Bloom
+│   ├── quick-start.md          # 5-minute setup and local development
+│   ├── URL-Parameters.md       # Zero-config query parameter engine
+│   ├── ENV_GUIDE.md            # Master 53 environment variable reference
+│   ├── architecture.md         # 4-phase finite state machine runtime
+│   ├── architecture-env.md     # 3-tier store hydration & precedence
+│   ├── Website-Architecture.md # Build toolchain & rendering pipeline
+│   ├── Codebase-Map.md         # Directory structure and module responsibilities
+│   ├── Birthday-Components.md  # 3D WebGL scene and celebration components
+│   ├── Animation-System.md     # Framer Motion 13 & Canvas 2D fireworks
+│   ├── Celebration-Sound-and-Sensory-Design.md # Web Audio API singleton graph
+│   ├── Emotional-Psychology-and-UX.md # Neurochemical narrative arc & pacing
+│   ├── family-system.md        # 14-persona relationship archetype matrix
+│   ├── template-architecture.md# Token lexer and emoji typewriter slicing
+│   ├── Template-System-Deep-Dive.md # Narrative letter transcripts & tone
+│   ├── env-configs.md          # 10 ready-to-copy .env.local persona recipes
+│   ├── setup-hindi.md          # Hindi Devanagari typography & blessings
+│   ├── setup-bengali.md        # Bengali Eastern Nagari typography & greetings
+│   ├── setup-french.md         # French orthography, accents, and tones
+│   ├── developer-guide.md      # Custom hooks reference and developer guide
+│   ├── UI-Components.md        # Radix UI primitives and glassmorphic styling
+│   ├── styleguide.md           # Strict mode TypeScript and design tokens
+│   ├── GitHub-Automation.md    # CI/CD pipelines and PR automated triage
+│   ├── deployment.md           # Vercel, Netlify, Cloudflare & Docker deployment
+│   ├── contributing.md         # Branching conventions and PR verification
+│   ├── video-tutorials.md      # 5 official high-definition video walkthroughs
+│   ├── troubleshooting.md      # Standalone diagnostic matrix and recovery
+│   ├── faq.md                  # Frequently asked questions and privacy
+│   ├── security.md             # Security model and zero-telemetry invariant
+│   ├── code-of-conduct.md      # Contributor Covenant v2.1 community pledge
+│   ├── pull-request-policy.md  # Quality gates, SLAs, and merge policies
+│   ├── support.md              # Community support channels and direct contact
+│   ├── license.md              # Permissive MIT License and attributions
+│   ├── test-infrastructure.md  # 400+ Vitest test architecture and mocks
+│   ├── roadmap.md              # Planned milestones (WebGPU, offline PWA)
+│   ├── seo-guide.md            # Answer-first SEO, GEO, and JSON-LD schema
+│   ├── migration-guide.md      # Breaking change upgrade guides v1 → v2 → v3
+│   └── changelog.md            # Chronological SemVer release history
+├── public/                     # Static assets, llms.txt, sitemaps, favicons
+└── src/                        # React 18 application source code
 ```
-
----
-
-## 💡 Documentation Conventions
-
-- **Env values** are shown as `VITE_EXAMPLE_NAME` with inline code formatting.
-- **File paths** are relative to the project root.
-- **Links** between docs use Obsidian wikilinks `[[filename|Title]]`.
-- **Code examples** use TypeScript and TSX.
 
 ---
 
 **Made with ❤️ by Naboraj Sarkar**  
 *In the garden of the internet, may your digital memories always bloom.*
 
-#obsidian #documentation #birthday-bloom #vault #index
+#obsidian #documentation #birthday-bloom #vault #index #38-pages

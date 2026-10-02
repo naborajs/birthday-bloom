@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { getTemplateEmojiKit, pickTemplateEmoji } from "@/config/emojiKits";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
@@ -16,6 +16,36 @@ interface TrailParticle {
 }
 const MAX_PARTICLES_DESKTOP = 28;
 const MIN_DISTANCE_DESKTOP = 22;
+
+const TrailEmojiSpan = memo(({ particle }: { particle: TrailParticle }) => (
+    <motion.span
+        initial={{
+            x: particle.x,
+            y: particle.y,
+            opacity: 0,
+            scale: 0.45,
+            rotate: 0,
+        }}
+        animate={{
+            x: particle.x + particle.drift,
+            y: particle.y - particle.rise,
+            opacity: [0, 0.95, 0],
+            scale: [0.45, 1.08, 0.72],
+            rotate: particle.rotate,
+        }}
+        exit={{ opacity: 0, scale: 0.5 }}
+        transition={{ duration: particle.duration, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute left-0 top-0 select-none will-change-transform"
+        style={{
+            fontSize: particle.size,
+            textShadow: "0 6px 12px rgba(0,0,0,0.24)",
+        }}
+    >
+        {particle.emoji}
+    </motion.span>
+));
+TrailEmojiSpan.displayName = "TrailEmojiSpan";
+
 export const EmojiCursorTrail = () => {
     const [particles, setParticles] = useState<TrailParticle[]>([]);
     const config = useBirthdayStore((state) => state.config);
@@ -99,25 +129,7 @@ export const EmojiCursorTrail = () => {
         return null;
     return (<div className="fixed inset-0 pointer-events-none z-[90] overflow-hidden">
       <AnimatePresence>
-        {particles.map((particle) => (<motion.span key={particle.id} initial={{
-                x: particle.x,
-                y: particle.y,
-                opacity: 0,
-                scale: 0.45,
-                rotate: 0,
-            }} animate={{
-                x: particle.x + particle.drift,
-                y: particle.y - particle.rise,
-                opacity: [0, 0.95, 0],
-                scale: [0.45, 1.08, 0.72],
-                rotate: particle.rotate,
-            }} exit={{ opacity: 0, scale: 0.5 }} transition={{ duration: particle.duration, ease: [0.22, 1, 0.36, 1] }} className="absolute left-0 top-0 select-none will-change-transform" style={{
-                fontSize: particle.size,
-                filter: "drop-shadow(0 10px 18px rgba(0,0,0,0.24))",
-                transform: "translate3d(0,0,0)",
-            }}>
-            {particle.emoji}
-          </motion.span>))}
+        {particles.map((particle) => (<TrailEmojiSpan key={particle.id} particle={particle} />))}
       </AnimatePresence>
     </div>);
 };

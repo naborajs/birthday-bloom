@@ -1,8 +1,9 @@
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSoundManager } from "./SoundManager";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useTranslation } from "@/i18n";
+import { getTemplateEmojiKit } from "@/config/emojiKits";
 import {
     ChevronLeft,
     Phone,
@@ -34,6 +35,41 @@ const KEYBOARD_ROW_1 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
 const KEYBOARD_ROW_2 = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
 const KEYBOARD_ROW_3 = ["z", "x", "c", "v", "b", "n", "m"];
 const ALL_LETTER_KEYS = [...KEYBOARD_ROW_1, ...KEYBOARD_ROW_2, ...KEYBOARD_ROW_3];
+
+interface KeyButtonProps {
+    keyId: string;
+    isPressed: boolean;
+    isShiftActive: boolean;
+    onPress: (keyId: string) => void;
+}
+
+const KeyButton = memo(({ keyId, isPressed, isShiftActive, onPress }: KeyButtonProps) => {
+    const displayChar = isShiftActive ? keyId.toUpperCase() : keyId;
+    return (
+        <button
+            type="button"
+            data-key={keyId}
+            data-active={isPressed ? "true" : "false"}
+            onClick={() => onPress(keyId)}
+            className={`relative h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
+                isPressed
+                    ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
+                    : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
+            }`}
+        >
+            {isPressed && (
+                <span
+                    data-testid="key-callout-popup"
+                    className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg bg-[#4A4A58] border border-rose-400/50 text-white font-bold text-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.85)] z-30"
+                >
+                    {displayChar}
+                </span>
+            )}
+            {displayChar}
+        </button>
+    );
+});
+KeyButton.displayName = "KeyButton";
 
 /**
  * Maps a typed character (Latin, accented French, emoji, or Indic script)
@@ -196,6 +232,23 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
     }, [playPop]);
 
     const lastTapRef = useRef<number>(0);
+    const chatStreamRef = useRef<HTMLElement | null>(null);
+
+    useEffect(() => {
+        if (chatStreamRef.current && typeof chatStreamRef.current.scrollTo === "function") {
+            chatStreamRef.current.scrollTo({
+                top: chatStreamRef.current.scrollHeight,
+                behavior: "smooth",
+            });
+        }
+    }, [sentMessageText, phase]);
+
+    const currentTypedWord = useMemo(() => {
+        if (!typedInputText) return "";
+        const parts = typedInputText.trimEnd().split(/\s+/);
+        return parts[parts.length - 1] || "";
+    }, [typedInputText]);
+
     const handleDoubleTapMessage = (e: React.MouseEvent | React.TouchEvent) => {
         const now = Date.now();
         if (now - lastTapRef.current < 320) {
@@ -207,13 +260,13 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
         lastTapRef.current = now;
     };
 
-    const handleManualKeyPress = (keyId: string) => {
+    const handleManualKeyPress = useCallback((keyId: string) => {
         playType();
         setActiveKey(keyId);
         setTimeout(() => {
             setActiveKey((prev) => (prev === keyId ? null : prev));
         }, 120);
-    };
+    }, [playType]);
 
     useEffect(() => {
         let isMounted = true;
@@ -341,8 +394,13 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
         };
     }, [onComplete, playType, playWhoosh, playReveal, playPop, basicText, heartfeltText]);
 
+    const emojiKit = useMemo(() => getTemplateEmojiKit(config), [config]);
     const contactName = name || (relationship === "partner" ? "My Love" : relationship === "friend" ? "Bestie 🔥" : "Family 🌟");
-    const avatarEmoji = relationship === "partner" ? "💖" : relationship === "friend" ? "😎" : "👑";
+    const avatarEmoji = emojiKit.chat?.avatar || (relationship === "partner" ? "💖" : relationship === "friend" ? "😎" : "👑");
+    const floatingBadges = useMemo(
+        () => (emojiKit.floating?.length >= 4 ? emojiKit.floating.slice(0, 4) : ["💖", "✨", "🌹", "🦋"]),
+        [emojiKit.floating]
+    );
 
     const isKeyboardOpen =
         phase === "incoming" ||
@@ -369,9 +427,9 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                 }}
             />
             <div
-                className="absolute w-[340px] h-[580px] sm:w-[500px] sm:h-[760px] rounded-full blur-[110px] opacity-35 pointer-events-none"
+                className="absolute w-[340px] h-[580px] sm:w-[500px] sm:h-[760px] rounded-full opacity-35 pointer-events-none"
                 style={{
-                    background: `radial-gradient(circle, ${primaryColor} 0%, rgba(252,176,69,0.45) 55%, transparent 75%)`,
+                    background: `radial-gradient(circle, ${primaryColor}66 0%, rgba(252,176,69,0.28) 45%, transparent 70%)`,
                 }}
             />
 
@@ -385,7 +443,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                     rotateY: [-2.5, 2, -2.5],
                     y: [0, -4, 0],
                 }}
-                exit={{ opacity: 0, scale: 1.05, filter: "blur(18px)" }}
+                exit={{ opacity: 0, scale: 1.05 }}
                 transition={{
                     opacity: { duration: 0.45, ease: "easeOut" },
                     scale: { duration: 0.5, ease: "easeOut" },
@@ -398,6 +456,36 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                 }}
                 className="relative w-[92vw] max-w-[362px] h-[83dvh] max-h-[720px] sm:max-w-[388px] sm:h-[87vh] sm:max-h-[790px] mb-8 sm:mb-2 p-[4px] sm:p-[5px] rounded-[44px] sm:rounded-[50px] bg-gradient-to-br from-[#7c6270] via-[#2b2228] to-[#523b47] shadow-[0_30px_80px_rgba(0,0,0,0.8),0_0_45px_rgba(255,42,109,0.18),inset_0_1px_2px_rgba(255,255,255,0.45)] flex flex-col"
             >
+                {/* 3D Parallax Floating Template Emoji Orbs Around Smartphone Bezel */}
+                <div
+                    aria-hidden="true"
+                    style={{ transform: "translateZ(28px)" }}
+                    className="pointer-events-none hidden sm:flex absolute -left-8 top-14 w-11 h-11 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-xl shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
+                >
+                    {floatingBadges[0]}
+                </div>
+                <div
+                    aria-hidden="true"
+                    style={{ transform: "translateZ(34px)" }}
+                    className="pointer-events-none hidden sm:flex absolute -right-8 top-28 w-11 h-11 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-xl shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
+                >
+                    {floatingBadges[1]}
+                </div>
+                <div
+                    aria-hidden="true"
+                    style={{ transform: "translateZ(24px)" }}
+                    className="pointer-events-none hidden sm:flex absolute -left-7 bottom-28 w-10 h-10 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-lg shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
+                >
+                    {floatingBadges[2]}
+                </div>
+                <div
+                    aria-hidden="true"
+                    style={{ transform: "translateZ(30px)" }}
+                    className="pointer-events-none hidden sm:flex absolute -right-7 bottom-16 w-10 h-10 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-lg shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
+                >
+                    {floatingBadges[3]}
+                </div>
+
                 {/* 3D Hardware Left Buttons (Action + Volume Up/Down) */}
                 <div className="pointer-events-none absolute -left-[3px] top-[96px] w-[3px] h-6 rounded-l-md bg-gradient-to-b from-[#8e7281] to-[#3d2e36] shadow-sm" />
                 <div className="pointer-events-none absolute -left-[3px] top-[136px] w-[3px] h-11 rounded-l-md bg-gradient-to-b from-[#8e7281] to-[#3d2e36] shadow-sm" />
@@ -437,12 +525,12 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                             }}
                         />
                         <div
-                            className="absolute top-[16%] -left-16 w-64 h-64 rounded-full blur-[85px] opacity-25"
-                            style={{ background: primaryColor }}
+                            className="absolute top-[6%] -left-24 w-80 h-80 rounded-full opacity-35"
+                            style={{ background: `radial-gradient(circle, ${primaryColor} 0%, transparent 70%)` }}
                         />
                         <div
-                            className="absolute bottom-[28%] -right-16 w-64 h-64 rounded-full blur-[90px] opacity-20"
-                            style={{ background: "#A855F7" }}
+                            className="absolute bottom-[18%] -right-24 w-80 h-80 rounded-full opacity-30"
+                            style={{ background: "radial-gradient(circle, #A855F7 0%, transparent 70%)" }}
                         />
                     </div>
 
@@ -538,7 +626,10 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                     </header>
 
                     {/* ── Scrollable Chat Message Stream ── */}
-                    <main className="relative z-10 flex-1 px-3.5 py-2.5 flex flex-col justify-end gap-2.5 overflow-y-auto min-h-0">
+                    <main
+                        ref={chatStreamRef}
+                        className="relative z-10 flex-1 px-3.5 py-2.5 flex flex-col justify-end gap-2.5 overflow-y-auto min-h-0"
+                    >
                         {/* Centered Timestamp Pill */}
                         <div className="text-center my-0.5">
                             <span className="px-2.5 py-0.5 rounded-full bg-white/5 text-[10px] text-white/55 tracking-normal normal-case font-medium backdrop-blur-md border border-white/5">
@@ -758,53 +849,55 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                 animate={{ height: "auto", opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
                                 transition={{ duration: 0.28, ease: "easeInOut" }}
-                                className="relative z-20 bg-[#18181D]/95 border-t border-white/10 backdrop-blur-2xl px-1.5 pt-2 pb-1.5 select-none shrink-0 overflow-hidden"
+                                className="relative z-20 bg-[#18181D]/95 border-t border-white/10 backdrop-blur-2xl px-1.5 pt-1.5 pb-1.5 select-none shrink-0 overflow-hidden"
                             >
+                                {/* Live iOS Predictive Text Suggestion Bar */}
+                                <div
+                                    data-testid="keypad-predictive-bar"
+                                    className="grid grid-cols-3 items-center text-center pb-1.5 mb-1 border-b border-white/5 text-[11px] text-white/75"
+                                >
+                                    <span className="truncate px-2 border-r border-white/10 text-white/60">
+                                        {currentTypedWord ? `"${currentTypedWord}"` : '"Happy"'}
+                                    </span>
+                                    <span
+                                        className={`truncate px-2 border-r border-white/10 font-medium transition-colors ${
+                                            activeKey === "space"
+                                                ? "text-rose-300 bg-white/10 rounded py-0.5"
+                                                : "text-white/90"
+                                        }`}
+                                    >
+                                        {currentTypedWord || "Birthday"}
+                                    </span>
+                                    <span className="truncate px-2 text-white/80">
+                                        {phase === "typing-heartfelt" ? "💝 🌟" : "🎂 ✨"}
+                                    </span>
+                                </div>
+
                                 <div className="flex flex-col gap-1.5">
                                     {/* Row 1: Q - P */}
                                     <div className="grid grid-cols-10 gap-1">
-                                        {KEYBOARD_ROW_1.map((key) => {
-                                            const isPressed = activeKey === key;
-                                            return (
-                                                <button
-                                                    key={key}
-                                                    type="button"
-                                                    data-key={key}
-                                                    data-active={isPressed ? "true" : "false"}
-                                                    onClick={() => handleManualKeyPress(key)}
-                                                    className={`h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
-                                                        isPressed
-                                                            ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
-                                                            : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
-                                                    }`}
-                                                >
-                                                    {isShiftActive ? key.toUpperCase() : key}
-                                                </button>
-                                            );
-                                        })}
+                                        {KEYBOARD_ROW_1.map((key) => (
+                                            <KeyButton
+                                                key={key}
+                                                keyId={key}
+                                                isPressed={activeKey === key}
+                                                isShiftActive={isShiftActive}
+                                                onPress={handleManualKeyPress}
+                                            />
+                                        ))}
                                     </div>
 
                                     {/* Row 2: A - L */}
                                     <div className="grid grid-cols-9 gap-1 px-3">
-                                        {KEYBOARD_ROW_2.map((key) => {
-                                            const isPressed = activeKey === key;
-                                            return (
-                                                <button
-                                                    key={key}
-                                                    type="button"
-                                                    data-key={key}
-                                                    data-active={isPressed ? "true" : "false"}
-                                                    onClick={() => handleManualKeyPress(key)}
-                                                    className={`h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
-                                                        isPressed
-                                                            ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
-                                                            : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
-                                                    }`}
-                                                >
-                                                    {isShiftActive ? key.toUpperCase() : key}
-                                                </button>
-                                            );
-                                        })}
+                                        {KEYBOARD_ROW_2.map((key) => (
+                                            <KeyButton
+                                                key={key}
+                                                keyId={key}
+                                                isPressed={activeKey === key}
+                                                isShiftActive={isShiftActive}
+                                                onPress={handleManualKeyPress}
+                                            />
+                                        ))}
                                     </div>
 
                                     {/* Row 3: Shift + Z - M + Backspace */}
@@ -826,25 +919,15 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                         </button>
 
                                         <div className="flex-1 grid grid-cols-7 gap-1">
-                                            {KEYBOARD_ROW_3.map((key) => {
-                                                const isPressed = activeKey === key;
-                                                return (
-                                                    <button
-                                                        key={key}
-                                                        type="button"
-                                                        data-key={key}
-                                                        data-active={isPressed ? "true" : "false"}
-                                                        onClick={() => handleManualKeyPress(key)}
-                                                        className={`h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
-                                                            isPressed
-                                                                ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
-                                                                : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
-                                                        }`}
-                                                    >
-                                                        {isShiftActive ? key.toUpperCase() : key}
-                                                    </button>
-                                                );
-                                            })}
+                                            {KEYBOARD_ROW_3.map((key) => (
+                                                <KeyButton
+                                                    key={key}
+                                                    keyId={key}
+                                                    isPressed={activeKey === key}
+                                                    isShiftActive={isShiftActive}
+                                                    onPress={handleManualKeyPress}
+                                                />
+                                            ))}
                                         </div>
 
                                         {/* Backspace Key (Darkens & depresses during deleting phase) */}
@@ -942,9 +1025,9 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                     <AnimatePresence>
                         {phase === "climax" && (
                             <motion.div
-                                initial={{ opacity: 0, y: 40, scale: 0.9, filter: "blur(12px)" }}
-                                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                                exit={{ opacity: 0, scale: 1.08, filter: "blur(16px)" }}
+                                initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, scale: 1.08 }}
                                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
                                 className="absolute inset-x-3.5 top-[28%] z-30 p-5 sm:p-6 rounded-[24px] bg-black/90 border border-white/25 backdrop-blur-3xl text-center shadow-[0_25px_80px_rgba(0,0,0,0.95)]"
                             >

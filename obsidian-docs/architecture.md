@@ -5,6 +5,9 @@ aliases: [architecture]
 
 # System Architecture & Finite State Machine
 
+
+🌐 **Canonical Web Documentation**: [System Architecture & FSM](https://naborajs.me/projects/birthday-bloom/docs/architecture)
+
 Birthday Bloom operates as an **environment-driven interactive state machine**. This document details the runtime orchestration, scene lifecycle, state flow, and component layers.
 
 ---
@@ -94,6 +97,15 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 - CSS responsive classes and dynamic viewport height (`100dvh`) ensure edge-to-edge mobile compatibility without layout jumping.
 - Reduced motion mode (`VITE_REDUCED_MOTION` / `prefers-reduced-motion`) disables heavy spring animations and scales down particle systems.
 
+### 3D Smartphone Chat & Virtual Keypad — `src/components/birthday/FakeChatScene.tsx`
+- Renders a 3D perspective smartphone hardware model (`perspective: 1400px`, `transformStyle: preserve-3d`) with brushed rose-titanium bezels, physical side buttons, Dynamic Island, and theme-harmonious atmospheric glow across both Desktop and Mobile viewports.
+- Includes an interactive iOS dark-glass virtual QWERTY keypad (`virtual-mobile-keypad`) with live key-press darkening (`data-active="true"`), floating key callout pop-up magnifiers (`key-callout-popup`), and a 3-column predictive text suggestion bar (`keypad-predictive-bar`).
+- Uses code-point array slicing (`Array.from`) to prevent 4-byte emoji surrogate splitting during live typewriter sequences.
+
+### Artisanal 3D Cake & Knife Ceremony — `src/components/birthday/Cake3D.tsx` & `CakeKnife3D.tsx`
+- Renders a 5-layer gourmet sponge and mascarpone ganache cake encased in a smooth frosting outer mantle atop a sculpted porcelain pedestal platter with 24K gold rim inlay.
+- Integrates a true 3D stainless steel pastry knife (`CakeKnife3D.tsx`) with brass bolster and riveted walnut handle driven by `@react-spring/three` physics, synchronized with particle pastry crumbs and golden sparks (`CakeCutting.tsx`).
+
 ---
 
 ## 4. Directory Structure
@@ -103,7 +115,7 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 | `src/App.tsx` | App shell: router, global error boundary, ambient effects, toaster |
 | `src/pages/Index.tsx` | 4-phase state machine (`splash` $\rightarrow$ `unlock` $\rightarrow$ `intro` $\rightarrow$ `main`) |
 | `src/pages/NotFound.tsx` | SEO-friendly client-side 404 handler with theme palette and discovery links |
-| `src/components/birthday/` | 30 active cinematic, narrative, and sensory celebration components |
+| `src/components/birthday/` | 32 active cinematic, 3D WebGL, narrative, and sensory celebration components |
 | `src/components/ui/` | Design system primitives (`sonner.tsx`, `tooltip.tsx`) |
 | `src/components/ErrorBoundary.tsx` | Class-based error boundary with cinematic fallback UI |
 | `src/features/core/store/` | `useBirthdayStore.ts` (Zustand store, env parsing) + `urlParams.ts` + `SuperPersonalizedLogic.ts` |
@@ -113,10 +125,10 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 | `src/features/cinematic-story/` | Narrative intro scenes and animation variants |
 | `src/i18n/` | Multi-language translation engine & locale dictionaries (`en.ts`, `bn.ts`, `hi.ts`, `fr.ts`) |
 | `src/config/` | Audio assets (`birthday.ts`), wish cards (`wishTemplates.ts`), emotional letters (`templates.ts`), cultural presets |
-| `src/utils/` | Password utilities (`password.ts`) |
+| `src/utils/` | Password, date, URL, color, media, and audio utilities |
 | `src/hooks/` | Responsive hooks (`use-mobile.tsx`) |
 | `src/lib/` | Tailwind class merging utilities (`utils.ts`) |
-| `src/test/` | Vitest 3 test infrastructure (17 test files, 408 passing tests) |
+| `src/test/` | Vitest 3 test infrastructure (24 test files, 467 passing tests) |
 | `public/` | Static assets, web manifest, `robots.txt`, `sitemap.xml`, `llms.txt` |
 | `obsidian-docs/` | Comprehensive 32-note technical documentation vault |
 
@@ -131,3 +143,13 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 ---
 
 #obsidian #documentation #birthday-bloom #vault #architecture
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- 4-Phase Deterministic State Machine, Hardware & Browser Autoplay Mitigation, Interactive FSM Stepper Lab, Memory Leak Prevention.
+
+### What is NOT Present:
+- WebGL vertex/fragment shader implementations (see [[Birthday-Components#3D-WebGL-Canvas-and-Component-Hierarchy|Birthday Components]]), Git branching and repository management (see [[contributing#Branch-Management-Standards|contributing]]).

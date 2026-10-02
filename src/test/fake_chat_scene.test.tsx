@@ -74,12 +74,15 @@ describe('FakeChatScene Component (Instagram DM Style)', () => {
         fireEvent.click(messageEl);
     });
 
-    it('renders the interactive virtual mobile keypad and darkens keys when pressed', () => {
+    it('renders the interactive virtual mobile keypad, predictive suggestion bar, and key callout magnifier when pressed', () => {
         const onComplete = vi.fn();
         render(<FakeChatScene onComplete={onComplete} />);
 
         const keypad = screen.getByTestId('virtual-mobile-keypad');
         expect(keypad).toBeTruthy();
+
+        const predictiveBar = screen.getByTestId('keypad-predictive-bar');
+        expect(predictiveBar).toBeTruthy();
 
         const keyH = keypad.querySelector('button[data-key="h"]') as HTMLButtonElement;
         expect(keyH).toBeTruthy();
@@ -87,6 +90,7 @@ describe('FakeChatScene Component (Instagram DM Style)', () => {
 
         fireEvent.click(keyH);
         expect(keyH.getAttribute('data-active')).toBe('true');
+        expect(screen.getByTestId('key-callout-popup')).toBeTruthy();
 
         const backspaceBtn = screen.getByRole('button', { name: /backspace/i });
         expect(backspaceBtn).toBeTruthy();
@@ -94,4 +98,5 @@ describe('FakeChatScene Component (Instagram DM Style)', () => {
         expect(keyboardSendBtn).toBeTruthy();
     });
 });
+
 

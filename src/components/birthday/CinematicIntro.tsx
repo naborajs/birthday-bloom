@@ -625,7 +625,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                         key="fake-chat"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        exit={{ opacity: 0, filter: "blur(15px)" }}
+                        exit={{ opacity: 0 }}
                         transition={{ duration: 0.5 }}
                         className="fixed inset-0 z-50"
                     >
@@ -638,7 +638,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                         key="post-chat"
                         initial={{ scale: 0.92, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 1.05, filter: "blur(10px)", opacity: 0 }}
+                        exit={{ scale: 1.05, opacity: 0 }}
                         className="text-center max-w-4xl mx-auto px-6"
                     >
                         <div className="mb-8 flex justify-center">
@@ -680,7 +680,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                         key="envelope-letter"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+                        exit={{ opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.8 }}
                         className="w-full flex items-center justify-center z-50 py-6"
                     >
@@ -753,9 +753,9 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
                                 <AnimatePresence mode="wait">
                                     <motion.div
                                         key={finalLineIndex}
-                                        initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
-                                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                                        exit={{ opacity: 0, y: -15, filter: "blur(6px)" }}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -15 }}
                                         transition={{ duration: 0.7 }}
                                         className="py-4 px-2"
                                     >

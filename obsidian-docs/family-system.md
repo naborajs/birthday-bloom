@@ -5,6 +5,9 @@ aliases: [family-system]
 
 # Family System
 
+
+🌐 **Canonical Web Documentation**: [14-Persona Relationship Engine](https://naborajs.me/projects/birthday-bloom/docs/family-system)
+
 Birthday Bloom v3.0 uses a scalable family template system in `src/features/core/models/familyTemplates.ts`.
 
 ## Why This File Exists
@@ -188,3 +191,13 @@ The registry is static and lightweight. Profile creation is synchronous and suit
 
 
 #obsidian #documentation #birthday-bloom #vault
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Archetype Matrix (Partner, Friend, Brother, Sister, Mother, Father, Mentor, Colleague, Custom), Interactive Persona Matrix Lab, Dynamic Archetype Token Mapping.
+
+### What is NOT Present:
+- Native translation files for non-English languages (see [[setup-hindi|Hindi]], [[setup-bengali|Bengali]], [[setup-french|French]]), Docker container deployment rules (see [[deployment#Dockerized-Sovereign-Container|Deployment]]).

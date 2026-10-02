@@ -1,5 +1,7 @@
 # Contributing to Birthday Bloom
 
+🌐 **Official Documentation**: [Contributor Guide & Workflow](https://naborajs.me/projects/birthday-bloom/docs/contributing) | [Video Tutorials](https://naborajs.me/projects/birthday-bloom/docs/video-tutorials) | [Pull Request Policy](https://naborajs.me/projects/birthday-bloom/docs/pull-request-policy) | [Code of Conduct](https://naborajs.me/projects/birthday-bloom/docs/code-of-conduct)
+
 Thank you for considering a contribution to Birthday Bloom. Whether you're fixing a bug, improving documentation, polishing UI, enhancing accessibility, or building new features — your help is appreciated.
 
 ### 🎬 Video Guides for Contributors

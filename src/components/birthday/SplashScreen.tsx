@@ -34,7 +34,7 @@ export const SplashScreen = ({ onStart }: SplashScreenProps) => {
                 }
             }}
             className={`fixed inset-0 z-50 flex flex-col items-center justify-center cursor-pointer transition-all duration-700 select-none overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary ${
-                tapped ? "opacity-0 scale-105 filter blur-sm" : "opacity-100 scale-100"
+                tapped ? "opacity-0 scale-105" : "opacity-100 scale-100"
             }`}
             style={{
                 background: "var(--bg-gradient, radial-gradient(ellipse at 50% 15%, #3b0724 0%, #1a0515 100%))",
@@ -44,10 +44,10 @@ export const SplashScreen = ({ onStart }: SplashScreenProps) => {
             {/* Semantic Top-Level Heading for Screen Readers & SEO */}
             <h1 className="sr-only">Birthday Bloom — Magical Cinematic Birthday Celebration</h1>
 
-            {/* Dreamy Ambient Bokeh Auras */}
-            <div className="absolute top-[10%] left-[10%] w-[34rem] h-[34rem] rounded-full bg-[radial-gradient(circle,rgba(255,75,130,0.22)_0%,transparent_70%)] blur-[110px] pointer-events-none animate-subtle-float" />
-            <div className="absolute top-[20%] right-[10%] w-[30rem] h-[30rem] rounded-full bg-[radial-gradient(circle,rgba(255,200,100,0.18)_0%,transparent_70%)] blur-[120px] pointer-events-none animate-pulse" />
-            <div className="absolute bottom-[10%] left-[30%] w-[38rem] h-[38rem] rounded-full bg-[radial-gradient(circle,rgba(180,60,140,0.2)_0%,transparent_70%)] blur-[130px] pointer-events-none" />
+            {/* Dreamy Ambient Bokeh Auras (Zero-filter GPU-optimized multi-stop radial gradients) */}
+            <div className="absolute top-[10%] left-[10%] w-[34rem] h-[34rem] rounded-full bg-[radial-gradient(circle,rgba(255,75,130,0.22)_0%,rgba(255,75,130,0.09)_40%,transparent_70%)] pointer-events-none animate-subtle-float" />
+            <div className="absolute top-[20%] right-[10%] w-[30rem] h-[30rem] rounded-full bg-[radial-gradient(circle,rgba(255,200,100,0.18)_0%,rgba(255,200,100,0.07)_40%,transparent_70%)] pointer-events-none animate-pulse" />
+            <div className="absolute bottom-[10%] left-[30%] w-[38rem] h-[38rem] rounded-full bg-[radial-gradient(circle,rgba(180,60,140,0.2)_0%,rgba(180,60,140,0.08)_40%,transparent_70%)] pointer-events-none" />
 
             {/* Central Glassmorphic Card */}
             <motion.div

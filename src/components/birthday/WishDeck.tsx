@@ -18,6 +18,7 @@ import { Heart, X, Send, Pencil, RotateCcw } from "lucide-react";
 interface WishCardProps {
     wish: WishTemplate;
     isTop: boolean;
+    isInView: boolean;
     stackIndex: number; // 0 = top, 1 = behind, 2 = further back
     onSwipeLeft: () => void;
     onSwipeRight: () => void;
@@ -31,6 +32,7 @@ const EXIT_X = 400;
 const WishCard = ({
     wish,
     isTop,
+    isInView,
     stackIndex,
     onSwipeLeft,
     onSwipeRight,
@@ -44,14 +46,23 @@ const WishCard = ({
     // Handwriting animation state
     const [displayedChars, setDisplayedChars] = useState(0);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const startedWritingRef = useRef(false);
     const fullText = wish.text;
     const isBlankCard = wish.id === "write-your-own";
 
-    // Reset and replay handwriting when card becomes the top
+    // Reset handwriting only when the card identity/text changes or becomes the top card
     useEffect(() => {
         if (!isTop || isBlankCard) return;
+        startedWritingRef.current = false;
         setDisplayedChars(0);
+    }, [isTop, fullText, isBlankCard]);
+
+    // Advance handwriting while the top card is visible in the viewport (pauses offscreen without resetting completed text)
+    useEffect(() => {
+        if (!isTop || !isInView || isBlankCard) return;
+        const initialDelay = startedWritingRef.current ? 0 : 300;
         const delay = setTimeout(() => {
+            startedWritingRef.current = true;
             timerRef.current = setInterval(() => {
                 setDisplayedChars((prev) => {
                     if (prev >= fullText.length) {
@@ -61,12 +72,12 @@ const WishCard = ({
                     return prev + 1;
                 });
             }, 28);
-        }, 300);
+        }, initialDelay);
         return () => {
             clearTimeout(delay);
             if (timerRef.current) clearInterval(timerRef.current);
         };
-    }, [isTop, fullText, isBlankCard]);
+    }, [isTop, isInView, fullText, isBlankCard]);
 
     const handleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
         if (Math.abs(info.offset.x) > SWIPE_THRESHOLD || Math.abs(info.velocity.x) > SWIPE_VELOCITY) {
@@ -127,13 +138,15 @@ const WishCard = ({
                             : "0 4px 15px -4px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.06)",
                     }}
                 >
-                    {/* SVG paper grain noise */}
-                    <svg className="absolute inset-0 w-full h-full opacity-[0.04] mix-blend-multiply pointer-events-none" aria-hidden="true">
-                        <filter id="wishCardGrain">
-                            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
-                        </filter>
-                        <rect width="100%" height="100%" filter="url(#wishCardGrain)" />
-                    </svg>
+                    {/* Subtle paper grain texture (zero-filter GPU-friendly pattern) */}
+                    <div
+                        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+                        aria-hidden="true"
+                        style={{
+                            backgroundImage: "radial-gradient(#8B7355 0.75px, transparent 0.75px)",
+                            backgroundSize: "14px 14px",
+                        }}
+                    />
                 </div>
 
                 {/* Swipe direction indicators (only on top card) */}
@@ -234,7 +247,27 @@ export const WishDeck = () => {
     const [customText, setCustomText] = useState("");
     const [exitDirection, setExitDirection] = useState<"left" | "right" | null>(null);
     const [releaseParticles, setReleaseParticles] = useState<{ id: number; x: number; y: number; emoji: string }[]>([]);
+    const [isInView, setIsInView] = useState(false);
+    const sectionRef = useRef<HTMLElement>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    // Viewport-gate the 28ms handwriting interval so offscreen cards don't trigger 35Hz state updates
+    useEffect(() => {
+        const el = sectionRef.current;
+        const isJsdom = typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent);
+        if (!el || typeof IntersectionObserver === "undefined" || isJsdom) {
+            setIsInView(true);
+            return;
+        }
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsInView(entry.isIntersecting);
+            },
+            { threshold: 0.1 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
 
     // Heading text
     const heading = isBengali
@@ -320,7 +353,7 @@ export const WishDeck = () => {
     const visibleCards = deck.slice(currentIndex, currentIndex + 3);
 
     return (
-        <section className="relative z-20 px-4 pb-32">
+        <section ref={sectionRef} className="relative z-20 px-4 pb-32">
             {/* Section heading */}
             <h2
                 className="font-display text-4xl sm:text-6xl md:text-8xl font-black text-center mb-12 sm:mb-16 drop-shadow-xl"
@@ -352,6 +385,7 @@ export const WishDeck = () => {
                                         key={`${wish.id}-${realIndex}`}
                                         wish={wish}
                                         isTop={isCurrentTop}
+                                        isInView={isInView}
                                         stackIndex={exitDirection && i === 0 ? -1 : i}
                                         onSwipeLeft={swipeLeft}
                                         onSwipeRight={swipeRight}
@@ -403,12 +437,14 @@ export const WishDeck = () => {
                             boxShadow: "0 16px 50px -10px rgba(0,0,0,0.3), 0 3px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.9)",
                         }}
                     >
-                        <svg className="absolute inset-0 w-full h-full opacity-[0.04] mix-blend-multiply pointer-events-none" aria-hidden="true">
-                            <filter id="confirmGrain">
-                                <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
-                            </filter>
-                            <rect width="100%" height="100%" filter="url(#confirmGrain)" />
-                        </svg>
+                        <div
+                            className="absolute inset-0 opacity-[0.04] pointer-events-none"
+                            aria-hidden="true"
+                            style={{
+                                backgroundImage: "radial-gradient(#8B7355 0.75px, transparent 0.75px)",
+                                backgroundSize: "14px 14px",
+                            }}
+                        />
                         <div className="relative z-10 p-7 sm:p-9">
                             <div className="text-4xl mb-4">{selectedWish.icon}</div>
                             <p className="font-handwritten text-xl sm:text-2xl text-[#2B1B0E] leading-relaxed">
@@ -458,12 +494,14 @@ export const WishDeck = () => {
                             boxShadow: "0 16px 50px -10px rgba(0,0,0,0.3), 0 3px 8px rgba(0,0,0,0.1)",
                         }}
                     >
-                        <svg className="absolute inset-0 w-full h-full opacity-[0.04] mix-blend-multiply pointer-events-none" aria-hidden="true">
-                            <filter id="editGrain">
-                                <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
-                            </filter>
-                            <rect width="100%" height="100%" filter="url(#editGrain)" />
-                        </svg>
+                        <div
+                            className="absolute inset-0 opacity-[0.04] pointer-events-none"
+                            aria-hidden="true"
+                            style={{
+                                backgroundImage: "radial-gradient(#8B7355 0.75px, transparent 0.75px)",
+                                backgroundSize: "14px 14px",
+                            }}
+                        />
                         <div className="relative z-10 p-7 sm:p-9">
                             <div className="text-3xl mb-4">✍️</div>
                             <textarea

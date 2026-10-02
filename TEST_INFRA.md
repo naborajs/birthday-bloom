@@ -1,5 +1,7 @@
 # E2E Test Infra: Birthday Bloom
 
+🌐 **Canonical Web Documentation**: [Test Infrastructure & Vitest Architecture](https://naborajs.me/projects/birthday-bloom/docs/test-infrastructure)
+
 ## Test Philosophy
 - Opaque-box, requirement-driven. No dependency on implementation internals.
 - Methodology: Category-Partition + Boundary Value Analysis (BVA) + Pairwise Combinatorial Testing + Real-World Workload Testing.

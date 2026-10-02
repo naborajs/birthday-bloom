@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useSoundManager } from "./SoundManager";
@@ -119,7 +119,14 @@ const isRealImageUrl = (url?: string): boolean => {
 export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
     const [stage, setStage] = useState(0);
     const [activeMsg, setActiveMsg] = useState<string | null>(null);
-    const [scales, setScales] = useState<number[]>(Array(12).fill(0));
+    const [isInView, setIsInView] = useState(() => (
+        typeof window === "undefined" ||
+        typeof IntersectionObserver === "undefined" ||
+        (typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent))
+    ));
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const leafRefs = useRef<(SVGGElement | null)[]>([]);
+    const scalesRef = useRef<number[]>(Array(12).fill(0));
     const { config } = useBirthdayStore();
     const { relationship, gender, photos = [] } = config;
     const validPhotos = useMemo(() => photos.filter(p => isRealImageUrl(p)), [photos]);
@@ -127,59 +134,47 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
     const primaryColor = config.favoriteColor || 'hsl(330, 90%, 75%)';
     const { playPop } = useSoundManager();
 
+    useEffect(() => {
+        if (isInView) return undefined;
+        const el = containerRef.current;
+        if (!el || typeof IntersectionObserver === "undefined") {
+            setIsInView(true);
+            return undefined;
+        }
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries.some((entry) => entry.isIntersecting)) {
+                    setIsInView(true);
+                    observer.disconnect();
+                }
+            },
+            { rootMargin: "200px" }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [isInView]);
+
     const quotesPool = useMemo(() => {
-        if (isFrench) {
-            if (relationship === 'partner')
-                return FRENCH_SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || FRENCH_SPECIAL_QUOTES.family;
-            if (relationship === 'friend')
-                return (gender === 'male' ? FRENCH_SPECIAL_QUOTES.friend.legend : FRENCH_SPECIAL_QUOTES.friend.friendly) || FRENCH_SPECIAL_QUOTES.family;
-            if (relationship === 'brother' || relationship === 'sibling') return FRENCH_SPECIAL_QUOTES.brother || FRENCH_SPECIAL_QUOTES.family;
-            if (relationship === 'sister') return FRENCH_SPECIAL_QUOTES.sister || FRENCH_SPECIAL_QUOTES.family;
-            if (relationship === 'father') return FRENCH_SPECIAL_QUOTES.father || FRENCH_SPECIAL_QUOTES.family;
-            if (relationship === 'mother') return FRENCH_SPECIAL_QUOTES.mother || FRENCH_SPECIAL_QUOTES.family;
-            if (relationship === 'colleague') return FRENCH_SPECIAL_QUOTES.colleague || FRENCH_SPECIAL_QUOTES.family;
-            if (relationship === 'mentor') return FRENCH_SPECIAL_QUOTES.mentor || FRENCH_SPECIAL_QUOTES.family;
-            return FRENCH_SPECIAL_QUOTES.family;
-        }
-        if (isBengali) {
-            if (relationship === 'partner')
-                return BENGALI_SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || BENGALI_SPECIAL_QUOTES.family;
-            if (relationship === 'friend')
-                return (gender === 'male' ? BENGALI_SPECIAL_QUOTES.friend.legend : BENGALI_SPECIAL_QUOTES.friend.friendly) || BENGALI_SPECIAL_QUOTES.family;
-            if (relationship === 'brother' || relationship === 'sibling') return BENGALI_SPECIAL_QUOTES.brother || BENGALI_SPECIAL_QUOTES.family;
-            if (relationship === 'sister') return BENGALI_SPECIAL_QUOTES.sister || BENGALI_SPECIAL_QUOTES.family;
-            if (relationship === 'father') return BENGALI_SPECIAL_QUOTES.father || BENGALI_SPECIAL_QUOTES.family;
-            if (relationship === 'mother') return BENGALI_SPECIAL_QUOTES.mother || BENGALI_SPECIAL_QUOTES.family;
-            if (relationship === 'colleague') return BENGALI_SPECIAL_QUOTES.colleague || BENGALI_SPECIAL_QUOTES.family;
-            if (relationship === 'mentor') return BENGALI_SPECIAL_QUOTES.mentor || BENGALI_SPECIAL_QUOTES.family;
-            return BENGALI_SPECIAL_QUOTES.family;
-        }
-        if (isHindi) {
-            if (relationship === 'partner')
-                return HINDI_SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || HINDI_SPECIAL_QUOTES.family;
-            if (relationship === 'friend')
-                return (gender === 'male' ? HINDI_SPECIAL_QUOTES.friend.legend : HINDI_SPECIAL_QUOTES.friend.friendly) || HINDI_SPECIAL_QUOTES.family;
-            if (relationship === 'brother' || relationship === 'sibling') return HINDI_SPECIAL_QUOTES.brother || HINDI_SPECIAL_QUOTES.family;
-            if (relationship === 'sister') return HINDI_SPECIAL_QUOTES.sister || HINDI_SPECIAL_QUOTES.family;
-            if (relationship === 'father') return HINDI_SPECIAL_QUOTES.father || HINDI_SPECIAL_QUOTES.family;
-            if (relationship === 'mother') return HINDI_SPECIAL_QUOTES.mother || HINDI_SPECIAL_QUOTES.family;
-            if (relationship === 'colleague') return HINDI_SPECIAL_QUOTES.colleague || HINDI_SPECIAL_QUOTES.family;
-            if (relationship === 'mentor') return HINDI_SPECIAL_QUOTES.mentor || HINDI_SPECIAL_QUOTES.family;
-            return HINDI_SPECIAL_QUOTES.family;
-        }
-        if (relationship === 'partner')
-            return SPECIAL_QUOTES.partner[gender as 'male' | 'female'] || SPECIAL_QUOTES.family;
-        if (relationship === 'friend')
-            return (gender === 'male' ? SPECIAL_QUOTES.friend.legend : SPECIAL_QUOTES.friend.friendly) || SPECIAL_QUOTES.family;
-        if (relationship === 'brother' || relationship === 'sibling') return SPECIAL_QUOTES.brother || SPECIAL_QUOTES.family;
-        if (relationship === 'sister') return SPECIAL_QUOTES.sister || SPECIAL_QUOTES.family;
-        if (relationship === 'father') return SPECIAL_QUOTES.father || SPECIAL_QUOTES.family;
-        if (relationship === 'mother') return SPECIAL_QUOTES.mother || SPECIAL_QUOTES.family;
-        if (relationship === 'colleague') return SPECIAL_QUOTES.colleague || SPECIAL_QUOTES.family;
-        if (relationship === 'mentor') return SPECIAL_QUOTES.mentor || SPECIAL_QUOTES.family;
-        return SPECIAL_QUOTES.family;
+        const resolveFromMap = (map: typeof SPECIAL_QUOTES) => {
+            if (relationship === 'partner') {
+                return map.partner[gender as 'male' | 'female'] || map.family;
+            }
+            if (relationship === 'friend') {
+                return (gender === 'male' ? map.friend.legend : map.friend.friendly) || map.family;
+            }
+            if (relationship === 'brother' || relationship === 'sibling') return map.brother || map.family;
+            const keyed = map[relationship as keyof typeof map];
+            if (Array.isArray(keyed) && keyed.length > 0) return keyed;
+            return map.family;
+        };
+
+        if (isFrench) return resolveFromMap(FRENCH_SPECIAL_QUOTES);
+        if (isBengali) return resolveFromMap(BENGALI_SPECIAL_QUOTES);
+        if (isHindi) return resolveFromMap(HINDI_SPECIAL_QUOTES);
+        return resolveFromMap(SPECIAL_QUOTES);
     }, [relationship, gender, isHindi, isBengali, isFrench]);
     useEffect(() => {
+        if (!isInView) return undefined;
         const timers = [
             setTimeout(() => setStage(1), delay),
             setTimeout(() => setStage(2), delay + 1500),
@@ -187,49 +182,61 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
             setTimeout(() => setStage(4), delay + 4500),
         ];
         return () => timers.forEach(clearTimeout);
-    }, [delay]);
+    }, [delay, isInView]);
 
+    const hasLeaves = stage >= 3;
     useEffect(() => {
-        if (stage < 3) return;
+        if (!hasLeaves) return;
         let rafId: number;
         const startTime = performance.now();
         const dur = 700;
         const tick = (now: number) => {
             let allDone = true;
-            const nextScales = LEAVES.map((leaf) => {
+            for (let i = 0; i < LEAVES.length; i++) {
+                const leaf = LEAVES[i];
+                const el = leafRefs.current[i];
                 const leafStart = startTime + leaf.d;
+                let sc = 0;
                 if (now < leafStart) {
                     allDone = false;
-                    return 0;
+                } else {
+                    const t = Math.min((now - leafStart) / dur, 1);
+                    if (t < 1) allDone = false;
+                    const ease = 1 - Math.pow(1 - t, 3);
+                    const overshoot = t < 0.7 ? 0 : Math.sin(((t - 0.7) / 0.3) * Math.PI) * 0.12;
+                    sc = (ease + overshoot) * leaf.s;
                 }
-                const t = Math.min((now - leafStart) / dur, 1);
-                if (t < 1) allDone = false;
-                const ease = 1 - Math.pow(1 - t, 3);
-                const overshoot = t < 0.7 ? 0 : Math.sin(((t - 0.7) / 0.3) * Math.PI) * 0.12;
-                return (ease + overshoot) * leaf.s;
-            });
-            setScales(nextScales);
+                scalesRef.current[i] = sc;
+                if (el) {
+                    el.setAttribute("transform", `translate(${leaf.cx},${leaf.cy}) scale(${sc.toFixed(3)})`);
+                }
+            }
             if (!allDone) {
                 rafId = requestAnimationFrame(tick);
             } else {
-                setScales(LEAVES.map((l) => l.s));
+                for (let i = 0; i < LEAVES.length; i++) {
+                    const leaf = LEAVES[i];
+                    scalesRef.current[i] = leaf.s;
+                    leafRefs.current[i]?.setAttribute("transform", `translate(${leaf.cx},${leaf.cy}) scale(${leaf.s})`);
+                }
             }
         };
         rafId = requestAnimationFrame(tick);
         return () => cancelAnimationFrame(rafId);
-    }, [stage]);
+    }, [hasLeaves]);
 
     const clickHeart = (e: React.MouseEvent<SVGGElement>, i: number) => {
         e.stopPropagation();
         if (stage < 3) return;
         const messages = isFrench ? FRENCH_HEART_MESSAGES : isBengali ? BENGALI_HEART_MESSAGES : isHindi ? HINDI_HEART_MESSAGES : HEART_MESSAGES;
-        setActiveMsg(messages[i] ?? quotesPool[i % quotesPool.length]);
+        const quoteFromTemplate = quotesPool.length > 0 ? quotesPool[Math.floor(i / 2) % quotesPool.length] : undefined;
+        setActiveMsg(i % 2 === 0 && quoteFromTemplate ? quoteFromTemplate : (messages[i] ?? quoteFromTemplate ?? messages[0]));
         playPop();
         setTimeout(() => setActiveMsg(null), 5000);
     };
 
     return (
-        <div className="relative w-full max-w-[500px] mx-auto mb-20">
+        <div ref={containerRef} className="relative w-full max-w-[500px] mx-auto mb-20">
             <div style={{
                 borderRadius: 20,
                 background: "rgba(255,255,255,0.05)",
@@ -252,10 +259,11 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
                         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "visible", zIndex: 10 }}
                     >
                         <defs>
-                            <filter id="hg" x="-80%" y="-80%" width="260%" height="260%">
-                                <feGaussianBlur stdDeviation="5" result="b" />
-                                <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-                            </filter>
+                            <radialGradient id="hg-halo" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stopColor="hsl(345, 90%, 70%)" stopOpacity="0.45" />
+                                <stop offset="60%" stopColor="hsl(345, 88%, 65%)" stopOpacity="0.18" />
+                                <stop offset="100%" stopColor="hsl(345, 85%, 60%)" stopOpacity="0" />
+                            </radialGradient>
                             <linearGradient id="bark" x1="0%" y1="0%" x2="100%" y2="0%">
                                 <stop offset="0%"   stopColor="hsl(22,35%,18%)" />
                                 <stop offset="35%"  stopColor="hsl(22,44%,36%)" />
@@ -327,11 +335,12 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
                         ))}
 
                         {LEAVES.map((leaf, i) => {
-                            const sc = scales[i];
+                            const sc = scalesRef.current[i] || 0;
                             const hasPhoto = validPhotos.length > 0 && i < validPhotos.length;
                             return (
                                 <g
                                     key={`h-${i}`}
+                                    ref={(el) => { leafRefs.current[i] = el; }}
                                     role="button"
                                     tabIndex={0}
                                     aria-label={`Open wish leaf ${i + 1}`}
@@ -353,7 +362,8 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
                                         </g>
                                     ) : (
                                         <g>
-                                            <path d={HEART} fill="url(#hf)" filter="url(#hg)" />
+                                            <circle cx="0" cy="2" r="20" fill="url(#hg-halo)" style={{ pointerEvents: "none" }} />
+                                            <path d={HEART} fill="url(#hf)" />
                                             <path d={HEART} fill="url(#hs)" style={{ pointerEvents: "none" }} />
                                         </g>
                                     )}

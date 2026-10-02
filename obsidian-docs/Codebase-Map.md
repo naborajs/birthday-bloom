@@ -7,6 +7,9 @@ aliases: [Codebase Map, File Index, Repository Architecture Map]
 
 [[DOCUMENTATION_INDEX|Back to Home]]
 
+
+🌐 **Canonical Web Documentation**: [Codebase Directory Map & File Manifest](https://naborajs.me/projects/birthday-bloom/docs/codebase-map)
+
 This is the central index mapping every significant file and directory in the Birthday Bloom repository.
 
 ---
@@ -88,3 +91,12 @@ Comprehensive Vitest 3 test infrastructure (17 test files, 408 tests):
 ---
 #obsidian #documentation #birthday-bloom #vault #map #structure
 
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Exhaustive File Tree, Single Responsibility Boundaries for audio, 3D math, translation files, and Zustand slices.
+
+### What is NOT Present:
+- Complete source code duplication, Video tutorial embeds (see [[video-tutorials#Official-Masterclass-Curriculum|Video Tutorials]]).

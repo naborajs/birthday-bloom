@@ -5,6 +5,9 @@ aliases: [faq]
 
 # Frequently Asked Questions
 
+
+🌐 **Canonical Web Documentation**: [Frequently Asked Questions (FAQ)](https://naborajs.me/projects/birthday-bloom/docs/faq)
+
 ## General
 
 ### What is Birthday Bloom?
@@ -129,3 +132,13 @@ or check the [[SUPPORT|Support Guide]].
 
 
 #obsidian #documentation #birthday-bloom #vault
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Architectural & Practical Q&A covering zero backend/tracking, free hosting limits, offline capabilities, mobile browser support, commercial use.
+
+### What is NOT Present:
+- In-depth code walkthroughs or TypeScript interface definitions (see [[developer-guide#Custom-Hooks-API-Reference|Developer Reference]]), Deployment YAML configurations (see [[GitHub-Automation#Automated-CI-Workflow-Architecture|GitHub Automation]]).

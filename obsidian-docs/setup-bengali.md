@@ -7,6 +7,9 @@ aliases: [setup-bengali, bengali-setup, bangla-guide]
 
 [[DOCUMENTATION_INDEX|Back to Home]] | [[quick-start|Quick Start]] | [[setup-hindi|Hindi Setup]] | [[ENV_GUIDE|Env Customization Guide]] | [[architecture-env|Env Architecture]]
 
+
+🌐 **Canonical Web Documentation**: [Bengali (বাংলা) Cultural Nuances & Shirorekha](https://naborajs.me/projects/birthday-bloom/docs/setup-bengali)
+
 Birthday Bloom features complete **Bengali (বাংলা) Multi-Language Localization** with rich emotional depth, authentic cultural resonance, respectful Indic honorifics, and automated layout-safe text adaptations across every page and component.
 
 ---
@@ -266,3 +269,13 @@ npm run build
 ---
 
 #obsidian #documentation #birthday-bloom #bengali #bangla #localization #i18n #indic
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Bangla Typography Engine (Google Noto Sans Bengali), Cultural Nuances, Ligature Fallback Rules (`kar` and `fala`).
+
+### What is NOT Present:
+- Hindi Devanagari script rules (see [[setup-hindi|Hindi]]), Vercel custom domain CNAME configurations (see [[deployment#Vercel-Deployment-Walkthrough|Deployment]]).

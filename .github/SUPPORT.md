@@ -1,5 +1,7 @@
 # Support
 
+🌐 **Canonical Web Documentation**: [Community Support & Channels](https://naborajs.me/projects/birthday-bloom/docs/support) | [Official Documentation Hub](https://naborajs.me/projects/birthday-bloom/docs)
+
 Welcome to Birthday Bloom! Here's how to get the help you need.
 
 ## Instant Live Demo & Quick Verification
@@ -13,14 +15,14 @@ Before troubleshooting, verify whether the issue is reproducible on the official
 
 Most questions and setup errors are already documented in our guides:
 
-| Topic | Document |
-| --- | --- |
-| Zero-code customization | [ENV_GUIDE.md](../obsidian-docs/ENV_GUIDE.md) |
-| URL query parameters | [URL-Parameters.md](../obsidian-docs/URL-Parameters.md) |
-| Local installation (5-min) | [quick-start.md](../obsidian-docs/quick-start.md) |
-| Common issues & fixes | [troubleshooting.md](../obsidian-docs/troubleshooting.md) |
-| Frequently asked questions | [faq.md](../obsidian-docs/faq.md) |
-| Full documentation index | [DOCUMENTATION_INDEX.md](../obsidian-docs/DOCUMENTATION_INDEX.md) |
+| Topic | Web Documentation | Local Note |
+| --- | --- | --- |
+| Zero-code customization | [/docs/env-guide](https://naborajs.me/projects/birthday-bloom/docs/env-guide) | [ENV_GUIDE.md](../obsidian-docs/ENV_GUIDE.md) |
+| URL query parameters | [/docs/url-parameters](https://naborajs.me/projects/birthday-bloom/docs/url-parameters) | [URL-Parameters.md](../obsidian-docs/URL-Parameters.md) |
+| Local installation (5-min) | [/docs/quick-start](https://naborajs.me/projects/birthday-bloom/docs/quick-start) | [quick-start.md](../obsidian-docs/quick-start.md) |
+| Common issues & fixes | [/docs/troubleshooting](https://naborajs.me/projects/birthday-bloom/docs/troubleshooting) | [troubleshooting.md](../obsidian-docs/troubleshooting.md) |
+| Frequently asked questions | [/docs/faq](https://naborajs.me/projects/birthday-bloom/docs/faq) | [faq.md](../obsidian-docs/faq.md) |
+| Full documentation index | [/docs](https://naborajs.me/projects/birthday-bloom/docs) | [DOCUMENTATION_INDEX.md](../obsidian-docs/DOCUMENTATION_INDEX.md) |
 
 ## I Have a Question
 

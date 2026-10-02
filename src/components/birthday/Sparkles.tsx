@@ -16,10 +16,10 @@ interface Orb {
     color: string;
 }
 const orbColors = [
-    "hsl(45, 100%, 70%)",
-    "hsl(330, 85%, 65%)",
-    "hsl(200, 80%, 65%)",
-    "hsl(270, 60%, 60%)",
+    "hsla(45, 100%, 70%, 0.25)",
+    "hsla(330, 85%, 65%, 0.25)",
+    "hsla(200, 80%, 65%, 0.25)",
+    "hsla(270, 60%, 60%, 0.25)",
 ];
 export const Sparkles = ({ count = 20 }: {
     count?: number;
@@ -63,9 +63,8 @@ export const Sparkles = ({ count = 20 }: {
                 top: `${o.y}%`,
                 width: o.size,
                 height: o.size,
-                background: `radial-gradient(circle, ${o.color}40, transparent)`,
+                background: `radial-gradient(circle, ${o.color} 0%, transparent 70%)`,
                 animation: `drift ${o.duration}s ease-in-out ${o.delay}s infinite alternate`,
-                filter: `blur(${o.size / 4}px)`,
             }}/>))}
     </div>);
 };

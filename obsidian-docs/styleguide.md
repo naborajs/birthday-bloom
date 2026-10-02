@@ -5,6 +5,9 @@ aliases: [styleguide]
 
 # Birthday Bloom Style Guide
 
+
+🌐 **Canonical Web Documentation**: [TypeScript & Code Standards](https://naborajs.me/projects/birthday-bloom/docs/styleguide)
+
 This document defines code, documentation, and design conventions for the
 Birthday Bloom repository. Consistency helps contributors work confidently and
 maintainers review efficiently.
@@ -160,4 +163,14 @@ test: refine test mocks and act wrapping
 - Update documentation in `obsidian-docs/` whenever behavior changes.
 
 ---
-#obsidian #documentation #birthday-bloom #vault #styleguide #conventions
+#obsidian #documentation #birthday-bloom #vault #styleguide #conventions
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Strict Mode Rules (zero `@ts-ignore`, explicit interface declarations, strict null checks), ESLint & Prettier Conventions.
+
+### What is NOT Present:
+- High-level narrative theory (see [[Emotional-Psychology-and-UX#Pacing-and-Tension-Theory|Emotional Psychology]]), Complete dependency license text (see [[license#Permissive-MIT-License|MIT License]]).

@@ -1,4 +1,4 @@
-import { useMemo, useRef, Suspense } from "react";
+import { useMemo, useRef, useEffect, Suspense } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, ContactShadows, Float, Instance, Instances } from "@react-three/drei";
@@ -25,10 +25,44 @@ const Drips = ({ config, isSlice }: { config: CakeOption["config"]; isSlice?: bo
 
             // Organic pseudo-random varied drip lengths
             const dripLength = 0.28 + Math.abs(Math.sin(i * 9.17)) * 0.55;
-            arr.push({ angle, length: dripLength, i });
+            arr.push({
+                angle,
+                length: dripLength,
+                i,
+                stemGeo: new THREE.CylinderGeometry(0.045, 0.065, dripLength, 10),
+            });
         }
         return arr;
     }, [isSlice]);
+
+    const beadGeometry = useMemo(() => new THREE.SphereGeometry(0.075, 12, 12), []);
+
+    const stemMaterial = useMemo(
+        () =>
+            new THREE.MeshPhysicalMaterial({
+                color: config.dripColor,
+                roughness: 0.06,
+                clearcoat: 1.0,
+                clearcoatRoughness: 0.08,
+            }),
+        [config.dripColor]
+    );
+
+    const beadMaterial = useMemo(
+        () =>
+            new THREE.MeshPhysicalMaterial({
+                color: config.dripColor,
+                roughness: 0.05,
+                clearcoat: 1.0,
+                clearcoatRoughness: 0.05,
+            }),
+        [config.dripColor]
+    );
+
+    useEffect(() => () => drips.forEach((d) => d.stemGeo.dispose()), [drips]);
+    useEffect(() => () => beadGeometry.dispose(), [beadGeometry]);
+    useEffect(() => () => stemMaterial.dispose(), [stemMaterial]);
+    useEffect(() => () => beadMaterial.dispose(), [beadMaterial]);
 
     return (
         <group>
@@ -39,25 +73,18 @@ const Drips = ({ config, isSlice }: { config: CakeOption["config"]; isSlice?: bo
                 return (
                     <group key={d.i} position={[x, y, zTop]}>
                         {/* Tapered upper drip stem */}
-                        <mesh position={[0, 0, -d.length / 2]} rotation={[Math.PI / 2, 0, 0]}>
-                            <cylinderGeometry args={[0.045, 0.065, d.length, 10]} />
-                            <meshPhysicalMaterial
-                                color={config.dripColor}
-                                roughness={0.06}
-                                clearcoat={1.0}
-                                clearcoatRoughness={0.08}
-                            />
-                        </mesh>
+                        <mesh
+                            position={[0, 0, -d.length / 2]}
+                            rotation={[Math.PI / 2, 0, 0]}
+                            geometry={d.stemGeo}
+                            material={stemMaterial}
+                        />
                         {/* Luscious rounded droplet bead at tip */}
-                        <mesh position={[0, 0, -d.length]}>
-                            <sphereGeometry args={[0.075, 12, 12]} />
-                            <meshPhysicalMaterial
-                                color={config.dripColor}
-                                roughness={0.05}
-                                clearcoat={1.0}
-                                clearcoatRoughness={0.05}
-                            />
-                        </mesh>
+                        <mesh
+                            position={[0, 0, -d.length]}
+                            geometry={beadGeometry}
+                            material={beadMaterial}
+                        />
                     </group>
                 );
             })}
@@ -80,6 +107,7 @@ const Rosettes = ({
     const config = cake.config;
     const creamColor = config.innerCreamColor || "#ffffff";
     const strawberryColor = config.cherryColor || "#e63946";
+    const toppingColor = config.toppingColor || "#ffd700";
 
     const rosettes = useMemo(() => {
         const arr = [];
@@ -95,6 +123,53 @@ const Rosettes = ({
         return arr;
     }, [isSlice, bottom]);
 
+    const sharedGeos = useMemo(
+        () => ({
+            swirl: new THREE.TorusKnotGeometry(0.11, 0.046, 36, 10, 2, 3),
+            pearl: new THREE.SphereGeometry(0.095, 20, 20),
+            berryBody: new THREE.SphereGeometry(0.10, 16, 16),
+            berryCone: new THREE.ConeGeometry(0.098, 0.17, 16),
+            calyx: new THREE.CylinderGeometry(0.055, 0.015, 0.025, 6),
+        }),
+        []
+    );
+
+    const sharedMats = useMemo(
+        () => ({
+            cream: new THREE.MeshPhysicalMaterial({
+                color: creamColor,
+                roughness: 0.25,
+                clearcoat: 0.5,
+                clearcoatRoughness: 0.12,
+            }),
+            pearl: new THREE.MeshStandardMaterial({
+                color: toppingColor,
+                metalness: 0.96,
+                roughness: 0.08,
+            }),
+            berryBody: new THREE.MeshPhysicalMaterial({
+                color: strawberryColor,
+                roughness: 0.12,
+                clearcoat: 1.0,
+                clearcoatRoughness: 0.05,
+            }),
+            berryCone: new THREE.MeshPhysicalMaterial({
+                color: strawberryColor,
+                roughness: 0.14,
+                clearcoat: 0.95,
+                clearcoatRoughness: 0.05,
+            }),
+            calyx: new THREE.MeshStandardMaterial({
+                color: "#2d6a4f",
+                roughness: 0.6,
+            }),
+        }),
+        [creamColor, toppingColor, strawberryColor]
+    );
+
+    useEffect(() => () => Object.values(sharedGeos).forEach((g) => g.dispose()), [sharedGeos]);
+    useEffect(() => () => Object.values(sharedMats).forEach((m) => m.dispose()), [sharedMats]);
+
     return (
         <group position={[0, 0, bottom ? 0.08 : height]}>
             {rosettes.map((r) => {
@@ -104,56 +179,45 @@ const Rosettes = ({
                 return (
                     <group key={r.idx} position={[x, y, 0]} rotation={[0, 0, r.angle]}>
                         {/* Piped Buttercream Swirl */}
-                        <mesh castShadow position={[0, 0, 0.06]}>
-                            <torusKnotGeometry args={[0.11, 0.046, 36, 10, 2, 3]} />
-                            <meshPhysicalMaterial
-                                color={creamColor}
-                                roughness={0.25}
-                                clearcoat={0.5}
-                                clearcoatRoughness={0.12}
-                            />
-                        </mesh>
+                        <mesh
+                            castShadow
+                            position={[0, 0, 0.06]}
+                            geometry={sharedGeos.swirl}
+                            material={sharedMats.cream}
+                        />
 
                         {/* Top Crown Garnishes: Glazed Strawberry / Pearl (only on top rosettes) */}
                         {!bottom && (
                             <group position={[0, 0, 0.22]} rotation={[Math.PI / 2, 0, 0]}>
                                 {cake.id === "chocolate" || cake.id === "royal" ? (
                                     /* Edible Gold Pearl / Dragée */
-                                    <mesh castShadow>
-                                        <sphereGeometry args={[0.095, 20, 20]} />
-                                        <meshStandardMaterial
-                                            color={config.toppingColor || "#ffd700"}
-                                            metalness={0.96}
-                                            roughness={0.08}
-                                        />
-                                    </mesh>
+                                    <mesh
+                                        castShadow
+                                        geometry={sharedGeos.pearl}
+                                        material={sharedMats.pearl}
+                                    />
                                 ) : (
                                     /* Glazed Fresh Strawberry */
                                     <group scale={1.05}>
                                         {/* Strawberry Body */}
-                                        <mesh castShadow position={[0, 0, 0]}>
-                                            <sphereGeometry args={[0.10, 16, 16]} />
-                                            <meshPhysicalMaterial
-                                                color={strawberryColor}
-                                                roughness={0.12}
-                                                clearcoat={1.0}
-                                                clearcoatRoughness={0.05}
-                                            />
-                                        </mesh>
-                                        <mesh castShadow position={[0, -0.075, 0]}>
-                                            <coneGeometry args={[0.098, 0.17, 16]} />
-                                            <meshPhysicalMaterial
-                                                color={strawberryColor}
-                                                roughness={0.14}
-                                                clearcoat={0.95}
-                                                clearcoatRoughness={0.05}
-                                            />
-                                        </mesh>
+                                        <mesh
+                                            castShadow
+                                            position={[0, 0, 0]}
+                                            geometry={sharedGeos.berryBody}
+                                            material={sharedMats.berryBody}
+                                        />
+                                        <mesh
+                                            castShadow
+                                            position={[0, -0.075, 0]}
+                                            geometry={sharedGeos.berryCone}
+                                            material={sharedMats.berryCone}
+                                        />
                                         {/* Little Green Stem Calyx */}
-                                        <mesh position={[0, 0.095, 0]}>
-                                            <cylinderGeometry args={[0.055, 0.015, 0.025, 6]} />
-                                            <meshStandardMaterial color="#2d6a4f" roughness={0.6} />
-                                        </mesh>
+                                        <mesh
+                                            position={[0, 0.095, 0]}
+                                            geometry={sharedGeos.calyx}
+                                            material={sharedMats.calyx}
+                                        />
                                     </group>
                                 )}
                             </group>
@@ -195,6 +259,9 @@ const Sprinkles = ({ accent, isSlice }: { accent: string; isSlice?: boolean }) =
     }), [accent]);
 
     const pearlGeometry = useMemo(() => new THREE.SphereGeometry(0.035, 12, 12), []);
+
+    useEffect(() => () => pearlGeometry.dispose(), [pearlGeometry]);
+    useEffect(() => () => pearlMaterial.dispose(), [pearlMaterial]);
 
     return (
         <Instances range={sprinkleData.length} material={pearlMaterial} geometry={pearlGeometry}>
@@ -252,90 +319,124 @@ const CakeBody = ({ cake, isSlice }: { cake: CakeOption; isSlice?: boolean }) =>
         return s;
     }, [isSlice]);
 
-    const getExtrudeSettings = (depth: number, bevel = 0.02) => ({
-        depth,
-        bevelEnabled: true,
-        bevelSegments: 4,
-        steps: 1,
-        bevelSize: bevel,
-        bevelThickness: bevel,
-    });
-
     const layerH = height / 5; // 5 layered tiers: Sponge 1, Cream 1, Sponge 2, Cream 2, Sponge 3
+
+    // Memoize extruded geometries so phase changes don't re-triangulate 12 meshes on the main thread
+    const cakeGeos = useMemo(() => {
+        const getExtrudeSettings = (depth: number, bevel = 0.02) => ({
+            depth,
+            bevelEnabled: true,
+            bevelSegments: 4,
+            steps: 1,
+            bevelSize: bevel,
+            bevelThickness: bevel,
+        });
+        return {
+            wall: new THREE.ExtrudeGeometry(frostingWallShape, {
+                depth: height - 0.04,
+                bevelEnabled: true,
+                bevelSegments: 3,
+                steps: 1,
+                bevelSize: 0.015,
+                bevelThickness: 0.015,
+            }),
+            sponge: new THREE.ExtrudeGeometry(innerShape, getExtrudeSettings(layerH, 0.02)),
+            filling: new THREE.ExtrudeGeometry(innerShape, getExtrudeSettings(layerH * 0.9, 0.015)),
+            crown: new THREE.ExtrudeGeometry(shape, getExtrudeSettings(0.14, 0.035)),
+        };
+    }, [frostingWallShape, innerShape, shape, layerH]);
+
+    const cakeMats = useMemo(
+        () => ({
+            frostingWall: new THREE.MeshPhysicalMaterial({
+                color: config.frostingColor,
+                roughness: 0.32,
+                clearcoat: 0.45,
+                clearcoatRoughness: 0.12,
+            }),
+            sponge: new THREE.MeshStandardMaterial({
+                color: config.spongeColor,
+                roughness: 0.88,
+            }),
+            filling: new THREE.MeshPhysicalMaterial({
+                color: config.fillingColor,
+                roughness: 0.18,
+                clearcoat: 0.4,
+            }),
+            frostingCrown: new THREE.MeshPhysicalMaterial({
+                color: config.frostingColor,
+                roughness: 0.32,
+                clearcoat: 0.5,
+                clearcoatRoughness: 0.12,
+            }),
+        }),
+        [config.frostingColor, config.spongeColor, config.fillingColor]
+    );
+
+    useEffect(() => () => Object.values(cakeGeos).forEach((g) => g.dispose()), [cakeGeos]);
+    useEffect(() => () => Object.values(cakeMats).forEach((m) => m.dispose()), [cakeMats]);
 
     return (
         <group rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
             {/* Smooth Outer Frosting Coating Mantle */}
-            <mesh castShadow receiveShadow position={[0, 0, 0]}>
-                <extrudeGeometry
-                    args={[
-                        frostingWallShape,
-                        {
-                            depth: height - 0.04,
-                            bevelEnabled: true,
-                            bevelSegments: 3,
-                            steps: 1,
-                            bevelSize: 0.015,
-                            bevelThickness: 0.015,
-                        }
-                    ]}
-                />
-                <meshPhysicalMaterial
-                    color={config.frostingColor}
-                    roughness={0.32}
-                    clearcoat={0.45}
-                    clearcoatRoughness={0.12}
-                />
-            </mesh>
+            <mesh
+                castShadow
+                receiveShadow
+                position={[0, 0, 0]}
+                geometry={cakeGeos.wall}
+                material={cakeMats.frostingWall}
+            />
 
             {/* Sponge Layer 1 (Base Tier) */}
-            <mesh castShadow receiveShadow position={[0, 0, 0]}>
-                <extrudeGeometry args={[innerShape, getExtrudeSettings(layerH, 0.02)]} />
-                <meshStandardMaterial color={config.spongeColor} roughness={0.88} />
-            </mesh>
+            <mesh
+                castShadow
+                receiveShadow
+                position={[0, 0, 0]}
+                geometry={cakeGeos.sponge}
+                material={cakeMats.sponge}
+            />
 
             {/* Silky Ganache Filling Layer 1 */}
-            <mesh castShadow position={[0, 0, layerH]}>
-                <extrudeGeometry args={[innerShape, getExtrudeSettings(layerH * 0.9, 0.015)]} />
-                <meshPhysicalMaterial
-                    color={config.fillingColor}
-                    roughness={0.18}
-                    clearcoat={0.4}
-                />
-            </mesh>
+            <mesh
+                castShadow
+                position={[0, 0, layerH]}
+                geometry={cakeGeos.filling}
+                material={cakeMats.filling}
+            />
 
             {/* Sponge Layer 2 (Middle Tier) */}
-            <mesh castShadow receiveShadow position={[0, 0, layerH * 1.9]}>
-                <extrudeGeometry args={[innerShape, getExtrudeSettings(layerH, 0.02)]} />
-                <meshStandardMaterial color={config.spongeColor} roughness={0.88} />
-            </mesh>
+            <mesh
+                castShadow
+                receiveShadow
+                position={[0, 0, layerH * 1.9]}
+                geometry={cakeGeos.sponge}
+                material={cakeMats.sponge}
+            />
 
             {/* Silky Ganache Filling Layer 2 */}
-            <mesh castShadow position={[0, 0, layerH * 2.9]}>
-                <extrudeGeometry args={[innerShape, getExtrudeSettings(layerH * 0.9, 0.015)]} />
-                <meshPhysicalMaterial
-                    color={config.fillingColor}
-                    roughness={0.18}
-                    clearcoat={0.4}
-                />
-            </mesh>
+            <mesh
+                castShadow
+                position={[0, 0, layerH * 2.9]}
+                geometry={cakeGeos.filling}
+                material={cakeMats.filling}
+            />
 
             {/* Sponge Layer 3 (Top Sponge Tier) */}
-            <mesh castShadow receiveShadow position={[0, 0, layerH * 3.8]}>
-                <extrudeGeometry args={[innerShape, getExtrudeSettings(layerH, 0.02)]} />
-                <meshStandardMaterial color={config.spongeColor} roughness={0.88} />
-            </mesh>
+            <mesh
+                castShadow
+                receiveShadow
+                position={[0, 0, layerH * 3.8]}
+                geometry={cakeGeos.sponge}
+                material={cakeMats.sponge}
+            />
 
             {/* Top Frosting Crown Layer with Velvety Sheen */}
-            <mesh castShadow position={[0, 0, height - 0.06]}>
-                <extrudeGeometry args={[shape, getExtrudeSettings(0.14, 0.035)]} />
-                <meshPhysicalMaterial
-                    color={config.frostingColor}
-                    roughness={0.32}
-                    clearcoat={0.5}
-                    clearcoatRoughness={0.12}
-                />
-            </mesh>
+            <mesh
+                castShadow
+                position={[0, 0, height - 0.06]}
+                geometry={cakeGeos.crown}
+                material={cakeMats.frostingCrown}
+            />
 
             {/* Drips & Decorative Accents */}
             <Drips config={config} isSlice={isSlice} />
@@ -349,13 +450,25 @@ const CakeBody = ({ cake, isSlice }: { cake: CakeOption; isSlice?: boolean }) =>
 /* ========================================================================= */
 /* 5. Birthday Candle with Dynamic Flame & Extinguish Smoke                  */
 /* ========================================================================= */
-const Candle = ({ lit, accent }: { lit: boolean; accent: string }) => {
+const Candle = ({
+    lit,
+    accent,
+    position = [0, height, 0],
+    scale = 1,
+    phaseOffset = 0,
+}: {
+    lit: boolean;
+    accent: string;
+    position?: [number, number, number];
+    scale?: number;
+    phaseOffset?: number;
+}) => {
     const flameRef = useRef<THREE.Group>(null);
     const outerFlameRef = useRef<THREE.Mesh>(null);
     const smokeRef = useRef<THREE.Group>(null);
 
     useFrame(({ clock }) => {
-        const t = clock.elapsedTime;
+        const t = clock.elapsedTime + phaseOffset;
         if (lit && flameRef.current && outerFlameRef.current) {
             flameRef.current.scale.y = 1 + Math.sin(t * 14) * 0.12;
             flameRef.current.scale.x = 1 + Math.sin(t * 18) * 0.06;
@@ -373,7 +486,13 @@ const Candle = ({ lit, accent }: { lit: boolean; accent: string }) => {
     });
 
     return (
-        <group position={[0, height, 0]}>
+        <group position={position} scale={scale}>
+            {/* Gold Candle Holder Base Collar */}
+            <mesh position={[0, 0.03, 0]}>
+                <cylinderGeometry args={[0.095, 0.11, 0.06, 20]} />
+                <meshStandardMaterial color="#d4af37" metalness={0.92} roughness={0.15} />
+            </mesh>
+
             {/* Candle Porcelain Wax Cylinder */}
             <mesh castShadow position={[0, 0.42, 0]}>
                 <cylinderGeometry args={[0.065, 0.075, 0.85, 24]} />
@@ -385,9 +504,9 @@ const Candle = ({ lit, accent }: { lit: boolean; accent: string }) => {
             </mesh>
 
             {/* Candle Festive Spiral Stripes */}
-            <mesh castShadow position={[0, 0.42, 0]} rotation={[0, Math.PI * 0.25, 0]}>
+            <mesh castShadow position={[0, 0.42, 0]} rotation={[0, Math.PI * 0.25 + phaseOffset, 0]}>
                 <cylinderGeometry args={[0.07, 0.08, 0.85, 24, 1, false, 0, Math.PI * 0.7]} />
-                <meshStandardMaterial color={accent} roughness={0.3} />
+                <meshStandardMaterial color={accent} roughness={0.25} metalness={0.15} />
             </mesh>
 
             {/* Cotton Wick */}
@@ -420,8 +539,10 @@ const Candle = ({ lit, accent }: { lit: boolean; accent: string }) => {
                             depthWrite={false}
                         />
                     </mesh>
-                    {/* Dynamic Point Light */}
-                    <pointLight color="#ffb703" intensity={2.8} distance={6} decay={2} />
+                    {/* Dynamic Point Light (only on primary center candle to save GPU lights) */}
+                    {phaseOffset === 0 && (
+                        <pointLight color="#ffb703" intensity={3.2} distance={7} decay={2} />
+                    )}
                 </group>
             )}
 
@@ -446,9 +567,152 @@ const Candle = ({ lit, accent }: { lit: boolean; accent: string }) => {
 };
 
 /* ========================================================================= */
+/* 5B. 3D Sculpted Heart & Gold Halo Cake Topper (Env Theme-Aware)           */
+/* ========================================================================= */
+const CakeTopper3D = ({ primaryColor }: { primaryColor: string }) => {
+    const topperRef = useRef<THREE.Group>(null);
+
+    const heartGeometry = useMemo(() => {
+        const s = new THREE.Shape();
+        const x = 0;
+        const y = 0;
+        s.moveTo(x, y + 0.12);
+        s.bezierCurveTo(x, y + 0.12, x - 0.03, y + 0.22, x - 0.14, y + 0.22);
+        s.bezierCurveTo(x - 0.28, y + 0.22, x - 0.28, y + 0.04, x - 0.28, y + 0.04);
+        s.bezierCurveTo(x - 0.28, y - 0.08, x - 0.16, y - 0.18, x, y - 0.28);
+        s.bezierCurveTo(x + 0.16, y - 0.18, x + 0.28, y - 0.08, x + 0.28, y + 0.04);
+        s.bezierCurveTo(x + 0.28, y + 0.04, x + 0.28, y + 0.22, x + 0.14, y + 0.22);
+        s.bezierCurveTo(x + 0.05, y + 0.22, x, y + 0.12, x, y + 0.12);
+
+        return new THREE.ExtrudeGeometry(s, {
+            depth: 0.06,
+            bevelEnabled: true,
+            bevelSegments: 4,
+            steps: 1,
+            bevelSize: 0.02,
+            bevelThickness: 0.02,
+        });
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            heartGeometry.dispose();
+        };
+    }, [heartGeometry]);
+
+    useFrame(({ clock }) => {
+        if (topperRef.current) {
+            topperRef.current.rotation.y = Math.sin(clock.elapsedTime * 1.2) * 0.28;
+        }
+    });
+
+    return (
+        <group ref={topperRef} position={[0, height + 0.02, -0.58]}>
+            {/* 24k Gold Stem Pin */}
+            <mesh position={[0, 0.2, 0]}>
+                <cylinderGeometry args={[0.018, 0.018, 0.42, 12]} />
+                <meshStandardMaterial color="#d4af37" metalness={0.95} roughness={0.12} />
+            </mesh>
+            {/* Outer Golden Halo Ring */}
+            <mesh position={[0, 0.56, 0]}>
+                <torusGeometry args={[0.38, 0.022, 16, 48]} />
+                <meshStandardMaterial color="#ffd166" metalness={0.95} roughness={0.1} />
+            </mesh>
+            {/* Sculpted Glossy 3D Heart Gem */}
+            <mesh geometry={heartGeometry} position={[0, 0.56, -0.03]} scale={0.95} castShadow>
+                <meshPhysicalMaterial
+                    color={primaryColor}
+                    roughness={0.08}
+                    metalness={0.18}
+                    clearcoat={1.0}
+                    clearcoatRoughness={0.05}
+                />
+            </mesh>
+        </group>
+    );
+};
+
+/* ========================================================================= */
+/* 5C. 3D Floating Celebration Bokeh Orbs around the Cake                    */
+/* ========================================================================= */
+const CelebrationOrbs3D = ({ primaryColor }: { primaryColor: string }) => {
+    const groupRef = useRef<THREE.Group>(null);
+
+    const orbGeometries = useMemo(
+        () => [
+            new THREE.SphereGeometry(0.035, 12, 12),
+            new THREE.SphereGeometry(0.035 + 0.018, 12, 12),
+            new THREE.SphereGeometry(0.035 + 0.036, 12, 12),
+        ],
+        []
+    );
+
+    const orbMaterials = useMemo(
+        () => ({
+            gold: new THREE.MeshStandardMaterial({
+                color: "#ffd166",
+                emissive: "#ffb703",
+                emissiveIntensity: 0.65,
+                metalness: 0.8,
+                roughness: 0.15,
+            }),
+            primary: new THREE.MeshStandardMaterial({
+                color: primaryColor,
+                emissive: primaryColor,
+                emissiveIntensity: 0.65,
+                metalness: 0.8,
+                roughness: 0.15,
+            }),
+        }),
+        [primaryColor]
+    );
+
+    useEffect(() => () => orbGeometries.forEach((g) => g.dispose()), [orbGeometries]);
+    useEffect(() => {
+        return () => {
+            orbMaterials.gold.dispose();
+            orbMaterials.primary.dispose();
+        };
+    }, [orbMaterials]);
+
+    const orbs = useMemo(() => {
+        return Array.from({ length: 18 }, (_, i) => {
+            const angle = (Math.PI * 2 * i) / 18;
+            const dist = 2.85 + (i % 3) * 0.45;
+            const y = 0.2 + ((i * 7) % 10) * 0.22;
+            return {
+                position: [Math.cos(angle) * dist, y, Math.sin(angle) * dist] as [number, number, number],
+                geoIdx: i % 3,
+                isGold: i % 2 === 0,
+            };
+        });
+    }, []);
+
+    useFrame(({ clock }) => {
+        if (groupRef.current) {
+            groupRef.current.rotation.y = clock.elapsedTime * 0.14;
+            groupRef.current.position.y = Math.sin(clock.elapsedTime * 1.5) * 0.06;
+        }
+    });
+
+    return (
+        <group ref={groupRef}>
+            {orbs.map((orb, idx) => (
+                <mesh
+                    key={idx}
+                    position={orb.position}
+                    geometry={orbGeometries[orb.geoIdx]}
+                    material={orb.isGold ? orbMaterials.gold : orbMaterials.primary}
+                />
+            ))}
+        </group>
+    );
+};
+
+/* ========================================================================= */
 /* 6. Sculpted Porcelain Pedestal Cake Platter                               */
 /* ========================================================================= */
-const CakeStand = ({ config }: { config: CakeOption["config"] }) => {
+const CakeStand = ({ config, primaryColor }: { config: CakeOption["config"]; primaryColor: string }) => {
     const plateColor = config.plateColor || "#ffffff";
     const trimColor = config.plateTrimColor || "#d4af37";
 
@@ -476,6 +740,16 @@ const CakeStand = ({ config }: { config: CakeOption["config"] }) => {
                 />
             </mesh>
 
+            {/* Outer Scalloped Gold Filigree Ring */}
+            <mesh position={[0, -0.04, 0]} rotation={[Math.PI / 2, 0, 0]}>
+                <torusGeometry args={[radius + 0.70, 0.018, 12, 64]} />
+                <meshStandardMaterial
+                    color={trimColor}
+                    metalness={0.9}
+                    roughness={0.18}
+                />
+            </mesh>
+
             {/* Slender Concave Pedestal Neck */}
             <mesh position={[0, -0.32, 0]}>
                 <cylinderGeometry args={[0.55, 0.85, 0.45, 48]} />
@@ -486,6 +760,18 @@ const CakeStand = ({ config }: { config: CakeOption["config"] }) => {
                     clearcoat={0.8}
                 />
             </mesh>
+
+            {/* Front Royal Gold & Gem Medallion on Pedestal Neck */}
+            <group position={[0, -0.32, 0.72]}>
+                <mesh rotation={[Math.PI / 2, 0, 0]}>
+                    <cylinderGeometry args={[0.13, 0.13, 0.03, 24]} />
+                    <meshStandardMaterial color={trimColor} metalness={0.95} roughness={0.12} />
+                </mesh>
+                <mesh position={[0, 0, 0.02]}>
+                    <sphereGeometry args={[0.075, 16, 16]} />
+                    <meshPhysicalMaterial color={primaryColor} roughness={0.1} clearcoat={1.0} />
+                </mesh>
+            </group>
 
             {/* Flared Pedestal Base Foot with Gold Accent */}
             <mesh receiveShadow position={[0, -0.58, 0]}>
@@ -512,7 +798,17 @@ const CakeStand = ({ config }: { config: CakeOption["config"] }) => {
 /* ========================================================================= */
 /* 7. Scene Composition with True 3D Knife & Animated Wedge                  */
 /* ========================================================================= */
-const Scene = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
+const Scene = ({
+    cake,
+    phase,
+    primaryColor,
+    isMobile,
+}: {
+    cake: CakeOption;
+    phase: Phase;
+    primaryColor: string;
+    isMobile: boolean;
+}) => {
     const isCut = phase === "cutting" || phase === "burst" || phase === "quotes";
     const candlesLit = phase === "select" || phase === "baking" || phase === "blow-intro";
 
@@ -532,7 +828,7 @@ const Scene = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
                 intensity={2.6}
                 color="#fffaf0"
                 castShadow
-                shadow-mapSize={[1024, 1024]}
+                shadow-mapSize={isMobile ? [512, 512] : [1024, 1024]}
                 shadow-bias={-0.0004}
             />
             {/* Soft Cool Fill Light */}
@@ -552,10 +848,13 @@ const Scene = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
             {/* Ambient Hemisphere for Deep Rich Shadows */}
             <hemisphereLight args={["#ffffff", "#2b1810", 0.7]} />
 
+            {/* 3D Floating Celebration Bokeh Orbs */}
+            <CelebrationOrbs3D primaryColor={primaryColor} />
+
             <Float speed={1.0} rotationIntensity={0.03} floatIntensity={0.08}>
                 <group position={[0, -0.25, 0]}>
                     {/* Artisanal Cake Stand */}
-                    <CakeStand config={cake.config} />
+                    <CakeStand config={cake.config} primaryColor={primaryColor} />
 
                     {/* Main Cake Body */}
                     <CakeBody cake={cake} />
@@ -566,16 +865,29 @@ const Scene = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
                         <CakeBody cake={cake} isSlice />
                     </animated.group>
 
-                    {/* Birthday Candle */}
-                    <Candle lit={candlesLit} accent={cake.accent} />
+                    {/* 3D Sculpted Heart & Gold Halo Topper */}
+                    <CakeTopper3D primaryColor={primaryColor} />
+
+                    {/* 3-Candle Tiered Birthday Array */}
+                    <Candle lit={candlesLit} accent={cake.accent} position={[0, height, 0]} scale={1} phaseOffset={0} />
+                    <Candle lit={candlesLit} accent={primaryColor} position={[-0.62, height, -0.22]} scale={0.82} phaseOffset={1.7} />
+                    <Candle lit={candlesLit} accent={primaryColor} position={[0.62, height, -0.22]} scale={0.82} phaseOffset={3.4} />
 
                     {/* True 3D Pastry Knife inside Scene */}
                     <CakeKnife3D phase={phase} />
                 </group>
             </Float>
 
-            {/* Soft Studio Floor Contact Shadows */}
-            <ContactShadows position={[0, -1.08, 0]} opacity={0.5} scale={12} blur={2.4} far={4} />
+            {/* Soft Studio Floor Contact Shadows — baked once (frames={1}) at 256px resolution */}
+            <ContactShadows
+                position={[0, -1.08, 0]}
+                opacity={0.5}
+                scale={12}
+                blur={2.4}
+                far={4}
+                frames={1}
+                resolution={256}
+            />
 
             {/* Orbit Controls */}
             <OrbitControls
@@ -589,8 +901,17 @@ const Scene = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
     );
 };
 
-export const Cake3D = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
+export const Cake3D = ({
+    cake,
+    phase,
+    primaryColor,
+}: {
+    cake: CakeOption;
+    phase: Phase;
+    primaryColor?: string;
+}) => {
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const effectiveColor = primaryColor || cake.accent || "#FF2A6D";
 
     return (
         <div className="w-full h-full min-h-[440px] cursor-grab active:cursor-grabbing select-none overflow-visible">
@@ -601,9 +922,10 @@ export const Cake3D = ({ cake, phase }: { cake: CakeOption; phase: Phase }) => {
                 gl={{ powerPreference: "high-performance", antialias: true, alpha: true }}
             >
                 <Suspense fallback={null}>
-                    <Scene cake={cake} phase={phase} />
+                    <Scene cake={cake} phase={phase} primaryColor={effectiveColor} isMobile={isMobile} />
                 </Suspense>
             </Canvas>
         </div>
     );
 };
+

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useSoundManager } from "./SoundManager";
@@ -6,12 +6,35 @@ import { useTranslation } from "@/i18n";
 import { Heart, Sparkles, ArrowRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getHighlySpecificLetter } from "@/features/core/store/SuperPersonalizedLogic";
+import { getTemplateEmojiKit } from "@/config/emojiKits";
 
 interface EnvelopeLetterSceneProps {
     onComplete?: () => void;
     autoOpen?: boolean;
     compact?: boolean;
 }
+
+interface GraphemeSegmenter {
+    segment(input: string): Iterable<{ segment: string }>;
+}
+
+interface IntlWithSegmenter {
+    Segmenter: new (
+        locales?: string | string[],
+        options?: { granularity: "grapheme" | "word" | "sentence" }
+    ) => GraphemeSegmenter;
+}
+
+const splitGraphemes = (str: string): string[] => {
+    if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
+        const segmenter = new (Intl as unknown as IntlWithSegmenter).Segmenter(undefined, {
+            granularity: "grapheme",
+        });
+        return Array.from(segmenter.segment(str), (s) => s.segment);
+    }
+    const match = str.match(/[\s\S][\u0300-\u036f\u0900-\u097f\u0980-\u09ff]*/g);
+    return match || Array.from(str);
+};
 
 export const EnvelopeLetterScene = ({
     onComplete,
@@ -31,16 +54,14 @@ export const EnvelopeLetterScene = ({
 
     const relationship = config.relationship || "partner";
     const senderName = config.senderName || "";
+    const emojiKit = useMemo(() => getTemplateEmojiKit(config), [config]);
 
     const paragraphs = (() => {
         if (config.letterOverride && config.letterOverride.trim().length > 5) {
             return config.letterOverride.split("\n\n").map(p => p.trim()).filter(Boolean);
         }
-        if (config.customMessage && config.customMessage.trim().length > 10) {
-            return config.customMessage.split("\n\n").map(p => p.trim()).filter(Boolean);
-        }
 
-        // Get highly specific tailored letter for recipient archetype and gender
+        // Get highly specific tailored letter for recipient archetype, gender, and interests
         const generated = getHighlySpecificLetter(
             config.name || (isFrench ? "Mon Amour" : isBengali ? "প্রিয়" : isHindi ? "प्रिय" : "My Dearest"),
             relationship,
@@ -51,7 +72,22 @@ export const EnvelopeLetterScene = ({
         );
 
         if (generated && generated.trim().length > 10) {
-            return generated.split("\n\n").map(p => p.trim()).filter(Boolean);
+            const templateParts = generated.split("\n\n").map(p => p.trim()).filter(Boolean);
+            if (config.customMessage && config.customMessage.trim().length > 10) {
+                const customTrimmed = config.customMessage.trim();
+                if (!generated.includes(customTrimmed)) {
+                    return [
+                        templateParts[0],
+                        customTrimmed,
+                        ...templateParts.slice(1),
+                    ].filter(Boolean);
+                }
+            }
+            return templateParts;
+        }
+
+        if (config.customMessage && config.customMessage.trim().length > 10) {
+            return config.customMessage.split("\n\n").map(p => p.trim()).filter(Boolean);
         }
 
         if (isFrench) {
@@ -147,6 +183,7 @@ export const EnvelopeLetterScene = ({
     })();
 
     const fullLetterText = paragraphs.join("\n\n");
+    const letterGraphemes = useMemo(() => splitGraphemes(fullLetterText), [fullLetterText]);
 
     const handleOpen = () => {
         if (isOpen) return;
@@ -170,11 +207,11 @@ export const EnvelopeLetterScene = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [autoOpen]);
 
-    // Live typewriter typing effect for the letter
+    // Grapheme-safe typewriter typing effect for the letter (prevents splitting 4-byte emojis into )
     useEffect(() => {
         if (!isExtracted) return;
 
-        if (typedLength < fullLetterText.length) {
+        if (typedLength < letterGraphemes.length) {
             typingTimerRef.current = setTimeout(() => {
                 setTypedLength((prev) => {
                     const next = prev + 1;
@@ -189,12 +226,15 @@ export const EnvelopeLetterScene = ({
         } else {
             setIsTypingDone(true);
         }
-    }, [isExtracted, typedLength, fullLetterText.length, isMobile, playType]);
+    }, [isExtracted, typedLength, letterGraphemes.length, isMobile, playType]);
 
-    const displayedContent = fullLetterText.slice(0, typedLength);
+    const displayedContent = useMemo(
+        () => letterGraphemes.slice(0, typedLength).join(""),
+        [letterGraphemes, typedLength]
+    );
 
     return (
-        <div className="relative w-full max-w-xl mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[520px]">
+        <div className="relative w-full max-w-xl mx-auto px-4 py-6 sm:py-8 flex flex-col items-center justify-center min-h-[480px] sm:min-h-[520px]">
             <AnimatePresence mode="wait">
                 {!isExtracted ? (
                     /* The Luxury 3D Envelope */
@@ -202,9 +242,10 @@ export const EnvelopeLetterScene = ({
                         key="envelope"
                         initial={{ scale: 0.85, opacity: 0, y: 30 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
-                        exit={{ scale: 0.9, opacity: 0, y: -40, filter: "blur(10px)" }}
+                        exit={{ scale: 0.9, opacity: 0, y: -40 }}
                         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                         className="relative flex flex-col items-center cursor-pointer select-none"
+                        style={{ perspective: "1200px" }}
                         onClick={handleOpen}
                     >
                         <motion.div
@@ -283,7 +324,7 @@ export const EnvelopeLetterScene = ({
                         initial={{ opacity: 0, scale: 0.88, y: 60 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                        className="relative w-full max-w-lg rounded-[2.5rem] p-7 sm:p-11 shadow-[0_35px_100px_-15px_rgba(0,0,0,0.95),0_0_0_1px_rgba(218,165,32,0.3),inset_0_0_60px_rgba(180,130,70,0.14)] border-2 border-[#D4AF37]/50 text-[#2B1B17] overflow-hidden select-none"
+                        className="relative w-full max-w-lg max-h-[84dvh] overflow-y-auto rounded-[2.5rem] p-6 sm:p-11 shadow-[0_35px_100px_-15px_rgba(0,0,0,0.95),0_0_0_1px_rgba(218,165,32,0.3),inset_0_0_60px_rgba(180,130,70,0.14)] border-2 border-[#D4AF37]/50 text-[#2B1B17] select-none"
                         style={{
                             backgroundColor: "#FAF3E3",
                             backgroundImage: `
@@ -293,11 +334,12 @@ export const EnvelopeLetterScene = ({
                             `,
                         }}
                     >
-                        {/* Realistic Hand-Crafted Paper Grain Noise Texture Layer */}
+                        {/* Realistic Hand-Crafted Paper Grain Texture Layer (Zero-Filter CSS Pattern) */}
                         <div
-                            className="absolute inset-0 pointer-events-none opacity-[0.065] mix-blend-multiply"
+                            className="absolute inset-0 pointer-events-none opacity-[0.055]"
                             style={{
-                                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+                                backgroundImage: "radial-gradient(#8B5A2B 0.75px, transparent 0.75px)",
+                                backgroundSize: "14px 14px",
                             }}
                         />
 
@@ -350,8 +392,11 @@ export const EnvelopeLetterScene = ({
                                                 : "A Message From My Heart"
                                 )}
                             </h2>
-                            <div className="flex justify-center mt-1.5 text-purple-600 text-base sm:text-lg">
-                                💜
+                            <div className="flex justify-center items-center gap-2 mt-1.5 text-purple-600 text-base sm:text-lg">
+                                <span>{emojiKit.labels?.message || "💜"}</span>
+                                {emojiKit.signature?.[0] && (
+                                    <span className="text-sm opacity-80">{emojiKit.signature[0]}</span>
+                                )}
                             </div>
                         </div>
 
@@ -369,7 +414,9 @@ export const EnvelopeLetterScene = ({
                                 {senderName ? `— ${senderName}` : `— Yours Forever 💕`}
                             </div>
                             <div className="flex items-center gap-1.5 text-3xl sm:text-4xl filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)] select-none animate-subtle-float">
-                                {relationship === "friend" ? "🎉😎" : relationship === "family" ? "💐💝" : "🧸🧸"}
+                                {emojiKit.accent?.length > 0
+                                    ? emojiKit.accent.slice(0, 2).join("")
+                                    : relationship === "friend" ? "🎉😎" : relationship === "family" ? "💐💝" : "🧸🧸"}
                             </div>
                         </div>
 

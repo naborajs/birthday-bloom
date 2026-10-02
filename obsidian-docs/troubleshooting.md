@@ -5,6 +5,9 @@ aliases: [troubleshooting]
 
 # Troubleshooting Guide
 
+
+🌐 **Canonical Web Documentation**: [Troubleshooting & Error Diagnostics](https://naborajs.me/projects/birthday-bloom/docs/troubleshooting)
+
 Common issues and solutions for Birthday Bloom.
 
 ---
@@ -220,3 +223,13 @@ Birthday Bloom is designed to never show a blank screen:
 
 
 #obsidian #documentation #birthday-bloom #vault
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Standalone Diagnostic Matrix for build-time errors, audio autoplay failures, WebGL context loss, and cross-origin assets; Terminal Recovery Commands.
+
+### What is NOT Present:
+- Narrative emotional pacing explanations (see [[Emotional-Psychology-and-UX#Pacing-and-Tension-Theory|Emotional Psychology]]), Video tutorial embeds (see [[video-tutorials#Official-Masterclass-Curriculum|Video Tutorials]]).

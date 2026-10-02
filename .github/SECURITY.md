@@ -1,5 +1,7 @@
 # Security Policy
 
+🌐 **Canonical Web Documentation**: [Security Model & Privacy Guarantees](https://naborajs.me/projects/birthday-bloom/docs/security)
+
 ## Supported Versions
 
 | Version | Supported          |

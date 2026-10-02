@@ -5,6 +5,9 @@ aliases: [template-architecture]
 
 # Template Architecture
 
+
+🌐 **Canonical Web Documentation**: [Template Engine & Letter Synthesis](https://naborajs.me/projects/birthday-bloom/docs/template-architecture)
+
 Birthday Bloom templates are data-first. Env values hydrate the app store, the store drives components, and family templates provide typed relationship profiles.
 
 Repo: [naborajs/birthday-bloom](https://github.com/naborajs/birthday-bloom)
@@ -91,3 +94,13 @@ New specialized factories are also available for parents, grandparents, relative
 
 
 #obsidian #documentation #birthday-bloom #vault
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Token Replacement Lexer (`{name}`, `{age}`, `{milestone}`, `{wisher}`), Surrogate-Safe Emoji Slicing (`Array.from(string)`).
+
+### What is NOT Present:
+- WebGL lighting configurations (see [[Birthday-Components#Procedural-Lighting-and-Contact-Shadows|Birthday Components]]), GitHub Action release pipelines (see [[GitHub-Automation#Automated-CI-Workflow-Architecture|GitHub Automation]]).

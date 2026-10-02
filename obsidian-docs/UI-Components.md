@@ -7,6 +7,9 @@ aliases: [UI Components, Shadcn Components, Design System]
 
 [[DOCUMENTATION_INDEX|Back to Home]]
 
+
+🌐 **Canonical Web Documentation**: [Design System Primitives](https://naborajs.me/projects/birthday-bloom/docs/ui-components)
+
 The Birthday Bloom codebase employs a streamlined, tree-shaken Design System built with **Tailwind CSS**, **Lucide Icons**, and **Radix UI Primitives**. 
 
 To maximize runtime performance and minimize bundle overhead, the UI layer is structured into lightweight primitives and glassmorphism styling utilities:
@@ -68,3 +71,12 @@ To add new primitives to `src/components/ui/`:
 ---
 #obsidian #documentation #birthday-bloom #vault #ui #components #glassmorphism
 
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Component Token Specifications (Radix UI primitives, glassmorphic container classes `backdrop-blur-xl`), Color Variable Mapping (`--birthday-primary`, `--birthday-glow`).
+
+### What is NOT Present:
+- Backend API endpoints or database ORM models, Audio synthesis buffer algorithms (see [[Celebration-Sound-and-Sensory-Design#Web-Audio-API-Graph-Architecture|Sound & Sensory Design]]).

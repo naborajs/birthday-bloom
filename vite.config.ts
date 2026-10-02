@@ -17,8 +17,25 @@ export default defineConfig(() => ({
     rollupOptions: {
       output: {
         manualChunks(id) {
+          if (
+            id.includes('Cake3D') ||
+            id.includes('CakeKnife3D')
+          ) {
+            return 'three';
+          }
+          if (
+            id.includes('hindiTemplates') ||
+            id.includes('bengaliTemplates') ||
+            id.includes('frenchTemplates')
+          ) {
+            return 'templates';
+          }
           if (id.includes('node_modules')) {
-            if (id.includes('three') || id.includes('@react-three')) {
+            if (
+              id.includes('three') ||
+              id.includes('@react-three') ||
+              id.includes('@react-spring')
+            ) {
               return 'three';
             }
             if (id.includes('framer-motion')) {

@@ -7,6 +7,9 @@ aliases: [setup-french, french-setup, francais-guide]
 
 [[DOCUMENTATION_INDEX|Back to Home]] | [[quick-start|Quick Start]] | [[setup-hindi|Hindi Setup]] | [[setup-bengali|Bengali Setup]] | [[ENV_GUIDE|Env Customization Guide]] | [[architecture-env|Env Architecture]]
 
+
+🌐 **Canonical Web Documentation**: [French (Français) Elegant Locales & Accents](https://naborajs.me/projects/birthday-bloom/docs/setup-french)
+
 Birthday Bloom propose une **localisation française intégrale (Français)** avec une grande élégance poétique, une profondeur émotionnelle authentique, des tournures affectueuses adaptées à chaque membre de la famille et des templates relationnels sur mesure.
 
 ---
@@ -156,3 +159,13 @@ npm run lint
 # Compiler pour la production
 npm run build
 ```
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- French Orthography (accents `é`, `è`, `ê`, `ç`, non-breaking spaces), Tone Variants (formal `vouvoiement` vs. informal `tutoiement`).
+
+### What is NOT Present:
+- South Asian font optimization techniques (see [[setup-hindi|Hindi]], [[setup-bengali|Bengali]]), Raycasting bounding box algorithms (see [[Birthday-Components#Raycast-Physics-and-Slicing-Math|Birthday Components]]).

@@ -21,6 +21,7 @@ import { BalloonPopGame } from "./BalloonPopGame";
 import { EnvelopeLetterScene } from "./EnvelopeLetterScene";
 import { WishDeck } from "./WishDeck";
 import { SoundToggle } from "./SoundToggle";
+import { getTemplateEmojiKit, normalizeToEmoji } from "@/config/emojiKits";
 
 export const MainBirthday = () => {
     const [visible, setVisible] = useState(false);
@@ -43,6 +44,7 @@ export const MainBirthday = () => {
     const reduceMotion = useReducedMotion();
     const shouldAnimate = !isMobile && !reduceMotion;
     const primaryColor = favoriteColor || '#FF6B6B';
+    const emojiKit = useMemo(() => getTemplateEmojiKit(config), [config]);
     const specialCode = useMemo(() => {
         const template = relationship === 'partner' ? 'LOVE' : relationship === 'friend' ? 'LEGEND' : 'HOME';
         const interestMap = [
@@ -105,32 +107,16 @@ export const MainBirthday = () => {
         if (typeof navigator !== 'undefined' && navigator.vibrate)
             navigator.vibrate(50);
         playPop();
-        let emojiList = relationship === 'partner'
-            ? ["💖", "💕", "💍", "💘", "💋", "🌹", "✨", "💫"]
-            : relationship === 'friend'
-                ? ["🎉", "😎", "🍻", "🍕", "⭐", "🔥", "🎈", "🥳"]
-                : ["🎉", "🥳", "💖", "⭐", "🎈", "🎊", "🎁", "🎂", "✨", "💫"];
-        const interestEmojis: Record<string, string[]> = {
-            car: ["🚗", "🏎️", "🏎", "🏎️", "⚙️", "🏁"],
-            music: ["🎵", "🎶", "🎸", "🎹", "🎧", "🎤"],
-            art: ["🎨", "🖌️", "🖼️", "✨", "🌈"],
-            coding: ["💻", "⌨️", "🚀", "⚡", "👾"],
-            nature: ["🌿", "🌸", "🦋", "🍄", "🌙", "⭐"],
-            travel: ["✈️", "🗺️", "🏔️", "🏝️", "🗼", "🗽"],
-            food: ["🍕", "🍔", "🍣", "🍦", "🍩", "🧁"],
-            sport: ["⚽", "🏀", "🎾", "⛳", "🏆", "🏃"],
-            space: ["🚀", "🪐", "🛸", "☄️", "🌌", "👽"]
-        };
+        let emojiList = emojiKit.celebration?.length > 0
+            ? [...emojiKit.celebration]
+            : relationship === 'partner'
+                ? ["💖", "💕", "💍", "💘", "💋", "🌹", "✨", "💫"]
+                : relationship === 'friend'
+                    ? ["🎉", "😎", "🍻", "🍕", "⭐", "🔥", "🎈", "🥳"]
+                    : ["🎉", "🥳", "💖", "⭐", "🎈", "🎊", "🎁", "🎂", "✨", "💫"];
         if (config.favoriteEmojis?.length > 0) {
-            emojiList = [...emojiList, ...config.favoriteEmojis];
-        }
-        if (config.interests && config.interests.length > 0) {
-            config.interests.forEach(interest => {
-                const lowerInterest = interest.toLowerCase().trim();
-                if (interestEmojis[lowerInterest]) {
-                    emojiList = [...emojiList, ...interestEmojis[lowerInterest]];
-                }
-            });
+            const normalizedFavs = config.favoriteEmojis.map(normalizeToEmoji).filter(Boolean);
+            emojiList = [...emojiList, ...normalizedFavs];
         }
         const newEmoji = {
             id: Date.now(),
@@ -162,8 +148,8 @@ export const MainBirthday = () => {
         visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.5 } },
     };
     const itemVariants = {
-        hidden: { y: 30, opacity: 0, filter: "blur(10px)" },
-        visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.8, ease: "easeOut" as const } },
+        hidden: { y: 30, opacity: 0 },
+        visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" as const } },
     };
     const sparkleCount = isMobile ? 4 : 6;
     const balloonCount = isMobile ? 4 : 6;
@@ -184,28 +170,55 @@ export const MainBirthday = () => {
       </AnimatePresence>
 
       
-      <motion.header initial="hidden" animate="visible" variants={containerVariants} className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 py-20 overflow-hidden">
+      <motion.header initial="hidden" animate="visible" variants={containerVariants} className="relative min-h-[92vh] flex flex-col items-center justify-center text-center px-4 py-10 overflow-hidden">
         <motion.div style={{ x: springX, y: springY }} className="absolute inset-0 pointer-events-none flex items-center justify-center">
           <div className="w-[150%] h-[150%] bg-[radial-gradient(circle,var(--color-primary)_0%,transparent_70%)] opacity-[0.05]"/>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="mb-6 relative z-10">
-          <div className="flex justify-center mb-8"><HeartProgression stage={4}/></div>
-          <motion.div whileHover={shouldAnimate ? { scale: 1.2, rotate: relationship === 'friend' ? [0, -10, 10, 0] : [0, -5, 5, 0] } : undefined} whileTap={{ scale: 0.9 }} className="text-8xl md:text-[10rem] mb-6 cursor-pointer drop-shadow-[0_0_50px_var(--color-primary)]" onClick={handleCakeClick}>
+        <motion.div variants={itemVariants} className="mb-3 relative z-10">
+          <div className="flex justify-center mb-3 scale-90 sm:scale-95"><HeartProgression stage={4}/></div>
+          <motion.div whileHover={shouldAnimate ? { scale: 1.2, rotate: relationship === 'friend' ? [0, -10, 10, 0] : [0, -5, 5, 0] } : undefined} whileTap={{ scale: 0.9 }} className="text-6xl sm:text-7xl md:text-8xl mb-2 cursor-pointer drop-shadow-[0_0_50px_var(--color-primary)]" onClick={handleCakeClick}>
             🎂
           </motion.div>
           {cakeClicks > 0 && cakeClicks < 7 && (<p className="text-primary font-bold animate-pulse">{t('common.clickMoreTimes', { count: 7 - cakeClicks })}</p>)}
         </motion.div>
 
-        <motion.h1 variants={itemVariants} className="font-display text-4xl sm:text-5xl md:text-8xl lg:text-9xl font-black mb-4 break-words leading-tight px-2">
+        <motion.h1 variants={itemVariants} className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-2 break-words leading-tight px-2">
           <span className="bg-gradient-to-r from-[var(--color-primary)] via-[hsl(45,100%,75%)] to-[hsl(200,80%,70%)] bg-clip-text text-transparent animate-gradient-shift drop-shadow-[0_4px_30px_rgba(255,255,255,0.3)]">
-            {age ? t('common.happyNthBirthday', { age }) : t('common.happyBirthday')}
+            {age
+              ? (!isHindi && !isBengali && !isFrench
+                  ? `Happy ${age}${age % 100 >= 11 && age % 100 <= 13 ? 'th' : age % 10 === 1 ? 'st' : age % 10 === 2 ? 'nd' : age % 10 === 3 ? 'rd' : 'th'} Birthday`
+                  : t('common.happyNthBirthday', { age }))
+              : t('common.happyBirthday')}
           </span>
         </motion.h1>
 
-        <motion.h2 variants={itemVariants} className="font-display text-5xl sm:text-7xl md:text-[10rem] lg:text-[13rem] font-black text-foreground animate-glow-pulse mb-10 break-words leading-none px-2">
+        <motion.h2 variants={itemVariants} className="font-display text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black text-foreground animate-glow-pulse mb-5 break-words leading-none px-2">
           <TypeWriter text={`${name}!`} speed={120} delay={1500} cursor={false}/>
         </motion.h2>
+
+        {/* Env-Driven Personalization & Interests Pill Strip */}
+        <motion.div variants={itemVariants} className="relative z-10 flex flex-wrap items-center justify-center gap-2.5 max-w-2xl mx-auto px-4 mt-1">
+          {(emojiKit.signature || []).slice(0, 5).map((em, idx) => (
+            <span
+              key={`sig-${idx}`}
+              className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-xl flex items-center justify-center text-lg shadow-lg"
+            >
+              {em}
+            </span>
+          ))}
+          {(config.interests || []).slice(0, 5).map((interest, idx) => (
+            <span
+              key={`int-${idx}`}
+              className="px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase text-white/85 border border-white/15 backdrop-blur-xl shadow-md"
+              style={{
+                background: `linear-gradient(135deg, ${primaryColor}2E, rgba(255,255,255,0.04))`,
+              }}
+            >
+              ✦ {interest}
+            </span>
+          ))}
+        </motion.div>
       </motion.header>
 
       
@@ -250,7 +263,7 @@ export const MainBirthday = () => {
 
       {config.showGiftSection && <section className="relative z-20 px-4 pb-20">
         <div className="max-w-6xl mx-auto">
-          <motion.button type="button" onClick={openGift} whileHover={shouldAnimate ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.98 }} transition={{ duration: 0.3 }} className="w-full rounded-[3rem] border border-white/10 bg-gradient-to-r from-primary/15 to-transparent p-8 text-left shadow-2xl backdrop-blur-3xl hover:border-primary/40">
+          <motion.button type="button" onClick={openGift} whileHover={shouldAnimate ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.98 }} transition={{ duration: 0.3 }} className="w-full rounded-[3rem] border border-white/10 bg-gradient-to-r from-primary/15 to-transparent p-8 text-left shadow-2xl backdrop-blur-xl hover:border-primary/40">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div>
                 <p className="text-2xl md:text-3xl font-display font-black text-white">{t('gift.title')}</p>
@@ -271,7 +284,7 @@ export const MainBirthday = () => {
       </section>}
 
       <AnimatePresence>
-        {giftStage !== 'closed' && (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-3xl p-6" onClick={() => setGiftStage('closed')}>
+        {giftStage !== 'closed' && (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/95 ${isMobile ? "" : "backdrop-blur-md"} p-6`} onClick={() => setGiftStage('closed')}>
             <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.35 }} className="relative w-full max-w-3xl rounded-[2.5rem] border border-white/10 bg-black/90 p-6 sm:p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)] max-h-[calc(100vh-4rem)] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
               {giftStage === 'party' ? (<div className="flex flex-col gap-6 text-center min-h-[42vh] justify-center">
                   <div className="text-6xl">🎂🎉✨</div>

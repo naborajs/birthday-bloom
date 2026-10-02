@@ -5,6 +5,9 @@ aliases: [migration-guide]
 
 # Migration Guide
 
+
+🌐 **Canonical Web Documentation**: [Migration & Breaking Changes Guide](https://naborajs.me/projects/birthday-bloom/docs/migration-guide)
+
 This guide maps older Birthday Bloom structures to the v3 env-first and family-template system.
 
 ---
@@ -626,3 +629,13 @@ Q3 2026 planned features:
 
 
 #obsidian #documentation #birthday-bloom #vault
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Version Upgrade Guides, deprecation notices, parameter renames, structural changes between major versions, breaking change checklists.
+
+### What is NOT Present:
+- Day-one beginner onboarding instructions (see [[quick-start#5-Minute-Local-Setup|Quick Start]]), Community code of conduct guidelines (see [[code-of-conduct#Our-Pledge|Code of Conduct]]).

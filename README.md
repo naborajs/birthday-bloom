@@ -75,17 +75,20 @@ If you ask an AI coding agent to customize Birthday Bloom, tell it this first:
 
 Direct docs:
 
-- [Zero-Config URL Parameters Guide](./obsidian-docs/URL-Parameters.md)
-- [Complete env customization guide](./obsidian-docs/ENV_GUIDE.md)
-- [Multi-Language Localization (French) guide](./obsidian-docs/setup-french.md)
-- [Multi-Language Localization (Bengali) guide](./obsidian-docs/setup-bengali.md)
-- [Multi-Language Localization (Hindi) guide](./obsidian-docs/setup-hindi.md)
-- [Quick start](./obsidian-docs/quick-start.md)
-- [Family system](./obsidian-docs/family-system.md)
-- [Template architecture](./obsidian-docs/template-architecture.md)
-- [Developer guide & Contributor Walkthroughs](./obsidian-docs/developer-guide.md)
-- [Migration guide](./obsidian-docs/migration-guide.md)
-- [Documentation index](./obsidian-docs/DOCUMENTATION_INDEX.md)
+> 🌐 **Official Web Documentation Portal**: Explore all 38 interactive guides at [https://naborajs.me/projects/birthday-bloom/docs](https://naborajs.me/projects/birthday-bloom/docs)
+
+- 🚀 [Zero-Config URL Parameters Guide](https://naborajs.me/projects/birthday-bloom/docs/url-parameters) ([Local](./obsidian-docs/URL-Parameters.md))
+- ⚙️ [Complete Env Customization Guide](https://naborajs.me/projects/birthday-bloom/docs/env-guide) ([Local](./obsidian-docs/ENV_GUIDE.md))
+- ⚡ [Quick Start Guide](https://naborajs.me/projects/birthday-bloom/docs/quick-start) ([Local](./obsidian-docs/quick-start.md))
+- 🏗️ [System Architecture & FSM](https://naborajs.me/projects/birthday-bloom/docs/architecture) ([Local](./obsidian-docs/architecture.md))
+- 👨‍👩‍👧‍👦 [14-Persona Relationship Engine](https://naborajs.me/projects/birthday-bloom/docs/family-system) ([Local](./obsidian-docs/family-system.md))
+- 💌 [Template Architecture](https://naborajs.me/projects/birthday-bloom/docs/template-architecture) ([Local](./obsidian-docs/template-architecture.md))
+- 🛠️ [Developer Guide & Hooks API](https://naborajs.me/projects/birthday-bloom/docs/developer-guide) ([Local](./obsidian-docs/developer-guide.md))
+- 🇫🇷 [Guide de Configuration en Français (French)](https://naborajs.me/projects/birthday-bloom/docs/setup-french) ([Local](./obsidian-docs/setup-french.md))
+- 🇮🇳 [हिंदी सेटअप गाइड (Hindi)](https://naborajs.me/projects/birthday-bloom/docs/setup-hindi) ([Local](./obsidian-docs/setup-hindi.md))
+- 🇧🇩 [বাংলা সেটআপ গাইড (Bengali)](https://naborajs.me/projects/birthday-bloom/docs/setup-bengali) ([Local](./obsidian-docs/setup-bengali.md))
+- 🔄 [Migration Guide](https://naborajs.me/projects/birthday-bloom/docs/migration-guide) ([Local](./obsidian-docs/migration-guide.md))
+- 📖 [Master Documentation Index](https://naborajs.me/projects/birthday-bloom/docs) ([Local](./obsidian-docs/DOCUMENTATION_INDEX.md))
 
 Copy `.env.example` to `.env.local`, change values, restart the dev server, and the experience updates without component edits.
 
@@ -772,10 +775,10 @@ graph TD
 
 Birthday Bloom natively supports **English (default)**, **French (Français)**, **Hindi (हिन्दी)**, and **Bengali (বাংলা)** with cultural nuance, emotional warmth, and authentic localized templates.
 
-- 🇬🇧 [English Quick Start Guide](./obsidian-docs/quick-start.md) — 5-minute setup with zero code changes.
-- 🇫🇷 [Guide de Configuration en Français (French Setup Guide)](./obsidian-docs/setup-french.md) — French emotional letters, quotes, cake names, and tone nuances.
-- 🇮🇳 [हिंदी सेटअप गाइड (Hindi Setup Guide)](./obsidian-docs/setup-hindi.md) — Devanagari typography, Hindi emotional letters, and tone nuances.
-- 🇧🇩 [বাংলা সেটআপ গাইড (Bengali Setup Guide)](./obsidian-docs/setup-bengali.md) — Eastern Nagari typography, Bengali emotional letters, and tone nuances.
+- 🇬🇧 [English Quick Start Guide](https://naborajs.me/projects/birthday-bloom/docs/quick-start) ([Local](./obsidian-docs/quick-start.md)) — 5-minute setup with zero code changes.
+- 🇫🇷 [Guide de Configuration en Français (French Setup Guide)](https://naborajs.me/projects/birthday-bloom/docs/setup-french) ([Local](./obsidian-docs/setup-french.md)) — French emotional letters, quotes, cake names, and tone nuances.
+- 🇮🇳 [हिंदी सेटअप गाइड (Hindi Setup Guide)](https://naborajs.me/projects/birthday-bloom/docs/setup-hindi) ([Local](./obsidian-docs/setup-hindi.md)) — Devanagari typography, Hindi emotional letters, and tone nuances.
+- 🇧🇩 [বাংলা সেটআপ গাইড (Bengali Setup Guide)](https://naborajs.me/projects/birthday-bloom/docs/setup-bengali) ([Local](./obsidian-docs/setup-bengali.md)) — Eastern Nagari typography, Bengali emotional letters, and tone nuances.
 
 To switch languages, set `VITE_LANGUAGE=fr` (French), `VITE_LANGUAGE=hi` (Hindi), or `VITE_LANGUAGE=bn` (Bengali) in your `.env.local` or hosting provider environment settings.
 
@@ -784,9 +787,9 @@ To switch languages, set `VITE_LANGUAGE=fr` (French), `VITE_LANGUAGE=hi` (Hindi)
 ## 🛠️ Advanced Troubleshooting
 If you encounter any specific issues with sound, animations, or deployment, please refer to our master troubleshooting suite:
 
-- [🆘 Master Troubleshooting Guide](./obsidian-docs/troubleshooting.md)
-- [🛠️ Advanced Fixes Masterclass](./obsidian-docs/troubleshooting.md)
-- [☁️ Hosting & Cloud Deployment](./obsidian-docs/deployment.md)
+- [🆘 Master Troubleshooting Guide](https://naborajs.me/projects/birthday-bloom/docs/troubleshooting) ([Local](./obsidian-docs/troubleshooting.md))
+- [☁️ Hosting & Cloud Deployment Guide](https://naborajs.me/projects/birthday-bloom/docs/deployment) ([Local](./obsidian-docs/deployment.md))
+- [❓ Frequently Asked Questions (FAQ)](https://naborajs.me/projects/birthday-bloom/docs/faq) ([Local](./obsidian-docs/faq.md))
 
 
 ---
@@ -961,15 +964,57 @@ We have created two animated walkthrough guides to help you contribute to Birthd
   Learn how to contribute to <strong>Birthday Bloom</strong> from start to finish. This step-by-step guide covers GitHub Issues, feature requests, bug reporting, forking the repository, cloning the project, creating branches, writing meaningful commit messages, opening Pull Requests, the review process, and open-source best practices. Whether you're making your first contribution or you're an experienced developer, this guide will help you confidently contribute to the project.
 </p>
 
-#### 🧠 Complete System Documentation
+#### 🧠 Complete System Documentation & Official Web Portal
 
-**New!** The entire documentation has been rebuilt as an interconnected **Obsidian Vault**. 
-To access the full depth of system architecture, UI components, and animations:
+🌐 **Official Online Documentation Hub**: [https://naborajs.me/projects/birthday-bloom/docs](https://naborajs.me/projects/birthday-bloom/docs)
+
+Birthday Bloom features a **complete 38-page documentation system** across 9 categories. Every page is accessible online with live interactive labs and simulators, as well as offline in the local `obsidian-docs/` vault:
+
+| Category | Canonical Web Route | Local Note | Highlights |
+|---|---|---|---|
+| **1. Get Started** | [/docs/introduction](https://naborajs.me/projects/birthday-bloom/docs/introduction) | [`introduction.md`](./obsidian-docs/introduction.md) | Vision, 4 celebration phases, video tour, tech stack manifest |
+| | [/docs/quick-start](https://naborajs.me/projects/birthday-bloom/docs/quick-start) | [`quick-start.md`](./obsidian-docs/quick-start.md) | 5-min setup, ports 5000/5173, diagnostic matrix |
+| | [/docs/url-parameters](https://naborajs.me/projects/birthday-bloom/docs/url-parameters) | [`URL-Parameters.md`](./obsidian-docs/URL-Parameters.md) | Zero-config query parameter matrix (`?name=`, `?rel=`, `?color=`) |
+| | [/docs/env-guide](https://naborajs.me/projects/birthday-bloom/docs/env-guide) | [`ENV_GUIDE.md`](./obsidian-docs/ENV_GUIDE.md) | 53-variable comprehensive registry, Vite bundling rules |
+| **2. Architecture** | [/docs/architecture](https://naborajs.me/projects/birthday-bloom/docs/architecture) | [`architecture.md`](./obsidian-docs/architecture.md) | 4-Phase deterministic state machine (`src/pages/Index.tsx`) |
+| | [/docs/architecture-env](https://naborajs.me/projects/birthday-bloom/docs/architecture-env) | [`architecture-env.md`](./obsidian-docs/architecture-env.md) | 3-Tier truth hierarchy (URL > `.env.local` > Defaults) |
+| | [/docs/website-architecture](https://naborajs.me/projects/birthday-bloom/docs/website-architecture) | [`Website-Architecture.md`](./obsidian-docs/Website-Architecture.md) | Vite 5 build graph, Three.js chunk isolation (`three-[hash].js`) |
+| | [/docs/codebase-map](https://naborajs.me/projects/birthday-bloom/docs/codebase-map) | [`Codebase-Map.md`](./obsidian-docs/Codebase-Map.md) | File tree manifest and architectural boundaries |
+| **3. Visuals** | [/docs/birthday-components](https://naborajs.me/projects/birthday-bloom/docs/birthday-components) | [`Birthday-Components.md`](./obsidian-docs/Birthday-Components.md) | 3D WebGL cake, stainless knife, drag slicing math |
+| | [/docs/animation-system](https://naborajs.me/projects/birthday-bloom/docs/animation-system) | [`Animation-System.md`](./obsidian-docs/Animation-System.md) | Framer Motion 13 springs, Canvas 2D confetti, 60 FPS mobile |
+| | [/docs/sound-and-sensory](https://naborajs.me/projects/birthday-bloom/docs/sound-and-sensory) | [`Celebration-Sound-and-Sensory-Design.md`](./obsidian-docs/Celebration-Sound-and-Sensory-Design.md) | Web Audio API graph, SFX bus, iOS autoplay unlock gate |
+| | [/docs/emotional-psychology](https://naborajs.me/projects/birthday-bloom/docs/emotional-psychology) | [`Emotional-Psychology-and-UX.md`](./obsidian-docs/Emotional-Psychology-and-UX.md) | Neurochemical pacing (mystery → anticipation → intimacy → euphoria) |
+| **4. Persona** | [/docs/family-system](https://naborajs.me/projects/birthday-bloom/docs/family-system) | [`family-system.md`](./obsidian-docs/family-system.md) | 14 relationship archetypes, tone triggers, color palettes |
+| | [/docs/template-architecture](https://naborajs.me/projects/birthday-bloom/docs/template-architecture) | [`template-architecture.md`](./obsidian-docs/template-architecture.md) | Token replacement lexer, surrogate-safe emoji slicing |
+| | [/docs/template-deep-dive](https://naborajs.me/projects/birthday-bloom/docs/template-deep-dive) | [`Template-System-Deep-Dive.md`](./obsidian-docs/Template-System-Deep-Dive.md) | Emotional letter transcripts across tone engines |
+| | [/docs/env-configs](https://naborajs.me/projects/birthday-bloom/docs/env-configs) | [`env-configs.md`](./obsidian-docs/env-configs.md) | 10 pre-built `.env.local` snippets for distinct relationships |
+| **5. Localization** | [/docs/setup-hindi](https://naborajs.me/projects/birthday-bloom/docs/setup-hindi) | [`setup-hindi.md`](./obsidian-docs/setup-hindi.md) | Noto Sans Devanagari, Shirorekha protections, blessings |
+| | [/docs/setup-bengali](https://naborajs.me/projects/birthday-bloom/docs/setup-bengali) | [`setup-bengali.md`](./obsidian-docs/setup-bengali.md) | Noto Sans Bengali typography, Eastern Nagari conjuncts |
+| | [/docs/setup-french](https://naborajs.me/projects/birthday-bloom/docs/setup-french) | [`setup-french.md`](./obsidian-docs/setup-french.md) | French orthography, accents, formal/informal tones |
+| **6. Tooling** | [/docs/developer-guide](https://naborajs.me/projects/birthday-bloom/docs/developer-guide) | [`developer-guide.md`](./obsidian-docs/developer-guide.md) | Custom hooks API reference (`useBirthdayStore`, `useDynamicTheme`) |
+| | [/docs/ui-components](https://naborajs.me/projects/birthday-bloom/docs/ui-components) | [`UI-Components.md`](./obsidian-docs/UI-Components.md) | Radix UI primitives, glassmorphic styling tokens |
+| | [/docs/styleguide](https://naborajs.me/projects/birthday-bloom/docs/styleguide) | [`styleguide.md`](./obsidian-docs/styleguide.md) | Strict TypeScript standards, zero `@ts-ignore`, ESLint rules |
+| **7. Operations** | [/docs/github-automation](https://naborajs.me/projects/birthday-bloom/docs/github-automation) | [`GitHub-Automation.md`](./obsidian-docs/GitHub-Automation.md) | CI/CD pipelines, automated PR triage, labeler workflows |
+| | [/docs/deployment](https://naborajs.me/projects/birthday-bloom/docs/deployment) | [`deployment.md`](./obsidian-docs/deployment.md) | Vercel, Netlify, Cloudflare Pages, Docker containerization |
+| | [/docs/contributing](https://naborajs.me/projects/birthday-bloom/docs/contributing) | [`contributing.md`](./obsidian-docs/contributing.md) | Branching rules (`feat/`, `fix/`), Conventional Commits, PR checklist |
+| **8. Masterclasses** | [/docs/video-tutorials](https://naborajs.me/projects/birthday-bloom/docs/video-tutorials) | [`video-tutorials.md`](./obsidian-docs/video-tutorials.md) | 5 official video walkthroughs (`R3XNhP9hSjw`, `VBgtLDP-vco`, etc.) |
+| **9. Reference** | [/docs/troubleshooting](https://naborajs.me/projects/birthday-bloom/docs/troubleshooting) | [`troubleshooting.md`](./obsidian-docs/troubleshooting.md) | Diagnostics for audio, WebGL context, port collisions |
+| | [/docs/faq](https://naborajs.me/projects/birthday-bloom/docs/faq) | [`faq.md`](./obsidian-docs/faq.md) | Stateless architecture, zero backend, zero cookies, mobile |
+| | [/docs/security](https://naborajs.me/projects/birthday-bloom/docs/security) | [`security.md`](./obsidian-docs/security.md) | Zero-telemetry invariant, passcode validation mechanics |
+| | [/docs/code-of-conduct](https://naborajs.me/projects/birthday-bloom/docs/code-of-conduct) | [`code-of-conduct.md`](./obsidian-docs/code-of-conduct.md) | Contributor Covenant v2.1 community standards |
+| | [/docs/pull-request-policy](https://naborajs.me/projects/birthday-bloom/docs/pull-request-policy) | [`pull-request-policy.md`](./obsidian-docs/pull-request-policy.md) | Automated CI gates, branch protection, SLAs |
+| | [/docs/support](https://naborajs.me/projects/birthday-bloom/docs/support) | [`support.md`](./obsidian-docs/support.md) | GitHub issues, Discord, direct maintainer email/WhatsApp |
+| | [/docs/license](https://naborajs.me/projects/birthday-bloom/docs/license) | [`license.md`](./obsidian-docs/license.md) | MIT License text and third-party open-source attributions |
+| | [/docs/test-infrastructure](https://naborajs.me/projects/birthday-bloom/docs/test-infrastructure) | [`test-infrastructure.md`](./obsidian-docs/test-infrastructure.md) | 400+ Vitest test architecture, JSDOM Web Audio/WebGL mocks |
+| | [/docs/roadmap](https://naborajs.me/projects/birthday-bloom/docs/roadmap) | [`roadmap.md`](./obsidian-docs/roadmap.md) | Future milestones (WebGPU, procedural audio, offline PWA) |
+| | [/docs/seo-guide](https://naborajs.me/projects/birthday-bloom/docs/seo-guide) | [`seo-guide.md`](./obsidian-docs/seo-guide.md) | Answer-first SEO/GEO, JSON-LD Schema.org structured data |
+| | [/docs/migration-guide](https://naborajs.me/projects/birthday-bloom/docs/migration-guide) | [`migration-guide.md`](./obsidian-docs/migration-guide.md) | Upgrade guides v1 → v2 → v3 and breaking change checklists |
+| | [/docs/changelog](https://naborajs.me/projects/birthday-bloom/docs/changelog) | [`changelog.md`](./obsidian-docs/changelog.md) | Chronological SemVer version history |
+
+To explore via Obsidian:
 1. Open the [Obsidian App](https://obsidian.md/).
 2. Select "Open folder as vault" and choose the `obsidian-docs/` folder in this repository.
-3. Start exploring from `obsidian-docs/DOCUMENTATION_INDEX.md` (or simply open the Graph View)!
-
-If you don't use Obsidian, you can still read all the Markdown files in the `obsidian-docs/` folder directly on GitHub!
+3. Start exploring from [`obsidian-docs/DOCUMENTATION_INDEX.md`](./obsidian-docs/DOCUMENTATION_INDEX.md) (or open the Graph View)!
 
 ---
 

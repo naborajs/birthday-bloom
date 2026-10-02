@@ -7,6 +7,9 @@ aliases: [Template System, State Logic, Store]
 
 [[DOCUMENTATION_INDEX|Back to Home]]
 
+
+🌐 **Canonical Web Documentation**: [Deep Dive: Letter Engine & Micro-copy](https://naborajs.me/projects/birthday-bloom/docs/template-deep-dive)
+
 Birthday Bloom features an extensible, multi-tiered **Family & Relationship Template Engine**. It automatically customizes letter tones, emotional storytelling, quiz questions, animation pacing, and fallback assets based on the recipient's relationship to the sender.
 
 ---
@@ -156,3 +159,13 @@ case 'mentor':
 
 ---
 #obsidian #documentation #birthday-bloom #vault #templates
+
+---
+
+## 🔍 Scope Boundaries
+
+### What is Present:
+- Complete Message Transcripts across emotional archetypes, Custom Message Override Invariants (`VITE_BIRTHDAY_CUSTOM_MESSAGE` and URL query overrides).
+
+### What is NOT Present:
+- Audio frequency modulation algorithms (see [[Celebration-Sound-and-Sensory-Design#Web-Audio-API-Graph-Architecture|Sound & Sensory Design]]), Cloudflare Pages edge DNS configurations (see [[deployment#Cloudflare-Pages-Walkthrough|Deployment]]).

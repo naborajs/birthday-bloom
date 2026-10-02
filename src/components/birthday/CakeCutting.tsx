@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, lazy, Suspense } from "react";
 import { createPortal } from "react-dom";
 import { Cake as CakeIcon } from "lucide-react";
 import { useConfetti } from "./Confetti";
@@ -10,8 +10,13 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 import { Phase, CakeOption, CAKE_OPTIONS, getCakeName } from "./CakeTypes";
 import { CutSparks, MagicDust, PastryCrumbs } from "./CakeVisuals";
-import { Cake3D } from "./Cake3D";
 import { useTranslation } from "@/i18n";
+import { SPECIAL_QUOTES } from "@/config/templates";
+import { HINDI_SPECIAL_QUOTES } from "@/config/hindiTemplates";
+import { BENGALI_SPECIAL_QUOTES } from "@/config/bengaliTemplates";
+import { FRENCH_SPECIAL_QUOTES } from "@/config/frenchTemplates";
+
+const LazyCake3D = lazy(() => import("./Cake3D").then((m) => ({ default: m.Cake3D })));
 
 const CakeCard = ({ cake, onSelect }: {
     cake: CakeOption;
@@ -74,18 +79,27 @@ export const CakeCutting = () => {
 
     const { fireCinematicCelebration } = useConfetti();
     const { playBoom, playReveal, playPop, playWhoosh } = useSoundManager();
-    const { name, relationship, gender, favoriteColor } = useBirthdayStore(state => state.config);
+    const { name, age, relationship, gender, favoriteColor } = useBirthdayStore(state => state.config);
     const { t, isHindi, isBengali, isFrench } = useTranslation();
     const primaryColor = favoriteColor || '#FF6B6B';
 
     const quotes = useMemo(() => {
         const isMale = gender === 'male';
         const isFemale = gender === 'female';
+        const relKey = (relationship || 'partner').toLowerCase();
+        const templateQuotePool = isFrench
+            ? (FRENCH_SPECIAL_QUOTES[relKey] || FRENCH_SPECIAL_QUOTES.friend)
+            : isBengali
+                ? (BENGALI_SPECIAL_QUOTES[relKey] || BENGALI_SPECIAL_QUOTES.friend)
+                : isHindi
+                    ? (HINDI_SPECIAL_QUOTES[relKey] || HINDI_SPECIAL_QUOTES.friend)
+                    : (SPECIAL_QUOTES[relKey] || SPECIAL_QUOTES.friend);
+        const signatureTemplateQuote = templateQuotePool?.[0];
 
         if (isFrench) {
             if (relationship === 'partner') return [
                 { text: `Mon ${isMale ? 'Prince' : isFemale ? 'Princesse' : 'Amour'}...`, animation: "zoom-in" as const },
-                { text: "Fais un vœu pour notre bel avenir...", animation: "float" as const },
+                { text: signatureTemplateQuote || "Fais un vœu pour notre bel avenir...", animation: "float" as const },
                 { text: "Je t'aime jusqu'aux étoiles et au-delà", animation: "pop-out" as const },
                 { text: t('cake.happyBirthdayLove'), animation: "typewriter-burst" as const },
                 { text: t('cake.foreverYours'), animation: "pop-out" as const },
@@ -93,7 +107,7 @@ export const CakeCutting = () => {
             
             if (relationship === 'friend') return [
                 { text: `Salut ${name || 'mon ami(e)'} !`, animation: "pop-out" as const },
-                { text: t('cake.readyGetOlder'), animation: "zoom-in" as const },
+                { text: signatureTemplateQuote || t('cake.readyGetOlder'), animation: "zoom-in" as const },
                 { text: t('cake.zeroHangovers'), animation: "stagger-up" as const },
                 { text: t('cake.happyBirthdayBestie'), animation: "typewriter-burst" as const },
                 { text: t('cake.makeSomeNoise'), animation: "float" as const },
@@ -101,7 +115,7 @@ export const CakeCutting = () => {
             
             return [
                 { text: `Pour notre ${isMale ? 'Roi' : isFemale ? 'Reine' : 'Personne préférée'}...`, animation: "zoom-in" as const },
-                { text: t('cake.cherishEveryDay'), animation: "pop-out" as const },
+                { text: signatureTemplateQuote || t('cake.cherishEveryDay'), animation: "pop-out" as const },
                 { text: t('cake.maySmilesBrighten'), animation: "stagger-up" as const },
                 { text: `${t('common.happyBirthday')} !`, animation: "typewriter-burst" as const },
                 { text: t('cake.celebrateYou'), animation: "float" as const },
@@ -111,7 +125,7 @@ export const CakeCutting = () => {
         if (isBengali) {
             if (relationship === 'partner') return [
                 { text: `আমার ${isMale ? 'রাজপুত্র' : isFemale ? 'রাজকন্যা' : 'ভালোবাসা'}...`, animation: "zoom-in" as const },
-                { text: "আমাদের সুন্দর ভবিষ্যতের জন্য একটি ইচ্ছা পূরণ করুন...", animation: "float" as const },
+                { text: signatureTemplateQuote || "আমাদের সুন্দর ভবিষ্যতের জন্য একটি ইচ্ছা পূরণ করুন...", animation: "float" as const },
                 { text: "আমি আপনাকে মন উজাড় করে ভালোবাসি", animation: "pop-out" as const },
                 { text: t('cake.happyBirthdayLove'), animation: "typewriter-burst" as const },
                 { text: t('cake.foreverYours'), animation: "pop-out" as const },
@@ -119,7 +133,7 @@ export const CakeCutting = () => {
             
             if (relationship === 'friend') return [
                 { text: `আরে ${name || 'আমার ভাই'}!`, animation: "pop-out" as const },
-                { text: t('cake.readyGetOlder'), animation: "zoom-in" as const },
+                { text: signatureTemplateQuote || t('cake.readyGetOlder'), animation: "zoom-in" as const },
                 { text: t('cake.zeroHangovers'), animation: "stagger-up" as const },
                 { text: t('cake.happyBirthdayBestie'), animation: "typewriter-burst" as const },
                 { text: t('cake.makeSomeNoise'), animation: "float" as const },
@@ -127,7 +141,7 @@ export const CakeCutting = () => {
             
             return [
                 { text: `আমাদের অত্যন্ত প্রিয় ${isMale ? 'রাজপুত্র' : isFemale ? 'রাজকন্যা' : 'মানুষটির'} জন্য...`, animation: "zoom-in" as const },
-                { text: t('cake.cherishEveryDay'), animation: "pop-out" as const },
+                { text: signatureTemplateQuote || t('cake.cherishEveryDay'), animation: "pop-out" as const },
                 { text: t('cake.maySmilesBrighten'), animation: "stagger-up" as const },
                 { text: `${t('common.happyBirthday')}!`, animation: "typewriter-burst" as const },
                 { text: t('cake.celebrateYou'), animation: "float" as const },
@@ -137,7 +151,7 @@ export const CakeCutting = () => {
         if (isHindi) {
             if (relationship === 'partner') return [
                 { text: `मेरे ${isMale ? 'राजा' : isFemale ? 'रानी' : 'हमसफ़र'}...`, animation: "zoom-in" as const },
-                { text: "हमारे खूबसूरत भविष्य के लिए एक दुआ मांगें...", animation: "float" as const },
+                { text: signatureTemplateQuote || "हमारे खूबसूरत भविष्य के लिए एक दुआ मांगें...", animation: "float" as const },
                 { text: "मैं आपसे बेपनाह प्यार करता/करती हूँ", animation: "pop-out" as const },
                 { text: t('cake.happyBirthdayLove'), animation: "typewriter-burst" as const },
                 { text: t('cake.foreverYours'), animation: "pop-out" as const },
@@ -145,7 +159,7 @@ export const CakeCutting = () => {
             
             if (relationship === 'friend') return [
                 { text: `अरे ${name || 'मेरे यार'}!`, animation: "pop-out" as const },
-                { text: t('cake.readyGetOlder'), animation: "zoom-in" as const },
+                { text: signatureTemplateQuote || t('cake.readyGetOlder'), animation: "zoom-in" as const },
                 { text: t('cake.zeroHangovers'), animation: "stagger-up" as const },
                 { text: t('cake.happyBirthdayBestie'), animation: "typewriter-burst" as const },
                 { text: t('cake.makeSomeNoise'), animation: "float" as const },
@@ -153,7 +167,7 @@ export const CakeCutting = () => {
             
             return [
                 { text: `हमारे सबसे प्यारे ${isMale ? 'राजा' : isFemale ? 'रानी' : 'इंसान'} के लिए...`, animation: "zoom-in" as const },
-                { text: t('cake.cherishEveryDay'), animation: "pop-out" as const },
+                { text: signatureTemplateQuote || t('cake.cherishEveryDay'), animation: "pop-out" as const },
                 { text: t('cake.maySmilesBrighten'), animation: "stagger-up" as const },
                 { text: `${t('common.happyBirthday')}!`, animation: "typewriter-burst" as const },
                 { text: t('cake.celebrateYou'), animation: "float" as const },
@@ -162,7 +176,7 @@ export const CakeCutting = () => {
 
         if (relationship === 'partner') return [
             { text: `My ${isMale ? 'Prince' : isFemale ? 'Princess' : 'Everything'}...`, animation: "zoom-in" as const },
-            { text: "Make a wish for our future...", animation: "float" as const },
+            { text: signatureTemplateQuote || "Make a wish for our future...", animation: "float" as const },
             { text: "I love you to the stars and back", animation: "pop-out" as const },
             { text: "Happy Birthday My Love! ❤️", animation: "typewriter-burst" as const },
             { text: `Forever Yours ✨`, animation: "pop-out" as const },
@@ -170,7 +184,7 @@ export const CakeCutting = () => {
         
         if (relationship === 'friend') return [
             { text: `Yo ${name || 'Legend'}!`, animation: "pop-out" as const },
-            { text: "Ready to get older but 0% wiser? 😂", animation: "zoom-in" as const },
+            { text: signatureTemplateQuote || "Ready to get older but 0% wiser? 😂", animation: "zoom-in" as const },
             { text: "Wishing you zero hangovers tomorrow!", animation: "stagger-up" as const },
             { text: "Happy Birthday Bestie!", animation: "typewriter-burst" as const },
             { text: `Let's make some noise! 🎉`, animation: "float" as const },
@@ -178,7 +192,7 @@ export const CakeCutting = () => {
         
         return [
             { text: `For our ${isMale ? 'King' : isFemale ? 'Queen' : 'Favorite Human'}...`, animation: "zoom-in" as const },
-            { text: "A truly wonderful soul", animation: "pop-out" as const },
+            { text: signatureTemplateQuote || "A truly wonderful soul", animation: "pop-out" as const },
             { text: "May your day be magical", animation: "stagger-up" as const },
             { text: "Happy Birthday!", animation: "typewriter-burst" as const },
             { text: `Stay blessed always ✨`, animation: "float" as const },
@@ -266,14 +280,19 @@ export const CakeCutting = () => {
         }
     }, [phase, handleCut]);
 
-    // Lock scroll when experience is active
+    // Lock scroll and pause background ambient layers when 3D cake experience is active
     useEffect(() => {
         if (phase !== "select") {
             document.body.style.overflow = 'hidden';
+            document.body.classList.add('cake-modal-active');
         } else {
             document.body.style.overflow = 'unset';
+            document.body.classList.remove('cake-modal-active');
         }
-        return () => { document.body.style.overflow = 'unset'; };
+        return () => {
+            document.body.style.overflow = 'unset';
+            document.body.classList.remove('cake-modal-active');
+        };
     }, [phase]);
 
     // Auto-advance quotes
@@ -313,7 +332,7 @@ export const CakeCutting = () => {
                             initial={{ opacity: 0 }} 
                             animate={{ opacity: 1 }} 
                             exit={{ opacity: 0 }} 
-                            className="fixed inset-0 z-[100] flex flex-col items-center justify-start md:justify-center backdrop-blur-2xl overflow-y-auto overscroll-none py-10 md:py-8" 
+                            className={`fixed inset-0 z-[100] flex flex-col items-center justify-start md:justify-center ${isMobile ? "" : "backdrop-blur-md"} overflow-y-auto overscroll-none py-10 md:py-8`} 
                             style={{
                                 background: "radial-gradient(circle at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.95) 100%)"
                             }}
@@ -322,7 +341,7 @@ export const CakeCutting = () => {
                                 type="button"
                                 aria-label={isFrench ? "Fermer l'expérience du gâteau" : isBengali ? "কেকের অভিজ্ঞতা বন্ধ করুন" : isHindi ? "केक का अनुभव बंद करें" : "Close cake experience"}
                                 onClick={() => setPhase("select")}
-                                className="fixed top-6 right-6 z-[110] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center text-xl transition-all shadow-xl backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-primary"
+                                className="fixed top-6 right-6 z-[110] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center text-xl transition-all shadow-xl backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-primary"
                             >
                                 ✕
                             </button>
@@ -334,13 +353,18 @@ export const CakeCutting = () => {
                                         key="baking"
                                         initial={{ opacity: 0, scale: 0.9 }}
                                         animate={{ opacity: 1, scale: 1 }}
-                                        exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
+                                        exit={{ opacity: 0, scale: 1.1 }}
                                         transition={{ duration: 0.5 }}
-                                        className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-xl"
+                                        className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-md"
                                     >
                                         <div className="relative flex flex-col items-center gap-6">
                                             <div className="relative">
-                                                <div className="absolute inset-0 bg-primary/30 blur-2xl rounded-full animate-pulse" />
+                                                <div
+                                                    className="absolute -inset-6 rounded-full animate-pulse pointer-events-none"
+                                                    style={{
+                                                        background: "radial-gradient(circle, rgba(var(--color-primary-rgb, 255,42,109), 0.35) 0%, transparent 70%)",
+                                                    }}
+                                                />
                                                 <CakeIcon className="w-16 h-16 text-primary animate-bounce relative z-10" />
                                             </div>
                                             <div className="flex flex-col items-center gap-2">
@@ -364,8 +388,34 @@ export const CakeCutting = () => {
                             </AnimatePresence>
                             
                             <div className="w-full max-w-4xl mx-auto flex flex-col items-center justify-center min-h-[100dvh] py-2">
-                                <div className="relative w-full h-[58vh] min-h-[460px] flex justify-center items-center mt-2 overflow-visible">
-                                    <Cake3D cake={cake} phase={phase} />
+                                <div
+                                    className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-white/15 backdrop-blur-md text-xs font-bold tracking-widest uppercase text-white/90 shadow-lg mb-1"
+                                    style={{
+                                        background: `linear-gradient(135deg, ${primaryColor}33, rgba(255,255,255,0.06))`,
+                                        boxShadow: `0 0 24px ${primaryColor}33`
+                                    }}
+                                >
+                                    <span>{cake.emoji}</span>
+                                    <span>{getCakeName(cake, isHindi, isBengali, isFrench)}</span>
+                                    {name && (
+                                        <>
+                                            <span className="text-white/30">•</span>
+                                            <span style={{ color: primaryColor }}>{name}</span>
+                                        </>
+                                    )}
+                                    {age > 0 && (
+                                        <span
+                                            className="px-2 py-0.5 rounded-full text-[10px] font-black text-white"
+                                            style={{ backgroundColor: primaryColor }}
+                                        >
+                                            {age} ✨
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="relative w-full h-[58vh] min-h-[460px] flex justify-center items-center mt-1 overflow-visible">
+                                    <Suspense fallback={null}>
+                                        <LazyCake3D cake={cake} phase={phase} primaryColor={primaryColor} />
+                                    </Suspense>
                                     
                                     {/* Overlays on top of the Cake */}
                                     
@@ -382,7 +432,14 @@ export const CakeCutting = () => {
                                     
                                     {/* Wish Overlay Glow */}
                                     {phase === "wish" && (
-                                        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity }} className="absolute inset-0 rounded-full bg-white/10 blur-3xl pointer-events-none" />
+                                        <motion.div
+                                            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+                                            transition={{ duration: 2, repeat: Infinity }}
+                                            className="absolute inset-0 rounded-full pointer-events-none"
+                                            style={{
+                                                background: "radial-gradient(circle, rgba(255,255,255,0.14) 0%, transparent 70%)",
+                                            }}
+                                        />
                                     )}
                                     
                                     {/* Countdown Overlay */}
@@ -396,14 +453,13 @@ export const CakeCutting = () => {
                                                     role="status"
                                                     aria-live="polite"
                                                     key={countdownVal} 
-                                                    initial={{ scale: 0.3, opacity: 0, filter: "blur(10px)" }} 
+                                                    initial={{ scale: 0.3, opacity: 0 }} 
                                                     animate={{
                                                         scale: [0.3, 1.4, 1],
                                                         opacity: 1,
-                                                        filter: "blur(0px)",
                                                         textShadow: `0 0 40px ${primaryColor}, 0 0 80px ${primaryColor}`
                                                     }} 
-                                                    exit={{ scale: 1.8, opacity: 0, filter: "blur(15px)" }} 
+                                                    exit={{ scale: 1.8, opacity: 0 }} 
                                                     transition={{ duration: 0.7, ease: "easeOut" }} 
                                                     className="font-display text-8xl md:text-[10rem] font-black text-white"
                                                 >
@@ -459,7 +515,7 @@ export const CakeCutting = () => {
                                                 whileHover={!reducedMotion ? { scale: 1.08, y: -2 } : undefined}
                                                 whileTap={{ scale: 0.94 }}
                                                 onClick={handleCut}
-                                                className="group relative px-10 py-4.5 rounded-full text-lg sm:text-xl font-black text-white overflow-hidden shadow-[0_10px_35px_rgba(255,255,255,0.25)] border border-white/20 backdrop-blur-xl transition-all"
+                                                className="group relative px-10 py-4.5 rounded-full text-lg sm:text-xl font-black text-white overflow-hidden shadow-[0_10px_35px_rgba(255,255,255,0.25)] border border-white/20 backdrop-blur-md transition-all"
                                                 style={{
                                                     background: `linear-gradient(135deg, ${cake.accent}, #ff0080)`,
                                                 }}
@@ -481,7 +537,7 @@ export const CakeCutting = () => {
                                         <div className="text-center w-full max-w-2xl">
                                             <AnimatePresence mode="wait">
                                                 {quoteIndex >= 0 && (
-                                                    <motion.div key={quoteIndex} initial={{ y: 20, opacity: 0, filter: "blur(10px)" }} animate={{ y: 0, opacity: 1, filter: "blur(0px)" }} exit={{ y: -20, opacity: 0, filter: "blur(10px)" }} transition={{ duration: 0.8 }} className="flex items-center justify-center">
+                                                    <motion.div key={quoteIndex} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -20, opacity: 0 }} transition={{ duration: 0.8 }} className="flex items-center justify-center">
                                                         <p className={`text-3xl sm:text-4xl md:text-6xl font-display font-black leading-tight ${
                                                             quoteIndex === quotes.length - 1 
                                                                 ? "bg-gradient-to-r from-primary via-white to-primary bg-clip-text text-transparent animate-gradient-shift drop-shadow-[0_0_30px_var(--color-primary)]" 
