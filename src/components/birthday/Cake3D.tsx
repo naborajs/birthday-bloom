@@ -5,6 +5,7 @@ import { OrbitControls, ContactShadows, Float, Instance, Instances } from "@reac
 import { useSpring, animated } from "@react-spring/three";
 import { CakeOption, Phase } from "./CakeTypes";
 import { CakeKnife3D } from "./CakeKnife3D";
+import { useAdaptivePerformance } from "@/hooks/useAdaptivePerformance";
 
 const radius = 2.1;
 const height = 1.65;
@@ -644,7 +645,7 @@ const CakeTopper3D = ({ primaryColor }: { primaryColor: string }) => {
 /* ========================================================================= */
 /* 5C. 3D Floating Celebration Bokeh Orbs around the Cake                    */
 /* ========================================================================= */
-const CelebrationOrbs3D = ({ primaryColor }: { primaryColor: string }) => {
+const CelebrationOrbs3D = ({ primaryColor, isMobile }: { primaryColor: string; isMobile?: boolean }) => {
     const groupRef = useRef<THREE.Group>(null);
 
     const orbGeometries = useMemo(
@@ -685,8 +686,9 @@ const CelebrationOrbs3D = ({ primaryColor }: { primaryColor: string }) => {
     }, [orbMaterials]);
 
     const orbs = useMemo(() => {
-        return Array.from({ length: 18 }, (_, i) => {
-            const angle = (Math.PI * 2 * i) / 18;
+        const count = isMobile ? 6 : 18;
+        return Array.from({ length: count }, (_, i) => {
+            const angle = (Math.PI * 2 * i) / count;
             const dist = 2.85 + (i % 3) * 0.45;
             const y = 0.2 + ((i * 7) % 10) * 0.22;
             return {
@@ -695,7 +697,7 @@ const CelebrationOrbs3D = ({ primaryColor }: { primaryColor: string }) => {
                 isGold: i % 2 === 0,
             };
         });
-    }, []);
+    }, [isMobile]);
 
     useFrame(({ clock }) => {
         if (groupRef.current) {
@@ -814,6 +816,7 @@ const Scene = ({
     isMobile,
     blowIntensity = 0,
     onCakeClick,
+    shadowMapSize = 512,
 }: {
     cake: CakeOption;
     phase: Phase;
@@ -821,6 +824,7 @@ const Scene = ({
     isMobile: boolean;
     blowIntensity?: number;
     onCakeClick?: () => void;
+    shadowMapSize?: number;
 }) => {
     const isCut = phase === "cutting" || phase === "burst" || phase === "quotes";
     const candlesLit = phase === "select" || phase === "baking" || phase === "blow-intro";
@@ -840,8 +844,8 @@ const Scene = ({
                 position={[4.5, 8, 5]}
                 intensity={2.6}
                 color="#fffaf0"
-                castShadow
-                shadow-mapSize={isMobile ? [512, 512] : [1024, 1024]}
+                castShadow={!isMobile}
+                shadow-mapSize={isMobile ? [256, 256] : [shadowMapSize, shadowMapSize]}
                 shadow-bias={-0.0004}
             />
             {/* Soft Cool Fill Light */}
@@ -861,8 +865,8 @@ const Scene = ({
             {/* Ambient Hemisphere for Deep Rich Shadows */}
             <hemisphereLight args={["#ffffff", "#2b1810", 0.7]} />
 
-            {/* 3D Floating Celebration Bokeh Orbs */}
-            <CelebrationOrbs3D primaryColor={primaryColor} />
+            {/* 3D Floating Celebration Bokeh Orbs — adaptively reduced on mobile */}
+            <CelebrationOrbs3D primaryColor={primaryColor} isMobile={isMobile} />
 
             <Float speed={1.0} rotationIntensity={0.03} floatIntensity={0.08}>
                 <group position={[0, -0.25, 0]} onClick={onCakeClick}>
@@ -927,7 +931,7 @@ export const Cake3D = ({
     blowIntensity?: number;
     onCakeClick?: () => void;
 }) => {
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const perf = useAdaptivePerformance();
     const effectiveColor = primaryColor || cake.accent || "#FF2A6D";
 
     return (
@@ -936,19 +940,20 @@ export const Cake3D = ({
             className="w-full h-full min-h-[440px] cursor-grab active:cursor-grabbing select-none overflow-visible"
         >
             <Canvas
-                shadows
-                dpr={isMobile ? [1, 1.5] : [1, 2]}
+                shadows={perf.tier !== 'low'}
+                dpr={perf.dpr}
                 camera={{ position: [0, 4.4, 8.4], fov: 42 }}
-                gl={{ powerPreference: "high-performance", antialias: true, alpha: true }}
+                gl={{ powerPreference: "high-performance", antialias: perf.tier !== 'low', alpha: true }}
             >
                 <Suspense fallback={null}>
                     <Scene 
                         cake={cake} 
                         phase={phase} 
                         primaryColor={effectiveColor} 
-                        isMobile={isMobile} 
+                        isMobile={perf.isMobile} 
                         blowIntensity={blowIntensity}
                         onCakeClick={onCakeClick}
+                        shadowMapSize={perf.shadowMapSize}
                     />
                 </Suspense>
             </Canvas>
