@@ -45,6 +45,8 @@ export interface BirthdayConfig {
     showSkipButton?: boolean;
     soundEffectsEnabled?: boolean;
     language?: 'en' | 'hi' | 'bn' | 'fr' | string;
+    enableMicrophoneCandleBlow?: boolean;
+    showGuestbookSection?: boolean;
     password?: string;
     passwordHint?: string;
     passwordFormat?: string;
@@ -188,6 +190,8 @@ const envShowVideo = parseEnvBoolean(import.meta.env.VITE_SHOW_VIDEO_SECTION, tr
 const envShowFinalSurprise = parseEnvBoolean(import.meta.env.VITE_SHOW_FINAL_SURPRISE, true);
 const envShowGift = parseEnvBoolean(import.meta.env.VITE_SHOW_GIFT_SECTION, true);
 const envShowSkipButton = parseEnvBoolean(import.meta.env.VITE_SHOW_SKIP_BUTTON, true);
+const envEnableMicBlow = parseEnvBoolean(import.meta.env.VITE_ENABLE_MIC_BLOW, true);
+const envShowGuestbook = parseEnvBoolean(import.meta.env.VITE_SHOW_GUESTBOOK_SECTION ?? import.meta.env.VITE_SHOW_GUESTBOOK, true);
 const envReducedMotion = import.meta.env.VITE_REDUCED_MOTION !== undefined
     ? parseEnvBoolean(import.meta.env.VITE_REDUCED_MOTION, false)
     : undefined;
@@ -295,6 +299,8 @@ export const useBirthdayStore = create<BirthdayStore>((set, get) => ({
         showSkipButton: envShowSkipButton,
         reducedMotion: envReducedMotion,
         soundEffectsEnabled: urlOverrides.soundEffectsEnabled !== undefined ? urlOverrides.soundEffectsEnabled : envSoundEffects,
+        enableMicrophoneCandleBlow: urlOverrides.enableMicrophoneCandleBlow !== undefined ? urlOverrides.enableMicrophoneCandleBlow : envEnableMicBlow,
+        showGuestbookSection: urlOverrides.showGuestbookSection !== undefined ? urlOverrides.showGuestbookSection : envShowGuestbook,
         language: urlOverrides.language !== undefined ? urlOverrides.language : envLanguage,
         finalVideoUrl: envFinalVideo,
         specialMemories: envMemories,
