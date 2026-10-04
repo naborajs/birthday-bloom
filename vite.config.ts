@@ -13,6 +13,11 @@ export default defineConfig(() => ({
     outDir: 'dist',
     emptyOutDir: true,
     chunkSizeWarningLimit: 1000,
+    modulePreload: {
+      resolveDependencies(filename, deps) {
+        return deps.filter((dep) => !dep.includes('three'));
+      },
+    },
     // Add cache busting with content hashes.
     rollupOptions: {
       output: {
