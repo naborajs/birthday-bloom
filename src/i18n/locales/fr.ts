@@ -116,5 +116,34 @@ export const fr: TranslationSchema = {
         deservesMoreThanWords: "Parce qu'une personne comme toi mérite bien plus que de simples mots...",
         highLegendLevel: "Un niveau de légende qui mérite une fête inoubliable !",
         moreMagicalSurprise: "Une expérience magique qui commence maintenant !"
+    },
+    guestbook: {
+        title: "Vœux & Messages du Cœur",
+        subtitle: "Laissez un souvenir chaleureux, une bénédiction ou un mot doux pour célébrer cet anniversaire.",
+        badge: "Livre d'or en direct",
+        leaveWish: "Écrire un mot doux",
+        namePlaceholder: "Votre nom ou surnom",
+        messagePlaceholder: "Écrivez votre message chaleureux ou un doux souvenir...",
+        relationshipLabel: "Votre lien",
+        roles: {
+            friend: "Ami(e)",
+            family: "Famille",
+            partner: "Âme sœur",
+            wellWisher: "Bienveillant(e)",
+            colleague: "Collègue",
+        },
+        submit: "Envoyer avec amour",
+        sending: "Envoi en cours...",
+        sentSuccess: "Votre doux message a été ajouté au livre d'or avec amour !",
+        likeCount: "cœurs",
+        emptyState: "Soyez le premier à laisser un message inoubliable en ce jour unique.",
+        defaultWishes: {
+            partner: "Joyeux anniversaire mon amour ! Tu apportes tant de magie, de douceur et de lumière dans ma vie.",
+            friend: "Joyeux anniversaire à un(e) ami(e) en or ! Que cette nouvelle année t'apporte mille bonheurs.",
+            family: "Que cette nouvelle bougie t'apporte santé, sérénité et une joie infinie entouré(e) des tiens.",
+            mother: "Joyeux anniversaire Maman ! Merci pour ton amour inconditionnel, ta tendresse et ta grâce infinie.",
+            father: "Joyeux anniversaire Papa ! Merci d'être notre repère, notre force et notre inspiration de chaque instant.",
+            general: "Merveilleux anniversaire ! Que cette journée soit douce, lumineuse et remplie de belles surprises.",
+        },
     }
 };
