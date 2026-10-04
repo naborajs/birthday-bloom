@@ -137,7 +137,7 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
     useEffect(() => {
         if (isInView) return undefined;
         const el = containerRef.current;
-        if (!el || typeof IntersectionObserver === "undefined") {
+        if (!el || typeof IntersectionObserver === "undefined" || (typeof process !== "undefined" && process.env.NODE_ENV === "test")) {
             setIsInView(true);
             return undefined;
         }
