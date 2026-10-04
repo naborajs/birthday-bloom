@@ -131,6 +131,18 @@ export const parseBirthdayUrlParams = (searchString?: string): Partial<BirthdayC
       overrides.soundEffectsEnabled = !['false', '0', 'no', 'off', 'disabled'].includes(rawSound.toLowerCase().trim());
     }
 
+    // Microphone Candle Blowing
+    const rawMicBlow = params.get('micBlow') || params.get('mic_blow') || params.get('mic');
+    if (rawMicBlow !== null) {
+      overrides.enableMicrophoneCandleBlow = !['false', '0', 'no', 'off', 'disabled'].includes(rawMicBlow.toLowerCase().trim());
+    }
+
+    // Guestbook & Wishes Board Section
+    const rawGuestbook = params.get('guestbook') || params.get('wishes') || params.get('board');
+    if (rawGuestbook !== null) {
+      overrides.showGuestbookSection = !['false', '0', 'no', 'off', 'disabled'].includes(rawGuestbook.toLowerCase().trim());
+    }
+
     // Password lock & hints
     const rawPass = params.get('password') || params.get('pass');
     if (rawPass && rawPass.trim()) {
