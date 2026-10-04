@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Send, MessageSquareHeart, Sparkles, Plus, Check } from 'lucide-react';
 import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
@@ -78,6 +78,15 @@ export const GuestbookSection: React.FC = () => {
   const [formColor, setFormColor] = useState<GuestbookWish['colorScheme']>('rose');
   const [likedMap, setLikedMap] = useState<Record<string, boolean>>({});
   const [justSubmitted, setJustSubmitted] = useState(false);
+  const submitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (submitTimerRef.current) {
+        clearTimeout(submitTimerRef.current);
+      }
+    };
+  }, []);
 
   // Template-aware emotional starter messages
   const defaultSeeds: GuestbookWish[] = useMemo(() => {
@@ -289,7 +298,10 @@ export const GuestbookSection: React.FC = () => {
     fireConfetti();
     fireStars();
 
-    setTimeout(() => {
+    if (submitTimerRef.current) {
+      clearTimeout(submitTimerRef.current);
+    }
+    submitTimerRef.current = setTimeout(() => {
       setFormName('');
       setFormMessage('');
       setIsFormOpen(false);
