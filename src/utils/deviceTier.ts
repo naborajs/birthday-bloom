@@ -33,10 +33,9 @@ export const getDevicePerformanceProfile = (): PerformanceProfile => {
         };
     }
 
-    // 1. Check environment variable force overrides
+    // 1. Check explicit environment force override
     const forceHigh = import.meta.env.VITE_FORCE_HIGH_GRAPHICS === 'true';
-    const envIntensity = String(import.meta.env.VITE_ANIMATION_INTENSITY || '').toLowerCase();
-    if (forceHigh || envIntensity === 'high') {
+    if (forceHigh) {
         return {
             tier: 'high',
             isMobile: window.innerWidth < 768,
@@ -51,22 +50,7 @@ export const getDevicePerformanceProfile = (): PerformanceProfile => {
         };
     }
 
-    if (envIntensity === 'low') {
-        return {
-            tier: 'low',
-            isMobile: window.innerWidth < 768,
-            dpr: 1,
-            shadowMapSize: 256,
-            maxParticles: 10,
-            enableCursorTrail: false,
-            enableMultiCanvas: false,
-            enableComplexShaders: false,
-            enableHeavyBlur: false,
-            recommendedFrameCap: 30,
-        };
-    }
-
-    // 2. Hardware and environment auto-detection
+    // 2. Hardware and environment auto-detection (Mobile takes precedence over generic env variables)
     const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     const isSmallScreen = window.innerWidth < 768 || window.innerHeight < 600;
     const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -94,7 +78,39 @@ export const getDevicePerformanceProfile = (): PerformanceProfile => {
         };
     }
 
-    // Balanced desktop / modern tablet
+    // 3. Desktop / non-constrained device preferences
+    const envIntensity = String(import.meta.env.VITE_ANIMATION_INTENSITY || '').toLowerCase();
+    if (envIntensity === 'low') {
+        return {
+            tier: 'low',
+            isMobile: false,
+            dpr: 1,
+            shadowMapSize: 256,
+            maxParticles: 10,
+            enableCursorTrail: false,
+            enableMultiCanvas: false,
+            enableComplexShaders: false,
+            enableHeavyBlur: false,
+            recommendedFrameCap: 30,
+        };
+    }
+
+    if (envIntensity === 'high') {
+        return {
+            tier: 'high',
+            isMobile: false,
+            dpr: Math.min(window.devicePixelRatio || 1, 2),
+            shadowMapSize: 1024,
+            maxParticles: 40,
+            enableCursorTrail: !isTouch,
+            enableMultiCanvas: true,
+            enableComplexShaders: true,
+            enableHeavyBlur: true,
+            recommendedFrameCap: 60,
+        };
+    }
+
+    // Balanced desktop / modern tablet default
     return {
         tier: 'balanced',
         isMobile: false,
@@ -107,4 +123,21 @@ export const getDevicePerformanceProfile = (): PerformanceProfile => {
         enableHeavyBlur: true,
         recommendedFrameCap: 60,
     };
+};
+
+/**
+ * Helper to query battery low state (< 20% and discharging)
+ */
+export const isBatteryLow = async (): Promise<boolean> => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const nav = typeof navigator !== 'undefined' ? (navigator as any) : null;
+    if (nav && typeof nav.getBattery === 'function') {
+        try {
+            const battery = await nav.getBattery();
+            return Boolean(!battery.charging && battery.level <= 0.2);
+        } catch {
+            return false;
+        }
+    }
+    return false;
 };
