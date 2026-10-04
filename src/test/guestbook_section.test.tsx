@@ -22,9 +22,32 @@ vi.mock('../components/birthday/Confetti', () => ({
   }),
 }));
 
+// Mock in-memory localStorage
+const mockStorage: Record<string, string> = {};
+const localStorageMock = {
+  getItem: vi.fn((key: string) => mockStorage[key] ?? null),
+  setItem: vi.fn((key: string, value: string) => {
+    mockStorage[key] = String(value);
+  }),
+  removeItem: vi.fn((key: string) => {
+    delete mockStorage[key];
+  }),
+  clear: vi.fn(() => {
+    Object.keys(mockStorage).forEach((k) => delete mockStorage[k]);
+  }),
+  get length() {
+    return Object.keys(mockStorage).length;
+  },
+  key: vi.fn((index: number) => Object.keys(mockStorage)[index] ?? null),
+};
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+  writable: true,
+});
+
 describe('GuestbookSection Component', () => {
   beforeEach(() => {
-    localStorage.clear();
+    localStorageMock.clear();
     vi.restoreAllMocks();
   });
 
