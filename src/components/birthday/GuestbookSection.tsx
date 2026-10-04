@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Send, MessageSquareHeart, Sparkles, Plus, Check } from 'lucide-react';
 import { useBirthdayStore } from '@/features/core/store/useBirthdayStore';
 import { useTranslation } from '@/i18n';
-import { useConfetti } from './Confetti';
-import { useSoundManager } from './SoundManager';
+import { useConfetti } from '@/components/birthday/Confetti';
+import { useSoundManager } from '@/components/birthday/SoundManager';
 import { useAdaptivePerformance } from '@/hooks/useAdaptivePerformance';
 
 export interface GuestbookWish {
