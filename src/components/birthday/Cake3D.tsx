@@ -456,12 +456,14 @@ const Candle = ({
     position = [0, height, 0],
     scale = 1,
     phaseOffset = 0,
+    blowIntensity = 0,
 }: {
     lit: boolean;
     accent: string;
     position?: [number, number, number];
     scale?: number;
     phaseOffset?: number;
+    blowIntensity?: number;
 }) => {
     const flameRef = useRef<THREE.Group>(null);
     const outerFlameRef = useRef<THREE.Mesh>(null);
@@ -470,10 +472,17 @@ const Candle = ({
     useFrame(({ clock }) => {
         const t = clock.elapsedTime + phaseOffset;
         if (lit && flameRef.current && outerFlameRef.current) {
-            flameRef.current.scale.y = 1 + Math.sin(t * 14) * 0.12;
-            flameRef.current.scale.x = 1 + Math.sin(t * 18) * 0.06;
-            flameRef.current.position.x = Math.sin(t * 9) * 0.02;
-            outerFlameRef.current.scale.setScalar(1 + Math.sin(t * 7) * 0.12);
+            const wind = Math.min(1, Math.max(0, blowIntensity));
+            const flutterY = 1 + Math.sin(t * 14) * (0.12 + wind * 0.4) - wind * 0.45;
+            const flutterX = 1 + Math.sin(t * 24) * (0.06 + wind * 0.35);
+            flameRef.current.scale.y = Math.max(0.18, flutterY);
+            flameRef.current.scale.x = flutterX;
+            // Flame leans backward and flutters dynamically with breath turbulence
+            flameRef.current.rotation.z = -wind * 0.6 + Math.sin(t * 26) * wind * 0.18;
+            flameRef.current.position.x = Math.sin(t * 9) * 0.02 - wind * 0.05;
+            // Outer amber glow shrinks and fluctuates with wind cooling
+            const outerScale = Math.max(0.2, (1 - wind * 0.5) * (1 + Math.sin(t * 8) * 0.15));
+            outerFlameRef.current.scale.setScalar(outerScale);
         }
 
         // Animate curling smoke wisp when extinguished
@@ -803,11 +812,15 @@ const Scene = ({
     phase,
     primaryColor,
     isMobile,
+    blowIntensity = 0,
+    onCakeClick,
 }: {
     cake: CakeOption;
     phase: Phase;
     primaryColor: string;
     isMobile: boolean;
+    blowIntensity?: number;
+    onCakeClick?: () => void;
 }) => {
     const isCut = phase === "cutting" || phase === "burst" || phase === "quotes";
     const candlesLit = phase === "select" || phase === "baking" || phase === "blow-intro";
@@ -852,7 +865,7 @@ const Scene = ({
             <CelebrationOrbs3D primaryColor={primaryColor} />
 
             <Float speed={1.0} rotationIntensity={0.03} floatIntensity={0.08}>
-                <group position={[0, -0.25, 0]}>
+                <group position={[0, -0.25, 0]} onClick={onCakeClick}>
                     {/* Artisanal Cake Stand */}
                     <CakeStand config={cake.config} primaryColor={primaryColor} />
 
@@ -868,10 +881,10 @@ const Scene = ({
                     {/* 3D Sculpted Heart & Gold Halo Topper */}
                     <CakeTopper3D primaryColor={primaryColor} />
 
-                    {/* 3-Candle Tiered Birthday Array */}
-                    <Candle lit={candlesLit} accent={cake.accent} position={[0, height, 0]} scale={1} phaseOffset={0} />
-                    <Candle lit={candlesLit} accent={primaryColor} position={[-0.62, height, -0.22]} scale={0.82} phaseOffset={1.7} />
-                    <Candle lit={candlesLit} accent={primaryColor} position={[0.62, height, -0.22]} scale={0.82} phaseOffset={3.4} />
+                    {/* 3-Candle Tiered Birthday Array with breath-responsive turbulence */}
+                    <Candle lit={candlesLit} accent={cake.accent} position={[0, height, 0]} scale={1} phaseOffset={0} blowIntensity={blowIntensity} />
+                    <Candle lit={candlesLit} accent={primaryColor} position={[-0.62, height, -0.22]} scale={0.82} phaseOffset={1.7} blowIntensity={blowIntensity} />
+                    <Candle lit={candlesLit} accent={primaryColor} position={[0.62, height, -0.22]} scale={0.82} phaseOffset={3.4} blowIntensity={blowIntensity} />
 
                     {/* True 3D Pastry Knife inside Scene */}
                     <CakeKnife3D phase={phase} />
@@ -905,16 +918,23 @@ export const Cake3D = ({
     cake,
     phase,
     primaryColor,
+    blowIntensity = 0,
+    onCakeClick,
 }: {
     cake: CakeOption;
     phase: Phase;
     primaryColor?: string;
+    blowIntensity?: number;
+    onCakeClick?: () => void;
 }) => {
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
     const effectiveColor = primaryColor || cake.accent || "#FF2A6D";
 
     return (
-        <div className="w-full h-full min-h-[440px] cursor-grab active:cursor-grabbing select-none overflow-visible">
+        <div 
+            onClick={onCakeClick}
+            className="w-full h-full min-h-[440px] cursor-grab active:cursor-grabbing select-none overflow-visible"
+        >
             <Canvas
                 shadows
                 dpr={isMobile ? [1, 1.5] : [1, 2]}
@@ -922,7 +942,14 @@ export const Cake3D = ({
                 gl={{ powerPreference: "high-performance", antialias: true, alpha: true }}
             >
                 <Suspense fallback={null}>
-                    <Scene cake={cake} phase={phase} primaryColor={effectiveColor} isMobile={isMobile} />
+                    <Scene 
+                        cake={cake} 
+                        phase={phase} 
+                        primaryColor={effectiveColor} 
+                        isMobile={isMobile} 
+                        blowIntensity={blowIntensity}
+                        onCakeClick={onCakeClick}
+                    />
                 </Suspense>
             </Canvas>
         </div>
