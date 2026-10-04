@@ -22,32 +22,9 @@ vi.mock('../components/birthday/Confetti', () => ({
   }),
 }));
 
-// Mock in-memory localStorage
-const mockStorage: Record<string, string> = {};
-const localStorageMock = {
-  getItem: vi.fn((key: string) => mockStorage[key] ?? null),
-  setItem: vi.fn((key: string, value: string) => {
-    mockStorage[key] = String(value);
-  }),
-  removeItem: vi.fn((key: string) => {
-    delete mockStorage[key];
-  }),
-  clear: vi.fn(() => {
-    Object.keys(mockStorage).forEach((k) => delete mockStorage[k]);
-  }),
-  get length() {
-    return Object.keys(mockStorage).length;
-  },
-  key: vi.fn((index: number) => Object.keys(mockStorage)[index] ?? null),
-};
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
-  writable: true,
-});
-
 describe('GuestbookSection Component', () => {
   beforeEach(() => {
-    localStorageMock.clear();
+    localStorage.clear();
     vi.restoreAllMocks();
   });
 
@@ -79,7 +56,12 @@ describe('GuestbookSection Component', () => {
     fireEvent.change(messageInput, { target: { value: 'Wishing you all the joy and stars in the sky!' } });
 
     const submitButton = screen.getByRole('button', { name: /Send Your Wish|শুভেচ্ছা পাঠান|शुभकामना भेजें|Envoyer avec amour/i });
-    fireEvent.click(submitButton);
+    const form = submitButton.closest('form');
+    if (form) {
+      fireEvent.submit(form);
+    } else {
+      fireEvent.click(submitButton);
+    }
 
     // Should appear in the document
     expect(screen.getByText('Aria')).toBeInTheDocument();
