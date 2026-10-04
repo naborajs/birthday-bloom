@@ -20,6 +20,7 @@ import { Car, Trophy, Share2 } from "lucide-react";
 import { BalloonPopGame } from "./BalloonPopGame";
 import { EnvelopeLetterScene } from "./EnvelopeLetterScene";
 import { WishDeck } from "./WishDeck";
+import { GuestbookSection } from "./GuestbookSection";
 import { SoundToggle } from "./SoundToggle";
 import { getTemplateEmojiKit, normalizeToEmoji } from "@/config/emojiKits";
 
@@ -243,7 +244,8 @@ export const MainBirthday = () => {
       </section>
 
       
-      {config.interests?.some(i => i.toLowerCase().includes('car')) && (<div className="relative h-20 w-full overflow-hidden opacity-30 pointer-events-none mb-10">
+      {config.interests?.some(i => i.toLowerCase().includes('car')) && shouldAnimate && (
+        <div className="relative h-20 w-full overflow-hidden opacity-30 pointer-events-none mb-10">
           <motion.div animate={{ x: ["-100%", "200%"] }} transition={{ duration: 4, repeat: Infinity, ease: "linear" }} className="flex items-center gap-4 text-primary">
             <Car size={40}/>
             <div className="h-[2px] w-40 bg-gradient-to-r from-transparent via-primary to-transparent"/>
@@ -253,13 +255,16 @@ export const MainBirthday = () => {
             <Car size={32}/>
             <div className="h-[1px] w-60 bg-gradient-to-r from-transparent via-secondary to-transparent"/>
           </motion.div>
-        </div>)}
+        </div>
+      )}
 
       {config.showQuizSection && <BirthdayQuiz />}
 
-      
       {/* Tinder-Style Wishes Deck */}
       <WishDeck />
+
+      {/* Interactive Guestbook & Live Wishes Board */}
+      {config.showGuestbookSection !== false && <GuestbookSection />}
 
       {config.showGiftSection && <section className="relative z-20 px-4 pb-20">
         <div className="max-w-6xl mx-auto">
