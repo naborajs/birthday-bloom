@@ -117,6 +117,35 @@ export const enTranslations: TranslationSchema = {
         highLegendLevel: "Warning: High levels of legend-ness detected! ⚠️",
         moreMagicalSurprise: "But you deserve a much more magical surprise...",
     },
+    guestbook: {
+        title: "Heartfelt Wishes & Notes",
+        subtitle: "Leave a warm memory, blessing, or sweet note for the birthday celebration.",
+        badge: "Live Wishes Board",
+        leaveWish: "Leave a Wish",
+        namePlaceholder: "Your Name or Nickname",
+        messagePlaceholder: "Write your heartfelt birthday wish or cherished memory...",
+        relationshipLabel: "Your Connection",
+        roles: {
+            friend: "Friend",
+            family: "Family",
+            partner: "Soulmate",
+            wellWisher: "Well-Wisher",
+            colleague: "Colleague",
+        },
+        submit: "Send Your Wish",
+        sending: "Sending...",
+        sentSuccess: "Your wish has been placed on the wall with love!",
+        likeCount: "hearts",
+        emptyState: "Be the first to leave an unforgettable wish on this special day.",
+        defaultWishes: {
+            partner: "Happy Birthday my love! You bring magic, warmth, and laughter into every single day.",
+            friend: "To one of the greatest friends in the world — cheers to another year of legendary moments!",
+            family: "May your journey ahead be blessed with pure happiness, peace, and endless love.",
+            mother: "Happy Birthday Mom! Thank you for your endless love, kindness, and boundless grace.",
+            father: "Happy Birthday Dad! Thank you for always being our steady guide, strength, and inspiration.",
+            general: "Wishing you a bright, joyous, and truly wonderful birthday filled with sweetest surprises!",
+        },
+    },
 };
 
 export const en = enTranslations;
