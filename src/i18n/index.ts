@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { TranslationSchema } from "./types";
 import { enTranslations } from "./locales/en";
@@ -73,9 +74,9 @@ export const useTranslation = () => {
                     : 'en';
     const currentTranslations = translations[language] || enTranslations;
 
-    const t = (keyPath: string, params?: Record<string, string | number>): string => {
+    const t = useCallback((keyPath: string, params?: Record<string, string | number>): string => {
         return getTranslationValue(language, keyPath, params);
-    };
+    }, [language]);
 
     return {
         t,
