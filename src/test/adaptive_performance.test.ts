@@ -80,15 +80,17 @@ describe('Adaptive Performance and Device Tiering', () => {
 
   it('useAdaptivePerformance hook returns reactive profile', () => {
     const { result } = renderHook(() => useAdaptivePerformance());
-    expect(result.current.profile).toBeDefined();
-    expect(typeof result.current.isLowPowerMode).toBe('boolean');
+    expect(result.current).toBeDefined();
+    expect(result.current.tier).toBeDefined();
     expect(typeof result.current.isMobile).toBe('boolean');
+    expect(typeof result.current.dpr).toBe('number');
 
     // Trigger window resize event
     act(() => {
       window.dispatchEvent(new Event('resize'));
     });
 
-    expect(result.current.profile).toBeDefined();
+    expect(result.current).toBeDefined();
+    expect(result.current.tier).toBeDefined();
   });
 });
