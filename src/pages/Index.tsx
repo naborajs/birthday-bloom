@@ -7,7 +7,6 @@ import { PasswordUnlock } from "@/components/birthday/PasswordUnlock";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useDynamicTheme } from "@/features/core/theme/useDynamicTheme";
 import { useDynamicSEO } from "@/features/core/seo/useDynamicSEO";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { FloatingElements } from "@/components/birthday/FloatingElements";
 import { SparkleRain } from "@/components/birthday/SparkleRain";
 import { FireflyEffect } from "@/components/birthday/FireflyEffect";
@@ -31,7 +30,6 @@ const Index = () => {
         return "splash";
     });
     const [fireworksRunKey, setFireworksRunKey] = useState(0);
-    const isMobile = useIsMobile();
     const perf = useAdaptivePerformance();
     const config = useBirthdayStore((state) => state.config);
     const { t } = useTranslation();
