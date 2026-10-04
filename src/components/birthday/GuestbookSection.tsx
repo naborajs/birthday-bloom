@@ -236,7 +236,7 @@ export const GuestbookSection: React.FC = () => {
       // Fallback gracefully
     }
     setWishes(defaultSeeds);
-  }, [config.relationship, config.name, config.senderName]);
+  }, [defaultSeeds]);
 
   const handleLike = (id: string) => {
     playPop();
