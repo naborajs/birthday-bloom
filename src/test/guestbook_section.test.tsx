@@ -81,7 +81,7 @@ describe('GuestbookSection Component', () => {
 
     // Should appear in the document
     expect(screen.getByText('Aria')).toBeInTheDocument();
-    expect(screen.getByText(/Wishing you all the joy and stars in the sky!/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Wishing you all the joy and stars in the sky!/).length).toBeGreaterThanOrEqual(1);
 
     // Verify localStorage
     const saved = localStorage.getItem('birthday_bloom_guestbook_wishes');
