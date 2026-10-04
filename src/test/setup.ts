@@ -19,22 +19,17 @@ window.HTMLMediaElement.prototype.pause = () => { };
 window.HTMLMediaElement.prototype.load = () => { };
 
 class MockIntersectionObserver {
-    observe = () => { };
-    unobserve = () => { };
-    disconnect = () => { };
+    readonly root: Element | Document | null = null;
+    readonly rootMargin: string = '';
+    readonly thresholds: ReadonlyArray<number> = [];
+    observe(_target?: Element): void {}
+    unobserve(_target?: Element): void {}
+    disconnect(): void {}
+    takeRecords(): IntersectionObserverEntry[] { return []; }
 }
 
-Object.defineProperty(globalThis, "IntersectionObserver", {
-    writable: true,
-    configurable: true,
-    value: MockIntersectionObserver,
-});
-
-Object.defineProperty(window, "IntersectionObserver", {
-    writable: true,
-    configurable: true,
-    value: MockIntersectionObserver,
-});
+globalThis.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
+window.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
 
 const memoryStorage: Record<string, string> = {};
 const mockLocalStorage = {
