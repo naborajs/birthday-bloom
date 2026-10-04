@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo, lazy, Suspense } from "react";
 import { createPortal } from "react-dom";
-import { Cake as CakeIcon, Mic, Wind, Sparkles } from "lucide-react";
+import { Cake as CakeIcon, Mic, Wind } from "lucide-react";
 import { useMicrophoneBlow } from "@/hooks/useMicrophoneBlow";
 import { useConfetti } from "./Confetti";
 import { useSoundManager } from "./SoundManager";
@@ -273,7 +273,6 @@ export const CakeCutting = () => {
 
     const micEnabled = enableMicrophoneCandleBlow !== false && phase === "blow-intro";
     const {
-        isListening,
         blowIntensity,
         progress: blowProgress,
         permission: micPermission,
