@@ -86,9 +86,9 @@ export const useMicrophoneBlow = ({
     const triggerManualBlow = useCallback(() => {
         if (hasTriggeredRef.current) return;
         hasTriggeredRef.current = true;
+        stopListening();
         setBlowIntensity(1);
         setProgress(1);
-        stopListening();
         if (onBlowRef.current) {
             onBlowRef.current();
         }
