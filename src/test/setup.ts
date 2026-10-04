@@ -19,7 +19,15 @@ window.HTMLMediaElement.prototype.pause = () => { };
 window.HTMLMediaElement.prototype.load = () => { };
 
 class MockIntersectionObserver {
-    observe = () => { };
+    callback?: (entries: Array<{ isIntersecting: boolean; target?: Element }>) => void;
+    constructor(callback?: (entries: Array<{ isIntersecting: boolean; target?: Element }>) => void) {
+        this.callback = callback;
+    }
+    observe = (target?: Element) => {
+        if (this.callback) {
+            this.callback([{ isIntersecting: true, target }]);
+        }
+    };
     unobserve = () => { };
     disconnect = () => { };
 }
