@@ -1,15 +1,7 @@
-import { describe, it, expect, vi, beforeEach, beforeAll } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { GuestbookSection } from '@/components/birthday/GuestbookSection';
-
-beforeAll(() => {
-  window.IntersectionObserver = vi.fn().mockImplementation(() => ({
-    observe: vi.fn(),
-    unobserve: vi.fn(),
-    disconnect: vi.fn(),
-  }));
-});
 
 // Mock SoundManager
 vi.mock('@/components/birthday/SoundManager', () => ({
