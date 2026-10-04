@@ -22,9 +22,34 @@ class MockIntersectionObserver {
     readonly root: Element | Document | null = null;
     readonly rootMargin: string = '';
     readonly thresholds: ReadonlyArray<number> = [];
-    observe(_target?: Element): void {}
+    private callback?: (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => void;
+
+    constructor(callback?: (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => void) {
+        this.callback = callback;
+    }
+
+    observe(target?: Element): void {
+        if (this.callback && target) {
+            queueMicrotask(() => {
+                if (this.callback) {
+                    this.callback([{
+                        isIntersecting: true,
+                        target,
+                        boundingClientRect: (target.getBoundingClientRect ? target.getBoundingClientRect() : {}) as DOMRectReadOnly,
+                        intersectionRatio: 1,
+                        intersectionRect: (target.getBoundingClientRect ? target.getBoundingClientRect() : {}) as DOMRectReadOnly,
+                        rootBounds: null,
+                        time: Date.now(),
+                    }], this as unknown as IntersectionObserver);
+                }
+            });
+        }
+    }
+
     unobserve(_target?: Element): void {}
-    disconnect(): void {}
+    disconnect(): void {
+        this.callback = undefined;
+    }
     takeRecords(): IntersectionObserverEntry[] { return []; }
 }
 
