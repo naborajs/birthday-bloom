@@ -47,6 +47,9 @@ export interface TranslationSchema {
         startCutting: string;
         makeAWishAndBlow: string;
         blowNow: string;
+        blowIntoMic: string;
+        micListening: string;
+        tapCakeFallback: string;
         wishSentToStars: string;
         waitForCut: string;
         prepareToCut: string;
