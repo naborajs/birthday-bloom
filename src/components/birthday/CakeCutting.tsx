@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo, lazy, Suspense } from "react";
 import { createPortal } from "react-dom";
-import { Cake as CakeIcon } from "lucide-react";
+import { Cake as CakeIcon, Mic, Wind, Sparkles } from "lucide-react";
+import { useMicrophoneBlow } from "@/hooks/useMicrophoneBlow";
 import { useConfetti } from "./Confetti";
 import { useSoundManager } from "./SoundManager";
 import { KineticText } from "./KineticText";
@@ -79,7 +80,7 @@ export const CakeCutting = () => {
 
     const { fireCinematicCelebration } = useConfetti();
     const { playBoom, playReveal, playPop, playWhoosh } = useSoundManager();
-    const { name, age, relationship, gender, favoriteColor } = useBirthdayStore(state => state.config);
+    const { name, age, relationship, gender, favoriteColor, enableMicrophoneCandleBlow } = useBirthdayStore(state => state.config);
     const { t, isHindi, isBengali, isFrench } = useTranslation();
     const primaryColor = favoriteColor || '#FF6B6B';
 
@@ -270,6 +271,19 @@ export const CakeCutting = () => {
         runSequence();
     }, [phase, playWhoosh, playPop, playReveal]);
 
+    const micEnabled = enableMicrophoneCandleBlow !== false && phase === "blow-intro";
+    const {
+        isListening,
+        blowIntensity,
+        progress: blowProgress,
+        permission: micPermission,
+        startListening: requestMicPermission,
+        triggerManualBlow,
+    } = useMicrophoneBlow({
+        enabled: micEnabled,
+        onBlow: handleBlow,
+    });
+
     // Auto-cut fallback if user doesn't press button after knife enters
     useEffect(() => {
         if (phase === "knife-enter") {
@@ -414,7 +428,13 @@ export const CakeCutting = () => {
                                 </div>
                                 <div className="relative w-full h-[58vh] min-h-[460px] flex justify-center items-center mt-1 overflow-visible">
                                     <Suspense fallback={null}>
-                                        <LazyCake3D cake={cake} phase={phase} primaryColor={primaryColor} />
+                                        <LazyCake3D 
+                                            cake={cake} 
+                                            phase={phase} 
+                                            primaryColor={primaryColor} 
+                                            blowIntensity={blowIntensity}
+                                            onCakeClick={phase === "blow-intro" ? triggerManualBlow : undefined}
+                                        />
                                     </Suspense>
                                     
                                     {/* Overlays on top of the Cake */}
@@ -474,21 +494,75 @@ export const CakeCutting = () => {
                                 <div className="w-full flex flex-col items-center mt-2 min-h-[140px]">
                                     {/* Blow Sequence Text */}
                                     {(phase === "blow-intro" || phase === "blowing") && (
-                                        <motion.div initial={{ scale: 0.8, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} className="flex flex-col items-center gap-6">
+                                        <motion.div initial={{ scale: 0.8, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} className="flex flex-col items-center gap-4">
                                             <h2 className="font-display text-3xl sm:text-4xl text-white font-black text-center tracking-tighter animate-glow-pulse">
                                                 {t('cake.makeAWishAndBlow')}
                                             </h2>
                                             {phase === "blow-intro" && (
-                                                <motion.button 
-                                                    whileHover={!reducedMotion ? { scale: 1.1 } : undefined} 
-                                                    whileTap={{ scale: 0.9 }} 
-                                                    onClick={handleBlow} 
-                                                    className="group relative px-12 py-5 rounded-full text-xl font-black text-white overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.2)]" 
-                                                    style={{ background: "linear-gradient(90deg, #ff0080, #7928ca)" }}
-                                                >
-                                                    <span className="relative z-10">{t('cake.blowNow')}</span>
-                                                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                                                </motion.button>
+                                                <div className="flex flex-col items-center gap-3">
+                                                    <motion.div
+                                                        animate={{ scale: 1 + blowIntensity * 0.12 }}
+                                                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                                        className="relative flex items-center justify-center"
+                                                    >
+                                                        {/* Glowing breath wave aura */}
+                                                        <div
+                                                            className="absolute -inset-4 rounded-full blur-xl pointer-events-none transition-opacity duration-200"
+                                                            style={{
+                                                                background: `radial-gradient(circle, ${primaryColor}99 0%, transparent 70%)`,
+                                                                opacity: 0.2 + blowIntensity * 0.8,
+                                                            }}
+                                                        />
+
+                                                        {/* Microphone breath indicator card / interactive pill */}
+                                                        <div
+                                                            onClick={triggerManualBlow}
+                                                            role="button"
+                                                            tabIndex={0}
+                                                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') triggerManualBlow(); }}
+                                                            className="relative z-10 flex items-center gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-full border backdrop-blur-2xl cursor-pointer select-none shadow-2xl transition-all"
+                                                            style={{
+                                                                background: `linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.03))`,
+                                                                borderColor: blowIntensity > 0.15 ? primaryColor : 'rgba(255,255,255,0.2)',
+                                                                boxShadow: blowIntensity > 0.15 ? `0 0 35px ${primaryColor}66` : '0 10px 30px rgba(0,0,0,0.5)',
+                                                            }}
+                                                        >
+                                                            <Wind className="w-5 h-5 text-sky-300 animate-pulse flex-shrink-0" />
+                                                            <div className="flex flex-col text-left">
+                                                                <span className="text-xs sm:text-sm font-bold text-white tracking-wide">
+                                                                    {t('cake.blowIntoMic')}
+                                                                </span>
+                                                                <span className="text-[10px] sm:text-[11px] text-white/60">
+                                                                    {blowIntensity > 0.15 ? t('cake.micListening') : t('cake.tapCakeFallback')}
+                                                                </span>
+                                                            </div>
+                                                            {/* Live progress gauge */}
+                                                            <div className="w-12 sm:w-16 h-2 rounded-full bg-white/10 overflow-hidden ml-1 flex-shrink-0">
+                                                                <div
+                                                                    className="h-full bg-gradient-to-r from-sky-400 to-primary transition-all duration-75"
+                                                                    style={{ width: `${Math.round(blowProgress * 100)}%` }}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </motion.div>
+
+                                                    {micPermission === 'prompt' && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => requestMicPermission()}
+                                                            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white/80 text-[11px] sm:text-xs font-medium tracking-wide transition-all shadow-md"
+                                                        >
+                                                            <Mic className="w-3.5 h-3.5 text-primary animate-pulse" />
+                                                            <span>Tap to activate mic detection 🎙️</span>
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            )}
+                                            {phase === "blowing" && (
+                                                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 text-white/90 text-sm font-semibold tracking-wide">
+                                                    <Wind className="w-4 h-4 text-sky-400 animate-spin" />
+                                                    <span>Extinguishing candles... ✨</span>
+                                                </motion.div>
                                             )}
                                         </motion.div>
                                     )}
