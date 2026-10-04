@@ -143,6 +143,12 @@ export const parseBirthdayUrlParams = (searchString?: string): Partial<BirthdayC
       overrides.showGuestbookSection = !['false', '0', 'no', 'off', 'disabled'].includes(rawGuestbook.toLowerCase().trim());
     }
 
+    // Force High Graphics override
+    const rawHighGraphics = params.get('highGraphics') || params.get('high_graphics') || params.get('perf');
+    if (rawHighGraphics !== null) {
+      overrides.forceHighGraphics = ['true', '1', 'yes', 'on', 'high'].includes(rawHighGraphics.toLowerCase().trim());
+    }
+
     // Password lock & hints
     const rawPass = params.get('password') || params.get('pass');
     if (rawPass && rawPass.trim()) {
