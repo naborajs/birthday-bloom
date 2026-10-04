@@ -47,6 +47,7 @@ export interface BirthdayConfig {
     language?: 'en' | 'hi' | 'bn' | 'fr' | string;
     enableMicrophoneCandleBlow?: boolean;
     showGuestbookSection?: boolean;
+    forceHighGraphics?: boolean;
     password?: string;
     passwordHint?: string;
     passwordFormat?: string;
@@ -192,6 +193,7 @@ const envShowGift = parseEnvBoolean(import.meta.env.VITE_SHOW_GIFT_SECTION, true
 const envShowSkipButton = parseEnvBoolean(import.meta.env.VITE_SHOW_SKIP_BUTTON, true);
 const envEnableMicBlow = parseEnvBoolean(import.meta.env.VITE_ENABLE_MIC_BLOW, true);
 const envShowGuestbook = parseEnvBoolean(import.meta.env.VITE_SHOW_GUESTBOOK_SECTION ?? import.meta.env.VITE_SHOW_GUESTBOOK, true);
+const envForceHighGraphics = parseEnvBoolean(import.meta.env.VITE_FORCE_HIGH_GRAPHICS, false);
 const envReducedMotion = import.meta.env.VITE_REDUCED_MOTION !== undefined
     ? parseEnvBoolean(import.meta.env.VITE_REDUCED_MOTION, false)
     : undefined;
@@ -301,6 +303,7 @@ export const useBirthdayStore = create<BirthdayStore>((set, get) => ({
         soundEffectsEnabled: urlOverrides.soundEffectsEnabled !== undefined ? urlOverrides.soundEffectsEnabled : envSoundEffects,
         enableMicrophoneCandleBlow: urlOverrides.enableMicrophoneCandleBlow !== undefined ? urlOverrides.enableMicrophoneCandleBlow : envEnableMicBlow,
         showGuestbookSection: urlOverrides.showGuestbookSection !== undefined ? urlOverrides.showGuestbookSection : envShowGuestbook,
+        forceHighGraphics: urlOverrides.forceHighGraphics !== undefined ? urlOverrides.forceHighGraphics : envForceHighGraphics,
         language: urlOverrides.language !== undefined ? urlOverrides.language : envLanguage,
         finalVideoUrl: envFinalVideo,
         specialMemories: envMemories,
