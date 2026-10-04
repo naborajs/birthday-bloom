@@ -16,6 +16,7 @@ import { EmojiCursorTrail } from "@/components/birthday/EmojiCursorTrail";
 import { PremiumFireworks } from "@/components/birthday/PremiumFireworks";
 import { isPasswordRequired } from "@/utils/password";
 import { useTranslation } from "@/i18n";
+import { useAdaptivePerformance } from "@/hooks/useAdaptivePerformance";
 
 type Phase = "splash" | "unlock" | "intro" | "main";
 
@@ -31,6 +32,7 @@ const Index = () => {
     });
     const [fireworksRunKey, setFireworksRunKey] = useState(0);
     const isMobile = useIsMobile();
+    const perf = useAdaptivePerformance();
     const config = useBirthdayStore((state) => state.config);
     const { t } = useTranslation();
     useDynamicTheme();
@@ -42,17 +44,23 @@ const Index = () => {
       <div className="fixed top-[20%] right-[8%] w-[34rem] h-[34rem] rounded-full bg-[radial-gradient(circle,rgba(255,200,100,0.14)_0%,rgba(255,200,100,0.05)_40%,transparent_70%)] pointer-events-none animate-pulse" />
       <div className="fixed bottom-[10%] left-[25%] w-[42rem] h-[42rem] rounded-full bg-[radial-gradient(circle,rgba(180,60,140,0.15)_0%,rgba(180,60,140,0.06)_40%,transparent_70%)] pointer-events-none" />
 
-      {/* Lightweight ambient effects — reduced for performance */}
-      <EmojiCursorTrail />
+      {/* Lightweight ambient effects — adaptively throttled to eliminate mobile lag */}
+      {perf.enableCursorTrail && <EmojiCursorTrail />}
       <PremiumFireworks runKey={fireworksRunKey}/>
       <FloatingElements />
 
-      {/* Additional effects only in main phase to reduce initial load */}
-      {phase === "main" && (<>
-          <SparkleRain intensity={isMobile ? 4 : 6}/>
-          <FireflyEffect intensity={isMobile ? 3 : 5}/>
-          <ShootingStars count={isMobile ? 2 : 3}/>
-        </>)}
+      {/* Additional ambient effects in main phase: single tranquil layer on mobile, full multi-canvas on high-spec desktop */}
+      {phase === "main" && (
+        perf.enableMultiCanvas ? (
+          <>
+            <SparkleRain intensity={4} />
+            <FireflyEffect intensity={3} />
+            <ShootingStars count={2} />
+          </>
+        ) : (
+          <FireflyEffect intensity={2} />
+        )
+      )}
 
       {/* Vignette overlay */}
       <div className="vignette"/>
