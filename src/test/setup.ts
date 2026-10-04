@@ -18,3 +18,21 @@ window.HTMLMediaElement.prototype.play = () => Promise.resolve();
 window.HTMLMediaElement.prototype.pause = () => { };
 window.HTMLMediaElement.prototype.load = () => { };
 
+class MockIntersectionObserver {
+    observe = () => { };
+    unobserve = () => { };
+    disconnect = () => { };
+}
+
+Object.defineProperty(window, "IntersectionObserver", {
+    writable: true,
+    configurable: true,
+    value: MockIntersectionObserver,
+});
+
+Object.defineProperty(global, "IntersectionObserver", {
+    writable: true,
+    configurable: true,
+    value: MockIntersectionObserver,
+});
+
