@@ -1,10 +1,18 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, beforeAll } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
-import { GuestbookSection } from '../components/birthday/GuestbookSection';
+import { GuestbookSection } from '@/components/birthday/GuestbookSection';
+
+beforeAll(() => {
+  window.IntersectionObserver = vi.fn().mockImplementation(() => ({
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn(),
+  }));
+});
 
 // Mock SoundManager
-vi.mock('../components/birthday/SoundManager', () => ({
+vi.mock('@/components/birthday/SoundManager', () => ({
   useSoundManager: () => ({
     playPop: vi.fn(),
     playReveal: vi.fn(),
@@ -14,11 +22,27 @@ vi.mock('../components/birthday/SoundManager', () => ({
 }));
 
 // Mock Confetti
-vi.mock('../components/birthday/Confetti', () => ({
+vi.mock('@/components/birthday/Confetti', () => ({
   useConfetti: () => ({
     fireConfetti: vi.fn(),
     fireCannon: vi.fn(),
     fireStars: vi.fn(),
+  }),
+}));
+
+// Mock useAdaptivePerformance
+vi.mock('@/hooks/useAdaptivePerformance', () => ({
+  useAdaptivePerformance: () => ({
+    tier: 'balanced',
+    isMobile: false,
+    dpr: 1,
+    shadowMapSize: 512,
+    maxParticles: 25,
+    enableCursorTrail: true,
+    enableMultiCanvas: true,
+    enableComplexShaders: true,
+    enableHeavyBlur: true,
+    recommendedFrameCap: 60,
   }),
 }));
 
