@@ -65,8 +65,9 @@ export const GuestbookSection: React.FC = () => {
   const { config } = useBirthdayStore();
   const { t, isBengali, isHindi, isFrench } = useTranslation();
   const { fireConfetti, fireStars } = useConfetti();
-  const { playPop, playReveal } = useSoundManager();
-  const { isMobile, isLowPowerMode } = useAdaptivePerformance();
+  const perfProfile = useAdaptivePerformance();
+  const isMobile = perfProfile.isMobile;
+  const isLowPowerMode = perfProfile.tier === 'low';
 
   const [wishes, setWishes] = useState<GuestbookWish[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
