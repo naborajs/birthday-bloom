@@ -115,4 +115,33 @@ export interface TranslationSchema {
         highLegendLevel: string;
         moreMagicalSurprise: string;
     };
+    guestbook: {
+        title: string;
+        subtitle: string;
+        badge: string;
+        leaveWish: string;
+        namePlaceholder: string;
+        messagePlaceholder: string;
+        relationshipLabel: string;
+        roles: {
+            friend: string;
+            family: string;
+            partner: string;
+            wellWisher: string;
+            colleague: string;
+        };
+        submit: string;
+        sending: string;
+        sentSuccess: string;
+        likeCount: string;
+        emptyState: string;
+        defaultWishes: {
+            partner: string;
+            friend: string;
+            family: string;
+            mother: string;
+            father: string;
+            general: string;
+        };
+    };
 }
