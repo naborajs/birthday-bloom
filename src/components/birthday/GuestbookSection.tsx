@@ -69,7 +69,6 @@ export const GuestbookSection: React.FC = () => {
   const isMobile = perfProfile.isMobile;
   const isLowPowerMode = perfProfile.tier === 'low';
 
-  const [wishes, setWishes] = useState<GuestbookWish[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [formName, setFormName] = useState('');
   const [formMessage, setFormMessage] = useState('');
@@ -205,13 +204,28 @@ export const GuestbookSection: React.FC = () => {
   }, [config.relationship, config.name, config.senderName, t, isBengali, isHindi, isFrench]);
 
   // Load wishes from localStorage and merge with seeds
-  useEffect(() => {
+  const [wishes, setWishes] = useState<GuestbookWish[]>(() => {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      const stored = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          // Merge custom user entries with standard defaults
+          const customOnly = parsed.filter((p: GuestbookWish) => p.isCustom);
+          return [...customOnly, ...defaultSeeds];
+        }
+      }
+    } catch {
+      // Fallback
+    }
+    return defaultSeeds;
+  });
+
+  useEffect(() => {
+    try {
+      const stored = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
           const customOnly = parsed.filter((p: GuestbookWish) => p.isCustom);
           setWishes([...customOnly, ...defaultSeeds]);
           return;
@@ -221,7 +235,7 @@ export const GuestbookSection: React.FC = () => {
       // Fallback gracefully
     }
     setWishes(defaultSeeds);
-  }, [defaultSeeds]);
+  }, [config.relationship, config.name, config.senderName]);
 
   const handleLike = (id: string) => {
     playPop();
