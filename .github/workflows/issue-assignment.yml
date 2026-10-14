@@ -23,7 +23,7 @@ jobs:
 
       - name: Assign Issue
         if: env.assigned == 'false'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const issueNo = context.payload.issue.number;
