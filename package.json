@@ -72,7 +72,7 @@
     "@types/node": "^22.20.5",
     "@types/react": "18.3.23",
     "@types/react-dom": "18.3.7",
-    "@types/three": "^0.185.1",
+    "@types/three": "^0.185.4",
     "@vitejs/plugin-react": "^6.1.2",
     "autoprefixer": "^10.6.1",
     "eslint": "^9.32.0",
