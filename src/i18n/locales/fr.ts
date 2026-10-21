@@ -143,6 +143,8 @@ export const fr: TranslationSchema = {
             family: "Que cette nouvelle bougie t'apporte santé, sérénité et une joie infinie entouré(e) des tiens.",
             mother: "Joyeux anniversaire Maman ! Merci pour ton amour inconditionnel, ta tendresse et ta grâce infinie.",
             father: "Joyeux anniversaire Papa ! Merci d'être notre repère, notre force et notre inspiration de chaque instant.",
+            brother: "Joyeux anniversaire à un frère formidable ! Merci pour tous ces souvenirs partagés et ces fous rires complices.",
+            sister: "Joyeux anniversaire à la plus merveilleuse des sœurs ! Que cette année soit aussi rayonnante et belle que toi.",
             general: "Merveilleux anniversaire ! Que cette journée soit douce, lumineuse et remplie de belles surprises.",
         },
     }
