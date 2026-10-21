@@ -643,7 +643,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                             animate={{ opacity: 1, x: 0, scale: 1 }}
                             transition={{ duration: 0.3, ease: "easeOut" }}
                             onClick={handleDoubleTapMessage}
-                            className="relative self-start max-w-[82%] px-3.5 py-2 rounded-[18px] rounded-bl-[4px] bg-[#26262B]/95 text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal shadow-md border border-white/10 leading-snug cursor-pointer active:scale-[0.98] transition-transform"
+                            className="relative self-start max-w-[82%] px-3.5 py-2 rounded-[18px] rounded-bl-[4px] bg-[#26262B]/95 text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal shadow-md border border-white/10 leading-snug cursor-pointer active:scale-[0.98] transition-transform transform-gpu will-change-transform"
                         >
                             <span>
                                 {relationship === "partner"
@@ -660,7 +660,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                             animate={{ opacity: 1, x: 0, scale: 1 }}
                             transition={{ delay: 0.25, duration: 0.3, ease: "easeOut" }}
                             onClick={handleDoubleTapMessage}
-                            className="relative self-start max-w-[85%] px-3.5 py-2 rounded-[18px] rounded-bl-[4px] bg-[#26262B]/95 text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal shadow-md border border-white/10 leading-snug cursor-pointer active:scale-[0.98] transition-transform mb-1"
+                            className="relative self-start max-w-[85%] px-3.5 py-2 rounded-[18px] rounded-bl-[4px] bg-[#26262B]/95 text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal shadow-md border border-white/10 leading-snug cursor-pointer active:scale-[0.98] transition-transform mb-1 transform-gpu will-change-transform"
                         >
                             <span>
                                 {relationship === "partner"
@@ -696,7 +696,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                     initial={{ opacity: 0, y: 24, scale: 0.85 }}
                                     animate={{ opacity: 1, y: 0, scale: 1 }}
                                     transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                                    className="self-end max-w-[85%] flex flex-col items-end gap-1"
+                                    className="self-end max-w-[85%] flex flex-col items-end gap-1 transform-gpu will-change-transform"
                                 >
                                     <div
                                         className="relative px-3.5 py-2.5 rounded-[18px] rounded-br-[4px] text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal shadow-[0_8px_24px_rgba(236,72,153,0.35)] leading-snug border border-white/15"
