@@ -106,6 +106,20 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 - Renders a 5-layer gourmet sponge and mascarpone ganache cake encased in a smooth frosting outer mantle atop a sculpted porcelain pedestal platter with 24K gold rim inlay.
 - Integrates a true 3D stainless steel pastry knife (`CakeKnife3D.tsx`) with brass bolster and riveted walnut handle driven by `@react-spring/three` physics, synchronized with particle pastry crumbs and golden sparks (`CakeCutting.tsx`).
 
+### Adaptive Mobile Performance & Zero-Lag Engine — `src/utils/deviceTier.ts` & `src/hooks/useAdaptivePerformance.ts`
+- Detects hardware concurrency, device memory, battery level/charging state, touch capabilities, and OS `prefers-reduced-motion`.
+- Dynamically assigns device performance tiers (`low`, `balanced`, `high`) capping DPR to 1 on mobile to prevent fragment fillrate bottlenecks, gating multi-canvas layers, and disabling heavy backdrop filters.
+- Honors explicit environment override via `VITE_FORCE_HIGH_GRAPHICS=true`.
+
+### Acoustic Breath Analysis & Microphone Candle Blowing — `src/hooks/useMicrophoneBlow.ts`
+- Replaces generic button clicks with real-time acoustic breath turbulence analysis via the Web Audio API.
+- Employs a 50Hz high-pass biquad filter and fast Fourier transform (`analyserNode`, FFT size 256) measuring broadband low-frequency acoustic energy (80Hz - 600Hz) to drive 3D flame tilt, candle flutter, and natural extinguishing physics in `Cake3D.tsx`.
+- Gracefully provides one-tap fallback for non-microphone browsers and permissions.
+
+### Interactive Guestbook & Live Wishes Board — `src/components/birthday/GuestbookSection.tsx`
+- Template-aware interactive wishes board enabled by default and configurable via `VITE_SHOW_GUESTBOOK_SECTION`.
+- Features template-specific starter seeds for all relationship types (`partner`, `friend`, `family`, `mother`, `father`, `brother`, `sister`), heart reaction toggling, and client-side `localStorage` persistence.
+
 ---
 
 ## 4. Directory Structure
@@ -128,7 +142,7 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 | `src/utils/` | Password, date, URL, color, media, and audio utilities |
 | `src/hooks/` | Responsive hooks (`use-mobile.tsx`) |
 | `src/lib/` | Tailwind class merging utilities (`utils.ts`) |
-| `src/test/` | Vitest 3 test infrastructure (24 test files, 467 passing tests) |
+| `src/test/` | Vitest 3 test infrastructure (27 test files, 483 passing tests) |
 | `public/` | Static assets, web manifest, `robots.txt`, `sitemap.xml`, `llms.txt` |
 | `obsidian-docs/` | Comprehensive 32-note technical documentation vault |
 
