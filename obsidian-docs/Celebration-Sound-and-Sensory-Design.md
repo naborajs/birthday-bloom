@@ -31,7 +31,8 @@ Sound is the fastest pathway to the human emotional center (the amygdala). In Bi
 | **Typewriter Clicks (`playType`)** | Crisp, mechanical tactile taps (80–120ms) | Focuses attention word-by-word; dopamine anticipation | [`CinematicIntro.tsx`](file:///d:/Projects/Website/birthday-bloom/src/components/birthday/CinematicIntro.tsx) |
 | **Whoosh Transition (`playWhoosh`)** | Low-frequency stereo swoosh (200–500ms) | Signals narrative transition between acts | [`FakeChatScene.tsx`](file:///d:/Projects/Website/birthday-bloom/src/components/birthday/FakeChatScene.tsx) |
 | **Grand Reveal Boom (`playBoom`)** | Deep sub-bass impact (50–80Hz) + sparkle tail | Climactic endorphin rush; awe and scale | [`CinematicIntro.tsx`](file:///d:/Projects/Website/birthday-bloom/src/components/birthday/CinematicIntro.tsx) |
-| **Chime & Pop Cascade (`playPop`, `playReveal`)** | High pentatonic bells (C6–G6 harmonic ring) | Delight, celebratory payoff | [`Confetti.tsx`](file:///d:/Projects/Website/birthday-bloom/src/components/birthday/Confetti.tsx) |
+| **Chime & Pop Cascade (`playPop`, `playReveal`, `playChime`)** | High pentatonic bells & soft sparkle chime | Delight, celebratory payoff, gentle memory reveal | [`Confetti.tsx`](file:///d:/Projects/Website/birthday-bloom/src/components/birthday/Confetti.tsx), [`SoundManager.tsx`](file:///d:/Projects/Website/birthday-bloom/src/components/birthday/SoundManager.tsx) |
+| **Acoustic Breath Analysis (`useMicrophoneBlow`)** | Low-to-mid broadband breath turbulence (80Hz–600Hz) | Physical immersion: real-time 3D candle extinguishing | [`CakeCutting.tsx`](file:///d:/Projects/Website/birthday-bloom/src/components/birthday/CakeCutting.tsx), [`useMicrophoneBlow.ts`](file:///d:/Projects/Website/birthday-bloom/src/hooks/useMicrophoneBlow.ts) |
 
 ---
 
