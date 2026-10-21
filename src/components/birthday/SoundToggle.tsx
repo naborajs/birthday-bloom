@@ -39,11 +39,12 @@ export const SoundToggle = () => {
             type="button"
             role="button"
             aria-label={label}
+            aria-pressed={!isMuted}
             title={label}
             onClick={handleToggle}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.92 }}
-            className="fixed top-6 right-6 z-40 p-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-xl text-white shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary"
+            className="fixed top-6 right-6 z-40 p-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-xl text-white shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary transform-gpu select-none"
         >
             {isMuted ? (
                 <VolumeX size={18} className="text-white/60" />
