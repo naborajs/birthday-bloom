@@ -7,6 +7,7 @@ import { useSoundManager } from "./SoundManager";
 import { KineticText } from "./KineticText";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useAdaptivePerformance } from "@/hooks/useAdaptivePerformance";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 import { Phase, CakeOption, CAKE_OPTIONS, getCakeName } from "./CakeTypes";
@@ -70,9 +71,11 @@ const CakeCard = ({ cake, onSelect }: {
 
 export const CakeCutting = () => {
     const isMobile = useIsMobile();
+    const perfProfile = useAdaptivePerformance();
     const prefersReducedMotion = useReducedMotion();
     const storeReducedMotion = useBirthdayStore(state => state.config.reducedMotion);
-    const reducedMotion = Boolean(storeReducedMotion || prefersReducedMotion || isMobile);
+    const isLowTier = perfProfile.tier === 'low';
+    const reducedMotion = Boolean(storeReducedMotion || prefersReducedMotion || isMobile || perfProfile.prefersReducedMotion);
     const [phase, setPhase] = useState<Phase>("select");
     const [selectedCake, setSelectedCake] = useState<CakeOption | null>(null);
     const [quoteIndex, setQuoteIndex] = useState(-1);
@@ -442,11 +445,11 @@ export const CakeCutting = () => {
                                     <AnimatePresence>
                                         {phase === "cutting" && (
                                             <>
-                                                <CutSparks count={sparkCount} color={cake.accent} />
-                                                <PastryCrumbs count={isMobile ? 18 : 32} color={cake.config.crumbColor || cake.accent} />
+                                                <CutSparks count={isLowTier ? Math.min(sparkCount, 8) : sparkCount} color={cake.accent} />
+                                                <PastryCrumbs count={isLowTier ? 10 : isMobile ? 16 : 32} color={cake.config.crumbColor || cake.accent} />
                                             </>
                                         )}
-                                        {phase === "burst" && <MagicDust count={60} />}
+                                        {phase === "burst" && <MagicDust count={isLowTier ? 20 : 60} />}
                                     </AnimatePresence>
                                     
                                     {/* Wish Overlay Glow */}
