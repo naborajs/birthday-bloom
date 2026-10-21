@@ -943,7 +943,14 @@ export const Cake3D = ({
                 shadows={perf.tier !== 'low'}
                 dpr={perf.dpr}
                 camera={{ position: [0, 4.4, 8.4], fov: 42 }}
-                gl={{ powerPreference: "high-performance", antialias: perf.tier !== 'low', alpha: true }}
+                gl={{
+                    powerPreference: perf.tier === 'low' ? "low-power" : "high-performance",
+                    antialias: perf.tier !== 'low',
+                    alpha: true,
+                    precision: perf.tier === 'low' ? "mediump" : "highp",
+                    stencil: false,
+                    depth: true
+                }}
             >
                 <Suspense fallback={null}>
                     <Scene 
