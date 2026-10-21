@@ -77,6 +77,19 @@ export const useConfetti = () => {
             colors: ["#e84393", "#a855f7", "#f59e0b", "#38bdf8", "#f97316", "#34d399"],
         });
     }, [isMobile, isReducedMotion]);
+    const fireRosePetals = useCallback(() => {
+        confetti({
+            particleCount: isReducedMotion ? 12 : isMobile ? 25 : 45,
+            spread: 90,
+            origin: { y: 0.1 },
+            gravity: 0.45,
+            scalar: isMobile ? 1.0 : 1.3,
+            ticks: 150,
+            drift: 0.2,
+            colors: ["#ff4d6d", "#c9184a", "#ff758f", "#ffb3c1", "#fff0f3"],
+            disableForReducedMotion: isReducedMotion,
+        });
+    }, [isMobile, isReducedMotion]);
     const fireCinematicCelebration = useCallback(() => {
         if (isReducedMotion) {
             confetti({
@@ -161,6 +174,7 @@ export const useConfetti = () => {
         fireCannon,
         fireStars,
         firePop,
+        fireRosePetals,
         fireCinematicCelebration,
-    }), [fireConfetti, fireCannon, fireStars, firePop, fireCinematicCelebration]);
+    }), [fireConfetti, fireCannon, fireStars, firePop, fireRosePetals, fireCinematicCelebration]);
 };
