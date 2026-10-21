@@ -22,6 +22,19 @@ All notable changes to Birthday Bloom are documented here. The format is based o
 
 ## 🚀 Release History Highlights
 
+### [3.7.0] — 2026-10-21
+- **Added**:
+  - **Microphone-Adaptive 3D Candle Blowing** (`useMicrophoneBlow.ts`): Real-time acoustic energy analysis using Web Audio API with a 50Hz high-pass biquad filter driving 3D flame tilt, candle flutter, and natural breath-extinguishing physics.
+  - **Adaptive Battery & Mobile Zero-Lag Engine** (`useAdaptivePerformance.ts`, `deviceTier.ts`): Dynamic device tiering (`low`, `balanced`, `high`) capping DPR to 1 on mobile, gating concurrent canvas RAF loops, and reducing memory pressure.
+  - **Interactive Guestbook & Live Wishes Board** (`GuestbookSection.tsx`): Template-aware starter wishes for all relationship types, heart reaction counters, client-side `localStorage` persistence, and confetti integration.
+  - **Sensory & Visual Enhancements**: Added gentle falling rose petals effect (`fireRosePetals`) and soft chime audio cue (`playChime`).
+  - **Emotional Template Depth**: Added dedicated brother and sister starter seeds, memory prompts, and gratitude fields across English, Bengali, Hindi, and French.
+- **Changed**:
+  - Upgraded toolchain to Vite 8.3.4, Vitest 3.2.7, React Router DOM 7.18.4, Framer Motion 13.5.1, and TypeScript-ESLint 8.71.2.
+  - Test suite expanded to 27 test suites and 483 passing tests (100% passing).
+- **Security**:
+  - Resolved vulnerabilities via npm overrides for `brace-expansion` (^2.1.7), `fflate` (^0.8.2), `postcss-selector-parser` (^7.1.6), `js-yaml` (^4.3.2), and `@humanfs/node` (^0.16.8).
+
 ### [3.6.0] — 2026-09-27
 - **Added**:
   - 3D Smartphone Hardware Chassis (`FakeChatScene.tsx`) with brushed rose-titanium metallic bezel and OLED reflections.
