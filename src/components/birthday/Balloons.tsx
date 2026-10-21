@@ -39,7 +39,7 @@ export const Balloons = ({ count = 20 }: {
         })));
     }, [activeCount, colors]);
     return (<div className="fixed inset-0 pointer-events-none overflow-hidden z-0" style={{ perspective: "1000px" }}>
-      {balloons.map((b) => (<div key={b.id} className="absolute bottom-[-150px] animate-balloon-rise" style={{
+      {balloons.map((b) => (<div key={b.id} className="absolute bottom-[-150px] animate-balloon-rise transform-gpu will-change-transform" style={{
                 left: `${b.x}%`,
                 animationDuration: `${b.duration}s`,
                 animationDelay: `${b.delay}s`,
