@@ -70,8 +70,11 @@ Located in [`src/utils/deviceTier.ts`](file:///d:/Projects/Website/birthday-bloo
    - Disables cursor trails (which generate hundreds of unnecessary event listeners on touch devices).
    - Limits ambient canvases to at most 1 calm layer (`FireflyEffect`).
    - Limits max particle count to `12`.
-3. **Battery Low Throttling (`isBatteryLow`)**:
-   Monitors `navigator.getBattery()`. If battery level falls below 20% while discharging, downstream effects step down to low-power profile to preserve battery life.
+4. **OS Reduced Motion Syncing (`prefers-reduced-motion`)**:
+   Monitors OS accessibility preferences via `matchMedia('(prefers-reduced-motion: reduce)')`. If reduced motion is toggled, the performance profile automatically updates in real-time, throttling particle burst calculations down to minimum counts ($4-8$ particles) and preventing motion triggers.
+
+5. **Hardware GPU Layer Promotion**:
+   Critical animated UI elements (`FakeChatScene.tsx`, `WishDeck.tsx`, `Balloons.tsx`, `EnvelopeLetterScene.tsx`) utilize `transform-gpu` and `will-change: transform`. This promotes elements directly to GPU compositor textures, completely preventing CPU layout invalidations and paint thrashing during fast touch scrolling.
 
 ---
 
