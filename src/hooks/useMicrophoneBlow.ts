@@ -128,10 +128,17 @@ export const useMicrophoneBlow = ({
             }
 
             const source = audioCtx.createMediaStreamSource(stream);
+            // High-pass filter at 50Hz to reject electrical mains hum and sub-bass room rumble
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'highpass';
+            filter.frequency.value = 50;
+
             const analyser = audioCtx.createAnalyser();
             analyser.fftSize = 256;
             analyser.smoothingTimeConstant = 0.2;
-            source.connect(analyser);
+
+            source.connect(filter);
+            filter.connect(analyser);
             analyserRef.current = analyser;
 
             const bufferLength = analyser.frequencyBinCount;
