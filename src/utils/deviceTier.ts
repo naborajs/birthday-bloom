@@ -3,6 +3,7 @@ export type PerformanceTier = 'low' | 'balanced' | 'high';
 export interface PerformanceProfile {
     tier: PerformanceTier;
     isMobile: boolean;
+    prefersReducedMotion: boolean;
     dpr: number;
     shadowMapSize: number;
     maxParticles: number;
@@ -22,6 +23,7 @@ export const getDevicePerformanceProfile = (): PerformanceProfile => {
         return {
             tier: 'balanced',
             isMobile: false,
+            prefersReducedMotion: false,
             dpr: 1,
             shadowMapSize: 512,
             maxParticles: 20,
@@ -33,12 +35,17 @@ export const getDevicePerformanceProfile = (): PerformanceProfile => {
         };
     }
 
+    const prefersReducedMotion = typeof window.matchMedia === 'function'
+        ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        : false;
+
     // 1. Check explicit environment force override
     const forceHigh = import.meta.env.VITE_FORCE_HIGH_GRAPHICS === 'true';
     if (forceHigh) {
         return {
             tier: 'high',
             isMobile: window.innerWidth < 768,
+            prefersReducedMotion,
             dpr: Math.min(window.devicePixelRatio || 1, 2),
             shadowMapSize: 1024,
             maxParticles: 45,
@@ -60,16 +67,17 @@ export const getDevicePerformanceProfile = (): PerformanceProfile => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const deviceMemory = (navigator as any).deviceMemory || 4;
 
-    // Detect if device is resource-constrained or mobile
-    const isConstrained = isMobile || hardwareConcurrency <= 4 || deviceMemory <= 3;
+    // Detect if device is resource-constrained, mobile, or requested reduced motion
+    const isConstrained = isMobile || prefersReducedMotion || hardwareConcurrency <= 4 || deviceMemory <= 3;
 
     if (isConstrained) {
         return {
             tier: 'low',
             isMobile,
+            prefersReducedMotion,
             dpr: 1, // Cap DPR to 1 on mobile to avoid 4x-9x fragment shading fillrate bottlenecks
             shadowMapSize: 256,
-            maxParticles: 12,
+            maxParticles: prefersReducedMotion ? 4 : 12,
             enableCursorTrail: false, // Disabling cursor trail on touch removes hundreds of RAF listeners
             enableMultiCanvas: false, // Run at most 1 ambient canvas effect instead of 4 overlapping
             enableComplexShaders: false,
@@ -84,6 +92,7 @@ export const getDevicePerformanceProfile = (): PerformanceProfile => {
         return {
             tier: 'low',
             isMobile: false,
+            prefersReducedMotion,
             dpr: 1,
             shadowMapSize: 256,
             maxParticles: 10,
@@ -99,6 +108,7 @@ export const getDevicePerformanceProfile = (): PerformanceProfile => {
         return {
             tier: 'high',
             isMobile: false,
+            prefersReducedMotion,
             dpr: Math.min(window.devicePixelRatio || 1, 2),
             shadowMapSize: 1024,
             maxParticles: 40,
@@ -114,6 +124,7 @@ export const getDevicePerformanceProfile = (): PerformanceProfile => {
     return {
         tier: 'balanced',
         isMobile: false,
+        prefersReducedMotion,
         dpr: Math.min(window.devicePixelRatio || 1, 1.5),
         shadowMapSize: 512,
         maxParticles: 25,
