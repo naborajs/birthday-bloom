@@ -143,6 +143,8 @@ export const enTranslations: TranslationSchema = {
             family: "May your journey ahead be blessed with pure happiness, peace, and endless love.",
             mother: "Happy Birthday Mom! Thank you for your endless love, kindness, and boundless grace.",
             father: "Happy Birthday Dad! Thank you for always being our steady guide, strength, and inspiration.",
+            brother: "Happy Birthday to the coolest brother! Thanks for all the shared memories and laughter.",
+            sister: "Happy Birthday to the most wonderful sister! Wishing you a year as radiant and lovely as you.",
             general: "Wishing you a bright, joyous, and truly wonderful birthday filled with sweetest surprises!",
         },
     },
