@@ -268,7 +268,10 @@ export const EnvelopeLetterScene = ({
                         </motion.div>
 
                         {/* Envelope Body */}
-                        <div className="relative w-[310px] sm:w-[380px] h-[210px] sm:h-[250px] rounded-3xl bg-[#FAF6F0] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_0_30px_rgba(255,200,120,0.2)] border-2 border-[#E5C378] overflow-hidden flex items-center justify-center">
+                        <div 
+                            style={{ perspective: 1000 }}
+                            className="relative w-[310px] sm:w-[380px] h-[210px] sm:h-[250px] rounded-3xl bg-[#FAF6F0] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_0_30px_rgba(255,200,120,0.2)] border-2 border-[#E5C378] overflow-hidden flex items-center justify-center transform-gpu"
+                        >
                             {/* Inner pink lining */}
                             <div className="absolute inset-2 rounded-2xl bg-gradient-to-b from-[#FFAAA6] via-[#FF8E9E] to-[#FF758C] opacity-90" />
 
@@ -281,8 +284,8 @@ export const EnvelopeLetterScene = ({
                                 initial={{ rotateX: 0 }}
                                 animate={isOpen ? { rotateX: 180, zIndex: 0 } : { rotateX: 0 }}
                                 transition={{ duration: 0.8, ease: "easeInOut" }}
-                                style={{ transformOrigin: "top center" }}
-                                className="absolute top-0 left-0 right-0 h-1/2 bg-[#FFFDF9] border-b-2 border-[#D4AF37] [clip-path:polygon(0_0,100%_0,50%_100%)] shadow-md z-20"
+                                style={{ transformOrigin: "top center", backfaceVisibility: "hidden" }}
+                                className="absolute top-0 left-0 right-0 h-1/2 bg-[#FFFDF9] border-b-2 border-[#D4AF37] [clip-path:polygon(0_0,100%_0,50%_100%)] shadow-md z-20 will-change-transform"
                             >
                                 <div className="w-full h-full bg-gradient-to-b from-[#FFFDF9] to-[#F3EDE2]" />
                             </motion.div>
