@@ -21,6 +21,15 @@ export const useAdaptivePerformance = (): PerformanceProfile => {
 
         window.addEventListener('resize', handleResize, { passive: true });
 
+        // 1b. Listen for prefers-reduced-motion OS changes
+        const motionQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+        const handleMotionChange = () => {
+            setProfile(getDevicePerformanceProfile());
+        };
+        if (motionQuery) {
+            motionQuery.addEventListener('change', handleMotionChange);
+        }
+
         // 2. Battery API integration (where supported by browser, e.g. Chrome / Android)
         let batteryInstance: BatteryManager | null = null;
         let batteryHandler: (() => void) | null = null;
@@ -60,6 +69,9 @@ export const useAdaptivePerformance = (): PerformanceProfile => {
 
         return () => {
             window.removeEventListener('resize', handleResize);
+            if (motionQuery) {
+                motionQuery.removeEventListener('change', handleMotionChange);
+            }
             if (batteryInstance && batteryHandler) {
                 batteryInstance.removeEventListener('levelchange', batteryHandler);
                 batteryInstance.removeEventListener('chargingchange', batteryHandler);
