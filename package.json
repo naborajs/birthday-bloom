@@ -90,6 +90,7 @@
   },
   "overrides": {
     "brace-expansion": "^2.1.7",
+    "fflate": "^0.8.2",
     "nanoid": "^3.3.18"
   }
 }
