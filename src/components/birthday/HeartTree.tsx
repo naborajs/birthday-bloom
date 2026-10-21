@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useSoundManager } from "./SoundManager";
+import { useAdaptivePerformance } from "@/hooks/useAdaptivePerformance";
 import { SPECIAL_QUOTES } from "@/config/templates";
 import { HINDI_SPECIAL_QUOTES } from "@/config/hindiTemplates";
 import { BENGALI_SPECIAL_QUOTES } from "@/config/bengaliTemplates";
@@ -133,6 +134,7 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
     const { isHindi, isBengali, isFrench } = useTranslation();
     const primaryColor = config.favoriteColor || 'hsl(330, 90%, 75%)';
     const { playPop } = useSoundManager();
+    const perfProfile = useAdaptivePerformance();
 
     useEffect(() => {
         if (isInView) return undefined;
@@ -252,7 +254,7 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
                     <div className="absolute inset-0 pointer-events-none rounded-full transition-opacity"
                         style={{ transitionDuration: '2000ms', background: `radial-gradient(circle at 50% 40%, ${primaryColor}40 0%, ${primaryColor}15 45%, transparent 70%)`, opacity: stage === 4 ? 1 : 0 }} />
 
-                    {stage >= 3 && <TreeSparks count={20} color={primaryColor} />}
+                    {stage >= 3 && <TreeSparks count={perfProfile.tier === 'low' ? 8 : 20} color={primaryColor} />}
 
                     <svg
                         viewBox="0 0 300 300"
