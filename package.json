@@ -93,6 +93,7 @@
     "fflate": "^0.8.2",
     "nanoid": "^3.3.18",
     "postcss-selector-parser": "^7.1.6",
-    "@humanfs/node": "^0.16.8"
+    "@humanfs/node": "^0.16.8",
+    "js-yaml": "^4.3.2"
   }
 }
