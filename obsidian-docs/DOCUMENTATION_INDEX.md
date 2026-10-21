@@ -54,7 +54,8 @@ Every page is available both as an interconnected Obsidian note in this vault an
 | 11 | [[Celebration-Sound-and-Sensory-Design\|Celebration-Sound-and-Sensory-Design.md]] | [/docs/sound-and-sensory](https://naborajs.me/projects/birthday-bloom/docs/sound-and-sensory) | **Audio Synthesis & Sensory Design**: Web Audio API singleton graph, gain staging, SFX bus, biquad filters, and iOS Safari autoplay unlocking. |
 | 12 | [[Microphone-Candle-Blowing\|Microphone-Candle-Blowing.md]] | [/docs/microphone-candle-blowing](https://naborajs.me/projects/birthday-bloom/docs/microphone-candle-blowing) | **Microphone-Adaptive 3D Candle Blowing**: Web Audio API breath turbulence analysis, real-time 3D flame tilt & flutter physics, and zero-touch candle extinguishing. |
 | 13 | [[Adaptive-Performance-and-Mobile-Optimization\|Adaptive-Performance-and-Mobile-Optimization.md]] | [/docs/adaptive-performance](https://naborajs.me/projects/birthday-bloom/docs/adaptive-performance) | **Adaptive Battery, Frame Rate & Mobile Zero-Lag Architecture**: Hardware & Battery Status API profiling, DPR capping, multi-canvas gating, and emotional simplification. |
-| 14 | [[Emotional-Psychology-and-UX\|Emotional-Psychology-and-UX.md]] | [/docs/emotional-psychology](https://naborajs.me/projects/birthday-bloom/docs/emotional-psychology) | **Emotional Psychology & Narrative Arc**: Neurochemical pacing (mystery → anticipation → intimacy → euphoria), typewriter constants, and emotional UX. |
+| 14 | [[Guestbook-and-Live-Wishes\|Guestbook-and-Live-Wishes.md]] | [/docs/guestbook-and-live-wishes](https://naborajs.me/projects/birthday-bloom/docs/guestbook-and-live-wishes) | **Interactive Guestbook & Live Wishes Board**: Template-aware starter wishes, client-side localStorage persistence, reaction hearts, and celebratory confetti. |
+| 15 | [[Emotional-Psychology-and-UX\|Emotional-Psychology-and-UX.md]] | [/docs/emotional-psychology](https://naborajs.me/projects/birthday-bloom/docs/emotional-psychology) | **Emotional Psychology & Narrative Arc**: Neurochemical pacing (mystery → anticipation → intimacy → euphoria), typewriter constants, and emotional UX. |
 
 ---
 
@@ -65,6 +66,7 @@ Every page is available both as an interconnected Obsidian note in this vault an
 | 14 | [[template-architecture\|template-architecture.md]] | [/docs/template-architecture](https://naborajs.me/projects/birthday-bloom/docs/template-architecture) | **Template Engine & Letter Synthesis**: Token replacement lexer (`{name}`, `{age}`, `{wisher}`) and surrogate-safe emoji typewriter slicing. |
 | 15 | [[Template-System-Deep-Dive\|Template-System-Deep-Dive.md]] | [/docs/template-deep-dive](https://naborajs.me/projects/birthday-bloom/docs/template-deep-dive) | **Deep Dive: Letter Engine & Micro-copy**: Full emotional letter transcripts across tone engines and override precedence rules. |
 | 16 | [[env-configs\|env-configs.md]] | [/docs/env-configs](https://naborajs.me/projects/birthday-bloom/docs/env-configs) | **Pre-built Persona Configurations**: Ready-to-use copy-paste `.env.local` snippets and color hex/music pairings for 10 celebration scenarios. |
+| 17 | [[Relationship-Templates-Guide\|Relationship-Templates-Guide.md]] | [/docs/relationship-templates](https://naborajs.me/projects/birthday-bloom/docs/relationship-templates) | **Relationship Templates & Emotional Customization**: Guide to all 12 relationship archetypes, color palettes, and cultural adaptations. |
 
 ---
 
