@@ -141,6 +141,8 @@ export interface TranslationSchema {
             family: string;
             mother: string;
             father: string;
+            brother: string;
+            sister: string;
             general: string;
         };
     };
