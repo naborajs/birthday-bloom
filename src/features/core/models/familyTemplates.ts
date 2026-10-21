@@ -254,10 +254,14 @@ const BASE_DYNAMIC_FIELDS: DynamicFieldDefinition[] = [
 const siblingFields: DynamicFieldDefinition[] = [
     { id: 'childhood-story', label: 'Childhood story', type: 'textarea' },
     { id: 'sibling-tradition', label: 'Sibling tradition', type: 'text' },
+    { id: 'inside-joke', label: 'Inside joke & laughter', type: 'text' },
+    { id: 'proud-moment', label: 'Proudest sibling moment', type: 'textarea' },
 ];
 const parentFields: DynamicFieldDefinition[] = [
     { id: 'life-lesson', label: 'Life lesson', type: 'textarea' },
     { id: 'family-tradition', label: 'Family tradition', type: 'text' },
+    { id: 'gratitude-message', label: 'Heartfelt gratitude', type: 'textarea' },
+    { id: 'favorite-advice', label: 'Unforgettable piece of advice', type: 'text' },
 ];
 const grandparentFields: DynamicFieldDefinition[] = [
     { id: 'legacy-story', label: 'Legacy story', type: 'textarea' },
