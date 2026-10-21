@@ -178,6 +178,56 @@ export const GuestbookSection: React.FC = () => {
       ];
     }
 
+    if (rel === 'brother' || rel === 'sibling') {
+      return [
+        {
+          id: 'seed-brother-1',
+          name: config.senderName || (isFrench ? "Ton complice de toujours" : isBengali ? "তোর চিরকালের সঙ্গী" : isHindi ? "तुम्हारा भाई/दोस्त" : "Your Partner in Crime"),
+          message: t('guestbook.defaultWishes.brother') || `Happy Birthday to the coolest brother! Thanks for all the shared memories and laughter.`,
+          role: 'family',
+          emoji: '🎉',
+          colorScheme: 'sky',
+          likes: 17,
+          timestamp: 'Just now',
+        },
+        {
+          id: 'seed-brother-2',
+          name: isFrench ? "Les Meilleurs Souvenirs" : isBengali ? "শৈশবের স্মৃতি" : isHindi ? "बचपन की यादें" : "Childhood Crew",
+          message: isFrench ? "À toutes nos bêtises d'enfance et à celles encore à venir ! Super anniversaire mon frère !" : isBengali ? "ছোটবেলার হাজারো খুনসুটি আর আনন্দের স্মৃতি নিয়ে শুভ জন্মদিন ভাই!" : isHindi ? "बचपन की यादों और मस्ती के साथ जन्मदिन की ढेरों बधाइयां भाई!" : `To all our wild childhood adventures and the many memories ahead! Have a blast, brother!`,
+          role: 'friend',
+          emoji: '✨',
+          colorScheme: 'amber',
+          likes: 12,
+          timestamp: 'Today',
+        },
+      ];
+    }
+
+    if (rel === 'sister') {
+      return [
+        {
+          id: 'seed-sister-1',
+          name: config.senderName || (isFrench ? "De tout cœur" : isBengali ? "একরাশ ভালোবাসায়" : isHindi ? "ढेर सारे प्यार से" : "Always by Your Side"),
+          message: t('guestbook.defaultWishes.sister') || `Happy Birthday to the most wonderful sister! Wishing you a year as radiant and lovely as you.`,
+          role: 'family',
+          emoji: '🌸',
+          colorScheme: 'rose',
+          likes: 22,
+          timestamp: 'Just now',
+        },
+        {
+          id: 'seed-sister-2',
+          name: isFrench ? "Douceur & Joie" : isBengali ? "মিষ্টি স্মৃতিগুলো" : isHindi ? "मीठी यादें" : "Sweetest Memories",
+          message: isFrench ? "Que cette année t'apporte autant de sourires que tu en offres autour de toi. Joyeux anniversaire ma sœur !" : isBengali ? "তোর মিষ্টি হাসি সবসময় এভাবেই অমলিন থাকুক। শুভ জন্মদিন বোন!" : isHindi ? "तुम्हारी यह खिली हुई मुस्कान सदा यूं ही बरकरार रहे। जन्मदिन की शुभकामनाएं बहना!" : `May your year ahead be sprinkled with sparkle, quiet peace, and pure joy. Happy Birthday!`,
+          role: 'family',
+          emoji: '💖',
+          colorScheme: 'lavender',
+          likes: 15,
+          timestamp: 'Today',
+        },
+      ];
+    }
+
     // Default friendly / universal celebration
     return [
       {
