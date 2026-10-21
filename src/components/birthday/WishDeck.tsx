@@ -125,6 +125,7 @@ const WishCard = ({
                     rounded-2xl
                     border border-[#e8ddd0]
                     select-none
+                    transform-gpu will-change-transform
                     ${isTop ? "cursor-grab active:cursor-grabbing" : ""}
                 `}
             >
@@ -134,7 +135,7 @@ const WishCard = ({
                     style={{
                         background: "linear-gradient(145deg, #FFFDF8 0%, #FFF9F0 40%, #FFF5E8 100%)",
                         boxShadow: isTop
-                            ? "0 12px 40px -8px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.9)"
+                            ? "0 16px 45px -8px rgba(0,0,0,0.3), 0 0 0 1px rgba(212,175,55,0.22), inset 0 1px 0 rgba(255,255,255,0.95)"
                             : "0 4px 15px -4px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.06)",
                     }}
                 >
