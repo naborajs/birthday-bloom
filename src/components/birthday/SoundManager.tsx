@@ -7,8 +7,9 @@ const AUDIO_URLS = {
     reveal: "https://cdn.pixabay.com/audio/2021/08/04/audio_bb630cc098.mp3",
     pop: "https://cdn.pixabay.com/audio/2022/03/15/audio_c8c836a148.mp3",
     boom: "https://cdn.pixabay.com/audio/2022/03/10/audio_783d4a0231.mp3",
+    chime: "https://cdn.pixabay.com/audio/2022/03/15/audio_2492161f67.mp3",
 };
-type SoundEffectType = "typeClick" | "whoosh" | "reveal" | "pop" | "boom";
+type SoundEffectType = "typeClick" | "whoosh" | "reveal" | "pop" | "boom" | "chime";
 
 const MAX_POOL_SIZE = 3;
 const TYPE_CLICK_MIN_INTERVAL_MS = 45;
@@ -155,6 +156,9 @@ export const useSoundManager = () => {
     const playBoom = useCallback(() => {
         managerRef.current.playEffect("boom", 0.6);
     }, []);
+    const playChime = useCallback(() => {
+        managerRef.current.playEffect("chime", 0.45);
+    }, []);
     const fadeOut = useCallback((duration?: number) => {
         managerRef.current.fadeOutBgMusic(duration);
     }, []);
@@ -171,8 +175,9 @@ export const useSoundManager = () => {
         playReveal,
         playPop,
         playBoom,
+        playChime,
         fadeOut,
         setBgVolume,
         setMuted,
-    }), [startMusic, playType, playWhoosh, playReveal, playPop, playBoom, fadeOut, setBgVolume, setMuted]);
+    }), [startMusic, playType, playWhoosh, playReveal, playPop, playBoom, playChime, fadeOut, setBgVolume, setMuted]);
 };
