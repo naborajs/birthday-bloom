@@ -1,4 +1,4 @@
-# 🌸 Birthday Bloom — Configurable Birthday Landing Page v3.4.0
+# 🌸 Birthday Bloom — Configurable Birthday Landing Page v3.7.0
 
 <div align="center">
 
@@ -88,6 +88,10 @@ Direct docs:
 - 🇮🇳 [हिंदी सेटअप गाइड (Hindi)](https://naborajs.me/projects/birthday-bloom/docs/setup-hindi) ([Local](./obsidian-docs/setup-hindi.md))
 - 🇧🇩 [বাংলা সেটআপ গাইড (Bengali)](https://naborajs.me/projects/birthday-bloom/docs/setup-bengali) ([Local](./obsidian-docs/setup-bengali.md))
 - 🔄 [Migration Guide](https://naborajs.me/projects/birthday-bloom/docs/migration-guide) ([Local](./obsidian-docs/migration-guide.md))
+- 🎙️ [Microphone-Adaptive 3D Candle Blowing](./obsidian-docs/Microphone-Candle-Blowing.md)
+- ⚡ [Mobile Zero-Lag & Adaptive Performance Engine](./obsidian-docs/Adaptive-Performance-and-Mobile-Optimization.md)
+- 📝 [Interactive Guestbook & Live Wishes Board](./obsidian-docs/Guestbook-and-Live-Wishes.md)
+- 💖 [Relationship Templates & Cultural Palettes](./obsidian-docs/Relationship-Templates-Guide.md)
 - 📖 [Master Documentation Index](https://naborajs.me/projects/birthday-bloom/docs) ([Local](./obsidian-docs/DOCUMENTATION_INDEX.md))
 
 Copy `.env.example` to `.env.local`, change values, restart the dev server, and the experience updates without component edits.
