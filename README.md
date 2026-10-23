@@ -145,7 +145,7 @@ Most landing page templates are static. Birthday Bloom treats the browser as a s
 
 By coordinating asynchronous delays and Framer Motion timelines, the application guides the user through typing scenes, simulated chats, and final interactive reveals.
 
-- **Optimized 60fps Performance**: Procedural 3D elements (Three.js / R3F) are code-split into lazy chunks (`dist/three.*.js`), while ambient layers use lightweight Canvas 2D and hardware-accelerated CSS keyframes to ensure silky 60fps performance on mobile and desktop devices.
+- **Optimized 60fps Performance**: Procedural 3D elements (Three.js / R3F) are code-split into lazy chunks (`dist/three.*.js`), while ambient layers use lightweight Canvas 2D and hardware-accelerated CSS keyframes. Adaptive DPR, debounced device-tier updates, offscreen animation gating, cancellable ceremony timers, and `.perf-low` backdrop-filter suppression keep mobile and desktop smooth without changing the desktop look.
 - **Engaging Text Flow**: Grapheme-safe typewriter animations, cursor tracking, and simulated messaging windows build an authentic, heartfelt narrative pace.
 - **Environment-Driven Configuration**: Customize the name, relationship, language, messages, colors, and media by simply setting variables in a single `.env.local` file without editing code.
 - **Vite Build System**: Instant Hot-Module-Replacement (HMR) during local development and optimized assets for production deployments.
@@ -579,7 +579,7 @@ Birthday Bloom is built to be customized using pure Environment Variables (Confi
 
 ### Updating Personal Assets
 1. Navigate to `/public/assets/birthday/`.
-2. Replace the background images (`birthday-cute.png`, `birthday-gold.png`, etc.) with your own. Ensure they are optimized (WebP format recommended) and less than 500kb each to eliminate load stutter. High resolution images will delay the splash screen logic!
+2. Replace the background images (`birthday-cute.png`, `birthday-gold.png`, etc.) with your own. Ensure they are optimized (WebP/AVIF preferred) and less than 500 KB each to eliminate load stutter. High-resolution images will delay the splash screen logic. The cake selector art under `src/assets/birthday/` is `640×640` JPEG q88 (~431 KB total) and is imported with Vite content hashing.
 3. Replace `/public/assets/photo-1.jpg`, `photo-2.jpg`, and `photo-3.jpg` with actual photos of the person. Maintain aspect ratios if possible, or use `object-cover` tailwind classes if you inject custom resolutions.
 
 ### Modifying the Pacing & Narrative Flow
@@ -996,7 +996,7 @@ Birthday Bloom features a **complete 38-page documentation system** across 9 cat
 | | [/docs/setup-bengali](https://naborajs.me/projects/birthday-bloom/docs/setup-bengali) | [`setup-bengali.md`](./obsidian-docs/setup-bengali.md) | Noto Sans Bengali typography, Eastern Nagari conjuncts |
 | | [/docs/setup-french](https://naborajs.me/projects/birthday-bloom/docs/setup-french) | [`setup-french.md`](./obsidian-docs/setup-french.md) | French orthography, accents, formal/informal tones |
 | **6. Tooling** | [/docs/developer-guide](https://naborajs.me/projects/birthday-bloom/docs/developer-guide) | [`developer-guide.md`](./obsidian-docs/developer-guide.md) | Custom hooks API reference (`useBirthdayStore`, `useDynamicTheme`) |
-| | [/docs/ui-components](https://naborajs.me/projects/birthday-bloom/docs/ui-components) | [`UI-Components.md`](./obsidian-docs/UI-Components.md) | Radix UI primitives, glassmorphic styling tokens |
+| | [/docs/ui-components](https://naborajs.me/projects/birthday-bloom/docs/ui-components) | [`UI-Components.md`](./obsidian-docs/UI-Components.md) | Optional Radix tooltip primitive, glassmorphic tokens, `.perf-low` fallback |
 | | [/docs/styleguide](https://naborajs.me/projects/birthday-bloom/docs/styleguide) | [`styleguide.md`](./obsidian-docs/styleguide.md) | Strict TypeScript standards, zero `@ts-ignore`, ESLint rules |
 | **7. Operations** | [/docs/github-automation](https://naborajs.me/projects/birthday-bloom/docs/github-automation) | [`GitHub-Automation.md`](./obsidian-docs/GitHub-Automation.md) | CI/CD pipelines, automated PR triage, labeler workflows |
 | | [/docs/deployment](https://naborajs.me/projects/birthday-bloom/docs/deployment) | [`deployment.md`](./obsidian-docs/deployment.md) | Vercel, Netlify, Cloudflare Pages, Docker containerization |
