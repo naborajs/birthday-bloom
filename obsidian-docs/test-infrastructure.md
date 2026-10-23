@@ -11,10 +11,10 @@ aliases: [test-infrastructure, testing, test-infra]
 
 ---
 
-## 🧪 400+ Automated Tests Suite Architecture
+## 🧪 497 Automated Tests Suite Architecture
 
 Birthday Bloom relies on a rigorous test automation strategy executed via [Vitest](https://vitest.dev/):
-- **Execution Speed**: 24 test suites running 470+ tests in under 5 seconds.
+- **Execution Speed**: 31 test files running 497 tests in around 5 seconds.
 - **Coverage Domains**:
   1. **Zustand Store Hydration & Precedence**: Validating 3-tier hierarchy (URL Parameters > `.env.local` > Defaults).
   2. **URL Parameter Parsing & Sanitization**: Hex colors, character decoding, and alias mapping.
@@ -22,6 +22,7 @@ Birthday Bloom relies on a rigorous test automation strategy executed via [Vites
   4. **Finite State Machine Transitions**: Verification of progression through `splash` → `unlock` → `intro` → `main`.
   5. **Sensory & Audio Resilience**: Gain scheduling, mute toggles, and safe audio state initialization.
   6. **Interactive Celebration Payoffs**: 3D cake cutting triggers, confetti bursts, quiz scoring, and balloon popping.
+  7. **Adaptive Performance & Lifecycle Safety**: Device-tier profiles, DPR caps, reduced-motion behavior, bundle/asset budgets, timer cleanup, and replay paths.
 
 ---
 
@@ -97,7 +98,7 @@ npm run verify
 ## 🔍 Scope Boundaries
 
 ### What is Present:
-- Vitest testing architecture and 470-test breakdown across domains.
+- Vitest testing architecture and 497-test breakdown across domains.
 - Full mocking strategy for Web Audio, WebGL, Canvas 2D, and ResizeObserver.
 - Local test execution commands and quality metrics.
 
