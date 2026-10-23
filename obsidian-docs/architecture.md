@@ -101,24 +101,33 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 - Renders a 3D perspective smartphone hardware model (`perspective: 1400px`, `transformStyle: preserve-3d`) with brushed rose-titanium bezels, physical side buttons, Dynamic Island, and theme-harmonious atmospheric glow across both Desktop and Mobile viewports.
 - Includes an interactive iOS dark-glass virtual QWERTY keypad (`virtual-mobile-keypad`) with live key-press darkening (`data-active="true"`), floating key callout pop-up magnifiers (`key-callout-popup`), and a 3-column predictive text suggestion bar (`keypad-predictive-bar`).
 - Uses code-point array slicing (`Array.from`) to prevent 4-byte emoji surrogate splitting during live typewriter sequences.
+- Keeps the active key highlighted through the short inter-key gap, halving full-tree re-renders without changing the perceived typing rhythm. Redundant internal `backdrop-blur` layers were removed from the header, input bar, keypad, and hold popup.
 
 ### Artisanal 3D Cake & Knife Ceremony — `src/components/birthday/Cake3D.tsx` & `CakeKnife3D.tsx`
 - Renders a 5-layer gourmet sponge and mascarpone ganache cake encased in a smooth frosting outer mantle atop a sculpted porcelain pedestal platter with 24K gold rim inlay.
 - Integrates a true 3D stainless steel pastry knife (`CakeKnife3D.tsx`) with brass bolster and riveted walnut handle driven by `@react-spring/three` physics, synchronized with particle pastry crumbs and golden sparks (`CakeCutting.tsx`).
+- Extinguished-candle smoke uses capped, time-based growth and hides after roughly `4.5s`; the duplicate `onClick` binding inside the cake group was removed so clicks are handled once at the experience level.
+- `CakeCutting.tsx` tracks cut/blow sequence ids and timers. Closing, Escape, finishing, or unmounting invalidates the run so stale timers cannot re-open the modal or fire sounds. `MagicDust` uses `12 / 16 / 32` particles on low/mobile/desktop.
 
 ### Adaptive Mobile Performance & Zero-Lag Engine — `src/utils/deviceTier.ts` & `src/hooks/useAdaptivePerformance.ts`
 - Detects hardware concurrency, device memory, battery level/charging state, touch capabilities, and OS `prefers-reduced-motion`.
 - Dynamically assigns device performance tiers (`low`, `balanced`, `high`) capping DPR to 1 on mobile to prevent fragment fillrate bottlenecks, gating multi-canvas layers, and disabling heavy backdrop filters.
+- Debounces resize re-evaluation by `150ms` and compares every profile field before updating state, so window dragging does not cascade re-renders. Battery promises/listeners and pending resize timers are cleaned up on unmount.
+- A discharging battery at `<= 20%` forces the low profile (`dpr: 1`, `256px` shadows, `maxParticles: 8`, `30 FPS` recommendation) even if the base device tier was higher.
+- `Index.tsx` applies `.perf-low` when the tier is low; `index.css` removes `backdrop-filter` from descendants while preserving translucent surfaces. Desktop and balanced profiles keep their glassmorphism.
 - Honors explicit environment override via `VITE_FORCE_HIGH_GRAPHICS=true`.
 
 ### Acoustic Breath Analysis & Microphone Candle Blowing — `src/hooks/useMicrophoneBlow.ts`
 - Replaces generic button clicks with real-time acoustic breath turbulence analysis via the Web Audio API.
 - Employs a 50Hz high-pass biquad filter and fast Fourier transform (`analyserNode`, FFT size 256) measuring broadband low-frequency acoustic energy (80Hz - 600Hz) to drive 3D flame tilt, candle flutter, and natural extinguishing physics in `Cake3D.tsx`.
+- Accumulates breath energy every animation frame, but publishes React UI state at most once every `50ms` (~`20 FPS`) so the WebGL cake scene does not re-render 60 times per second.
+- Resets the trigger flag, accumulator, smoothed intensity, and UI clock when the mic phase is entered, so candle blowing works again on replay.
 - Gracefully provides one-tap fallback for non-microphone browsers and permissions.
 
 ### Interactive Guestbook & Live Wishes Board — `src/components/birthday/GuestbookSection.tsx`
 - Template-aware interactive wishes board enabled by default and configurable via `VITE_SHOW_GUESTBOOK_SECTION`.
 - Features template-specific starter seeds for all relationship types (`partner`, `friend`, `family`, `mother`, `father`, `brother`, `sister`), heart reaction toggling, and client-side `localStorage` persistence.
+- The form is isolated in `GuestbookWishForm`, so typing a long wish does not re-render the wishes grid on every keystroke. Submission timers are tracked and cleared on unmount.
 
 ---
 
@@ -129,8 +138,8 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 | `src/App.tsx` | App shell: router, global error boundary, ambient effects, toaster |
 | `src/pages/Index.tsx` | 4-phase state machine (`splash` $\rightarrow$ `unlock` $\rightarrow$ `intro` $\rightarrow$ `main`) |
 | `src/pages/NotFound.tsx` | SEO-friendly client-side 404 handler with theme palette and discovery links |
-| `src/components/birthday/` | 32 active cinematic, 3D WebGL, narrative, and sensory celebration components |
-| `src/components/ui/` | Design system primitives (`sonner.tsx`, `tooltip.tsx`) |
+| `src/components/birthday/` | 35 active cinematic, 3D WebGL, narrative, and sensory celebration component files |
+| `src/components/ui/` | Design system primitives (`sonner.tsx`, plus an optional `tooltip.tsx` Radix primitive not imported by the default app shell) |
 | `src/components/ErrorBoundary.tsx` | Class-based error boundary with cinematic fallback UI |
 | `src/features/core/store/` | `useBirthdayStore.ts` (Zustand store, env parsing) + `urlParams.ts` + `SuperPersonalizedLogic.ts` |
 | `src/features/core/models/` | `familyTemplates.ts` (18 member archetypes, registry, factories) |
@@ -142,9 +151,9 @@ The top-level experience in `src/pages/Index.tsx` coordinates 4 sequential phase
 | `src/utils/` | Password, date, URL, color, media, and audio utilities |
 | `src/hooks/` | Responsive hooks (`use-mobile.tsx`) |
 | `src/lib/` | Tailwind class merging utilities (`utils.ts`) |
-| `src/test/` | Vitest 3 test infrastructure (27 test files, 483 passing tests) |
+| `src/test/` | Vitest 3 test infrastructure (31 test files across `src/test/`, `src/main.test.tsx`, and `familyTemplates.test.ts`; 497 passing tests) |
 | `public/` | Static assets, web manifest, `robots.txt`, `sitemap.xml`, `llms.txt` |
-| `obsidian-docs/` | Comprehensive 32-note technical documentation vault |
+| `obsidian-docs/` | Comprehensive 47-note technical documentation vault (38 canonical guides plus implementation/upgrade summaries) |
 
 ---
 
