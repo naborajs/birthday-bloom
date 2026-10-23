@@ -88,8 +88,10 @@ A common flaw in celebration websites is overwhelming the device with hundreds o
 | :--- | :--- | :--- | :--- |
 | **Splash Screen** | 12 elements | Subtle twinkling stars + 3 CSS radial auras | 60 FPS (16.6ms) |
 | **Storytelling Intro** | 8 sparkles | Typewriter kinetic letters + floating emojis | 60 FPS (16.6ms) |
-| **Grand Climax** | 200–300 particles | Canvas-based multi-directional confetti + fireworks | 60 FPS (Canvas2D) |
+| **Grand Climax** | 200–300 particles (desktop) | Canvas-based multi-directional confetti + fireworks | 60 FPS (Canvas2D) |
 | **Main Exploration** | 12 floating orbs | Parallax scroll + lazy-loaded galleries | 60 FPS (CSS transforms) |
+
+> **Mobile guardrail**: `useConfetti` caps caller-requested bursts at `60` particles on mobile, and `PremiumFireworks` uses the adaptive DPR/profile. Desktop mega-bursts remain unchanged.
 
 ---
 
