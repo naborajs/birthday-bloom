@@ -7,6 +7,21 @@ All notable changes to Birthday Bloom are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased] — 2026-10-24
+
+### Changed
+- **Performance & Lifecycle Hardening (`App.tsx`, `Index.tsx`, `useAdaptivePerformance.ts`, `PremiumFireworks.tsx`, `Confetti.tsx`, `CakeCutting.tsx`, `Cake3D.tsx`, `FakeChatScene.tsx`, `EnvelopeLetterScene.tsx`, `BalloonPopGame.tsx`, `HeartTree.tsx`, `HeartProgression.tsx`, `GuestbookSection.tsx`, `MainBirthday.tsx`)**: Removed the unused Radix tooltip provider from the app shell, debounced adaptive-profile resizes and skipped identical profiles, added adaptive DPR and canvas-buffer release to fireworks, capped caller-requested mobile confetti bursts at 60, made cake cut/blow sequences cancellable, capped candle-smoke growth, halved chat/letter typewriter re-renders, gated offscreen balloon/tree animations, isolated guestbook form state, and cleared tracked intro/surprise timers.
+- **Low-Tier Visual Budget (`src/index.css`, `src/pages/Index.tsx`)**: Added `.perf-low` backdrop-filter suppression for constrained/mobile profiles. Translucent surfaces remain; desktop and balanced profiles keep their original glassmorphism.
+- **Cake Selector Assets (`CakeTypes.ts`, `src/assets/birthday/`)**: Replaced four large PNG selector images with 640×640 JPEG q88 assets (~431 KB total) to cut image payload while preserving the selector visuals.
+
+### Fixed
+- **Cake Replay & Close Lifecycle (`CakeCutting.tsx`, `useMicrophoneBlow.ts`)**: Closing the cake experience or pressing Escape now invalidates pending cut/blow timers, and re-entering the mic phase resets breath state so candle blowing can be replayed.
+- **Balloon Pop Completion Lifecycle (`BalloonPopGame.tsx`)**: Added a synchronous double-pop guard and moved the completion celebration into a cancellable effect, preventing duplicate sounds/confetti and late timers after reset.
+- **Timer & Listener Cleanup (`useAdaptivePerformance.ts`, `EnvelopeLetterScene.tsx`, `MainBirthday.tsx`, `PremiumFireworks.tsx`)**: Canceled battery/resize work, extraction and intro timers, and released full-screen canvas backing stores when animations finish or unmount.
+
+### Verification
+- `npm run verify` passes: TypeScript, ESLint, 31 test files / 497 tests, and the production build.
+
 ## [3.6.0] — 2026-09-27
 
 ### Added
