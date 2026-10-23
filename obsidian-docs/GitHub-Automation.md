@@ -21,7 +21,7 @@ Triggers on every push to `main` and all pull requests:
 - **Verified Action Versions**: Employs officially maintained `actions/checkout@v4` and `actions/setup-node@v4` with Node 20.x runtime.
 1. **Type Checking**: Runs `npm run typecheck` (`tsc --noEmit`) to verify zero TypeScript errors.
 2. **Linting**: Executes `npm run lint` (`eslint .`) using modern flat ESLint 9 configuration.
-3. **Automated Testing**: Runs `npm test` (`vitest run`) across 24 test suites (>450 unit and integration tests).
+3. **Automated Testing**: Runs `npm test` (`vitest run`) across 31 test files (497 unit and integration tests).
 4. **Production Build**: Executes `npm run build` (`vite build`) to guarantee clean chunk compilation and asset bundling.
 
 ### `pr-verify.yml` — PR Verification & Concurrency Control
