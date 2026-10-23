@@ -85,7 +85,9 @@ export interface GuestbookWish {
 
 ## 5. Mobile & Zero-Lag Optimizations
 
-- **Adaptive Particle Scaling**: On mobile or low-battery devices (`useAdaptivePerformance`), submission confetti particle counts automatically scale down.
-- **Glassmorphic Compositing**: Border highlights and subtle gradients use GPU-promoted layer compositing (`transform-gpu`) to maintain 60 FPS scrolling even with multiple wish cards on screen.
+- **Adaptive Particle Scaling**: On mobile or low-battery devices (`useAdaptivePerformance`), submission confetti particle counts automatically scale down. `useConfetti` also caps caller-requested mobile bursts at `60` particles.
+- **Isolated Form State**: The form is rendered by a dedicated `GuestbookWishForm` component that owns name, message, role, emoji, color, and submit-feedback state. Typing a long wish no longer re-renders the entire wishes grid on every keystroke; the parent only receives the completed draft.
+- **Timer Cleanup**: The submission timer is stored in `submitTimerRef` and cleared on unmount, so closing the form or navigating away cannot trigger a late state update.
+- **Glassmorphic Compositing**: Border highlights and subtle gradients use GPU-promoted layer compositing (`transform-gpu`) to maintain 60 FPS scrolling even with multiple wish cards on screen. On low-tier devices, `.perf-low` suppresses `backdrop-filter` while keeping the translucent card treatment.
 
 #obsidian #documentation #guestbook #features #storage
