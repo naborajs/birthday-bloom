@@ -53,7 +53,7 @@ The following represents the internal module relationships:
 AI models should adhere to these patterns when modifying the code:
 1. **The Phase State Machine**: State is managed via `Index.tsx` and `useBirthdayStore.ts`. Transitions must follow `splash` $\rightarrow$ `unlock` $\rightarrow$ `intro` $\rightarrow$ `main`.
 2. **Env-First Customization**: Never hardcode personal data into components. Add or read from `useBirthdayStore.ts` and `.env.example`.
-3. **Sensor & Particle Scaling**: Ambient particle layers must respect `isMobile` and `reducedMotion` settings to guarantee a 60fps budget.
+3. **Adaptive Performance**: Ambient particle layers, DPR, shadow maps, and backdrop-filter usage must respect the shared `useAdaptivePerformance()` profile (`tier`, `isMobile`, `reducedMotion`) to guarantee a 60fps budget. Offscreen infinite animations must pause, and every timer/RAF/canvas buffer must be released on finish or unmount.
 
 ---
 
