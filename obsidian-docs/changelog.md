@@ -22,6 +22,17 @@ All notable changes to Birthday Bloom are documented here. The format is based o
 
 ## 🚀 Release History Highlights
 
+### [Unreleased] — 2026-10-24
+- **Changed**:
+  - Performance and lifecycle hardening across the app shell, adaptive performance hook, fireworks, confetti, cake ceremony, chat/letter typewriters, balloon game, heart tree, guestbook, and celebration timers.
+  - Low-tier `.perf-low` profile now suppresses `backdrop-filter` while preserving translucent surfaces; desktop and balanced profiles retain glassmorphism.
+  - Cake selector images converted from large PNGs to 640×640 JPEG q88 assets (~431 KB total).
+- **Fixed**:
+  - Cake cut/blow sequences are cancellable on close/Escape/unmount, and microphone candle blowing can be replayed.
+  - Balloon pops are guarded against double-triggering; completion celebration and reset timers are cleaned up.
+  - Fireworks release their full-screen canvas backing store after each run; adaptive DPR no longer restarts the show on resize.
+- **Verification**: `npm run verify` passes with 31 test files / 497 tests.
+
 ### [3.7.0] — 2026-10-21
 - **Added**:
   - **Microphone-Adaptive 3D Candle Blowing** (`useMicrophoneBlow.ts`): Real-time acoustic energy analysis using Web Audio API with a 50Hz high-pass biquad filter driving 3D flame tilt, candle flutter, and natural breath-extinguishing physics.
