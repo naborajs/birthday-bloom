@@ -26,7 +26,7 @@ useBirthdayStore (Zustand 5)
   ├─► useDynamicTheme (Injects HSL/RGB CSS Variables)
   ├─► useDynamicSEO (Injects OpenGraph, Meta, and JSON-LD SocialEvent)
   ├─► useTranslation (Multi-language localization: EN, BN, HI, FR)
-  └─► Birthday Components (30 interactive celebration scenes)
+  └─► Birthday Components (35 interactive component files)
 ```
 
 ## Key Files
@@ -40,7 +40,7 @@ useBirthdayStore (Zustand 5)
 | `src/config/wishTemplates.ts` | 100+ categorized wishes and handwriting cards across all 18 relationships. |
 | `src/config/birthday.ts` | Keeps audio assets configuration and static photo fallbacks. |
 | `src/config/templates.ts` | Cultural emotional letters, quotes, and tone presets. |
-| `src/components/birthday/*` | Renders the 30 active cinematic sections using store configuration. |
+| `src/components/birthday/*` | Renders the 35 active cinematic component files using store configuration. |
 
 ## Inheritance Model
 
