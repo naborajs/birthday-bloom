@@ -29,7 +29,7 @@ This guide explains how Birthday Bloom is wired so new contributors and open-sou
 | `src/App.tsx` | Application shell: React Router, global error boundary, ambient effect canvas, Sonner toast notification provider. |
 | `src/pages/Index.tsx` | Top-level 4-phase state machine (`splash` -> `unlock` -> `intro` -> `main`) with Framer Motion `AnimatePresence`. |
 | `src/pages/NotFound.tsx` | SEO-optimized client-side 404 page with glassmorphic cards, theme palette, and discovery links. |
-| `src/components/birthday/` | 30 cinematic, 3D WebGL, and interactive celebration components. |
+| `src/components/birthday/` | 35 cinematic, 3D WebGL, and interactive celebration component files. |
 | `src/components/ui/` | Design system primitives (`sonner.tsx`, `tooltip.tsx`). |
 | `src/components/ErrorBoundary.tsx` | Class-based error boundary with a cinematic fallback UI. |
 | `src/features/core/store/` | `useBirthdayStore.ts` (Zustand store, env/URL parameter parsing) + `SuperPersonalizedLogic.ts`. |
@@ -44,7 +44,7 @@ This guide explains how Birthday Bloom is wired so new contributors and open-sou
 | `src/lib/` | Tailwind class merging utilities (`utils.ts`). |
 | `src/test/` | Vitest test suites (unit, integration, stress, and challenge tests). |
 | `public/` | Static assets (favicon, images, `llms.txt`, `site.webmanifest`, `robots.txt`, `sitemap.xml`). |
-| `obsidian-docs/` | Comprehensive 32-note documentation vault. |
+| `obsidian-docs/` | Comprehensive 47-note documentation vault (38 canonical guides plus summaries). |
 
 ---
 
@@ -83,7 +83,7 @@ This guide explains how Birthday Bloom is wired so new contributors and open-sou
 | `FireflyEffect` | `FireflyEffect.tsx` | Golden firefly particles with organic movement (active in "main" phase). | Ambient layer |
 | `ShootingStars` | `ShootingStars.tsx` | Shooting star streaks (active in "main" phase). | Ambient layer |
 | `EmojiCursorTrail` | `EmojiCursorTrail.tsx` | Interactive emoji particle trail following cursor / touch position. | Ambient layer |
-| `PremiumFireworks` | `PremiumFireworks.tsx` | HTML5 Canvas 2D celebratory fireworks engine. | Ambient layer |
+| `PremiumFireworks` | `PremiumFireworks.tsx` | HTML5 Canvas 2D celebratory fireworks engine with adaptive DPR and canvas-buffer release. | Ambient layer |
 
 ---
 
@@ -261,7 +261,7 @@ npm run verify
 
 ## 🔗 Related Documentation
 - [[URL-Parameters|Zero-Config URL Parameters Reference]]
-- [[Birthday-Components|30 Interactive Birthday Components Reference]]
+- [[Birthday-Components|35 Interactive Birthday Component Files Reference]]
 - [[architecture|System Architecture & Rendering Pipeline]]
 - [[env-configs|Environment Variables & Configuration Matrix]]
 
