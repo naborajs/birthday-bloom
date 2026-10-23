@@ -10,9 +10,9 @@ aliases: [UI Components, Shadcn Components, Design System]
 
 🌐 **Canonical Web Documentation**: [Design System Primitives](https://naborajs.me/projects/birthday-bloom/docs/ui-components)
 
-The Birthday Bloom codebase employs a streamlined, tree-shaken Design System built with **Tailwind CSS**, **Lucide Icons**, and **Radix UI Primitives**. 
+The Birthday Bloom codebase employs a streamlined, tree-shaken Design System built with **Tailwind CSS**, **Lucide Icons**, and a single optional **Radix UI** tooltip primitive.
 
-To maximize runtime performance and minimize bundle overhead, the UI layer is structured into lightweight primitives and glassmorphism styling utilities:
+To maximize runtime performance and minimize bundle overhead, the UI layer is structured into lightweight primitives and glassmorphism styling utilities. The default app shell mounts only Sonner; because no Radix primitive is imported by the app graph, the production build emits no `radix-ui` chunk.
 
 ---
 
@@ -23,10 +23,10 @@ To maximize runtime performance and minimize bundle overhead, the UI layer is st
 * **Usage:** Provides non-blocking notifications, link copied toasts, and feedback triggers during celebration playback and user interactions.
 * **Theme Sync:** Automatically inherits dynamic HSL theme colors injected via `useDynamicTheme.ts`.
 
-### B. `tooltip.tsx` — Accessible Tooltips
+### B. `tooltip.tsx` — Optional Accessible Tooltips
 * **Implementation:** Accessible tooltip primitive powered by `@radix-ui/react-tooltip`.
-* **Usage:** Provides hover and focus hints for interactive controls, audio toggles, and photo gallery navigation.
-* **Accessibility:** Fully WAI-ARIA compliant with animated fade/slide transitions and smooth delay timing.
+* **Usage:** Available for hover and focus hints, but **not mounted by the default app shell**. `App.tsx` no longer wraps the tree in `TooltipProvider`, so the Radix tooltip code stays out of the initial bundle until a feature imports it.
+* **Accessibility:** Fully WAI-ARIA compliant with animated fade/slide transitions and smooth delay timing when used.
 
 ---
 
@@ -57,6 +57,8 @@ To achieve modern iOS-grade frosted aesthetics across dark celebration backgroun
 | `.glass-card` | Interactive card tile | `bg-white/5 backdrop-blur-xl border border-white/15 hover:bg-white/10 transition-all` |
 | `.glass-pill` | Floating badge / tag | `bg-white/10 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20` |
 
+On low-tier devices, `Index.tsx` adds `.perf-low` to the root and `index.css` suppresses `backdrop-filter` for all descendants. The translucent backgrounds and borders remain; only the expensive compositor blur pass is skipped. Desktop and balanced profiles retain the full frosted treatment.
+
 ---
 
 ## 4. Extending the UI Design System
@@ -76,7 +78,7 @@ To add new primitives to `src/components/ui/`:
 ## 🔍 Scope Boundaries
 
 ### What is Present:
-- Component Token Specifications (Radix UI primitives, glassmorphic container classes `backdrop-blur-xl`), Color Variable Mapping (`--birthday-primary`, `--birthday-glow`).
+- Component Token Specifications (Sonner toast wrapper, optional Radix tooltip primitive, glassmorphic container classes `backdrop-blur-xl`, `.perf-low` blur fallback), Color Variable Mapping (`--birthday-primary`, `--birthday-glow`).
 
 ### What is NOT Present:
 - Backend API endpoints or database ORM models, Audio synthesis buffer algorithms (see [[Celebration-Sound-and-Sensory-Design#Web-Audio-API-Graph-Architecture|Sound & Sensory Design]]).
