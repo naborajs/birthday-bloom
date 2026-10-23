@@ -404,26 +404,29 @@ npm run preview
 The production build completes with the following typical output:
 
 ```
-dist/index.html              2.27 kB (gzip: 0.90 kB)
-dist/index.CnxrfwVg.css     87.78 kB (gzip: 14.87 kB)
-dist/radix-ui.CoBoz6Cx.js   33.59 kB (gzip: 11.49 kB)
-dist/framer-motion.B7EFmO9A.js 38.97 kB (gzip: 13.71 kB)
-dist/index.CH7KMd4e.js      90.61 kB (gzip: 26.36 kB)
-dist/vendor.9G4eQ2xM.js    372.09 kB (gzip: 120.89 kB)
+dist/index.html                     15.00 kB (gzip:   4.14 kB)
+dist/index.BiI1GP7m.css            103.49 kB (gzip:  17.24 kB)
+dist/rolldown-runtime.hePW80VL.js    0.71 kB (gzip:   0.42 kB)
+dist/templates.AXkZWvYM.js          82.80 kB (gzip:  19.25 kB)
+dist/framer-motion.BG26eFzF.js     143.55 kB (gzip:  47.57 kB)
+dist/vendor.NZGO402L.js            225.62 kB (gzip:  74.20 kB)
+dist/index.G_NA0XHQ.js             420.11 kB (gzip: 126.40 kB)
+dist/three.9TZYxB2S.js             937.77 kB (gzip: 254.27 kB, lazy)
 
-Total Size: ~547 kB (gzip: ~188 kB)
-Build Time: 4.80s
+Initial JS Total: ~873 kB (gzip: ~268 kB)
+Build Time: ~1.2s
 ```
 
-Target: < 200 kB gzipped total.
+Target: keep initial JS under ~300 kB gzipped and keep the `three` chunk lazy. The build currently emits no `radix-ui` chunk because the default app shell does not import a Radix primitive.
 
 ### Performance Optimization Tips
 
 **1. Optimize Images**
-- Use WebP format with JPEG fallback
+- Use WebP or AVIF when the asset pipeline supports it; JPEG fallback is acceptable for non-alpha art
+- The cake selector images are `640×640` JPEG q88 (~431 kB total), imported from `src/assets/birthday/`
 - Compress with TinyPNG or ImageOptim
-- Recommended size: 800x600px, keep under 50 kB per image
-- Keep images inside the `public/` folder to avoid import issues
+- Recommended size: 800x600px, keep under 500 kB per image
+- Static images can live in `public/`; imported assets under `src/assets/` are content-hashed by Vite
 
 **2. Monitor Bundle Size**
 ```bash
