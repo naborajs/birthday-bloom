@@ -83,7 +83,7 @@ Every page is available both as an interconnected Obsidian note in this vault an
 | # | Document & Local Note | Canonical Web Route | Purpose & Key Contents |
 |---|---|---|---|
 | 20 | [[developer-guide\|developer-guide.md]] | [/docs/developer-guide](https://naborajs.me/projects/birthday-bloom/docs/developer-guide) | **Developer Reference & Hooks**: Custom hooks API reference (`useBirthdayStore`, `useDynamicTheme`, `useSoundEffects`, `useMobile`) and contributor walkthroughs. |
-| 21 | [[UI-Components\|UI-Components.md]] | [/docs/ui-components](https://naborajs.me/projects/birthday-bloom/docs/ui-components) | **Design System Primitives**: Radix UI tokens, glassmorphic styling (`backdrop-blur-xl`), and CSS variable injection. |
+| 21 | [[UI-Components\|UI-Components.md]] | [/docs/ui-components](https://naborajs.me/projects/birthday-bloom/docs/ui-components) | **Design System Primitives**: Sonner toasts, optional Radix tooltip primitive, glassmorphic styling (`backdrop-blur-xl`), `.perf-low` blur fallback, and CSS variable injection. |
 | 22 | [[styleguide\|styleguide.md]] | [/docs/styleguide](https://naborajs.me/projects/birthday-bloom/docs/styleguide) | **TypeScript & Code Standards**: Strict mode conventions, zero `@ts-ignore` policy, explicit interface declarations, and naming conventions. |
 
 ---
@@ -195,7 +195,7 @@ birthday-bloom/
 │   ├── setup-bengali.md        # Bengali Eastern Nagari typography & greetings
 │   ├── setup-french.md         # French orthography, accents, and tones
 │   ├── developer-guide.md      # Custom hooks reference and developer guide
-│   ├── UI-Components.md        # Radix UI primitives and glassmorphic styling
+│   ├── UI-Components.md        # Sonner, optional Radix tooltip, glassmorphism
 │   ├── styleguide.md           # Strict mode TypeScript and design tokens
 │   ├── GitHub-Automation.md    # CI/CD pipelines and PR automated triage
 │   ├── deployment.md           # Vercel, Netlify, Cloudflare & Docker deployment
