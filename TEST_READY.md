@@ -1,14 +1,16 @@
 # Test Ready Report: Birthday Bloom 4-Tier E2E & Integration Test Suite
 
+> **Historical snapshot**: This report documents the original v3.5.0 test-suite milestone. The current suite has grown to **31 test files / 497 tests**; see [`TEST_INFRA.md`](./TEST_INFRA.md) for the live inventory and metrics.
+
 ## Executive Summary
 
-The complete, rigorous test suite for **Birthday Bloom v3.5.0** has been successfully authored, verified, and integrated into the project's Vitest runner.
+The complete, rigorous test suite for **Birthday Bloom v3.5.0** was authored, verified, and integrated into the project's Vitest runner. Current repository status:
 
-- **Total Test Files**: 24
-- **Total Tests**: 466
-- **Pass Rate**: 100% (466 passing, 0 failing, 0 flaky)
-- **Execution Time**: ~4.0s
-- **Static Analysis**: TypeScript (`npm run typecheck`) passed with 0 errors; ESLint (`npm run lint`) passed with 0 warnings/errors; Vite production build (`npm run build`) succeeded in <1.3s.
+- **Total Test Files**: 31
+- **Total Tests**: 497
+- **Pass Rate**: 100% (497 passing, 0 failing, 0 flaky)
+- **Execution Time**: ~5.1s
+- **Static Analysis**: TypeScript (`npm run typecheck`) passed with 0 errors; ESLint (`npm run lint`) passed with 0 warnings/errors; Vite production build (`npm run build`) succeeded in ~1.2s.
 
 ---
 
