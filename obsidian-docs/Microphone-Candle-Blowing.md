@@ -57,6 +57,8 @@ Implemented in [`useMicrophoneBlow.ts`](file:///d:/Projects/Website/birthday-blo
 * **Low-Pass Smoothing**: Exponential moving average (EMA) filter prevents flame jitter while retaining instant responsiveness:
   $$\text{smoothed} = \text{smoothed} \times 0.65 + \text{raw} \times 0.35$$
 * **Accumulated Energy Threshold**: Requires sustained blowing over ~550ms rather than a single sudden click or clap, ensuring emotional intentionality.
+* **20 FPS UI Publishing**: Breath accumulation still runs every animation frame (`60 FPS`) for accurate detection, but React state (`blowIntensity`, `progress`) is published at most once every `50ms` (~`20 FPS`). This prevents the entire cake scene and WebGL canvas from re-rendering 60 times per second while the flame still interpolates smoothly.
+* **Replay Reset**: Entering the mic phase resets the trigger flag, accumulator, smoothed intensity, and UI publish clock, so the cake experience can be replayed and the manual fallback still works on the second run.
 
 ---
 
@@ -66,7 +68,7 @@ Implemented in [`Cake3D.tsx`](file:///d:/Projects/Website/birthday-bloom/src/com
 * **Flame Lean**: As `blowIntensity` increases, the flame rotates on its Z-axis away from the camera (`rotation.z = -wind * 0.6`).
 * **Wind Turbulence**: A high-frequency sine oscillator flutters the flame's X-scale proportionally to breath speed.
 * **Outer Amber Cooling**: The outer flame mesh shrinks and dims slightly as the flame is cooled by the incoming air stream.
-* **Extinguish State**: Once the blow threshold completes, `lit` transitions to `false` and multi-layered translucent smoke spheres curl upward and expand.
+* **Extinguish State**: Once the blow threshold completes, `lit` transitions to `false` and multi-layered translucent smoke spheres curl upward. Smoke growth is time-based and capped, then hidden after roughly `4.5s`, so replaying or leaving the scene cannot accumulate giant transparent spheres.
 
 ---
 
@@ -75,6 +77,7 @@ Implemented in [`Cake3D.tsx`](file:///d:/Projects/Website/birthday-bloom/src/com
 ### 4.1 Strict Privacy & Battery Guardrails
 * **Scoped Lifecycle**: The microphone stream is **only** requested when entering the `blow-intro` phase.
 * **Automatic Teardown**: Upon candle extinguishing or leaving the screen, all `MediaStreamTrack` instances are immediately stopped and the `AudioContext` is cleanly closed, releasing hardware access.
+* **Cancellable Ceremony Timers**: `CakeCutting.tsx` invalidates the active cut/blow run when the modal closes, Escape is pressed, the sequence finishes, or the component unmounts. Pending countdown/phase timers cannot fire after the user leaves.
 * **Zero Cloud Transmission**: All audio analysis runs 100% locally on the client's GPU/CPU; no audio data is ever recorded or transmitted.
 
 ### 4.2 Inclusive Fallbacks
