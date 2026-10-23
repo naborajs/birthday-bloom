@@ -32,7 +32,7 @@ You should read this if:
 | Multi-language localization | English only | Partial | 3 languages | 4 languages (EN, BN, HI, FR) |
 | Relationship archetypes | 1 | 6 | 14 types | 18 full archetypes |
 | Audio engine | None | Prototype | Web Audio BGM | BGM + Sound Manager SFX |
-| Automated tests | None | None | ~120 tests | 17 suites, 408 tests |
+| Automated tests | None | None | ~120 tests | 31 test files, 497 tests |
 | Dependency footprint | Moderate | Heavy | Heavy (30+ Radix) | Streamlined (34 unused pruned) |
 | Build Toolchain | Vite 4 / 5 | Vite 5 | Vite 5 / 6 | Vite 8 + Rolldown |
 
