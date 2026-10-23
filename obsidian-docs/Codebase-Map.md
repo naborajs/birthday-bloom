@@ -30,7 +30,7 @@ This is the central index mapping every significant file and directory in the Bi
 
 ## 2. `.github/` Workflows & Community Standards
 See [[GitHub-Automation]] for a deep dive.
-- `workflows/ci.yml`: Continuous integration pipeline (typecheck, lint, 408 tests, build).
+- `workflows/ci.yml`: Continuous integration pipeline (typecheck, lint, 497 tests, build).
 - `workflows/repo-health.yml`: Automated repository maintenance and issue assignment.
 - `workflows/sync-labels.yml`: GitHub label synchronization.
 - `dependabot.yml`: Automated dependency updates with semver-major safety guards.
@@ -42,8 +42,8 @@ See [[GitHub-Automation]] for a deep dive.
 The core React 18 client-side application. See [[Website-Architecture]].
 
 ### `src/components/`
-- **`birthday/`**: All 30 cinematic, narrative, and sensory visual components. See [[Birthday-Components]] (e.g. [[Cake3D]], [[CakeCutting]], [[WishDeck]], [[EnvelopeLetterScene]], [[BalloonPopGame]], [[HeartTree]], [[CinematicIntro]], [[MainBirthday]], [[PhotoGallery]], [[SoundManager]]).
-- **`ui/`**: Focused design system primitives (`sonner.tsx` toast notifications, `tooltip.tsx` Radix tooltip). See [[UI-Components]].
+- **`birthday/`**: All 35 cinematic, narrative, and sensory visual component files. See [[Birthday-Components]] (e.g. [[Cake3D]], [[CakeCutting]], [[WishDeck]], [[EnvelopeLetterScene]], [[BalloonPopGame]], [[HeartTree]], [[CinematicIntro]], [[MainBirthday]], [[PhotoGallery]], [[SoundManager]]).
+- **`ui/`**: Focused design system primitives (`sonner.tsx` toast notifications, plus an optional `tooltip.tsx` Radix primitive not imported by the default app shell). See [[UI-Components]].
 
 ### `src/features/`
 Domain-driven feature modules:
@@ -72,13 +72,15 @@ Multi-language localization subsystem:
 ---
 
 ## 4. `src/test/` Test Suites
-Comprehensive Vitest 3 test infrastructure (17 test files, 408 tests):
+Comprehensive Vitest 3 test infrastructure (31 test files, 497 tests):
 - `setup.ts`: Global test environment mocks (matchMedia, HTMLMediaElement audio stubs).
 - `e2e_requirements_tier1_2.test.ts`, `e2e_requirements_tier3_4.test.ts`: Complete opaque-box requirement matrices.
+- `adaptive_performance.test.ts`, `challenger_perf_lifecycle.test.ts`, `reduced_motion_perf.test.ts`: Adaptive tiers, bundle/asset budgets, lifecycle cleanup, and reduced-motion behavior.
 - `dynamic_seo.test.tsx`, `seo_and_ux_enhancements.test.tsx`: SEO, URL parameters, and OpenGraph tests.
-- `interactive_features_envelope_balloons.test.tsx`: Envelope and balloon game interaction tests.
-- `wish_deck_and_templates.test.tsx`: Wish deck swipe and template interpolation tests.
+- `interactive_features_envelope_balloons.test.tsx`, `guestbook_section.test.tsx`, `fake_chat_scene.test.tsx`: Interactive activity coverage.
+- `wish_deck_and_templates.test.tsx`, `guestbook_templates.test.tsx`, `relationship_templates_deep.test.ts`: Wish deck, template interpolation, and relationship seed coverage.
 - `indic_grapheme_stress.test.tsx`, `challenger_stress_multilingual.test.tsx`: Unicode conjunct and typography stress tests.
+- `src/main.test.tsx` and `src/features/core/models/familyTemplates.test.ts` live beside their source and are included in the 31-file total.
 
 ---
 
