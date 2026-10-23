@@ -31,8 +31,8 @@ These components are conditionally orchestrated across the 4-phase state machine
 
 ## 2. Interactive Activities & Storytelling
 - **[[WishDeck.tsx]]**: Swipeable physical greeting card deck with handwriting animation reveal, customizable text, and emotional balloon release mechanics.
-- **[[EnvelopeLetterScene.tsx]]**: Realistic handmade parchment paper letter with 3D wax seal, gold filigree border, and interactive opening gesture.
-- **[[BalloonPopGame.tsx]]**: Gamified balloon popping activity revealing celebratory words with multi-touch support and sound feedback.
+- **[[EnvelopeLetterScene.tsx]]**: Realistic handmade parchment paper letter with 3D wax seal, gold filigree border, and interactive opening gesture. Paragraphs are memoized, typing reveals two graphemes per tick at the same perceived speed, and the extraction timer is cleared on unmount.
+- **[[BalloonPopGame.tsx]]**: Gamified balloon popping activity revealing celebratory words with multi-touch support and sound feedback. Offscreen fairy lights and balloon float animations pause via `IntersectionObserver`, a synchronous guard prevents double pops, and completion effects live in a cancellable effect.
 - **[[BirthdayQuiz.tsx]]**: Gamified trivia quiz that adapts questions dynamically based on the celebrant's interests and relationship archetype.
 - **[[CinematicIntro.tsx]]**: Multi-scene narrative timeline coordinating storytelling sequences, typing intervals, simulated chat dialogues, and grand reveal payoff.
 - **[[FakeChatScene.tsx]]**: Full-viewport mobile-first Instagram DM chat recreation with iOS status bar, midnight rose mesh wallpaper, and authentic typing indicators.
@@ -49,9 +49,9 @@ These components are conditionally orchestrated across the 4-phase state machine
 
 ## 3. The 3D & 2D Cake Cutting Experience
 Powered by React Three Fiber (`@react-three/fiber`), Three.js Drei, and Framer Motion:
-- **[[Cake3D.tsx]]**: Three.js 3D WebGL cake model utilizing procedural geometry, ambient lighting, contact shadows, and dynamic slicing spring physics.
-- **[[CakeVisuals.tsx]]**: 2D Framer Motion celebration particle overlays (`CutSparks` and `MagicDust`) rendered during cake cutting and candle blowing.
-- **[[CakeCutting.tsx]]**: 2D/3D composite interaction orchestrator managing the 4 cake stages (flavor selection, candle blow, wish making, slice cutting) and reduced motion adaptation.
+- **[[Cake3D.tsx]]**: Three.js 3D WebGL cake model utilizing procedural geometry, ambient lighting, contact shadows, and dynamic slicing spring physics. Extinguished-candle smoke is time-capped and hidden after ~4.5s, and the duplicate cake-group click binding was removed.
+- **[[CakeVisuals.tsx]]**: 2D Framer Motion celebration particle overlays (`CutSparks` and `MagicDust`) rendered during cake cutting and candle blowing. `MagicDust` uses 12 / 16 / 32 particles on low/mobile/desktop.
+- **[[CakeCutting.tsx]]**: 2D/3D composite interaction orchestrator managing the 4 cake stages (flavor selection, candle blow, wish making, slice cutting) and reduced motion adaptation. Cut/blow sequences are cancellable by run id and tracked timers on close, Escape, finish, and unmount.
 - **[[CakeKnife.tsx]]**: Interactive cursor-tracking knife and drag gesture controller.
 - **[[CakeTypes.ts]]**: TypeScript definitions for cake variants, geometries, and slice angles.
 
@@ -74,13 +74,13 @@ Powered by React Three Fiber (`@react-three/fiber`), Three.js Drei, and Framer M
 
 ## 5. Ambient & Sensory Effects Layer
 High-performance 60fps ambient visual effects running across mobile and desktop:
-- **[[PremiumFireworks.tsx]]**: HTML5 Canvas 2D fireworks particle engine with realistic physics, gravity, and color blending.
+- **[[PremiumFireworks.tsx]]**: HTML5 Canvas 2D fireworks particle engine with realistic physics, gravity, and color blending. Uses the adaptive DPR through a ref (no restart on resize) and releases its backing store after each run.
 - **[[SparkleRain.tsx]]**: Ambient falling sparkle canvas with alpha falloff.
 - **[[FireflyEffect.tsx]]**: Organic glowing fireflies floating across the screen.
 - **[[ShootingStars.tsx]]**: Ambient diagonal shooting star streaks.
 - **[[EmojiCursorTrail.tsx]]**: Interactive mouse and touch cursor trail spawning relationship-tailored emojis.
 - **[[Balloons.tsx]]**: Floating SVG balloons with physics drift and interactive click-to-pop sound effects.
-- **[[Confetti.tsx]]**: Layered multi-cannon confetti bursts powered by `canvas-confetti`.
+- **[[Confetti.tsx]]**: Layered multi-cannon confetti bursts powered by `canvas-confetti`. The generic `fireConfetti` API caps caller-requested mobile bursts at 60 particles; built-in cinematic bursts keep their own mobile budgets, and desktop mega-bursts stay unchanged.
 - **[[FloatingElements.tsx]]**: Ambient floating emoji and token particles with parallax depth.
 - **[[Sparkles.tsx]]**: SVG star sparkles and glowing ambient orbs.
 
@@ -91,8 +91,8 @@ High-performance 60fps ambient visual effects running across mobile and desktop:
 ---
 
 ## 6. Climax & Finale
-- **[[HeartTree.tsx]]**: The emotional visual climax of the celebration. Draws an SVG tree using `requestAnimationFrame` where branches bloom into hearts.
-- **[[HeartProgression.tsx]]**: Multi-stage SVG heart progress tracker used across splash and reveal screens.
+- **[[HeartTree.tsx]]**: The emotional visual climax of the celebration. Draws an SVG tree using `requestAnimationFrame` where branches bloom into hearts. Tree sparks unmount while the section is offscreen, while the bloom reveal stays latched.
+- **[[HeartProgression.tsx]]**: Multi-stage SVG heart progress tracker used across splash and reveal screens. The 6.5s sequence keeps its `onDone` callback in a ref so parent re-renders do not restart it.
 
 ![Growing Heart Tree](../docs/screenshots/16-heart-tree.png)
 
