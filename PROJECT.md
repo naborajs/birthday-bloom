@@ -4,7 +4,7 @@
 
 ## Architecture
 Birthday Bloom is a modern, deeply emotional, high-performance birthday celebration web experience.
-- **Frontend Core**: React 18 + TypeScript + Vite + Tailwind CSS + Radix UI + Lucide Icons.
+- **Frontend Core**: React 18 + TypeScript + Vite + Tailwind CSS + Lucide Icons (optional Radix tooltip primitive available, not mounted by the default app shell).
 - **Animation & 3D Layer**: Framer Motion (page and phase transitions), Three.js + React Three Fiber + Drei + React Spring (procedural 3D cake cutting and slice physics), Canvas 2D (PremiumFireworks, EmojiCursorTrail, SparkleRain, FireflyEffect).
 - **State Management**: Zustand store (`src/features/core/store/useBirthdayStore.ts`) parsing URL query parameters and 53 configuration variables from `.env.local` / `import.meta.env`, dynamic CSS variable theme injection (`useDynamicTheme.ts`).
 - **SEO & Social Engine**: Runtime SEO manager (`src/features/core/seo/useDynamicSEO.ts`), full Schema.org structured data (WebSite, WebApplication, FAQPage, HowTo, BreadcrumbList, SocialEvent), multilingual sitemap with `hreflang` alternates, crawler directives for search & AI bots, and viral sharing modal (`ShareCelebrationModal.tsx`).
@@ -48,8 +48,8 @@ Birthday Bloom is a modern, deeply emotional, high-performance birthday celebrat
 - `src/features/core/seo/`: `useDynamicSEO.ts` (Reactive head and schema metadata)
 - `src/features/core/store/`: `useBirthdayStore.ts`, `urlParams.ts` (Central state & query param engine)
 - `src/config/`: `templates.ts`, `bengaliTemplates.ts`, `hindiTemplates.ts`, `frenchTemplates.ts`, `birthday.ts`, `themes.ts`
-- `src/components/birthday/`: Active visual, narrative, and interactive celebration components (30 active components including `ShareCelebrationModal.tsx`)
+- `src/components/birthday/`: Active visual, narrative, and interactive celebration component files (35 files including `ShareCelebrationModal.tsx`)
 - `src/i18n/locales/`: `en.ts`, `bn.ts`, `hi.ts`, `fr.ts`
-- `obsidian-docs/`: 31 markdown technical, architectural, and user guides
+- `obsidian-docs/`: 38 canonical markdown guides (47 vault notes including implementation and upgrade summaries)
 - `public/`: Assets, audio, favicon, `site.webmanifest`, `sitemap.xml`, `robots.txt`, `llms.txt`, `llms-full.txt`
-- `src/test/`: Unit, integration, stress, SEO, and E2E test suites (17 suites, 408 passing tests)
+- `src/test/`: Unit, integration, stress, SEO, and E2E test suites (31 test files across `src/test/`, `src/main.test.tsx`, and `familyTemplates.test.ts`; 497 passing tests)
