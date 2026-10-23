@@ -78,7 +78,7 @@ export const TypeWriter = ({ text, speed = 45, onComplete }: TypeWriterProps) =>
 - Avoid inline `style` props except for dynamic runtime values
 - Animation-related CSS can live in component files or `index.css`
 - Prefer `translate3d` over `translate` for GPU-accelerated animations
-- Use `backdrop-blur` and `shadow` for the cinematic glassmorphism look
+- Use `backdrop-blur` and `shadow` for the cinematic glassmorphism look. On low-tier devices, `.perf-low` suppresses `backdrop-filter` while preserving translucent backgrounds; do not remove the base glass styling to compensate.
 
 ### Accessibility
 
@@ -94,7 +94,7 @@ export const TypeWriter = ({ text, speed = 45, onComplete }: TypeWriterProps) =>
 - Be careful with particle counts — scale down on mobile
 - Clean up intervals, timeouts, and event listeners in `useEffect` return
 - Use `requestAnimationFrame` for continuous animations, not `setInterval`
-- Images should be optimized (WebP preferred) and use `loading="lazy"`
+- Images should be optimized (WebP/AVIF preferred; JPEG q88 is acceptable for non-alpha art) and use `loading="lazy"` / `decoding="async"` where appropriate
 
 ## Documentation Style
 
