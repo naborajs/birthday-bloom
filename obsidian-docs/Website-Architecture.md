@@ -47,12 +47,20 @@ rollupOptions: {
 }
 ```
 
+The `radix-ui` branch remains available for future primitives, but the default app shell no longer imports any Radix component. As a result, the production build currently emits **no `radix-ui` chunk**.
+
 ### Production Build Metrics
-- **Build Time**: $\approx 850\text{ms} - 1.1\text{s}$
-- **Three.js Chunk**: $\approx 918\text{kB}$ ($\approx 248\text{kB}$ gzip)
-- **Framer Motion Chunk**: $\approx 141\text{kB}$ ($\approx 46\text{kB}$ gzip)
-- **Main App Code**: $\approx 447\text{kB}$ ($\approx 129\text{kB}$ gzip)
-- **Vendor & Runtime**: $\approx 110\text{kB}$ ($\approx 37\text{kB}$ gzip)
+Measured with Vite 8.3.4 on 2026-10-24:
+
+- **Build Time**: $\approx 1.2\text{s}$
+- **Three.js Chunk**: $\approx 938\text{kB}$ ($\approx 254\text{kB}$ gzip, lazy-loaded)
+- **Framer Motion Chunk**: $\approx 144\text{kB}$ ($\approx 48\text{kB}$ gzip)
+- **Main App Code**: $\approx 420\text{kB}$ ($\approx 126\text{kB}$ gzip)
+- **Vendor & Runtime**: $\approx 226\text{kB}$ ($\approx 75\text{kB}$ gzip)
+- **Template Pack**: $\approx 83\text{kB}$ ($\approx 19\text{kB}$ gzip)
+- **Initial JS Total**: $\approx 873\text{kB}$ ($\approx 268\text{kB}$ gzip)
+- **CSS**: $\approx 103\text{kB}$ ($\approx 17\text{kB}$ gzip)
+- **Cake Selector Art**: four JPEGs totaling $\approx 431\text{kB}$
 
 ---
 
@@ -78,7 +86,7 @@ Application state is governed by **Zustand 5** (`useBirthdayStore.ts`):
 ## 🔍 Scope Boundaries
 
 ### What is Present:
-- Vite 5 / Rollup Compilation Graph, Bundle Budget Analysis (~42 KB gzipped core vs. ~38 KB WebGL lazy chunk), CSS JIT Tree-Shaking.
+- Vite 8 / Rolldown Compilation Graph, Bundle Budget Analysis (~268 KB gzipped initial JS vs. ~254 KB gzipped lazy WebGL chunk), CSS JIT Tree-Shaking.
 
 ### What is NOT Present:
 - Step-by-step local clone commands (see [[quick-start#5-Minute-Local-Setup|Quick Start]]), Translation lexicons (see [[setup-hindi|Hindi]], [[setup-bengali|Bengali]], [[setup-french|French]]).
