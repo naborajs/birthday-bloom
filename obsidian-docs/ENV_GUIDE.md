@@ -133,6 +133,8 @@ The celebration experience includes an optimized, 60fps ambient visual layer:
 9. **Grapheme-Safe Kinetic Typography** (`KineticText.tsx`, `TypeWriter.tsx`): Typewriter and kinetic text animations supporting complex Indic conjuncts and accented French vowels.
 10. **Procedural HeartTree Finale** (`HeartTree.tsx`): Multi-stage blossoming SVG memory tree.
 
+All heavy layers consume the shared adaptive profile (`useAdaptivePerformance`): DPR, particle counts, shadow maps, frame caps, and backdrop-filter usage scale down on low-tier/mobile devices. Offscreen balloon/tree animations pause, fireworks release their canvas backing store, and mobile confetti bursts are capped at 60 particles.
+
 ---
 
 ## Situation Recipes
