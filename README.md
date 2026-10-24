@@ -313,7 +313,7 @@ Birthday Bloom orchestrates an end-to-end emotional narrative through a five-pha
 | 3. Cinematic Storyteller | 4. Grand Celebration Hero Stage |
 | :---: | :---: |
 | <img src="docs/screenshots/03-cinematic-intro.png" alt="Cinematic Intro Storyline" width="100%"> | <img src="docs/screenshots/04-hero-celebration.png" alt="Grand Celebration Hero Stage" width="100%"> |
-| *Heartfelt kinetic text with pulsing aura and particle rain.* | *Multi-color typography, 3D rotating cake, and dynamic confetti.* |
+| *Heartfelt kinetic text with pulsing aura and particle rain.* | *Kinetic multicolor greeting typography with interest chips and celebration ambience.* |
 
 ---
 
@@ -329,6 +329,16 @@ Birthday Bloom orchestrates an end-to-end emotional narrative through a five-pha
 | <img src="docs/screenshots/06-balloon-pop-game.png" alt="Balloon Pop Mini-Game" width="100%"> | <img src="docs/screenshots/10-envelope-letter-opened.png" alt="Opened Parchment Love Letter" width="100%"> |
 | *Floating balloons with pop physics and hidden message.* | *Interactive wax seal with unfolding vintage parchment letter.* |
 
+| Photo Memories Carousel | Growing Heart Tree of Love |
+| :---: | :---: |
+| <img src="docs/screenshots/05-photo-gallery.png" alt="Photo Memories Carousel" width="100%"> | <img src="docs/screenshots/16-heart-tree.png" alt="Growing Heart Tree of Love" width="100%"> |
+| *Ken Burns photo carousel with caption, counter, and thumbnail rail.* | *SVG tree that grows in stages, blooming heart leaves and memory polaroids.* |
+
+| Wax-Sealed Envelope (Closed State) | Live Wishes Board (Guestbook) |
+| :---: | :---: |
+| <img src="docs/screenshots/09-envelope-letter-closed.png" alt="Closed Wax-Sealed Envelope" width="100%"> | <img src="docs/screenshots/24-guestbook-wishes-board.png" alt="Live Wishes Board" width="100%"> |
+| *Tap-to-open 3D envelope with animated wax heart seal.* | *Live guestbook with wish cards and reaction hearts.* |
+
 | Interactive Birthday Trivia Quiz | Tinder-Style Wishes Deck |
 | :---: | :---: |
 | <img src="docs/screenshots/11-birthday-quiz.png" alt="Birthday Quiz" width="100%"> | <img src="docs/screenshots/12-wishes-deck.png" alt="Tinder-Style Wishes Deck" width="100%"> |
@@ -337,12 +347,12 @@ Birthday Bloom orchestrates an end-to-end emotional narrative through a five-pha
 | Mystery Gift Box & Party Tease | Surprise Unlocked Modal Dialog |
 | :---: | :---: |
 | <img src="docs/screenshots/13-mystery-gift-box.png" alt="Mystery Gift Tease" width="100%"> | <img src="docs/screenshots/14-mystery-gift-modal.png" alt="Surprise Unlocked Modal" width="100%"> |
-| *Glassmorphic teaser card with custom gift code.* | *Party hype tease followed by celebratory code reveal.* |
+| *Glassmorphic teaser card with custom gift code.* | *Party hype tease followed by the celebratory surprise reveal.* |
 
 | Interactive Celebration Action Buttons | Video Memories Gallery |
 | :---: | :---: |
 | <img src="docs/screenshots/15-celebration-buttons.png" alt="Celebration Buttons" width="100%"> | <img src="docs/screenshots/16-video-gallery.png" alt="Special Video Memories" width="100%"> |
-| *Interactive Cannon, Party, Love, and Share triggers.* | *Curated video clip gallery and cinematic memory reel.* |
+| *Interactive Cannon, Party, Love, and Share triggers.* | *Video memories stage that renders curated clips; shows an inviting empty state until videos are configured.* |
 
 | 1-Click Viral Sharing Modal | Custom 404 Experience |
 | :---: | :---: |
@@ -369,10 +379,10 @@ Birthday Bloom provides culturally authentic celebrations in four languages, adj
 
 ### 📱 Responsive Mobile Touch Experience
 
-| Mobile Celebration Hero | Mobile 3D Cake Cutting |
+| Mobile Celebration Hero | Mobile Cake Cutting Section |
 | :---: | :---: |
-| <img src="docs/screenshots/21-mobile-hero.png" alt="Mobile Hero Viewport" width="340"> | <img src="docs/screenshots/22-mobile-cake-cutting.png" alt="Mobile 3D Cake Cutting" width="340"> |
-| *Touch-first responsive layout with dynamic confetti.* | *Smooth WebGL rendering optimized for mobile GPUs.* |
+| <img src="docs/screenshots/21-mobile-hero.png" alt="Mobile Hero Viewport" width="340"> | <img src="docs/screenshots/22-mobile-cake-cutting.png" alt="Mobile Cake Cutting Selection" width="340"> |
+| *Touch-first responsive layout with dynamic confetti.* | *Mobile flavor cards with touch-first controls and fluid animations.* |
 
 ---
 
