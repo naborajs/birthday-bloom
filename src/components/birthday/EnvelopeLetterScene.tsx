@@ -51,12 +51,14 @@ export const EnvelopeLetterScene = ({
     const { isHindi, isBengali, isFrench, language } = useTranslation();
     const isMobile = useIsMobile();
     const typingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const extractTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const openedRef = useRef(false);
 
     const relationship = config.relationship || "partner";
     const senderName = config.senderName || "";
     const emojiKit = useMemo(() => getTemplateEmojiKit(config), [config]);
 
-    const paragraphs = (() => {
+    const paragraphs = useMemo(() => {
         if (config.letterOverride && config.letterOverride.trim().length > 5) {
             return config.letterOverride.split("\n\n").map(p => p.trim()).filter(Boolean);
         }
@@ -180,20 +182,21 @@ export const EnvelopeLetterScene = ({
             `Thank you for every sacrifice, every warm hug, and for making our family complete.`,
             `May your day be as radiant, joyful, and wonderful as the love you give to all of us! 💝`,
         ];
-    })();
+    }, [config.letterOverride, config.customMessage, config.name, config.gender, config.interests, relationship, senderName, language, isFrench, isBengali, isHindi]);
 
-    const fullLetterText = paragraphs.join("\n\n");
+    const fullLetterText = useMemo(() => paragraphs.join("\n\n"), [paragraphs]);
     const letterGraphemes = useMemo(() => splitGraphemes(fullLetterText), [fullLetterText]);
 
     const handleOpen = () => {
-        if (isOpen) return;
+        if (openedRef.current) return;
+        openedRef.current = true;
         setIsOpen(true);
         playPop();
         if (typeof navigator !== "undefined" && navigator.vibrate) {
             navigator.vibrate([40, 60, 40]);
         }
 
-        setTimeout(() => {
+        extractTimerRef.current = setTimeout(() => {
             setIsExtracted(true);
             playWhoosh();
         }, 900);
@@ -207,6 +210,10 @@ export const EnvelopeLetterScene = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [autoOpen]);
 
+    useEffect(() => () => {
+        if (extractTimerRef.current) clearTimeout(extractTimerRef.current);
+    }, []);
+
     // Grapheme-safe typewriter typing effect for the letter (prevents splitting 4-byte emojis into )
     useEffect(() => {
         if (!isExtracted) return;
@@ -214,11 +221,13 @@ export const EnvelopeLetterScene = ({
         if (typedLength < letterGraphemes.length) {
             typingTimerRef.current = setTimeout(() => {
                 setTypedLength((prev) => {
-                    const next = prev + 1;
-                    if (next % 4 === 0) playType();
+                    // Reveal two graphemes per tick (same characters/second as the
+                    // old 1-per-22ms loop) to halve full-scene re-renders.
+                    const next = Math.min(prev + 2, letterGraphemes.length);
+                    if (Math.floor(next / 4) !== Math.floor(prev / 4)) playType();
                     return next;
                 });
-            }, isMobile ? 22 : 28);
+            }, isMobile ? 44 : 56);
 
             return () => {
                 if (typingTimerRef.current) clearTimeout(typingTimerRef.current);

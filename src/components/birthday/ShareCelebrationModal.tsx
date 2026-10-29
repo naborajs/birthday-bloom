@@ -168,7 +168,7 @@ export const ShareCelebrationModal: React.FC<ShareCelebrationModalProps> = ({ is
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/85 backdrop-blur-xl"
+          className="fixed inset-0 bg-black/85"
           onClick={onClose}
         />
 
@@ -181,7 +181,7 @@ export const ShareCelebrationModal: React.FC<ShareCelebrationModalProps> = ({ is
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="relative z-10 w-full max-w-lg rounded-3xl border border-white/20 bg-black/90 p-6 sm:p-8 text-white shadow-[0_25px_70px_rgba(0,0,0,0.8)] backdrop-blur-2xl max-h-[90vh] overflow-y-auto"
+          className="relative z-10 w-full max-w-lg rounded-3xl border border-white/20 bg-black/90 p-6 sm:p-8 text-white shadow-[0_25px_70px_rgba(0,0,0,0.8)] max-h-[90vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close button */}

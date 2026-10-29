@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useSoundManager } from "./SoundManager";
@@ -80,54 +80,91 @@ export const BalloonPopGame = () => {
     ], [words]);
 
     const [balloons, setBalloons] = useState<BalloonItem[]>(initialBalloons);
+    const sectionRef = useRef<HTMLElement | null>(null);
+    // Track real on-screen state (not one-shot) so the 14-22 infinite fairy-light
+    // animations and the floating balloons stop while the section is off-screen.
+    const [inView, setInView] = useState(() => (
+        typeof window === "undefined" ||
+        typeof IntersectionObserver === "undefined" ||
+        (typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent))
+    ));
+    const poppedIdsRef = useRef<Set<number>>(new Set());
+    const completeTimerRef = useRef<number | null>(null);
+
+    useEffect(() => {
+        const el = sectionRef.current;
+        if (!el || typeof IntersectionObserver === "undefined" || (typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent))) {
+            setInView(true);
+            return undefined;
+        }
+        const observer = new IntersectionObserver(
+            (entries) => setInView(entries.some((entry) => entry.isIntersecting)),
+            { rootMargin: "160px" }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
 
     const poppedCount = balloons.filter((b) => b.isPopped).length;
     const isGameComplete = poppedCount === balloons.length;
 
     const handlePop = useCallback((id: number, event?: React.MouseEvent | React.TouchEvent | React.KeyboardEvent) => {
-        setBalloons((prev) => {
-            const current = prev.find((b) => b.id === id);
-            if (!current || current.isPopped) return prev;
+        // Guard synchronously so a double-tap before React re-renders can't fire
+        // the pop sound/confetti twice for the same balloon.
+        if (poppedIdsRef.current.has(id)) return;
+        const current = balloons.find((b) => b.id === id);
+        if (!current || current.isPopped) return;
+        poppedIdsRef.current.add(id);
 
-            // Trigger pop sound and haptics
-            playPop();
-            if (typeof navigator !== "undefined" && navigator.vibrate) {
-                navigator.vibrate([30, 40, 30]);
-            }
+        // Trigger pop sound and haptics
+        playPop();
+        if (typeof navigator !== "undefined" && navigator.vibrate) {
+            navigator.vibrate([30, 40, 30]);
+        }
 
-            // Directional confetti
-            const target = event && "currentTarget" in event ? (event.currentTarget as HTMLElement | null) : null;
-            const rect = target?.getBoundingClientRect ? target.getBoundingClientRect() : null;
-            const x = rect ? (rect.left + rect.width / 2) / (window.innerWidth || 1) : 0.5;
-            const y = rect ? (rect.top + rect.height / 2) / (window.innerHeight || 1) : 0.5;
-            fireConfetti({
-                particleCount: 25,
-                spread: 60,
-                origin: { x, y },
-            });
-
-            const next = prev.map((b) => (b.id === id ? { ...b, isPopped: true } : b));
-            const newPoppedCount = next.filter((b) => b.isPopped).length;
-
-            if (newPoppedCount === next.length) {
-                setTimeout(() => {
-                    playReveal();
-                    playBoom();
-                    fireConfetti({ particleCount: 150, spread: 140 });
-                }, 400);
-            }
-
-            return next;
+        // Directional confetti
+        const target = event && "currentTarget" in event ? (event.currentTarget as HTMLElement | null) : null;
+        const rect = target?.getBoundingClientRect ? target.getBoundingClientRect() : null;
+        const x = rect ? (rect.left + rect.width / 2) / (window.innerWidth || 1) : 0.5;
+        const y = rect ? (rect.top + rect.height / 2) / (window.innerHeight || 1) : 0.5;
+        fireConfetti({
+            particleCount: 25,
+            spread: 60,
+            origin: { x, y },
         });
-    }, [playPop, playReveal, playBoom, fireConfetti]);
+
+        setBalloons((prev) => prev.map((b) => (b.id === id ? { ...b, isPopped: true } : b)));
+    }, [balloons, playPop, fireConfetti]);
+
+    // Fire the completion celebration once, outside the state updater.
+    useEffect(() => {
+        if (!balloons.every((b) => b.isPopped)) return;
+        completeTimerRef.current = window.setTimeout(() => {
+            playReveal();
+            playBoom();
+            fireConfetti({ particleCount: 150, spread: 140 });
+            completeTimerRef.current = null;
+        }, 400);
+        return () => {
+            if (completeTimerRef.current) {
+                window.clearTimeout(completeTimerRef.current);
+                completeTimerRef.current = null;
+            }
+        };
+    }, [balloons, playReveal, playBoom, fireConfetti]);
 
     const handleReset = () => {
+        if (completeTimerRef.current) {
+            window.clearTimeout(completeTimerRef.current);
+            completeTimerRef.current = null;
+        }
+        poppedIdsRef.current.clear();
         setBalloons(initialBalloons);
         playPop();
     };
 
     return (
-        <section className="relative z-20 py-20 px-4 max-w-5xl mx-auto w-full select-none">
+        <section ref={sectionRef} className="relative z-20 py-20 px-4 max-w-5xl mx-auto w-full select-none">
             {/* Top Hanging Fairy Lights String */}
             <div className="absolute top-0 left-0 right-0 overflow-hidden flex justify-center gap-4 sm:gap-6 pointer-events-none opacity-90 py-2">
                 {Array.from({ length: isMobile ? 14 : 22 }).map((_, i) => {
@@ -136,8 +173,8 @@ export const BalloonPopGame = () => {
                     return (
                         <motion.div
                             key={i}
-                            animate={{ opacity: [0.4, 1, 0.4], scale: [0.9, 1.1, 0.9] }}
-                            transition={{ duration: 1.8 + (i % 4) * 0.4, repeat: Infinity, ease: "easeInOut" }}
+                            animate={inView ? { opacity: [0.4, 1, 0.4], scale: [0.9, 1.1, 0.9] } : { opacity: 0.55, scale: 1 }}
+                            transition={inView ? { duration: 1.8 + (i % 4) * 0.4, repeat: Infinity, ease: "easeInOut" } : { duration: 0.2 }}
                             className="flex flex-col items-center"
                         >
                             <div className="w-1 h-3 bg-white/20" />
@@ -198,17 +235,17 @@ export const BalloonPopGame = () => {
                                     <motion.div
                                         key="balloon"
                                         initial={{ scale: 0, y: 50 }}
-                                        animate={{
+                                        animate={inView ? {
                                             scale: 1,
                                             y: [0, -18, 0],
                                             rotate: [0, 4, -4, 0],
-                                        }}
+                                        } : { scale: 1, y: 0, rotate: 0 }}
                                         exit={{ scale: [1, 1.35, 0], opacity: [1, 1, 0] }}
-                                        transition={{
+                                        transition={inView ? {
                                             y: { duration: 3.5 + balloon.delay, repeat: Infinity, ease: "easeInOut" },
                                             rotate: { duration: 4 + balloon.delay, repeat: Infinity, ease: "easeInOut" },
                                             exit: { duration: 0.25 },
-                                        }}
+                                        } : { duration: 0.2 }}
                                         whileHover={{ scale: 1.15 }}
                                         whileTap={{ scale: 0.9 }}
                                         onClick={(e) => handlePop(balloon.id, e)}

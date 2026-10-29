@@ -62,6 +62,10 @@ const FourCornerMerge = ({ onDone }: {
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const rafRef = useRef<number>(0);
+    // Keep the latest callback in a ref so parent re-renders (which pass a fresh
+    // inline arrow function every time) don't restart the whole 6.5s sequence.
+    const onDoneRef = useRef(onDone);
+    useEffect(() => { onDoneRef.current = onDone; }, [onDone]);
     const { name } = useBirthdayStore(state => state.config);
     const { isHindi, isBengali, isFrench } = useTranslation();
     const loveMessage = isFrench
@@ -76,9 +80,9 @@ const FourCornerMerge = ({ onDone }: {
         const t2 = setTimeout(() => setPhase("merged"), 1800);
         const t3 = setTimeout(() => setPhase("pop"), 3200);
         const t4 = setTimeout(() => setPhase("text"), 4000);
-        const t5 = setTimeout(() => onDone(), 6500);
+        const t5 = setTimeout(() => onDoneRef.current(), 6500);
         return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); clearTimeout(t5); };
-    }, [onDone]);
+    }, []);
     const corners = useMemo(() => [
         { id: "tl", start: { x: "-60vw", y: "-60vh", rotate: -45 }, dx: -0.6, dy: -0.6, color: "hsl(330, 85%, 65%)" },
         { id: "tr", start: { x: "60vw", y: "-60vh", rotate: 45 }, dx: 0.6, dy: -0.6, color: "hsl(350, 80%, 60%)" },

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useAdaptivePerformance } from "@/hooks/useAdaptivePerformance";
 interface PremiumFireworksProps {
     runKey: number;
 }
@@ -43,6 +44,10 @@ export const PremiumFireworks = ({ runKey }: PremiumFireworksProps) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const reduceMotion = useReducedMotion();
     const isMobile = useIsMobile();
+    const perf = useAdaptivePerformance();
+    // Read the adaptive DPR through a ref so a resize doesn't restart the show.
+    const adaptiveDprRef = useRef(perf.dpr);
+    adaptiveDprRef.current = perf.dpr;
     useEffect(() => {
         if (!runKey || reduceMotion || typeof window === "undefined")
             return undefined;
@@ -61,7 +66,7 @@ export const PremiumFireworks = ({ runKey }: PremiumFireworksProps) => {
         const launchWindow = isMobile ? 2500 : 3300;
         const totalDuration = launchWindow + 2300;
         const startTime = performance.now();
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const dpr = Math.min(window.devicePixelRatio || 1, adaptiveDprRef.current || 1);
         const fireworks: Firework[] = [];
         const particles: Particle[] = [];
         const flashes: Flash[] = [];
@@ -205,6 +210,9 @@ export const PremiumFireworks = ({ runKey }: PremiumFireworksProps) => {
             const elapsed = time - startTime;
             if (elapsed > totalDuration && fireworks.length === 0 && particles.length === 0 && flashes.length === 0) {
                 context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+                window.removeEventListener("resize", resize);
+                canvas.width = 0;
+                canvas.height = 0;
                 running = false;
                 return;
             }
@@ -224,6 +232,10 @@ export const PremiumFireworks = ({ runKey }: PremiumFireworksProps) => {
             particles.length = 0;
             flashes.length = 0;
             context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            // Release the full-screen backing store instead of leaving a large
+            // idle canvas allocated until the next celebration.
+            canvas.width = 0;
+            canvas.height = 0;
         };
     }, [isMobile, reduceMotion, runKey]);
     return (<canvas ref={canvasRef} className="fixed inset-0 z-[95] pointer-events-none" aria-hidden="true"/>);

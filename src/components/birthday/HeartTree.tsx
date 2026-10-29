@@ -125,6 +125,7 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
         typeof IntersectionObserver === "undefined" ||
         (typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent))
     ));
+    const [isOnScreen, setIsOnScreen] = useState(isInView);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const leafRefs = useRef<(SVGGElement | null)[]>([]);
     const scalesRef = useRef<number[]>(Array(12).fill(0));
@@ -137,24 +138,25 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
     const perfProfile = useAdaptivePerformance();
 
     useEffect(() => {
-        if (isInView) return undefined;
         const el = containerRef.current;
         if (!el || typeof IntersectionObserver === "undefined" || (typeof process !== "undefined" && process.env.NODE_ENV === "test")) {
             setIsInView(true);
+            setIsOnScreen(true);
             return undefined;
         }
         const observer = new IntersectionObserver(
             (entries) => {
-                if (entries.some((entry) => entry.isIntersecting)) {
+                const visible = entries.some((entry) => entry.isIntersecting);
+                setIsOnScreen(visible);
+                if (visible) {
                     setIsInView(true);
-                    observer.disconnect();
                 }
             },
             { rootMargin: "200px" }
         );
         observer.observe(el);
         return () => observer.disconnect();
-    }, [isInView]);
+    }, []);
 
     const quotesPool = useMemo(() => {
         const resolveFromMap = (map: typeof SPECIAL_QUOTES) => {
@@ -254,7 +256,7 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
                     <div className="absolute inset-0 pointer-events-none rounded-full transition-opacity"
                         style={{ transitionDuration: '2000ms', background: `radial-gradient(circle at 50% 40%, ${primaryColor}40 0%, ${primaryColor}15 45%, transparent 70%)`, opacity: stage === 4 ? 1 : 0 }} />
 
-                    {stage >= 3 && <TreeSparks count={perfProfile.tier === 'low' ? 8 : 20} color={primaryColor} />}
+                    {stage >= 3 && isOnScreen && <TreeSparks count={perfProfile.tier === 'low' ? 8 : 20} color={primaryColor} />}
 
                     <svg
                         viewBox="0 0 300 300"

@@ -9,8 +9,14 @@ export const useConfetti = () => {
     const isMobile = typeof window !== "undefined" && (window.innerWidth < 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
 
     const fireConfetti = useCallback((options?: confetti.Options) => {
+        // Callers may request big desktop bursts (e.g. the mega surprise). Keep
+        // those intact, but cap them on mobile so a single tap can't spawn
+        // hundreds of physics particles on a constrained GPU.
+        const particleCount = Math.min(
+            options?.particleCount ?? (isReducedMotion ? 15 : isMobile ? 30 : 100),
+            isMobile ? 60 : Number.POSITIVE_INFINITY,
+        );
         confetti({
-            particleCount: isReducedMotion ? 15 : isMobile ? 30 : 100,
             spread: isMobile ? 55 : 70,
             origin: { y: 0.6 },
             scalar: isMobile ? 0.8 : 1,
@@ -18,6 +24,7 @@ export const useConfetti = () => {
             disableForReducedMotion: isReducedMotion,
             colors: ["#e84393", "#a855f7", "#f59e0b", "#38bdf8", "#f97316", "#34d399"],
             ...options,
+            particleCount,
         });
     }, [isMobile, isReducedMotion]);
     const fireCannon = useCallback(() => {

@@ -61,6 +61,182 @@ const COLOR_MAP = {
 
 const AVAILABLE_EMOJIS = ['❤️', '✨', '🌸', '🎂', '🌟', '🕊️', '💌', '🎉'];
 
+type GuestbookWishDraft = Pick<GuestbookWish, 'name' | 'message' | 'role' | 'emoji' | 'colorScheme'>;
+
+/**
+ * Isolated form state: typing a 300-character wish used to re-render the entire
+ * wishes grid on every keystroke because the fields lived in GuestbookSection.
+ */
+const GuestbookWishForm = ({
+  onSubmit,
+  roleLabel,
+  t,
+  isFrench,
+  isBengali,
+  isHindi,
+}: {
+  onSubmit: (wish: GuestbookWishDraft) => void;
+  roleLabel: (role: GuestbookWish['role']) => string;
+  t: (key: string) => string;
+  isFrench: boolean;
+  isBengali: boolean;
+  isHindi: boolean;
+}) => {
+  const [formName, setFormName] = useState('');
+  const [formMessage, setFormMessage] = useState('');
+  const [formRole, setFormRole] = useState<GuestbookWish['role']>('friend');
+  const [formEmoji, setFormEmoji] = useState('❤️');
+  const [formColor, setFormColor] = useState<GuestbookWish['colorScheme']>('rose');
+  const [justSubmitted, setJustSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formName.trim() || !formMessage.trim()) return;
+    onSubmit({
+      name: formName.trim(),
+      message: formMessage.trim(),
+      role: formRole,
+      emoji: formEmoji,
+      colorScheme: formColor,
+    });
+    setJustSubmitted(true);
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-xl mx-auto p-6 sm:p-8 rounded-3xl bg-black/60 border border-white/15 backdrop-blur-xl shadow-2xl space-y-5"
+    >
+      <h3 className="text-xl font-bold text-white flex items-center gap-2">
+        <MessageSquareHeart className="text-pink-400" size={20} />
+        <span>{t('guestbook.leaveWish') || 'Leave a Wish'}</span>
+      </h3>
+
+      {/* Name Input */}
+      <div>
+        <label className="block text-xs font-semibold text-white/70 mb-1.5 uppercase tracking-wider">
+          {isFrench ? "Nom / Surnom" : isBengali ? "আপনার নাম" : isHindi ? "आपका नाम" : "Name / Nickname"}
+        </label>
+        <input
+          type="text"
+          required
+          maxLength={50}
+          value={formName}
+          onChange={(e) => setFormName(e.target.value)}
+          placeholder={t('guestbook.namePlaceholder') || 'Your Name or Nickname'}
+          className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/15 text-white placeholder-white/40 focus:outline-none focus:border-pink-400 transition-all text-sm"
+        />
+      </div>
+
+      {/* Connection / Role Selector */}
+      <div>
+        <label className="block text-xs font-semibold text-white/70 mb-1.5 uppercase tracking-wider">
+          {t('guestbook.relationshipLabel') || 'Connection'}
+        </label>
+        <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+          {(['friend', 'family', 'partner', 'wellWisher', 'colleague'] as const).map((r) => (
+            <button
+              key={r}
+              type="button"
+              onClick={() => setFormRole(r)}
+              className={`px-3 py-2 rounded-xl text-xs font-medium border transition-all text-center ${
+                formRole === r
+                  ? 'bg-pink-500/25 border-pink-400 text-white shadow-sm'
+                  : 'bg-white/5 border-white/10 text-white/60 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              {roleLabel(r)}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Message Textarea */}
+      <div>
+        <label className="block text-xs font-semibold text-white/70 mb-1.5 uppercase tracking-wider">
+          {isFrench ? "Votre message" : isBengali ? "আপনার শুভেচ্ছা বার্তা" : isHindi ? "संदेश" : "Message"}
+        </label>
+        <textarea
+          required
+          rows={3}
+          maxLength={300}
+          value={formMessage}
+          onChange={(e) => setFormMessage(e.target.value)}
+          placeholder={
+            t('guestbook.messagePlaceholder') ||
+            'Write your heartfelt birthday wish or cherished memory...'
+          }
+          className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/15 text-white placeholder-white/40 focus:outline-none focus:border-pink-400 transition-all text-sm resize-none"
+        />
+      </div>
+
+      {/* Sticker Emoji & Color Accent Selectors */}
+      <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
+        <div>
+          <span className="block text-xs font-semibold text-white/70 mb-1.5 uppercase tracking-wider">
+            {isFrench ? "Sticker" : isBengali ? "স্টিকার" : isHindi ? "स्टीकर" : "Sticker"}
+          </span>
+          <div className="flex items-center gap-1.5">
+            {AVAILABLE_EMOJIS.map((emoji) => (
+              <button
+                key={emoji}
+                type="button"
+                onClick={() => setFormEmoji(emoji)}
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-base transition-transform ${
+                  formEmoji === emoji
+                    ? 'scale-125 bg-white/20 ring-2 ring-pink-400'
+                    : 'hover:scale-110 opacity-70 hover:opacity-100'
+                }`}
+              >
+                {emoji}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <span className="block text-xs font-semibold text-white/70 mb-1.5 uppercase tracking-wider">
+            {isFrench ? "Couleur" : isBengali ? "রং" : isHindi ? "रंग" : "Card Theme"}
+          </span>
+          <div className="flex items-center gap-2">
+            {(['rose', 'amber', 'lavender', 'emerald', 'sky'] as const).map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => setFormColor(c)}
+                style={{ backgroundColor: COLOR_MAP[c].accent }}
+                className={`w-6 h-6 rounded-full transition-transform ${
+                  formColor === c ? 'scale-125 ring-2 ring-white shadow-lg' : 'opacity-60 hover:opacity-100'
+                }`}
+                title={c}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Submit Button */}
+      <button
+        type="submit"
+        disabled={justSubmitted}
+        className="w-full mt-2 py-3.5 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 transition-all hover:opacity-95 disabled:opacity-50"
+      >
+        {justSubmitted ? (
+          <>
+            <Check size={18} />
+            <span>{t('guestbook.sentSuccess') || 'Added with Love!'}</span>
+          </>
+        ) : (
+          <>
+            <Send size={16} />
+            <span>{t('guestbook.submit') || 'Send Your Wish'}</span>
+          </>
+        )}
+      </button>
+    </form>
+  );
+};
+
 export const GuestbookSection: React.FC = () => {
   const { config } = useBirthdayStore();
   const { t, isBengali, isHindi, isFrench } = useTranslation();
@@ -71,13 +247,7 @@ export const GuestbookSection: React.FC = () => {
   const isLowPowerMode = perfProfile.tier === 'low';
 
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [formName, setFormName] = useState('');
-  const [formMessage, setFormMessage] = useState('');
-  const [formRole, setFormRole] = useState<GuestbookWish['role']>('friend');
-  const [formEmoji, setFormEmoji] = useState('❤️');
-  const [formColor, setFormColor] = useState<GuestbookWish['colorScheme']>('rose');
   const [likedMap, setLikedMap] = useState<Record<string, boolean>>({});
-  const [justSubmitted, setJustSubmitted] = useState(false);
   const submitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -315,17 +485,10 @@ export const GuestbookSection: React.FC = () => {
     );
   };
 
-  const handleAddWish = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formName.trim() || !formMessage.trim()) return;
-
+  const handleAddWish = (draft: GuestbookWishDraft) => {
     const newWish: GuestbookWish = {
       id: `wish-${Date.now()}`,
-      name: formName.trim(),
-      message: formMessage.trim(),
-      role: formRole,
-      emoji: formEmoji,
-      colorScheme: formColor,
+      ...draft,
       likes: 1,
       timestamp: 'Just now',
       isCustom: true,
@@ -343,7 +506,6 @@ export const GuestbookSection: React.FC = () => {
       // Ignore localStorage errors
     }
 
-    setJustSubmitted(true);
     playReveal();
     fireConfetti();
     fireStars();
@@ -352,10 +514,8 @@ export const GuestbookSection: React.FC = () => {
       clearTimeout(submitTimerRef.current);
     }
     submitTimerRef.current = setTimeout(() => {
-      setFormName('');
-      setFormMessage('');
       setIsFormOpen(false);
-      setJustSubmitted(false);
+      submitTimerRef.current = null;
     }, 1500);
   };
 
@@ -437,137 +597,14 @@ export const GuestbookSection: React.FC = () => {
             transition={{ duration: 0.35, ease: 'easeOut' }}
             className="overflow-hidden mb-12"
           >
-            <form
+            <GuestbookWishForm
               onSubmit={handleAddWish}
-              className="max-w-xl mx-auto p-6 sm:p-8 rounded-3xl bg-black/60 border border-white/15 backdrop-blur-xl shadow-2xl space-y-5"
-            >
-              <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                <MessageSquareHeart className="text-pink-400" size={20} />
-                <span>{t('guestbook.leaveWish') || 'Leave a Wish'}</span>
-              </h3>
-
-              {/* Name Input */}
-              <div>
-                <label className="block text-xs font-semibold text-white/70 mb-1.5 uppercase tracking-wider">
-                  {isFrench ? "Nom / Surnom" : isBengali ? "আপনার নাম" : isHindi ? "आपका नाम" : "Name / Nickname"}
-                </label>
-                <input
-                  type="text"
-                  required
-                  maxLength={50}
-                  value={formName}
-                  onChange={(e) => setFormName(e.target.value)}
-                  placeholder={t('guestbook.namePlaceholder') || 'Your Name or Nickname'}
-                  className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/15 text-white placeholder-white/40 focus:outline-none focus:border-pink-400 transition-all text-sm"
-                />
-              </div>
-
-              {/* Connection / Role Selector */}
-              <div>
-                <label className="block text-xs font-semibold text-white/70 mb-1.5 uppercase tracking-wider">
-                  {t('guestbook.relationshipLabel') || 'Connection'}
-                </label>
-                <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-                  {(['friend', 'family', 'partner', 'wellWisher', 'colleague'] as const).map((r) => (
-                    <button
-                      key={r}
-                      type="button"
-                      onClick={() => setFormRole(r)}
-                      className={`px-3 py-2 rounded-xl text-xs font-medium border transition-all text-center ${
-                        formRole === r
-                          ? 'bg-pink-500/25 border-pink-400 text-white shadow-sm'
-                          : 'bg-white/5 border-white/10 text-white/60 hover:text-white hover:bg-white/10'
-                      }`}
-                    >
-                      {roleLabel(r)}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Message Textarea */}
-              <div>
-                <label className="block text-xs font-semibold text-white/70 mb-1.5 uppercase tracking-wider">
-                  {isFrench ? "Votre message" : isBengali ? "আপনার শুভেচ্ছা বার্তা" : isHindi ? "संदेश" : "Message"}
-                </label>
-                <textarea
-                  required
-                  rows={3}
-                  maxLength={300}
-                  value={formMessage}
-                  onChange={(e) => setFormMessage(e.target.value)}
-                  placeholder={
-                    t('guestbook.messagePlaceholder') ||
-                    'Write your heartfelt birthday wish or cherished memory...'
-                  }
-                  className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/15 text-white placeholder-white/40 focus:outline-none focus:border-pink-400 transition-all text-sm resize-none"
-                />
-              </div>
-
-              {/* Sticker Emoji & Color Accent Selectors */}
-              <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
-                <div>
-                  <span className="block text-xs font-semibold text-white/70 mb-1.5 uppercase tracking-wider">
-                    {isFrench ? "Sticker" : isBengali ? "স্টিকার" : isHindi ? "स्टीकर" : "Sticker"}
-                  </span>
-                  <div className="flex items-center gap-1.5">
-                    {AVAILABLE_EMOJIS.map((emoji) => (
-                      <button
-                        key={emoji}
-                        type="button"
-                        onClick={() => setFormEmoji(emoji)}
-                        className={`w-8 h-8 rounded-full flex items-center justify-center text-base transition-transform ${
-                          formEmoji === emoji
-                            ? 'scale-125 bg-white/20 ring-2 ring-pink-400'
-                            : 'hover:scale-110 opacity-70 hover:opacity-100'
-                        }`}
-                      >
-                        {emoji}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <span className="block text-xs font-semibold text-white/70 mb-1.5 uppercase tracking-wider">
-                    {isFrench ? "Couleur" : isBengali ? "রং" : isHindi ? "रंग" : "Card Theme"}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    {(['rose', 'amber', 'lavender', 'emerald', 'sky'] as const).map((c) => (
-                      <button
-                        key={c}
-                        type="button"
-                        onClick={() => setFormColor(c)}
-                        style={{ backgroundColor: COLOR_MAP[c].accent }}
-                        className={`w-6 h-6 rounded-full transition-transform ${
-                          formColor === c ? 'scale-125 ring-2 ring-white shadow-lg' : 'opacity-60 hover:opacity-100'
-                        }`}
-                        title={c}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={justSubmitted}
-                className="w-full mt-2 py-3.5 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 transition-all hover:opacity-95 disabled:opacity-50"
-              >
-                {justSubmitted ? (
-                  <>
-                    <Check size={18} />
-                    <span>{t('guestbook.sentSuccess') || 'Added with Love!'}</span>
-                  </>
-                ) : (
-                  <>
-                    <Send size={16} />
-                    <span>{t('guestbook.submit') || 'Send Your Wish'}</span>
-                  </>
-                )}
-              </button>
-            </form>
+              roleLabel={roleLabel}
+              t={t}
+              isFrench={isFrench}
+              isBengali={isBengali}
+              isHindi={isHindi}
+            />
           </motion.div>
         )}
       </AnimatePresence>
