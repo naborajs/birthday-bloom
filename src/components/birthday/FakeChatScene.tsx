@@ -1,9 +1,9 @@
-import { useState, useEffect, useMemo, useCallback, useRef, memo } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSoundManager } from "./SoundManager";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useTranslation } from "@/i18n";
-import { getTemplateEmojiKit } from "@/config/emojiKits";
+import { getStoryCopy } from "./fakeChatStory";
 import {
     ChevronLeft,
     Phone,
@@ -18,6 +18,8 @@ import {
     Sparkles,
     Delete,
     CornerDownLeft,
+    Globe,
+    ExternalLink,
 } from "lucide-react";
 
 interface FakeChatSceneProps {
@@ -35,41 +37,6 @@ const KEYBOARD_ROW_1 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
 const KEYBOARD_ROW_2 = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
 const KEYBOARD_ROW_3 = ["z", "x", "c", "v", "b", "n", "m"];
 const ALL_LETTER_KEYS = [...KEYBOARD_ROW_1, ...KEYBOARD_ROW_2, ...KEYBOARD_ROW_3];
-
-interface KeyButtonProps {
-    keyId: string;
-    isPressed: boolean;
-    isShiftActive: boolean;
-    onPress: (keyId: string) => void;
-}
-
-const KeyButton = memo(({ keyId, isPressed, isShiftActive, onPress }: KeyButtonProps) => {
-    const displayChar = isShiftActive ? keyId.toUpperCase() : keyId;
-    return (
-        <button
-            type="button"
-            data-key={keyId}
-            data-active={isPressed ? "true" : "false"}
-            onClick={() => onPress(keyId)}
-            className={`relative h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
-                isPressed
-                    ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
-                    : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
-            }`}
-        >
-            {isPressed && (
-                <span
-                    data-testid="key-callout-popup"
-                    className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg bg-[#4A4A58] border border-rose-400/50 text-white font-bold text-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.85)] z-30"
-                >
-                    {displayChar}
-                </span>
-            )}
-            {displayChar}
-        </button>
-    );
-});
-KeyButton.displayName = "KeyButton";
 
 /**
  * Maps a typed character (Latin, accented French, emoji, or Indic script)
@@ -107,108 +74,44 @@ function resolveKeyId(char: string): string {
     return "space";
 }
 
-export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
-    const [phase, setPhase] = useState<
-        | "incoming"
-        | "typing-basic"
-        | "holding-basic"
-        | "deleting"
-        | "typing-heartfelt"
-        | "send-pulse"
-        | "sent"
-        | "seen"
-        | "climax"
-        | "done"
-    >("incoming");
+type ChatPhase =
+    | "idle"
+    | "composing"
+    | "reconsidering"
+    | "cancelling"
+    | "pasting-link"
+    | "sending-link"
+    | "revealing-link"
+    | "complete";
 
+export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
+    const [phase, setPhase] = useState<ChatPhase>("idle");
     const [typedInputText, setTypedInputText] = useState("");
-    const [sentMessageText, setSentMessageText] = useState("");
     const [activeKey, setActiveKey] = useState<string | null>(null);
     const [isShiftActive, setIsShiftActive] = useState(false);
     const [floatingHearts, setFloatingHearts] = useState<FloatingHeart[]>([]);
-    const [isHeartLiked, setIsHeartLiked] = useState(true);
+    const [showTopPopup, setShowTopPopup] = useState(false);
+    const [isPastingTooltip, setIsPastingTooltip] = useState(false);
+    const [showLinkCard, setShowLinkCard] = useState(false);
 
     const { playType, playWhoosh, playReveal, playPop } = useSoundManager();
     const { config } = useBirthdayStore();
-    const { t, isHindi, isBengali, isFrench } = useTranslation();
-    const { name, relationship, favoriteColor, gender } = config;
+    const { isHindi, isBengali, isFrench } = useTranslation();
+    const { name, relationship, favoriteColor, gender, customMessage, senderName } = config;
 
-    const isMale = gender === "male";
-    const isFemale = gender === "female";
+    const prefersReducedMotion = useMemo(() => {
+        return (
+            typeof window !== "undefined" &&
+            window.matchMedia &&
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        );
+    }, []);
+
     const primaryColor = favoriteColor || "#FF2A6D";
 
-    const basicText = t("common.happyBirthday");
-
-    const heartfeltText = useMemo(() => {
-        if (isFrench) {
-            if (relationship === "partner")
-                return isMale ? "Pour l'homme qui fait battre mon cœur... ❤️" : isFemale ? "Pour la femme de mes rêves... ❤️" : "Pour l'âme qui me complète... ❤️";
-            if (relationship === "friend")
-                return "Attends, un simple message texte ? Ce n'est pas notre genre ! 😂🚀";
-            if (relationship === "brother" || relationship === "sibling")
-                return "Un simple SMS pour le meilleur frère du monde ? Pas question ! 🏆";
-            if (relationship === "sister")
-                return "Un simple message pour ma sœur adorée ? Tu mérites tout un univers ! 🌸✨";
-            if (relationship === "father")
-                return "Un simple texto ne suffira jamais pour remercier mon héros... 🌟💪";
-            if (relationship === "mother")
-                return "Un simple message ne pourra jamais exprimer tout mon amour... 💐💛";
-            if (relationship === "mentor" || relationship === "colleague")
-                return "Un simple message pour une telle inspiration ? On a créé bien mieux ! 🎯✨";
-            return "Un simple message ne suffirait jamais pour exprimer tout notre amour... 💝🌟";
-        }
-        if (isBengali) {
-            if (relationship === "partner")
-                return isMale ? "আমার মনের রাজপুত্রের জন্য... ❤️" : isFemale ? "আমার স্বপ্নের রাজকন্যার জন্য... ❤️" : "সেই বিশেষ মানুষের জন্য যে আমাকে পূর্ণ করে... ❤️";
-            if (relationship === "friend")
-                return "দাঁড়াও, এত সাধারণ মেসেজ? এটা আমরা নই! 😂🚀";
-            if (relationship === "brother" || relationship === "sibling")
-                return "সেরা ভাইয়ের জন্য এত সাধারণ টেক্সট? হতেই পারে না! 🏆";
-            if (relationship === "sister")
-                return "আমার মিষ্টি বোনের জন্য সামান্য মেসেজ? তোর জন্য পুরো একটা ওয়েবসাইট! 🌸✨";
-            if (relationship === "father")
-                return "আমার জীবনের আসল হিরোকে একটা মেসেজে কি আর ভালোবাসা জানানো যায়... 🌟💪";
-            if (relationship === "mother")
-                return "মায়ের জন্য শুধু একটা মেসেজ? কোনোদিনও যথেষ্ট নয়... 💐💛";
-            if (relationship === "mentor" || relationship === "colleague")
-                return "আমাদের সেরা অনুপ্রেরণাকে এত সাধারণ শুভেচ্ছা? অসম্ভব! 🎯✨";
-            return "পরিবারের এত বিশেষ মানুষের জন্য একটা টেক্সট কখনোই যথেষ্ট নয়... 💝🌟";
-        }
-        if (isHindi) {
-            if (relationship === "partner")
-                return isMale ? "मेरे दिल के राजा के लिए... ❤️" : isFemale ? "मेरे ख्वाबों की मलिका के लिए... ❤️" : "उस इंसान के लिए जो मुझे पूरा करता है... ❤️";
-            if (relationship === "friend")
-                return "अरे रुको, सिर्फ एक साधारण संदेश? वो हम नहीं! 😂🚀";
-            if (relationship === "brother" || relationship === "sibling")
-                return "दुनिया के सबसे धांसू भाई के लिए सिर्फ एक टेक्स्ट? कभी नहीं! 🏆";
-            if (relationship === "sister")
-                return "मेरी प्यारी बहन के लिए सिर्फ एक मैसेज? तुम्हारे लिए पूरी दुनिया हाजिर है! 🌸✨";
-            if (relationship === "father")
-                return "हमारे असली हीरो के लिए सिर्फ एक संदेश काफी नहीं हो सकता... 🌟💪";
-            if (relationship === "mother")
-                return "माँ के लिए सिर्फ एक टेक्स्ट? कभी भी मुमकिन नहीं... 💐💛";
-            if (relationship === "mentor" || relationship === "colleague")
-                return "हमारी सबसे बड़ी प्रेरणा के लिए साधारण मैसेज? हमने कुछ खास बनाया है! 🎯✨";
-            return "परिवार के इतने अनमोल सदस्य के लिए सिर्फ एक टेक्स्ट काफी नहीं... 💝🌟";
-        }
-
-        // English Default
-        if (relationship === "partner")
-            return isMale ? "To the man who holds my heart... ❤️" : isFemale ? "To the woman of my dreams... ❤️" : "To the soul who completes me... ❤️";
-        if (relationship === "friend")
-            return "Wait, a boring text? That's not us! 😂🚀";
-        if (relationship === "brother" || relationship === "sibling")
-            return "A basic text for the best brother in the universe? Not a chance! 🏆";
-        if (relationship === "sister")
-            return "A plain text for my sweetest sister? You deserve a whole universe! 🌸✨";
-        if (relationship === "father")
-            return "A mere text could never thank you enough for being my hero... 🌟💪";
-        if (relationship === "mother")
-            return "A simple message could never express how much your warmth means to me... 💐💛";
-        if (relationship === "mentor" || relationship === "colleague")
-            return "A regular birthday ping? For our greatest inspiration? We built something better! 🎯✨";
-        return "A simple text could never capture how much you mean to our family... 💝🌟";
-    }, [relationship, isMale, isFemale, isHindi, isBengali, isFrench]);
+    const storyData = useMemo(() => {
+        return getStoryCopy(relationship, name, gender, isHindi, isBengali, isFrench, customMessage, senderName);
+    }, [relationship, name, gender, isHindi, isBengali, isFrench, customMessage, senderName]);
 
     const triggerHeartBurst = useCallback((clientX?: number, clientY?: number) => {
         playPop();
@@ -232,27 +135,9 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
     }, [playPop]);
 
     const lastTapRef = useRef<number>(0);
-    const chatStreamRef = useRef<HTMLElement | null>(null);
-
-    useEffect(() => {
-        if (chatStreamRef.current && typeof chatStreamRef.current.scrollTo === "function") {
-            chatStreamRef.current.scrollTo({
-                top: chatStreamRef.current.scrollHeight,
-                behavior: "smooth",
-            });
-        }
-    }, [sentMessageText, phase]);
-
-    const currentTypedWord = useMemo(() => {
-        if (!typedInputText) return "";
-        const parts = typedInputText.trimEnd().split(/\s+/);
-        return parts[parts.length - 1] || "";
-    }, [typedInputText]);
-
-    const handleDoubleTapMessage = (e: React.MouseEvent | React.TouchEvent) => {
+    const handleDoubleTap = (e: React.MouseEvent | React.TouchEvent) => {
         const now = Date.now();
         if (now - lastTapRef.current < 320) {
-            setIsHeartLiked(true);
             const clientX = "clientX" in e ? e.clientX : e.touches[0]?.clientX;
             const clientY = "clientY" in e ? e.clientY : e.touches[0]?.clientY;
             triggerHeartBurst(clientX, clientY);
@@ -260,129 +145,139 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
         lastTapRef.current = now;
     };
 
-    const handleManualKeyPress = useCallback((keyId: string) => {
+    const handleManualKeyPress = (keyId: string) => {
         playType();
         setActiveKey(keyId);
         setTimeout(() => {
             setActiveKey((prev) => (prev === keyId ? null : prev));
         }, 120);
-    }, [playType]);
+    };
+
+    const hasCompletedRef = useRef(false);
+    const handleProceed = useCallback(() => {
+        if (hasCompletedRef.current) return;
+        hasCompletedRef.current = true;
+        playWhoosh();
+        onComplete();
+    }, [playWhoosh, onComplete]);
 
     useEffect(() => {
         let isMounted = true;
-
         const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-        // Convert to code-point arrays so multi-byte emojis (💝, 🌟) never split into surrogate halves ()
-        const basicChars = Array.from(basicText);
-        const heartfeltChars = Array.from(heartfeltText);
+        // Code-point array so emojis/multi-byte chars never get split
+        const initialChars = Array.from(storyData.initialWish);
+        const celebrationUrl = "https://birthdaybloom.celebration";
 
         const runSequence = async () => {
-            // Initial breathing pause
-            await sleep(700);
+            await sleep(prefersReducedMotion ? 200 : 600);
             if (!isMounted) return;
 
-            // Phase 1: Typing basic message ("Happy Birthday")
-            setPhase("typing-basic");
-            for (let i = 1; i <= basicChars.length; i++) {
-                if (!isMounted) return;
-                const char = basicChars[i - 1];
-                const keyId = resolveKeyId(char);
-                const isUpper = char !== char.toLowerCase() && char === char.toUpperCase();
+            // ── Stage A: Typing normal birthday wish into composer ──
+            setPhase("composing");
 
-                setIsShiftActive(isUpper);
-                setActiveKey(keyId);
-                setTypedInputText(basicChars.slice(0, i).join(""));
-                playType();
-                if (typeof navigator !== "undefined" && navigator.vibrate) {
-                    navigator.vibrate(8);
+            if (prefersReducedMotion) {
+                setTypedInputText(storyData.initialWish);
+                await sleep(500);
+            } else {
+                for (let i = 1; i <= initialChars.length; i++) {
+                    if (!isMounted) return;
+                    const char = initialChars[i - 1];
+                    const keyId = resolveKeyId(char);
+                    const isUpper = char !== char.toLowerCase() && char === char.toUpperCase();
+
+                    setIsShiftActive(isUpper);
+                    setActiveKey(keyId);
+                    setTypedInputText(initialChars.slice(0, i).join(""));
+                    playType();
+
+                    if (typeof navigator !== "undefined" && navigator.vibrate) {
+                        navigator.vibrate(6);
+                    }
+
+                    await sleep(40);
+                    if (!isMounted) return;
+                    setActiveKey(null);
+                    setIsShiftActive(false);
+                    await sleep(20);
                 }
-                await sleep(55);
-                if (!isMounted) return;
-                setActiveKey(null);
-                setIsShiftActive(false);
-                await sleep(30);
             }
 
-            // Phase 2: Hold & reflect ("Wait... this is too ordinary")
-            setPhase("holding-basic");
-            setActiveKey(null);
-            await sleep(1700);
             if (!isMounted) return;
 
-            // Phase 3: Backspace deleting with live backspace key darkening
-            setPhase("deleting");
-            for (let i = basicChars.length - 1; i >= 0; i--) {
-                if (!isMounted) return;
-                setActiveKey("backspace");
-                setTypedInputText(basicChars.slice(0, i).join(""));
-                playType();
-                await sleep(26);
-                if (!isMounted) return;
-                setActiveKey(null);
-                await sleep(14);
+            // ── Stage B: Pause & Reconsider — Beautiful Top Popup appears ──
+            setPhase("reconsidering");
+            setActiveKey(null);
+            setShowTopPopup(true);
+            playReveal();
+            if (typeof navigator !== "undefined" && navigator.vibrate) {
+                navigator.vibrate(35);
             }
 
-            setActiveKey(null);
-            await sleep(380);
+            // Increased display timer as requested so the user can comfortably read it
+            await sleep(prefersReducedMotion ? 800 : 2600);
             if (!isMounted) return;
 
-            // Phase 4: Type deeply personal message with live key darkening
-            setPhase("typing-heartfelt");
-            for (let i = 1; i <= heartfeltChars.length; i++) {
-                if (!isMounted) return;
-                const char = heartfeltChars[i - 1];
-                const keyId = resolveKeyId(char);
-                const isUpper = char !== char.toLowerCase() && char === char.toUpperCase();
+            // ── Stage C: Cancel the ordinary message (Backspacing out) ──
+            setPhase("cancelling");
 
-                setIsShiftActive(isUpper);
-                setActiveKey(keyId);
-                setTypedInputText(heartfeltChars.slice(0, i).join(""));
-                playType();
-                if (typeof navigator !== "undefined" && navigator.vibrate) {
-                    navigator.vibrate(8);
+            if (prefersReducedMotion) {
+                setTypedInputText("");
+                await sleep(250);
+            } else {
+                for (let i = initialChars.length - 1; i >= 0; i--) {
+                    if (!isMounted) return;
+                    setActiveKey("backspace");
+                    setTypedInputText(initialChars.slice(0, i).join(""));
+                    playType();
+                    await sleep(22);
+                    if (!isMounted) return;
+                    setActiveKey(null);
+                    await sleep(12);
                 }
-                await sleep(38);
-                if (!isMounted) return;
-                setActiveKey(null);
-                setIsShiftActive(false);
-                await sleep(18);
             }
 
-            // Phase 5: Send button & keyboard return key physical press & darken
-            setPhase("send-pulse");
-            setActiveKey("send");
-            await sleep(620);
-            if (!isMounted) return;
             setActiveKey(null);
-
-            // Phase 6: Fly message into chat as Sent & retract virtual keyboard
-            setSentMessageText(heartfeltChars.join(""));
             setTypedInputText("");
-            setPhase("sent");
+            await sleep(350);
+            if (!isMounted) return;
+
+            // ── Stage D1: Show pasting the link ──
+            setPhase("pasting-link");
+            setIsPastingTooltip(true);
+            await sleep(prefersReducedMotion ? 150 : 400);
+            if (!isMounted) return;
+            setIsPastingTooltip(false);
+            setTypedInputText(celebrationUrl);
+            playType();
+            await sleep(prefersReducedMotion ? 250 : 650);
+            if (!isMounted) return;
+
+            // ── Stage D2: Press Send ──
+            setPhase("sending-link");
+            setActiveKey("send");
             playPop();
             if (typeof navigator !== "undefined" && navigator.vibrate) {
-                navigator.vibrate([40, 30, 40]);
+                navigator.vibrate([35, 25, 35]);
             }
-
-            // Phase 7: "Seen just now • ❤️" micro-receipt
-            await sleep(1200);
+            await sleep(prefersReducedMotion ? 150 : 380);
             if (!isMounted) return;
-            setPhase("seen");
 
-            // Phase 8: Reveal Climax Narrative Banner
-            await sleep(1400);
-            if (!isMounted) return;
-            setPhase("climax");
+            setActiveKey(null);
+            setTypedInputText("");
+            setShowTopPopup(false);
+
+            // ── Stage D3: Link card arrives in chat stream ──
+            setPhase("revealing-link");
+            setShowLinkCard(true);
             playReveal();
 
-            // Climax display duration before seamless transition
-            await sleep(3800);
+            // ── Stage E: Complete & Transition to existing experience ──
+            await sleep(prefersReducedMotion ? 1800 : 3600);
             if (!isMounted) return;
-            setPhase("done");
-            playWhoosh();
-            await sleep(300);
-            onComplete();
+
+            setPhase("complete");
+            handleProceed();
         };
 
         runSequence().catch((err) => {
@@ -392,34 +287,68 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
         return () => {
             isMounted = false;
         };
-    }, [onComplete, playType, playWhoosh, playReveal, playPop, basicText, heartfeltText]);
+    }, [storyData, playType, playReveal, playPop, handleProceed, prefersReducedMotion]);
 
-    const emojiKit = useMemo(() => getTemplateEmojiKit(config), [config]);
-    const contactName = name || (relationship === "partner" ? "My Love" : relationship === "friend" ? "Bestie 🔥" : "Family 🌟");
-    const avatarEmoji = emojiKit.chat?.avatar || (relationship === "partner" ? "💖" : relationship === "friend" ? "😎" : "👑");
-    const floatingBadges = useMemo(
-        () => (emojiKit.floating?.length >= 4 ? emojiKit.floating.slice(0, 4) : ["💖", "✨", "🌹", "🦋"]),
-        [emojiKit.floating]
+    const contactName = name || (
+        relationship === "partner" ? (gender === "male" ? "My King 👑" : gender === "female" ? "My Queen 👑" : "My Love 💖") :
+        relationship === "father" ? "Dad ⭐" :
+        relationship === "mother" ? "Mom 🌸" :
+        relationship === "brother" ? "Bro 🔥" :
+        relationship === "sister" ? "Sis 🌸" :
+        relationship === "friend" ? "Bestie 🔥" :
+        relationship === "uncle" ? "Uncle 🕶️" :
+        relationship === "aunt" ? "Auntie 🌸" :
+        relationship === "son" ? "Son ⭐" :
+        relationship === "daughter" ? "Daughter 💖" :
+        relationship === "grandfather" ? "Grandpa 💛" :
+        relationship === "grandmother" ? "Grandma 💐" :
+        relationship === "mentor" ? "Mentor 🎯" :
+        relationship === "colleague" ? "Teammate 💼" :
+        relationship === "cousin" ? "Cousin 🎉" :
+        relationship === "sibling" ? "Sibling 🔥" :
+        relationship === "guardian" ? "Guardian 🌟" :
+        "Family 🌟"
     );
 
-    const isKeyboardOpen =
-        phase === "incoming" ||
-        phase === "typing-basic" ||
-        phase === "holding-basic" ||
-        phase === "deleting" ||
-        phase === "typing-heartfelt" ||
-        phase === "send-pulse";
+    const avatarEmoji =
+        relationship === "partner" ? (gender === "male" ? "🤴" : gender === "female" ? "👸" : "💖") :
+        relationship === "father" ? "👨" :
+        relationship === "mother" ? "👩" :
+        relationship === "brother" ? "😎" :
+        relationship === "sister" ? "🌸" :
+        relationship === "friend" ? "🔥" :
+        relationship === "uncle" ? "🕶️" :
+        relationship === "aunt" ? "💐" :
+        relationship === "son" ? "👦" :
+        relationship === "daughter" ? "👧" :
+        relationship === "grandfather" ? "👴" :
+        relationship === "grandmother" ? "👵" :
+        relationship === "mentor" ? "🎯" :
+        relationship === "colleague" ? "💼" :
+        relationship === "cousin" ? "🎉" :
+        relationship === "sibling" ? "⚡" :
+        relationship === "guardian" ? "🌟" :
+        "👑";
 
-    const isSendDepressed = phase === "send-pulse" || activeKey === "send";
+    const isKeyboardOpen =
+        phase === "idle" ||
+        phase === "composing" ||
+        phase === "reconsidering" ||
+        phase === "cancelling" ||
+        phase === "pasting-link" ||
+        phase === "sending-link";
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center select-none bg-black/30 backdrop-blur-md p-2 sm:p-6 overflow-hidden"
+            className="fixed inset-0 z-50 flex items-center justify-center select-none bg-black/40 backdrop-blur-md p-1.5 xs:p-2 sm:p-6 overflow-hidden"
             style={{
                 perspective: "1400px",
+                paddingTop: "max(6px, env(safe-area-inset-top, 6px))",
+                paddingBottom: "max(6px, env(safe-area-inset-bottom, 6px))",
             }}
+            onClick={handleDoubleTap}
         >
-            {/* ── Website Theme-Harmonious Ambient Backdrop (Preserves Crimson/Gold/Rose Glow) ── */}
+            {/* ── Theme-Harmonious Ambient Backdrop ── */}
             <div
                 className="absolute inset-0 pointer-events-none opacity-85 transition-opacity duration-1000"
                 style={{
@@ -427,79 +356,51 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                 }}
             />
             <div
-                className="absolute w-[340px] h-[580px] sm:w-[500px] sm:h-[760px] rounded-full opacity-35 pointer-events-none"
+                className="absolute w-[340px] h-[580px] sm:w-[500px] sm:h-[760px] rounded-full blur-[110px] opacity-35 pointer-events-none"
                 style={{
-                    background: `radial-gradient(circle, ${primaryColor}66 0%, rgba(252,176,69,0.28) 45%, transparent 70%)`,
+                    background: `radial-gradient(circle, ${primaryColor} 0%, rgba(252,176,69,0.45) 55%, transparent 75%)`,
                 }}
             />
 
-            {/* ── 3D Smartphone Hardware Model Wrapper (Works on Both Mobile & Desktop) ── */}
+            {/* ── 3D Smartphone Hardware Model Wrapper (Engineered for all mobile screens & desktop) ── */}
             <motion.div
-                initial={{ opacity: 0, scale: 0.9, rotateX: 10, rotateY: -8, y: 24 }}
-                animate={{
-                    opacity: 1,
-                    scale: 1,
-                    rotateX: [2, 0.5, 2],
-                    rotateY: [-2.5, 2, -2.5],
-                    y: [0, -4, 0],
-                }}
-                exit={{ opacity: 0, scale: 1.05 }}
-                transition={{
-                    opacity: { duration: 0.45, ease: "easeOut" },
-                    scale: { duration: 0.5, ease: "easeOut" },
-                    rotateX: { duration: 8, repeat: Infinity, ease: "easeInOut" },
-                    rotateY: { duration: 9, repeat: Infinity, ease: "easeInOut" },
-                    y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-                }}
-                style={{
-                    transformStyle: "preserve-3d",
-                }}
-                className="relative w-[92vw] max-w-[362px] h-[83dvh] max-h-[720px] sm:max-w-[388px] sm:h-[87vh] sm:max-h-[790px] mb-8 sm:mb-2 p-[4px] sm:p-[5px] rounded-[44px] sm:rounded-[50px] bg-gradient-to-br from-[#7c6270] via-[#2b2228] to-[#523b47] shadow-[0_30px_80px_rgba(0,0,0,0.8),0_0_45px_rgba(255,42,109,0.18),inset_0_1px_2px_rgba(255,255,255,0.45)] flex flex-col"
+                initial={{ opacity: 0, scale: 0.9, rotateX: prefersReducedMotion ? 0 : 8, rotateY: prefersReducedMotion ? 0 : -6, y: 20 }}
+                animate={
+                    prefersReducedMotion
+                        ? { opacity: 1, scale: 1, y: 0 }
+                        : {
+                              opacity: 1,
+                              scale: 1,
+                              rotateX: [1.5, 0.4, 1.5],
+                              rotateY: [-1.8, 1.5, -1.8],
+                              y: [0, -3, 0],
+                          }
+                }
+                exit={{ opacity: 0, scale: 1.05, filter: "blur(18px)" }}
+                transition={
+                    prefersReducedMotion
+                        ? { duration: 0.2 }
+                        : {
+                              opacity: { duration: 0.45, ease: "easeOut" },
+                              scale: { duration: 0.5, ease: "easeOut" },
+                              rotateX: { duration: 8, repeat: Infinity, ease: "easeInOut" },
+                              rotateY: { duration: 9, repeat: Infinity, ease: "easeInOut" },
+                              y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+                          }
+                }
+                style={{ transformStyle: "preserve-3d" }}
+                className="relative w-full max-w-[364px] sm:max-w-[392px] h-[92dvh] sm:h-[87vh] max-h-[790px] my-auto p-[3.5px] sm:p-[5px] rounded-[38px] sm:rounded-[50px] bg-gradient-to-br from-[#7c6270] via-[#2b2228] to-[#523b47] shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_45px_rgba(255,42,109,0.18),inset_0_1px_2px_rgba(255,255,255,0.45)] flex flex-col"
             >
-                {/* 3D Parallax Floating Template Emoji Orbs Around Smartphone Bezel */}
-                <div
-                    aria-hidden="true"
-                    style={{ transform: "translateZ(28px)" }}
-                    className="pointer-events-none hidden sm:flex absolute -left-8 top-14 w-11 h-11 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-xl shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
-                >
-                    {floatingBadges[0]}
-                </div>
-                <div
-                    aria-hidden="true"
-                    style={{ transform: "translateZ(34px)" }}
-                    className="pointer-events-none hidden sm:flex absolute -right-8 top-28 w-11 h-11 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-xl shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
-                >
-                    {floatingBadges[1]}
-                </div>
-                <div
-                    aria-hidden="true"
-                    style={{ transform: "translateZ(24px)" }}
-                    className="pointer-events-none hidden sm:flex absolute -left-7 bottom-28 w-10 h-10 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-lg shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
-                >
-                    {floatingBadges[2]}
-                </div>
-                <div
-                    aria-hidden="true"
-                    style={{ transform: "translateZ(30px)" }}
-                    className="pointer-events-none hidden sm:flex absolute -right-7 bottom-16 w-10 h-10 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-lg shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
-                >
-                    {floatingBadges[3]}
-                </div>
-
-                {/* 3D Hardware Left Buttons (Action + Volume Up/Down) */}
+                {/* 3D Hardware Left & Right Buttons */}
                 <div className="pointer-events-none absolute -left-[3px] top-[96px] w-[3px] h-6 rounded-l-md bg-gradient-to-b from-[#8e7281] to-[#3d2e36] shadow-sm" />
                 <div className="pointer-events-none absolute -left-[3px] top-[136px] w-[3px] h-11 rounded-l-md bg-gradient-to-b from-[#8e7281] to-[#3d2e36] shadow-sm" />
                 <div className="pointer-events-none absolute -left-[3px] top-[190px] w-[3px] h-11 rounded-l-md bg-gradient-to-b from-[#8e7281] to-[#3d2e36] shadow-sm" />
-
-                {/* 3D Hardware Right Button (Power / Side Button) */}
                 <div className="pointer-events-none absolute -right-[3px] top-[152px] w-[3px] h-14 rounded-r-md bg-gradient-to-b from-[#8e7281] to-[#3d2e36] shadow-sm" />
-
-                {/* 3D Floor Pedestal Shadow Beneath Phone */}
                 <div className="pointer-events-none absolute -bottom-7 inset-x-8 h-6 rounded-full bg-black/65 blur-xl -z-10" />
 
-                {/* ── Inner OLED Display Screen (Isolated Modern Sans-Serif Typography) ── */}
+                {/* ── Inner OLED Display Screen ── */}
                 <div
-                    className="relative w-full h-full flex-1 flex flex-col rounded-[40px] sm:rounded-[45px] overflow-hidden border border-white/10 font-sans normal-case tracking-normal"
+                    className="relative w-full h-full flex-1 flex flex-col rounded-[34px] sm:rounded-[45px] overflow-hidden border border-white/10 font-sans normal-case tracking-normal"
                     style={{
                         background: "#12040E",
                         fontFamily:
@@ -515,7 +416,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                         }}
                     />
 
-                    {/* ── Modern Instagram "Midnight Rose" Ambient Mesh Wallpaper ── */}
+                    {/* Ambient Wallpaper Mesh */}
                     <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
                         <div
                             className="absolute inset-0"
@@ -525,12 +426,12 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                             }}
                         />
                         <div
-                            className="absolute top-[6%] -left-24 w-80 h-80 rounded-full opacity-35"
-                            style={{ background: `radial-gradient(circle, ${primaryColor} 0%, transparent 70%)` }}
+                            className="absolute top-[16%] -left-16 w-64 h-64 rounded-full blur-[85px] opacity-25"
+                            style={{ background: primaryColor }}
                         />
                         <div
-                            className="absolute bottom-[18%] -right-24 w-80 h-80 rounded-full opacity-30"
-                            style={{ background: "radial-gradient(circle, #A855F7 0%, transparent 70%)" }}
+                            className="absolute bottom-[28%] -right-16 w-64 h-64 rounded-full blur-[90px] opacity-20"
+                            style={{ background: "#A855F7" }}
                         />
                     </div>
 
@@ -562,39 +463,33 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                     </div>
 
                     {/* ── Instagram Direct Message Header Bar ── */}
-                    <header className="relative z-20 px-2.5 py-1.5 sm:px-3.5 sm:py-2 flex items-center justify-between border-b border-white/10 bg-[#1A0717]/85 backdrop-blur-xl shrink-0">
-                        <div className="flex items-center gap-2">
+                    <header className="relative z-20 px-2 py-1.5 sm:px-3.5 sm:py-2 flex items-center justify-between border-b border-white/10 bg-[#1A0717]/85 backdrop-blur-xl shrink-0">
+                        <div className="flex items-center gap-1.5 sm:gap-2">
                             <button
                                 type="button"
                                 aria-label="Go back"
-                                className="w-9 h-9 -ml-1 flex items-center justify-center text-white/90 hover:text-white rounded-full transition-colors active:scale-95"
+                                className="w-8 h-8 sm:w-9 sm:h-9 -ml-0.5 sm:-ml-1 flex items-center justify-center text-white/90 hover:text-white rounded-full transition-colors active:scale-95"
                             >
-                                <ChevronLeft size={24} />
+                                <ChevronLeft size={22} className="sm:w-6 sm:h-6" />
                             </button>
 
                             {/* Story Gradient Avatar Ring */}
                             <div className="relative">
                                 <div className="p-[2px] rounded-full bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF] shadow-[0_0_10px_rgba(221,42,123,0.45)]">
-                                    <div className="w-9 h-9 rounded-full bg-[#121212] flex items-center justify-center text-lg border border-white/10">
+                                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#121212] flex items-center justify-center text-base sm:text-lg border border-white/10">
                                         {avatarEmoji}
                                     </div>
                                 </div>
-                                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-[#00E676] ring-2 ring-[#1A0717] shadow-[0_0_6px_#00E676]" />
+                                <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#00E676] ring-2 ring-[#1A0717] shadow-[0_0_6px_#00E676]" />
                             </div>
 
                             {/* Contact Name & Status */}
                             <div className="flex flex-col justify-center">
-                                <span className="text-white font-semibold text-[13px] sm:text-[14px] leading-tight tracking-normal normal-case truncate max-w-[125px] sm:max-w-[155px]">
+                                <span className="text-white font-semibold text-[13px] sm:text-[14px] leading-tight tracking-normal normal-case truncate max-w-[110px] xs:max-w-[130px] sm:max-w-[160px]">
                                     {contactName}
                                 </span>
-                                <span className="text-[10px] text-[#00E676] font-medium tracking-normal normal-case flex items-center gap-1">
-                                    {phase === "typing-basic" || phase === "typing-heartfelt" ? (
-                                        <span className="text-white/60 italic flex items-center gap-0.5">
-                                            typing<span className="animate-pulse">...</span>
-                                        </span>
-                                    ) : (
-                                        "Active now"
-                                    )}
+                                <span className="text-[9.5px] sm:text-[10px] text-[#00E676] font-medium tracking-normal normal-case flex items-center gap-1">
+                                    Active now
                                 </span>
                             </div>
                         </div>
@@ -604,157 +499,139 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                             <button
                                 type="button"
                                 aria-label="Voice call"
-                                className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-95 transition-all text-white/80 hover:text-white"
+                                className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-95 transition-all"
                             >
-                                <Phone size={17} />
+                                <Phone size={17} className="sm:w-[19px] sm:h-[19px]" />
                             </button>
                             <button
                                 type="button"
                                 aria-label="Video call"
-                                className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-95 transition-all text-white/80 hover:text-white"
+                                className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-95 transition-all"
                             >
-                                <Video size={19} />
+                                <Video size={18} className="sm:w-5 sm:h-5" />
                             </button>
                             <button
                                 type="button"
                                 aria-label="Chat details"
-                                className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-95 transition-all text-white/80 hover:text-white"
+                                className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-95 transition-all"
                             >
-                                <Info size={18} />
+                                <Info size={17} className="sm:w-[19px] sm:h-[19px]" />
                             </button>
                         </div>
                     </header>
 
-                    {/* ── Scrollable Chat Message Stream ── */}
-                    <main
-                        ref={chatStreamRef}
-                        className="relative z-10 flex-1 px-3.5 py-2.5 flex flex-col justify-end gap-2.5 overflow-y-auto min-h-0"
-                    >
+                    {/* ── Top Realization Notification Popup ── */}
+                    <AnimatePresence>
+                        {showTopPopup && (
+                            <motion.div
+                                data-testid="chat-top-realization-popup"
+                                initial={{ opacity: 0, y: -18, scale: 0.94 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: -14, scale: 0.94 }}
+                                transition={{ type: "spring", stiffness: 360, damping: 26 }}
+                                className="absolute top-[80px] xs:top-[86px] sm:top-[94px] inset-x-2.5 sm:inset-x-3.5 z-30 p-2.5 sm:p-3.5 rounded-2xl bg-[#1C081A]/95 border border-rose-400/50 backdrop-blur-2xl shadow-[0_16px_42px_rgba(0,0,0,0.85),0_0_24px_rgba(255,42,109,0.3)] flex items-start gap-2 sm:gap-2.5"
+                            >
+                                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-rose-500 via-pink-500 to-amber-400 flex items-center justify-center shrink-0 shadow-[0_0_12px_rgba(255,42,109,0.5)]">
+                                    <Sparkles size={15} className="text-white animate-spin-slow sm:w-4 sm:h-4" />
+                                </div>
+                                <div className="flex-1 min-w-0 pr-1">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-[9.5px] sm:text-[10px] font-bold uppercase tracking-wider text-rose-300 flex items-center gap-1">
+                                            <span>💡</span>
+                                            <span>Realization</span>
+                                        </span>
+                                        <span className="text-[8.5px] sm:text-[9px] text-white/40 font-mono">12:00 AM</span>
+                                    </div>
+                                    <p className="text-[11.5px] sm:text-[13px] font-semibold text-white tracking-normal leading-snug mt-0.5">
+                                        {storyData.reconsiderThought}
+                                    </p>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    {/* ── Chat Messages Scroll Stream ── */}
+                    <main className="relative z-10 flex-1 px-3.5 py-2.5 flex flex-col justify-between overflow-y-auto min-h-0">
                         {/* Centered Timestamp Pill */}
-                        <div className="text-center my-0.5">
-                            <span className="px-2.5 py-0.5 rounded-full bg-white/5 text-[10px] text-white/55 tracking-normal normal-case font-medium backdrop-blur-md border border-white/5">
+                        <div className="text-center pt-2 pb-1 shrink-0">
+                            <span className="px-3 py-1 rounded-full bg-white/5 text-[11px] text-white/60 tracking-normal normal-case font-medium backdrop-blur-md border border-white/10">
                                 Today • 12:00 AM
                             </span>
                         </div>
 
-                        {/* Received Message 1 */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -14, scale: 0.95 }}
-                            animate={{ opacity: 1, x: 0, scale: 1 }}
-                            transition={{ duration: 0.3, ease: "easeOut" }}
-                            onClick={handleDoubleTapMessage}
-                            className="relative self-start max-w-[82%] px-3.5 py-2 rounded-[18px] rounded-bl-[4px] bg-[#26262B]/95 text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal shadow-md border border-white/10 leading-snug cursor-pointer active:scale-[0.98] transition-transform transform-gpu will-change-transform"
-                        >
-                            <span>
-                                {relationship === "partner"
-                                    ? t("chat.heyLove")
-                                    : relationship === "friend"
-                                    ? t("chat.heyFriend")
-                                    : t("chat.heyGeneral")}
-                            </span>
-                        </motion.div>
-
-                        {/* Received Message 2 with Double-Tap Heart Reaction */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -14, scale: 0.95 }}
-                            animate={{ opacity: 1, x: 0, scale: 1 }}
-                            transition={{ delay: 0.25, duration: 0.3, ease: "easeOut" }}
-                            onClick={handleDoubleTapMessage}
-                            className="relative self-start max-w-[85%] px-3.5 py-2 rounded-[18px] rounded-bl-[4px] bg-[#26262B]/95 text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal shadow-md border border-white/10 leading-snug cursor-pointer active:scale-[0.98] transition-transform mb-1 transform-gpu will-change-transform"
-                        >
-                            <span>
-                                {relationship === "partner"
-                                    ? t("chat.stayedUpLate")
-                                    : relationship === "friend"
-                                    ? t("chat.prepareEpic")
-                                    : t("chat.specialSurpriseMsg")}
-                            </span>
-
-                            {/* Liked Heart Badge */}
+                        {/* Conversation stream content */}
+                        <div className="flex-1 flex flex-col justify-end gap-2.5 py-2">
+                            {/* Stage D Rich Website Link Preview Card */}
                             <AnimatePresence>
-                                {isHeartLiked && (
-                                    <motion.div
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: [0, 1.3, 1] }}
-                                        transition={{ delay: 0.6, duration: 0.3, type: "spring" }}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            triggerHeartBurst(e.clientX, e.clientY);
-                                        }}
-                                        className="absolute -bottom-2.5 -right-1.5 px-1.5 py-0.5 rounded-full bg-[#1C1C20] border border-white/15 flex items-center shadow-lg cursor-pointer hover:scale-110 active:scale-95 transition-transform"
-                                    >
-                                        <Heart size={11} fill="#FF2A6D" className="text-[#FF2A6D] drop-shadow-[0_0_6px_rgba(255,42,109,0.8)]" />
-                                    </motion.div>
+                                {showLinkCard && (
+                                    <div className="self-end flex flex-col items-end gap-1 w-full">
+                                        <motion.div
+                                            data-testid="chat-surprise-link"
+                                            role="button"
+                                            tabIndex={0}
+                                            aria-label="Open birthday celebration website"
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter" || e.key === " ") {
+                                                    e.preventDefault();
+                                                    handleProceed();
+                                                }
+                                            }}
+                                            initial={{ opacity: 0, y: 24, scale: 0.92 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            transition={{ type: "spring", stiffness: 320, damping: 24 }}
+                                            onClick={handleProceed}
+                                            className="self-end w-full max-w-[285px] sm:max-w-[315px] rounded-[20px] rounded-tr-[4px] bg-[#1E0B19]/90 border border-rose-500/40 backdrop-blur-2xl overflow-hidden shadow-[0_16px_36px_rgba(255,42,109,0.3)] cursor-pointer hover:border-rose-400 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-rose-400/80 transition-all group"
+                                        >
+                                            {/* Rich Card Banner */}
+                                            <div className="relative h-20 bg-gradient-to-r from-rose-600/40 via-purple-700/40 to-amber-500/40 p-3 flex flex-col justify-between border-b border-white/10">
+                                                <div className="flex items-center justify-between text-xs text-white/80">
+                                                    <span className="flex items-center gap-1 font-mono text-[10px] text-white/75 tracking-tight">
+                                                        <Globe size={11} className="text-rose-300" />
+                                                        birthdaybloom.celebration
+                                                    </span>
+                                                    <ExternalLink size={12} className="text-rose-300 group-hover:translate-x-0.5 transition-transform" />
+                                                </div>
+                                                <div>
+                                                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300">
+                                                        Special Birthday Website
+                                                    </span>
+                                                    <h4 className="text-xs sm:text-sm font-bold text-white tracking-normal leading-tight truncate">
+                                                        {name ? `For ${name} ❤️` : "Handcrafted with Love ❤️"}
+                                                    </h4>
+                                                </div>
+                                            </div>
+
+                                            {/* Card Body */}
+                                            <div className="p-3 flex flex-col gap-1.5">
+                                                <p className="text-[12px] font-medium text-white/90 leading-snug">
+                                                    {storyData.linkSubtitle}
+                                                </p>
+                                                <div className="flex items-center justify-between pt-1 border-t border-white/5">
+                                                    <span className="text-[10px] text-rose-300 font-semibold flex items-center gap-1 group-hover:text-rose-200 transition-colors">
+                                                        <Sparkles size={11} className="text-amber-300 animate-spin-slow" />
+                                                        Tap to enter celebration ✨
+                                                    </span>
+                                                    <span className="text-[9px] text-white/40">Open Now</span>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+
+                                        {/* Micro-Receipt: Delivered • ❤️ */}
+                                        <motion.div
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            className="pr-1 text-[10px] text-rose-300/80 flex items-center gap-1 font-medium"
+                                        >
+                                            <span>Delivered •</span>
+                                            <Heart size={9} fill="#FF2A6D" className="inline text-[#FF2A6D]" />
+                                        </motion.div>
+                                    </div>
                                 )}
                             </AnimatePresence>
-                        </motion.div>
-
-                        {/* Dynamic Sent Outgoing Message with Instagram Signature Sunset Gradient */}
-                        <AnimatePresence>
-                            {sentMessageText && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: 24, scale: 0.85 }}
-                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                    transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                                    className="self-end max-w-[85%] flex flex-col items-end gap-1 transform-gpu will-change-transform"
-                                >
-                                    <div
-                                        className="relative px-3.5 py-2.5 rounded-[18px] rounded-br-[4px] text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal shadow-[0_8px_24px_rgba(236,72,153,0.35)] leading-snug border border-white/15"
-                                        style={{
-                                            background: "linear-gradient(135deg, #833AB4 0%, #FD1D1D 50%, #FCB045 100%)",
-                                        }}
-                                    >
-                                        {sentMessageText}
-                                    </div>
-
-                                    {/* Micro-Receipt: Delivered -> Seen just now • ❤️ */}
-                                    <motion.div
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        className="text-[10px] text-white/55 pr-1 flex items-center gap-1 font-medium normal-case"
-                                    >
-                                        {phase === "seen" || phase === "climax" || phase === "done" ? (
-                                            <span className="flex items-center gap-1 text-rose-300/85">
-                                                Seen just now • <Heart size={9} fill="#FF2A6D" className="inline text-[#FF2A6D]" />
-                                            </span>
-                                        ) : (
-                                            <span>Delivered</span>
-                                        )}
-                                    </motion.div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-
-                        {/* Typing Dots Wave Indicator */}
-                        <AnimatePresence>
-                            {(phase === "typing-basic" || phase === "typing-heartfelt") && (
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.6, y: 8 }}
-                                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                                    exit={{ opacity: 0, scale: 0.6, y: 8 }}
-                                    className="self-end px-3 py-2 rounded-full bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCB045] flex items-center gap-1 shadow-[0_4px_14px_rgba(221,42,123,0.4)]"
-                                >
-                                    <motion.div
-                                        animate={{ y: [0, -3, 0] }}
-                                        transition={{ repeat: Infinity, duration: 0.6, ease: "easeInOut" }}
-                                        className="w-1.5 h-1.5 rounded-full bg-white"
-                                    />
-                                    <motion.div
-                                        animate={{ y: [0, -3, 0] }}
-                                        transition={{ repeat: Infinity, duration: 0.6, delay: 0.15, ease: "easeInOut" }}
-                                        className="w-1.5 h-1.5 rounded-full bg-white"
-                                    />
-                                    <motion.div
-                                        animate={{ y: [0, -3, 0] }}
-                                        transition={{ repeat: Infinity, duration: 0.6, delay: 0.3, ease: "easeInOut" }}
-                                        className="w-1.5 h-1.5 rounded-full bg-white"
-                                    />
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+                        </div>
                     </main>
 
-                    {/* ── Non-Bloating Instagram Input Bar ── */}
+                    {/* ── Sleek Instagram Input Bar ── */}
                     <div className="relative z-20 px-2.5 py-2 bg-[#1A0717]/95 border-t border-white/10 backdrop-blur-xl shrink-0">
                         <div className="flex items-end gap-1.5">
                             {/* Blue Camera Button */}
@@ -766,11 +643,36 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                 <Camera size={17} />
                             </button>
 
-                            {/* Sleek Rounded-[20px] Input Box (Never bloats into a clipping oval) */}
-                            <div className="flex-1 rounded-[20px] px-3.5 py-2 bg-[#26262B] border border-white/12 flex items-center justify-between min-h-[38px] max-h-[84px] overflow-y-auto transition-all">
+                            {/* Input Box Wrapper */}
+                            <div className="relative flex-1">
+                                {/* iOS Paste Tooltip Pill (unclipped by overflow container) */}
+                                <AnimatePresence>
+                                    {isPastingTooltip && (
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.85, y: 6 }}
+                                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                                            exit={{ opacity: 0, scale: 0.85, y: 4 }}
+                                            transition={{ duration: 0.15 }}
+                                            className="absolute -top-9 left-2 z-40 px-3 py-1 rounded-lg bg-[#3A3A40] text-white text-[11px] font-semibold shadow-[0_4px_16px_rgba(0,0,0,0.7)] border border-white/20 flex items-center gap-1.5 pointer-events-none"
+                                        >
+                                            <span className="text-[10px]">📋</span>
+                                            <span>Paste</span>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+
+                                {/* Rounded-[20px] Input Box */}
+                                <div className="rounded-[20px] px-3.5 py-2 bg-[#26262B] border border-white/12 flex items-center justify-between min-h-[38px] max-h-[84px] overflow-y-auto transition-all">
+
                                 <div className="flex-1 min-w-0 pr-1">
                                     {typedInputText ? (
-                                        <span className="block text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal leading-snug break-words">
+                                        <span
+                                            className={`block text-[13px] sm:text-[14px] font-normal normal-case tracking-normal leading-snug break-all ${
+                                                typedInputText.startsWith("http")
+                                                    ? "text-cyan-300 underline underline-offset-2"
+                                                    : "text-white"
+                                            }`}
+                                        >
                                             {typedInputText}
                                             <span className="inline-block w-[2px] h-3.5 ml-0.5 bg-[#3797EF] animate-blink align-middle" />
                                         </span>
@@ -781,7 +683,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                     )}
                                 </div>
 
-                                {/* Secondary Input Icons: Auto-collapse while typing so text has full width */}
+                                {/* Secondary Input Icons */}
                                 <div
                                     className={`flex items-center gap-0.5 text-white/55 shrink-0 transition-all duration-200 ${
                                         typedInputText.length > 0
@@ -812,29 +714,28 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                     </button>
                                 </div>
                             </div>
+                        </div>
 
-                            {/* Send Button with Realistic Depress + Darken Animation */}
+                        {/* Send Button */}
                             <button
                                 type="button"
                                 aria-label="Send message"
                                 onClick={() => handleManualKeyPress("send")}
                                 className={`w-9 h-9 rounded-full flex items-center justify-center text-white shrink-0 mb-0.5 transition-all duration-150 ${
-                                    isSendDepressed
-                                        ? "scale-90 translate-y-[1.5px] brightness-75 shadow-inner ring-2 ring-rose-300/60"
-                                        : "shadow-lg active:scale-90 active:brightness-75"
+                                    typedInputText.length > 0 || activeKey === "send"
+                                        ? "shadow-lg scale-100 active:scale-90"
+                                        : "opacity-60 scale-95"
                                 }`}
                                 style={{
                                     background:
-                                        typedInputText.length > 0 || isSendDepressed
+                                        typedInputText.length > 0 || activeKey === "send"
                                             ? "linear-gradient(135deg, #833AB4, #FD1D1D, #FCB045)"
                                             : `${primaryColor}40`,
                                 }}
                             >
                                 <Send
                                     size={16}
-                                    className={
-                                        typedInputText.length > 0 || isSendDepressed ? "text-white" : "text-white/45"
-                                    }
+                                    className={typedInputText.length > 0 || activeKey === "send" ? "text-white" : "text-white/45"}
                                 />
                             </button>
                         </div>
@@ -849,59 +750,57 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                 animate={{ height: "auto", opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
                                 transition={{ duration: 0.28, ease: "easeInOut" }}
-                                className="relative z-20 bg-[#18181D]/95 border-t border-white/10 backdrop-blur-2xl px-1.5 pt-1.5 pb-1.5 select-none shrink-0 overflow-hidden"
+                                className="relative z-20 bg-[#18181D]/95 border-t border-white/10 backdrop-blur-2xl px-1.5 pt-2 pb-1.5 select-none shrink-0 overflow-hidden"
                             >
-                                {/* Live iOS Predictive Text Suggestion Bar */}
-                                <div
-                                    data-testid="keypad-predictive-bar"
-                                    className="grid grid-cols-3 items-center text-center pb-1.5 mb-1 border-b border-white/5 text-[11px] text-white/75"
-                                >
-                                    <span className="truncate px-2 border-r border-white/10 text-white/60">
-                                        {currentTypedWord ? `"${currentTypedWord}"` : '"Happy"'}
-                                    </span>
-                                    <span
-                                        className={`truncate px-2 border-r border-white/10 font-medium transition-colors ${
-                                            activeKey === "space"
-                                                ? "text-rose-300 bg-white/10 rounded py-0.5"
-                                                : "text-white/90"
-                                        }`}
-                                    >
-                                        {currentTypedWord || "Birthday"}
-                                    </span>
-                                    <span className="truncate px-2 text-white/80">
-                                        {phase === "typing-heartfelt" ? "💝 🌟" : "🎂 ✨"}
-                                    </span>
-                                </div>
-
                                 <div className="flex flex-col gap-1.5">
                                     {/* Row 1: Q - P */}
-                                    <div className="grid grid-cols-10 gap-1">
-                                        {KEYBOARD_ROW_1.map((key) => (
-                                            <KeyButton
-                                                key={key}
-                                                keyId={key}
-                                                isPressed={activeKey === key}
-                                                isShiftActive={isShiftActive}
-                                                onPress={handleManualKeyPress}
-                                            />
-                                        ))}
+                                    <div className="grid grid-cols-10 gap-0.5 sm:gap-1">
+                                        {KEYBOARD_ROW_1.map((key) => {
+                                            const isPressed = activeKey === key;
+                                            return (
+                                                <button
+                                                    key={key}
+                                                    type="button"
+                                                    data-key={key}
+                                                    data-active={isPressed ? "true" : "false"}
+                                                    onClick={() => handleManualKeyPress(key)}
+                                                    className={`h-[31px] sm:h-9 rounded-[6px] flex items-center justify-center text-[12px] sm:text-[14px] font-medium touch-manipulation transition-all duration-75 ${
+                                                        isPressed
+                                                            ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
+                                                            : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
+                                                    }`}
+                                                >
+                                                    {isShiftActive ? key.toUpperCase() : key}
+                                                </button>
+                                            );
+                                        })}
                                     </div>
 
                                     {/* Row 2: A - L */}
-                                    <div className="grid grid-cols-9 gap-1 px-3">
-                                        {KEYBOARD_ROW_2.map((key) => (
-                                            <KeyButton
-                                                key={key}
-                                                keyId={key}
-                                                isPressed={activeKey === key}
-                                                isShiftActive={isShiftActive}
-                                                onPress={handleManualKeyPress}
-                                            />
-                                        ))}
+                                    <div className="grid grid-cols-9 gap-0.5 sm:gap-1 px-1 sm:px-3">
+                                        {KEYBOARD_ROW_2.map((key) => {
+                                            const isPressed = activeKey === key;
+                                            return (
+                                                <button
+                                                    key={key}
+                                                    type="button"
+                                                    data-key={key}
+                                                    data-active={isPressed ? "true" : "false"}
+                                                    onClick={() => handleManualKeyPress(key)}
+                                                    className={`h-[31px] sm:h-9 rounded-[6px] flex items-center justify-center text-[12px] sm:text-[14px] font-medium touch-manipulation transition-all duration-75 ${
+                                                        isPressed
+                                                            ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
+                                                            : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
+                                                    }`}
+                                                >
+                                                    {isShiftActive ? key.toUpperCase() : key}
+                                                </button>
+                                            );
+                                        })}
                                     </div>
 
                                     {/* Row 3: Shift + Z - M + Backspace */}
-                                    <div className="flex items-center gap-1">
+                                    <div className="flex items-center gap-0.5 sm:gap-1">
                                         {/* Shift Key */}
                                         <button
                                             type="button"
@@ -909,7 +808,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                             data-key="shift"
                                             data-active={isShiftActive ? "true" : "false"}
                                             onClick={() => handleManualKeyPress("shift")}
-                                            className={`w-9 sm:w-10 h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-xs font-semibold transition-all duration-75 shrink-0 ${
+                                            className={`w-8 sm:w-10 h-[31px] sm:h-9 rounded-[6px] flex items-center justify-center text-[11px] sm:text-xs font-semibold touch-manipulation transition-all duration-75 shrink-0 ${
                                                 isShiftActive
                                                     ? "bg-white text-black scale-[0.92] shadow-inner"
                                                     : "bg-[#2C2C35] text-white/90 shadow-[0_1.5px_0_#000000] border-t border-white/10"
@@ -918,45 +817,56 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                             ⇧
                                         </button>
 
-                                        <div className="flex-1 grid grid-cols-7 gap-1">
-                                            {KEYBOARD_ROW_3.map((key) => (
-                                                <KeyButton
-                                                    key={key}
-                                                    keyId={key}
-                                                    isPressed={activeKey === key}
-                                                    isShiftActive={isShiftActive}
-                                                    onPress={handleManualKeyPress}
-                                                />
-                                            ))}
+                                        <div className="flex-1 grid grid-cols-7 gap-0.5 sm:gap-1">
+                                            {KEYBOARD_ROW_3.map((key) => {
+                                                const isPressed = activeKey === key;
+                                                return (
+                                                    <button
+                                                        key={key}
+                                                        type="button"
+                                                        data-key={key}
+                                                        data-active={isPressed ? "true" : "false"}
+                                                        onClick={() => handleManualKeyPress(key)}
+                                                        className={`h-[31px] sm:h-9 rounded-[6px] flex items-center justify-center text-[12px] sm:text-[14px] font-medium touch-manipulation transition-all duration-75 ${
+                                                            isPressed
+                                                                ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
+                                                                : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
+                                                        }`}
+                                                    >
+                                                        {isShiftActive ? key.toUpperCase() : key}
+                                                    </button>
+                                                );
+                                            })}
                                         </div>
 
-                                        {/* Backspace Key (Darkens & depresses during deleting phase) */}
+                                        {/* Backspace Key */}
                                         <button
                                             type="button"
                                             aria-label="Backspace"
                                             data-key="backspace"
                                             data-active={activeKey === "backspace" ? "true" : "false"}
                                             onClick={() => handleManualKeyPress("backspace")}
-                                            className={`w-9 sm:w-10 h-8 sm:h-9 rounded-[6px] flex items-center justify-center transition-all duration-75 shrink-0 ${
+                                            className={`w-8 sm:w-10 h-[31px] sm:h-9 rounded-[6px] flex items-center justify-center text-xs font-medium touch-manipulation transition-all duration-75 shrink-0 ${
                                                 activeKey === "backspace"
-                                                    ? "bg-[#121217] text-rose-400 scale-[0.86] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/70"
+                                                    ? "bg-[#121217] text-rose-400 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
                                                     : "bg-[#2C2C35] text-white/90 shadow-[0_1.5px_0_#000000] border-t border-white/10"
                                             }`}
                                         >
-                                            <Delete size={15} />
+                                            <Delete size={15} className="sm:w-4 sm:h-4" />
                                         </button>
                                     </div>
 
-                                    {/* Row 4: 123, Emoji, Spacebar, Return/Send */}
-                                    <div className="flex items-center gap-1 pt-0.5">
+                                    {/* Row 4: 123 + Emoji + Space + Return/Send */}
+                                    <div className="flex items-center gap-0.5 sm:gap-1 pt-0.5">
                                         <button
                                             type="button"
+                                            aria-label="Numbers"
                                             data-key="123"
                                             data-active={activeKey === "123" ? "true" : "false"}
                                             onClick={() => handleManualKeyPress("123")}
-                                            className={`w-10 sm:w-11 h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[11px] font-semibold transition-all duration-75 shrink-0 ${
+                                            className={`w-8 sm:w-10 h-[31px] sm:h-9 rounded-[6px] flex items-center justify-center text-[11px] sm:text-xs font-semibold touch-manipulation transition-all duration-75 shrink-0 ${
                                                 activeKey === "123"
-                                                    ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
+                                                    ? "bg-[#121217] text-rose-400 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
                                                     : "bg-[#2C2C35] text-white/90 shadow-[0_1.5px_0_#000000] border-t border-white/10"
                                             }`}
                                         >
@@ -965,11 +875,11 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
 
                                         <button
                                             type="button"
-                                            aria-label="Emoji key"
+                                            aria-label="Emoji keyboard"
                                             data-key="emoji"
                                             data-active={activeKey === "emoji" ? "true" : "false"}
                                             onClick={() => handleManualKeyPress("emoji")}
-                                            className={`w-9 sm:w-10 h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-sm transition-all duration-75 shrink-0 ${
+                                            className={`w-[30px] sm:w-8 h-[31px] sm:h-9 rounded-[6px] flex items-center justify-center text-xs sm:text-sm touch-manipulation transition-all duration-75 shrink-0 ${
                                                 activeKey === "emoji"
                                                     ? "bg-[#121217] scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
                                                     : "bg-[#2C2C35] text-white/90 shadow-[0_1.5px_0_#000000] border-t border-white/10"
@@ -985,30 +895,30 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                             data-key="space"
                                             data-active={activeKey === "space" ? "true" : "false"}
                                             onClick={() => handleManualKeyPress("space")}
-                                            className={`flex-1 h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[12px] font-medium tracking-normal normal-case transition-all duration-75 ${
+                                            className={`flex-1 h-[31px] sm:h-9 rounded-[6px] flex items-center justify-center text-[11px] sm:text-xs text-white/70 font-medium touch-manipulation transition-all duration-75 ${
                                                 activeKey === "space"
-                                                    ? "bg-[#121217] text-rose-200 scale-[0.95] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/50"
-                                                    : "bg-[#3A3A44] text-white/85 shadow-[0_1.5px_0_#000000] border-t border-white/15"
+                                                    ? "bg-[#121217] text-rose-300 scale-[0.98] translate-y-[1px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
+                                                    : "bg-[#3A3A44] text-white/80 shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
                                             }`}
                                         >
                                             space
                                         </button>
 
-                                        {/* Keyboard Send / Return Key */}
+                                        {/* Keyboard Send / Return */}
                                         <button
                                             type="button"
                                             aria-label="Keyboard send"
                                             data-key="send"
-                                            data-active={isSendDepressed ? "true" : "false"}
+                                            data-active={activeKey === "send" ? "true" : "false"}
                                             onClick={() => handleManualKeyPress("send")}
-                                            className={`w-14 sm:w-16 h-8 sm:h-9 rounded-[6px] flex items-center justify-center gap-1 text-[12px] font-semibold tracking-normal normal-case text-white transition-all duration-100 shrink-0 ${
-                                                isSendDepressed
-                                                    ? "bg-[#1b4f82] scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-2 ring-white/50"
-                                                    : "bg-[#3797EF] shadow-[0_1.5px_0_#000000] border-t border-white/20"
+                                            className={`w-[52px] sm:w-16 h-[31px] sm:h-9 rounded-[6px] flex items-center justify-center text-[11px] sm:text-xs font-semibold touch-manipulation transition-all duration-75 shrink-0 ${
+                                                activeKey === "send"
+                                                    ? "bg-gradient-to-r from-rose-500 to-amber-500 text-white scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-2 ring-rose-400"
+                                                    : "bg-[#3797EF] text-white shadow-[0_1.5px_0_#000000] border-t border-white/20 active:opacity-90"
                                             }`}
                                         >
-                                            <span>Send</span>
-                                            <CornerDownLeft size={12} />
+                                            <CornerDownLeft size={13} className="mr-0.5 sm:w-3.5 sm:h-3.5" />
+                                            send
                                         </button>
                                     </div>
                                 </div>
@@ -1020,67 +930,29 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                     <div className="relative z-20 bg-[#18181D]/95 pb-1.5 pt-1 flex justify-center shrink-0">
                         <div className="w-28 h-1 rounded-full bg-white/30" />
                     </div>
-
-                    {/* ── Climax Emotional Payoff Banner Overlay ── */}
-                    <AnimatePresence>
-                        {phase === "climax" && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 40, scale: 0.9 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, scale: 1.08 }}
-                                transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                                className="absolute inset-x-3.5 top-[28%] z-30 p-5 sm:p-6 rounded-[24px] bg-black/90 border border-white/25 backdrop-blur-3xl text-center shadow-[0_25px_80px_rgba(0,0,0,0.95)]"
-                            >
-                                <div className="flex justify-center mb-2.5 text-rose-400">
-                                    <Sparkles size={26} className="animate-spin-slow" />
-                                </div>
-                                <p className="text-lg sm:text-xl font-bold normal-case tracking-normal leading-snug bg-gradient-to-r from-white via-rose-200 to-amber-200 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]">
-                                    {relationship === "partner"
-                                        ? isFrench
-                                            ? isMale
-                                                ? "Parce qu'un prince comme toi mérite bien plus qu'un simple message... ✨"
-                                                : "Parce qu'une princesse comme toi mérite bien plus qu'un simple message... ✨"
-                                            : isBengali
-                                            ? isMale
-                                                ? "কারণ আমার রাজপুত্রের জন্য শুধু একটা টেক্সট যথেষ্ট নয়... ✨"
-                                                : "কারণ আমার রাজকন্যার জন্য শুধু একটা টেক্সট যথেষ্ট নয়... ✨"
-                                            : isHindi
-                                            ? isMale
-                                                ? "क्योंकि मेरे राजा के लिए सिर्फ एक टेक्स्ट काफी नहीं... ✨"
-                                                : "क्योंकि मेरी रानी के लिए सिर्फ एक टेक्स्ट काफी नहीं... ✨"
-                                            : isMale
-                                            ? "Because a King like you deserves more than just a text message... ✨"
-                                            : "Because a Queen like you deserves more than just a text message... ✨"
-                                        : relationship === "friend"
-                                        ? t("chat.highLegendLevel")
-                                        : t("chat.moreMagicalSurprise")}
-                                </p>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-
-                    {/* ── Interactive Floating Hearts Overlay (Burst on Double-Tap/Click) ── */}
-                    <AnimatePresence>
-                        {floatingHearts.map((heart) => (
-                            <motion.div
-                                key={heart.id}
-                                initial={{ opacity: 1, scale: 0.5, x: heart.x, y: heart.y }}
-                                animate={{
-                                    opacity: 0,
-                                    scale: [0.5, 1.3, 1],
-                                    y: heart.y - 120,
-                                    x: heart.x + (Math.random() - 0.5) * 40,
-                                }}
-                                transition={{ duration: 1.1, ease: "easeOut" }}
-                                className="fixed z-50 pointer-events-none text-rose-500 drop-shadow-[0_0_12px_rgba(255,42,109,0.9)]"
-                            >
-                                <Heart size={heart.size} fill="#FF2A6D" />
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
                 </div>
             </motion.div>
+
+            {/* ── Interactive Floating Hearts Overlay (Burst on Double-Tap/Click across full viewport) ── */}
+            <AnimatePresence>
+                {floatingHearts.map((heart) => (
+                    <motion.div
+                        key={heart.id}
+                        initial={{ opacity: 1, scale: 0.5, x: heart.x, y: heart.y }}
+                        animate={{
+                            opacity: 0,
+                            scale: [0.5, 1.3, 1],
+                            y: heart.y - 120,
+                            x: heart.x + (Math.random() - 0.5) * 40,
+                        }}
+                        transition={{ duration: 1.1, ease: "easeOut" }}
+                        style={{ left: 0, top: 0 }}
+                        className="fixed z-50 pointer-events-none text-rose-500 drop-shadow-[0_0_12px_rgba(255,42,109,0.9)]"
+                    >
+                        <Heart size={heart.size} fill="#FF2A6D" />
+                    </motion.div>
+                ))}
+            </AnimatePresence>
         </div>
     );
 };
-
