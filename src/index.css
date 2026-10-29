@@ -75,6 +75,17 @@
   body.cake-modal-active #root * {
     animation-play-state: paused !important;
   }
+
+  /* Constrained devices: a backdrop-filter forces the compositor to resample
+     every animated layer behind the element on every frame. Drop the frosted
+     glass there — translucent backgrounds stay identical, only the blur is
+     skipped. Desktop/balanced profiles keep their original look. */
+  .perf-low *,
+  .perf-low *::before,
+  .perf-low *::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
 }
 
 /* ── Core birthday animations ── */
