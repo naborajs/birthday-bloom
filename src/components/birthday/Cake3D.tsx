@@ -469,6 +469,7 @@ const Candle = ({
     const flameRef = useRef<THREE.Group>(null);
     const outerFlameRef = useRef<THREE.Mesh>(null);
     const smokeRef = useRef<THREE.Group>(null);
+    const smokeStartRef = useRef<number | null>(null);
 
     useFrame(({ clock }) => {
         const t = clock.elapsedTime + phaseOffset;
@@ -486,12 +487,20 @@ const Candle = ({
             outerFlameRef.current.scale.setScalar(outerScale);
         }
 
-        // Animate curling smoke wisp when extinguished
+        // Animate curling smoke wisp when extinguished. Use elapsed time rather
+        // than unbounded per-frame additions so the wisps fade out after a few
+        // seconds instead of growing into giant transparent spheres.
         if (!lit && smokeRef.current) {
-            smokeRef.current.position.y += 0.015;
-            smokeRef.current.scale.x += 0.01;
-            smokeRef.current.scale.z += 0.01;
+            if (smokeStartRef.current === null) smokeStartRef.current = clock.elapsedTime;
+            const age = clock.elapsedTime - smokeStartRef.current;
+            smokeRef.current.position.y = 0.95 + Math.min(age * 0.55, 2.4);
+            const spread = 1 + Math.min(age * 0.45, 2);
+            smokeRef.current.scale.x = spread;
+            smokeRef.current.scale.z = spread;
             smokeRef.current.rotation.y = t * 0.8;
+            smokeRef.current.visible = age < 4.5;
+        } else {
+            smokeStartRef.current = null;
         }
     });
 
@@ -815,7 +824,6 @@ const Scene = ({
     primaryColor,
     isMobile,
     blowIntensity = 0,
-    onCakeClick,
     shadowMapSize = 512,
 }: {
     cake: CakeOption;
@@ -823,7 +831,6 @@ const Scene = ({
     primaryColor: string;
     isMobile: boolean;
     blowIntensity?: number;
-    onCakeClick?: () => void;
     shadowMapSize?: number;
 }) => {
     const isCut = phase === "cutting" || phase === "burst" || phase === "quotes";
@@ -869,7 +876,7 @@ const Scene = ({
             <CelebrationOrbs3D primaryColor={primaryColor} isMobile={isMobile} />
 
             <Float speed={1.0} rotationIntensity={0.03} floatIntensity={0.08}>
-                <group position={[0, -0.25, 0]} onClick={onCakeClick}>
+                <group position={[0, -0.25, 0]}>
                     {/* Artisanal Cake Stand */}
                     <CakeStand config={cake.config} primaryColor={primaryColor} />
 
@@ -959,7 +966,6 @@ export const Cake3D = ({
                         primaryColor={effectiveColor} 
                         isMobile={perf.isMobile} 
                         blowIntensity={blowIntensity}
-                        onCakeClick={onCakeClick}
                         shadowMapSize={perf.shadowMapSize}
                     />
                 </Suspense>

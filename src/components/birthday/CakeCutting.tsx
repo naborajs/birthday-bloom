@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, lazy, Suspense } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef, lazy, Suspense } from "react";
 import { createPortal } from "react-dom";
 import { Cake as CakeIcon, Mic, Wind } from "lucide-react";
 import { useMicrophoneBlow } from "@/hooks/useMicrophoneBlow";
@@ -40,7 +40,7 @@ const CakeCard = ({ cake, onSelect }: {
             }}
         >
             <div className="relative w-full aspect-square rounded-2xl overflow-hidden mb-2">
-                <img src={cake.image} alt={displayName} className={`w-full h-full object-cover transition-transform duration-700 ${!isMobile ? "group-hover:scale-110" : ""}`} />
+                <img src={cake.image} alt={displayName} decoding="async" className={`w-full h-full object-cover transition-transform duration-700 ${!isMobile ? "group-hover:scale-110" : ""}`} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
                 <div className="absolute bottom-3 right-3 text-3xl drop-shadow-2xl">
                     {cake.emoji}
@@ -80,6 +80,28 @@ export const CakeCutting = () => {
     const [selectedCake, setSelectedCake] = useState<CakeOption | null>(null);
     const [quoteIndex, setQuoteIndex] = useState(-1);
     const [countdownVal, setCountdownVal] = useState<number | string>("");
+
+    // Every multi-step cut/blow sequence gets a run id. Closing the experience
+    // (or unmounting) invalidates the id so late timers can no longer flip the
+    // phase back open or fire sounds after the user has left.
+    const sequenceRef = useRef(0);
+    const cutTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+    const cancelSequence = useCallback(() => {
+        sequenceRef.current += 1;
+        cutTimersRef.current.forEach(clearTimeout);
+        cutTimersRef.current = [];
+    }, []);
+
+    const closeExperience = useCallback(() => {
+        cancelSequence();
+        setQuoteIndex(-1);
+        setPhase("select");
+    }, [cancelSequence]);
+
+    useEffect(() => () => {
+        cancelSequence();
+    }, [cancelSequence]);
 
     const { fireCinematicCelebration } = useConfetti();
     const { playBoom, playReveal, playPop, playWhoosh } = useSoundManager();
@@ -222,55 +244,66 @@ export const CakeCutting = () => {
 
     const handleCut = useCallback(() => {
         if (phase !== "knife-enter") return;
+        const runId = ++sequenceRef.current;
         setPhase("cutting");
         playWhoosh();
         if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate([80, 50, 160]);
 
-        setTimeout(() => {
+        const boomTimer = setTimeout(() => {
+            if (runId !== sequenceRef.current) return;
             playBoom();
             fireCinematicCelebration();
             setPhase("burst");
             playReveal();
-            setTimeout(() => {
+            const quotesTimer = setTimeout(() => {
+                if (runId !== sequenceRef.current) return;
                 setPhase("quotes");
                 setQuoteIndex(0);
             }, 1400);
+            cutTimersRef.current.push(quotesTimer);
         }, 1100);
+        cutTimersRef.current.push(boomTimer);
     }, [phase, playWhoosh, playBoom, fireCinematicCelebration, playReveal]);
 
     const handleBlow = useCallback(() => {
         if (phase !== "blow-intro") return;
-        
+        const runId = ++sequenceRef.current;
+
         const runSequence = async () => {
             // 1. Blow sequence - candle flame extinguishes with realistic rising smoke wisp
             setPhase("blowing");
             if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate([100, 50, 100]);
             playWhoosh();
-            
+
             // 2. Wish sent
             await new Promise(r => setTimeout(r, 1200));
+            if (runId !== sequenceRef.current) return;
             setPhase("wish");
-            
+
             // 3. Crisp, exciting countdown
             await new Promise(r => setTimeout(r, 2200));
+            if (runId !== sequenceRef.current) return;
             setPhase("countdown");
             setCountdownVal(3);
             playPop();
-            
+
             await new Promise(r => setTimeout(r, 800));
+            if (runId !== sequenceRef.current) return;
             setCountdownVal(2);
             playPop();
-            
+
             await new Promise(r => setTimeout(r, 800));
+            if (runId !== sequenceRef.current) return;
             setCountdownVal(1);
             playPop();
-            
+
             // 4. True 3D Knife Enters & Hovers over cake
             await new Promise(r => setTimeout(r, 800));
+            if (runId !== sequenceRef.current) return;
             playReveal();
             setPhase("knife-enter");
         };
-        
+
         runSequence();
     }, [phase, playWhoosh, playPop, playReveal]);
 
@@ -325,15 +358,15 @@ export const CakeCutting = () => {
         if (phase === "select") return;
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
-                setPhase("select");
+                closeExperience();
             }
         };
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [phase]);
+    }, [phase, closeExperience]);
 
     const cake = selectedCake || CAKE_OPTIONS[0];
-    const dustCount = isMobile ? 16 : 40;
+    const dustCount = isLowTier ? 12 : isMobile ? 16 : 32;
     const sparkCount = isMobile ? 16 : 30;
 
     return (
@@ -348,7 +381,7 @@ export const CakeCutting = () => {
                             initial={{ opacity: 0 }} 
                             animate={{ opacity: 1 }} 
                             exit={{ opacity: 0 }} 
-                            className={`fixed inset-0 z-[100] flex flex-col items-center justify-start md:justify-center ${isMobile ? "" : "backdrop-blur-md"} overflow-y-auto overscroll-none py-10 md:py-8`} 
+                            className="fixed inset-0 z-[100] flex flex-col items-center justify-start md:justify-center overflow-y-auto overscroll-none py-10 md:py-8"
                             style={{
                                 background: "radial-gradient(circle at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.95) 100%)"
                             }}
@@ -356,7 +389,7 @@ export const CakeCutting = () => {
                             <button
                                 type="button"
                                 aria-label={isFrench ? "Fermer l'expérience du gâteau" : isBengali ? "কেকের অভিজ্ঞতা বন্ধ করুন" : isHindi ? "केक का अनुभव बंद करें" : "Close cake experience"}
-                                onClick={() => setPhase("select")}
+                                onClick={closeExperience}
                                 className="fixed top-6 right-6 z-[110] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center text-xl transition-all shadow-xl backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-primary"
                             >
                                 ✕
@@ -633,7 +666,7 @@ export const CakeCutting = () => {
                                     <motion.button 
                                         initial={{ opacity: 0, y: 20 }} 
                                         animate={{ opacity: 1, y: 0 }} 
-                                        onClick={() => setPhase("select")} 
+                                        onClick={closeExperience} 
                                         className="mt-16 px-10 py-4 rounded-full text-sm font-black uppercase tracking-[0.3em] text-white/40 hover:text-white border border-white/10 hover:bg-white/5 transition-all duration-500"
                                     >
                                         {isFrench ? "✕ Terminer l'expérience" : isBengali ? "✕ অভিজ্ঞতা সমাপ্ত করুন" : isHindi ? "✕ अनुभव समाप्त करें" : "✕ Finish Experience"}
