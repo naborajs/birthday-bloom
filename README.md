@@ -1,4 +1,4 @@
-# 🌸 Birthday Bloom — Configurable Birthday Landing Page v3.7.0
+# 🌸 Birthday Bloom — Configurable Birthday Landing Page v3.7.1
 
 <div align="center">
 

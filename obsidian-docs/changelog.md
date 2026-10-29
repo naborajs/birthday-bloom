@@ -22,16 +22,17 @@ All notable changes to Birthday Bloom are documented here. The format is based o
 
 ## 🚀 Release History Highlights
 
-### [Unreleased] — 2026-10-24
+### [Unreleased] — 2026-10-27
+- **Fixed**:
+  - **Dependency Vulnerabilities**: Updated `vitest` to 4.1.12 and `vite` to 8.3.5 resolving 4 CVEs (2 critical: tinypool prototype pollution RCE; 1 high: vite path traversal; 1 moderate: @vitest/mocker path traversal).
+  - **Cursor Trail Lag**: Removed `EmojiCursorTrail` component (~2KB bundle reduction, eliminated RAF/pointermove overhead on desktop).
+  - Cake cut/blow sequences are cancellable on close/Escape/unmount, and microphone candle blowing can be replayed.
+  - Balloon pops are guarded against double-triggering; completion celebration and reset timers are cleaned up.
+  - Fireworks release their full-screen canvas backing store after each run; adaptive DPR no longer restarts the show on resize.
 - **Changed**:
   - Performance and lifecycle hardening across the app shell, adaptive performance hook, fireworks, confetti, cake ceremony, chat/letter typewriters, balloon game, heart tree, guestbook, and celebration timers.
   - Low-tier `.perf-low` profile now suppresses `backdrop-filter` while preserving translucent surfaces; desktop and balanced profiles retain glassmorphism.
   - Cake selector images converted from large PNGs to 640×640 JPEG q88 assets (~431 KB total).
-- **Fixed**:
-  - Cake cut/blow sequences are cancellable on close/Escape/unmount, and microphone candle blowing can be replayed.
-  - Balloon pops are guarded against double-triggering; completion celebration and reset timers are cleaned up.
-  - Fireworks release their full-screen canvas backing store after each run; adaptive DPR no longer restarts the show on resize.
-- **Verification**: `npm run verify` passes with 31 test files / 497 tests.
 
 ### [3.7.0] — 2026-10-21
 - **Added**:

@@ -48,6 +48,35 @@ Please do **NOT** open public issues or public pull requests for unpatched secur
 
 ---
 
+## 📋 Resolved Vulnerabilities
+
+### 2026-10-27 — Dev Dependency Updates (v3.7.1+)
+
+| CVE / Advisory | Package | Severity | Fixed Version | Impact |
+|---|---|---|---|---|
+| GHSA-5gmw-xhrv-c9v3 | `tinypool` | Critical | vitest 4.1.12 | Prototype pollution → RCE in worker options |
+| GHSA-85c8-ppgw-ccpr | `tinypool` | Critical | vitest 4.1.12 | Prototype pollution gadget in `run()` options |
+| GHSA-698v-4r3x-3vcv | `vite` | High | vite 7.3.7+ | Windows `escapeCmdArgs()` missing `%` escaping |
+| GHSA-r825-w8mm-5pxw | `vite` | Moderate | vite 7.3.7+ | Editor CLI flag misinterpretation → arbitrary command execution |
+| GHSA-587h-7wmj-h5pm | `vite` | High | vite 7.3.7+ | `fs.existsSync()` bypass on Windows |
+| GHSA-9jrq-w75r-8gcw | `vite` | Low | vite 7.3.7+ | Cross-origin script execution via custom middleware |
+| GHSA-rq7h-c2jc-7f22 | `vite` | Moderate | vite 7.3.7+ | Path traversal outside `server.fs.allow` |
+| GHSA-82fw-gwwq-j7x9 | `@vitest/mocker` | Moderate | vitest 4.1.12 | Path traversal / arbitrary file read via redirect mock |
+| GHSA-qxg6-89mg-rqv8 | `@vitest/mocker` | Moderate | vitest 4.1.12 | Code injection via unauthenticated manual mock registration |
+
+**Mitigation**: All affected packages are devDependencies (test/build tooling only). No production runtime exposure. Updated via `npm install vitest@4.1.12 vite@8.3.5 --save-dev`.
+
+### Previous Resolution — 2026-10-21 (v3.7.0)
+
+Resolved via npm overrides for:
+- `brace-expansion` ^2.1.7
+- `fflate` ^0.8.2
+- `postcss-selector-parser` ^7.1.6
+- `js-yaml` ^4.3.2
+- `@humanfs/node` ^0.16.8
+
+---
+
 ## 🔍 Scope Boundaries
 
 ### What is Present:
