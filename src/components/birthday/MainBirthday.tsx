@@ -36,6 +36,8 @@ export const MainBirthday = () => {
     const [giftStage, setGiftStage] = useState<'closed' | 'party' | 'open'>('closed');
     const [shareOpen, setShareOpen] = useState(false);
     const giftTimerRef = useRef<number | null>(null);
+    const surpriseTimerRef = useRef<number | null>(null);
+    const introTimersRef = useRef<number[]>([]);
     const { fireConfetti, fireCannon, fireStars } = useConfetti();
     const { playReveal, playPop, playBoom, setBgVolume } = useSoundManager();
     const { config } = useBirthdayStore();
@@ -95,14 +97,22 @@ export const MainBirthday = () => {
         return () => {
             if (giftTimerRef.current)
                 window.clearTimeout(giftTimerRef.current);
+            if (surpriseTimerRef.current)
+                window.clearTimeout(surpriseTimerRef.current);
         };
     }, []);
     useEffect(() => {
         setBgVolume(0.4);
-        setTimeout(() => setVisible(true), 100);
-        setTimeout(() => { playBoom(); }, 600);
-        setTimeout(() => { playReveal(); }, 1200);
-        setTimeout(() => { fireCannon(); playBoom(); }, 2000);
+        introTimersRef.current.push(
+            window.setTimeout(() => setVisible(true), 100),
+            window.setTimeout(() => { playBoom(); }, 600),
+            window.setTimeout(() => { playReveal(); }, 1200),
+            window.setTimeout(() => { fireCannon(); playBoom(); }, 2000),
+        );
+        return () => {
+            introTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+            introTimersRef.current = [];
+        };
     }, [playReveal, playBoom, setBgVolume, fireCannon]);
     const addEmoji = () => {
         if (typeof navigator !== 'undefined' && navigator.vibrate)
@@ -140,7 +150,12 @@ export const MainBirthday = () => {
             fireConfetti({ particleCount: isMobile ? 120 : 500, spread: isMobile ? 140 : 200 });
             if (typeof navigator !== 'undefined' && navigator.vibrate)
                 navigator.vibrate([100, 50, 100, 50, 300]);
-            setTimeout(() => setMegaSurprise(false), 3000);
+            if (surpriseTimerRef.current)
+                window.clearTimeout(surpriseTimerRef.current);
+            surpriseTimerRef.current = window.setTimeout(() => {
+                setMegaSurprise(false);
+                surpriseTimerRef.current = null;
+            }, 3000);
             setCakeClicks(0);
         }
     };
@@ -197,29 +212,6 @@ export const MainBirthday = () => {
         <motion.h2 variants={itemVariants} className="font-display text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black text-foreground animate-glow-pulse mb-5 break-words leading-none px-2">
           <TypeWriter text={`${name}!`} speed={120} delay={1500} cursor={false}/>
         </motion.h2>
-
-        {/* Env-Driven Personalization & Interests Pill Strip */}
-        <motion.div variants={itemVariants} className="relative z-10 flex flex-wrap items-center justify-center gap-2.5 max-w-2xl mx-auto px-4 mt-1">
-          {(emojiKit.signature || []).slice(0, 5).map((em, idx) => (
-            <span
-              key={`sig-${idx}`}
-              className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-xl flex items-center justify-center text-lg shadow-lg"
-            >
-              {em}
-            </span>
-          ))}
-          {(config.interests || []).slice(0, 5).map((interest, idx) => (
-            <span
-              key={`int-${idx}`}
-              className="px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase text-white/85 border border-white/15 backdrop-blur-xl shadow-md"
-              style={{
-                background: `linear-gradient(135deg, ${primaryColor}2E, rgba(255,255,255,0.04))`,
-              }}
-            >
-              ✦ {interest}
-            </span>
-          ))}
-        </motion.div>
       </motion.header>
 
       
