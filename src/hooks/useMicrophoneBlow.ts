@@ -44,6 +44,7 @@ export const useMicrophoneBlow = ({
     const blowAccumulatorRef = useRef<number>(0);
     const hasTriggeredRef = useRef<boolean>(false);
     const lastTimestampRef = useRef<number | null>(null);
+    const lastUiUpdateRef = useRef<number>(0);
     const smoothedIntensityRef = useRef<number>(0);
 
     const onBlowRef = useRef(onBlow);
@@ -170,9 +171,8 @@ export const useMicrophoneBlow = ({
                 // Smooth low-pass interpolation for flicker physics
                 smoothedIntensityRef.current = smoothedIntensityRef.current * 0.65 + rawIntensity * 0.35;
                 const currentIntensity = Number(smoothedIntensityRef.current.toFixed(3));
-                setBlowIntensity(currentIntensity);
 
-                // Accumulate breath energy
+                // Accumulate breath energy every frame so blow detection stays accurate...
                 if (currentIntensity >= threshold) {
                     blowAccumulatorRef.current += dt * (currentIntensity / threshold);
                 } else {
@@ -181,7 +181,14 @@ export const useMicrophoneBlow = ({
                 }
 
                 const currentProgress = Math.min(1, blowAccumulatorRef.current / requiredDurationMs);
-                setProgress(Number(currentProgress.toFixed(2)));
+
+                // ...but only publish UI state at ~20fps. The mic analyser runs at 60fps
+                // and every setState re-renders the whole cake scene + WebGL canvas.
+                if (timestamp - lastUiUpdateRef.current >= 50) {
+                    lastUiUpdateRef.current = timestamp;
+                    setBlowIntensity(currentIntensity);
+                    setProgress(Number(currentProgress.toFixed(2)));
+                }
 
                 // Threshold reached: flame extinguished!
                 if (currentProgress >= 1 && !hasTriggeredRef.current) {
@@ -203,15 +210,19 @@ export const useMicrophoneBlow = ({
         }
     }, [requiredDurationMs, sensitivity, stopListening, threshold]);
 
-    // Manage lifecycle based on `enabled` prop
+    // Manage lifecycle based on `enabled` prop.
+    // Reset `hasTriggered` every time the mic phase is re-entered so the cake
+    // experience can be replayed (previously the manual-blow fallback was dead
+    // on the second run).
     useEffect(() => {
-        if (enabled && !hasTriggeredRef.current) {
+        if (enabled) {
             hasTriggeredRef.current = false;
             blowAccumulatorRef.current = 0;
             smoothedIntensityRef.current = 0;
+            lastUiUpdateRef.current = 0;
             setProgress(0);
             startListening();
-        } else if (!enabled) {
+        } else {
             stopListening();
         }
 
