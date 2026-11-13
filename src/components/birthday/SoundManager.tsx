@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useRef } from "react";
 import { AUDIO_ASSETS } from "@/config/birthday";
+import { clampVolume, isAudioMuted } from "@/utils/audioUtils";
 const AUDIO_URLS = {
     bgMusic: AUDIO_ASSETS.bgmUrl || "https://cdn.pixabay.com/audio/2024/09/03/audio_73147814c8.mp3",
     typeClick: "https://www.soundjay.com/communication/sounds/typing-on-computer-keyboard-01.mp3",
@@ -62,7 +63,7 @@ class AudioManager {
         let step = 0;
         this.fadeInterval = setInterval(() => {
             if (this.bgMusic && step < steps) {
-                this.bgMusic.volume = Math.max(0, this.bgMusic.volume - volumeStep);
+                this.bgMusic.volume = clampVolume(this.bgMusic.volume - volumeStep);
                 step++;
             }
             else {
@@ -75,8 +76,8 @@ class AudioManager {
         }, stepTime);
     }
     setBgVolume(vol: number) {
-        const clamped = Math.max(0, Math.min(1, vol));
-        this.muted = clamped === 0;
+        const clamped = clampVolume(vol);
+        this.muted = isAudioMuted(clamped);
         if (this.bgMusic)
             this.bgMusic.volume = clamped;
     }
