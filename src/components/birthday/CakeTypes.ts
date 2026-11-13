@@ -1,3 +1,5 @@
+import { normalizeLanguage, type SupportedLanguage } from "@/i18n/languageUtils";
+
 export type Phase = "select" | "baking" | "blow-intro" | "blowing" | "wish" | "countdown" | "knife-enter" | "cutting" | "burst" | "quotes";
 
 import chocolateCake from "@/assets/birthday/cake-maroon.png";
@@ -32,10 +34,22 @@ export interface CakeOption {
     config: Cake3DConfig;
 }
 
-export const getCakeName = (cake: CakeOption, isHindi?: boolean, isBengali?: boolean, isFrench?: boolean): string => {
+export const getCakeName = (
+    cake: CakeOption,
+    langOrIsHindi?: SupportedLanguage | string | boolean,
+    isBengali?: boolean,
+    isFrench?: boolean
+): string => {
+    if (typeof langOrIsHindi === "string") {
+        const lang = normalizeLanguage(langOrIsHindi);
+        if (lang === "fr" && cake.nameFr) return cake.nameFr;
+        if (lang === "bn" && cake.nameBn) return cake.nameBn;
+        if (lang === "hi" && cake.nameHi) return cake.nameHi;
+        return cake.name;
+    }
     if (isFrench && cake.nameFr) return cake.nameFr;
     if (isBengali && cake.nameBn) return cake.nameBn;
-    if (isHindi && cake.nameHi) return cake.nameHi;
+    if (langOrIsHindi && cake.nameHi) return cake.nameHi;
     return cake.name;
 };
 
