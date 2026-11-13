@@ -1,6 +1,6 @@
 import type { BirthdayConfig } from './useBirthdayStore';
 import { normalizeRelationship, normalizeGender } from './relationshipUtils';
-import { normalizeLanguage } from '@/i18n';
+import { normalizeLanguage } from '@/i18n/languageUtils';
 
 /**
  * Safely parses URL query parameters to allow custom, shareable birthday celebration links.
