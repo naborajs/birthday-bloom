@@ -7,8 +7,15 @@ import {
     type PrivacyLevel,
 } from '../models/familyTemplates';
 import { parseBirthdayUrlParams } from './urlParams';
-export type RelationshipType = 'partner' | 'friend' | 'family' | 'sibling' | 'brother' | 'sister' | 'father' | 'mother' | 'grandfather' | 'grandmother' | 'uncle' | 'aunt' | 'cousin' | 'son' | 'daughter' | 'guardian' | 'colleague' | 'mentor';
-export type GenderType = 'male' | 'female' | 'other';
+import {
+    normalizeRelationship,
+    normalizeGender,
+    type RelationshipType,
+    type GenderType,
+} from './relationshipUtils';
+import { normalizeLanguage } from '@/i18n';
+
+export type { RelationshipType, GenderType };
 export interface BirthdayConfig {
     name: string;
     age: number | null;
@@ -119,33 +126,11 @@ const rawRel = parseEnvString(
     import.meta.env.VITE_RELATIONSHIP,
     import.meta.env.VITE_THEME,
     import.meta.env.VITE_ROLE
-).toLowerCase();
+);
+const envRelationship: RelationshipType = normalizeRelationship(rawRel);
 
-const envRelationship: RelationshipType =
-    rawRel.includes('partner') || rawRel.includes('love') || rawRel.includes('romantic') || rawRel.includes('girlfriend') || rawRel.includes('boyfriend') || rawRel.includes('wife') || rawRel.includes('husband') || rawRel.includes('soulmate') || rawRel.includes('crush') || rawRel === 'gf' || rawRel === 'bf' ? 'partner' :
-    rawRel.includes('friend') || rawRel.includes('bestie') || rawRel.includes('buddy') || rawRel.includes('fun') || rawRel.includes('energetic') ? 'friend' :
-    rawRel.includes('brother') ? 'brother' :
-    rawRel.includes('sister') ? 'sister' :
-    rawRel.includes('father') || rawRel.includes('dad') ? 'father' :
-    rawRel.includes('mother') || rawRel.includes('mom') ? 'mother' :
-    rawRel.includes('grandfather') || rawRel.includes('grandpa') ? 'grandfather' :
-    rawRel.includes('grandmother') || rawRel.includes('grandma') ? 'grandmother' :
-    rawRel.includes('uncle') ? 'uncle' :
-    rawRel.includes('aunt') ? 'aunt' :
-    rawRel.includes('cousin') ? 'cousin' :
-    rawRel.includes('son') ? 'son' :
-    rawRel.includes('daughter') ? 'daughter' :
-    rawRel.includes('guardian') ? 'guardian' :
-    rawRel.includes('sibling') ? 'sibling' :
-    rawRel.includes('colleague') || rawRel.includes('work') ? 'colleague' :
-    rawRel.includes('mentor') || rawRel.includes('teacher') ? 'mentor' :
-    'family';
-
-const rawGender = parseEnvString(import.meta.env.VITE_BIRTHDAY_GENDER, import.meta.env.VITE_GENDER).toLowerCase();
-const envGender: GenderType =
-    rawGender.includes('female') || rawGender.includes('girl') || rawGender.includes('woman') || rawGender.includes('she') || rawGender.includes('her') ? 'female' :
-    rawGender.includes('male') || rawGender.includes('boy') || rawGender.includes('man') || rawGender.includes('he') || rawGender.includes('him') ? 'male' :
-    'other';
+const rawGender = parseEnvString(import.meta.env.VITE_BIRTHDAY_GENDER, import.meta.env.VITE_GENDER);
+const envGender: GenderType = normalizeGender(rawGender);
 
 const envColor = parseEnvString(import.meta.env.VITE_BIRTHDAY_COLOR, import.meta.env.VITE_THEME_COLOR, import.meta.env.VITE_FAVORITE_COLOR) ||
     (envRelationship === 'partner' ? '#FF2A6D' : envRelationship === 'friend' ? '#00D2FF' : '#FF6B6B');
@@ -194,15 +179,8 @@ const envReducedMotion = import.meta.env.VITE_REDUCED_MOTION !== undefined
 const envSoundEffects = import.meta.env.VITE_SOUND_EFFECTS !== undefined
     ? parseEnvBoolean(import.meta.env.VITE_SOUND_EFFECTS, true)
     : true;
-const rawLanguage = parseEnvString(import.meta.env.VITE_LANGUAGE, import.meta.env.VITE_LANG).toLowerCase();
-const envLanguage: 'en' | 'hi' | 'bn' | 'fr' =
-    rawLanguage === 'hi' || rawLanguage === 'hindi' || rawLanguage === 'in'
-        ? 'hi'
-        : rawLanguage === 'bn' || rawLanguage === 'bengali' || rawLanguage === 'bangla'
-            ? 'bn'
-            : rawLanguage === 'fr' || rawLanguage === 'french' || rawLanguage === 'francais' || rawLanguage === 'française' || rawLanguage === 'francaise'
-                ? 'fr'
-                : 'en';
+const rawLanguage = parseEnvString(import.meta.env.VITE_LANGUAGE, import.meta.env.VITE_LANG);
+const envLanguage: 'en' | 'hi' | 'bn' | 'fr' = normalizeLanguage(rawLanguage);
 const envFinalVideo = parseEnvString(import.meta.env.VITE_FINAL_VIDEO_URL);
 const envMemories = import.meta.env.VITE_SPECIAL_MEMORIES
     ? String(import.meta.env.VITE_SPECIAL_MEMORIES).split('|').map((m: string) => {
