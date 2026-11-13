@@ -4,46 +4,16 @@ import { enTranslations } from "./locales/en";
 import { hiTranslations } from "./locales/hi";
 import { bnTranslations } from "./locales/bn";
 import { fr as frTranslations } from "./locales/fr";
+import { SupportedLanguage, normalizeLanguage } from "./languageUtils";
 
-export type SupportedLanguage = 'en' | 'hi' | 'bn' | 'fr';
+export type { SupportedLanguage };
+export { normalizeLanguage };
 
 export const translations: Record<SupportedLanguage, TranslationSchema> = {
     en: enTranslations,
     hi: hiTranslations,
     bn: bnTranslations,
     fr: frTranslations,
-};
-
-/**
- * Normalizes any language alias/code to one of the 4 supported canonical locales.
- */
-export const normalizeLanguage = (lang?: unknown): SupportedLanguage => {
-    if (!lang) return 'en';
-    const normalized = String(lang).toLowerCase().trim();
-    if (
-        normalized === 'fr' ||
-        normalized === 'french' ||
-        normalized === 'francais' ||
-        normalized === 'française' ||
-        normalized === 'francaise'
-    ) {
-        return 'fr';
-    }
-    if (
-        normalized === 'bn' ||
-        normalized === 'bengali' ||
-        normalized === 'bangla'
-    ) {
-        return 'bn';
-    }
-    if (
-        normalized === 'hi' ||
-        normalized === 'hindi' ||
-        normalized === 'in'
-    ) {
-        return 'hi';
-    }
-    return 'en';
 };
 
 export const getTranslation = (lang?: string): TranslationSchema => {
