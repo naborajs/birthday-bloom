@@ -299,14 +299,23 @@ describe("Tier 1: Feature Coverage (Opaque-Box Requirement Verification)", () =>
       expect(getCakeName(chocolate, false, true, false)).toBe("চকলেট ড্রিম");
       expect(getCakeName(chocolate, false, false, true)).toBe("Rêve Chocolaté");
 
+      // Also accepts direct language codes
+      expect(getCakeName(chocolate, "en")).toBe("Chocolate Dream");
+      expect(getCakeName(chocolate, "hi")).toBe("चॉकलेट ड्रीम");
+      expect(getCakeName(chocolate, "bn")).toBe("চকলেট ড্রিম");
+      expect(getCakeName(chocolate, "fr")).toBe("Rêve Chocolaté");
+
       const strawberry = CAKE_OPTIONS.find(c => c.id === "strawberry")!;
       expect(getCakeName(strawberry, false, false, true)).toBe("Délice Fraise");
+      expect(getCakeName(strawberry, "fr")).toBe("Délice Fraise");
 
       const royal = CAKE_OPTIONS.find(c => c.id === "royal")!;
       expect(getCakeName(royal, false, false, true)).toBe("Velours Royal");
+      expect(getCakeName(royal, "fr")).toBe("Velours Royal");
 
       const nature = CAKE_OPTIONS.find(c => c.id === "nature")!;
       expect(getCakeName(nature, false, false, true)).toBe("Jardin Floral");
+      expect(getCakeName(nature, "fr")).toBe("Jardin Floral");
     });
 
     it("4.3: Emoji kit generation produces themed avatar, signature list, and chat greetings", () => {
