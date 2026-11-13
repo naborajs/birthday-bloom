@@ -23,8 +23,8 @@ const CakeCard = ({ cake, onSelect }: {
     onSelect: () => void;
 }) => {
     const isMobile = useIsMobile();
-    const { t, isHindi, isBengali, isFrench } = useTranslation();
-    const displayName = getCakeName(cake, isHindi, isBengali, isFrench);
+    const { t, language } = useTranslation();
+    const displayName = getCakeName(cake, language);
     return (
         <motion.button 
             whileHover={!isMobile ? { scale: 1.05, y: -10, rotateZ: 2 } : undefined} 
