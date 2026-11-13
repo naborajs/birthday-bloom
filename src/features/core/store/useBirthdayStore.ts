@@ -13,7 +13,7 @@ import {
     type RelationshipType,
     type GenderType,
 } from './relationshipUtils';
-import { normalizeLanguage } from '@/i18n';
+import { normalizeLanguage } from '@/i18n/languageUtils';
 
 export type { RelationshipType, GenderType };
 export interface BirthdayConfig {
