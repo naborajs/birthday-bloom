@@ -2,7 +2,52 @@ import { EMOTIONAL_LETTERS } from '@/config/templates';
 import { HINDI_EMOTIONAL_LETTERS, HINDI_BIG_WISHES } from '@/config/hindiTemplates';
 import { BENGALI_EMOTIONAL_LETTERS, BENGALI_BIG_WISHES } from '@/config/bengaliTemplates';
 import { FRENCH_EMOTIONAL_LETTERS, FRENCH_BIG_WISHES } from '@/config/frenchTemplates';
-import { RelationshipType, GenderType } from './useBirthdayStore';
+import { RelationshipType, GenderType } from './relationshipUtils';
+import { normalizeLanguage } from '@/i18n/languageUtils';
+
+const LETTER_CATALOG = {
+    en: EMOTIONAL_LETTERS,
+    hi: HINDI_EMOTIONAL_LETTERS,
+    bn: BENGALI_EMOTIONAL_LETTERS,
+    fr: FRENCH_EMOTIONAL_LETTERS,
+} as const;
+
+type LetterTemplateSet = typeof EMOTIONAL_LETTERS;
+
+const resolveLetterTemplate = (
+    catalog: LetterTemplateSet,
+    relationship: RelationshipType,
+    name: string,
+    gender: GenderType
+): string => {
+    const isFemale = gender === 'female';
+    const isMale = gender === 'male';
+
+    if (relationship === 'partner') {
+        return isFemale ? catalog.partner.female(name) : catalog.partner.male(name);
+    }
+    if (relationship === 'friend') {
+        if (isFemale) return catalog.friend.friendly(name);
+        if (isMale) return catalog.friend.legend(name);
+        return catalog.friend.romantic(name);
+    }
+    if (relationship === 'sibling') return catalog.sibling(name);
+    if (relationship === 'brother') return catalog.brother(name);
+    if (relationship === 'sister') return catalog.sister(name);
+    if (relationship === 'father') return catalog.father(name);
+    if (relationship === 'mother') return catalog.mother(name);
+    if (relationship === 'grandfather') return catalog.grandfather(name);
+    if (relationship === 'grandmother') return catalog.grandmother(name);
+    if (relationship === 'uncle') return catalog.uncle(name);
+    if (relationship === 'aunt') return catalog.aunt(name);
+    if (relationship === 'cousin') return catalog.cousin(name);
+    if (relationship === 'son') return catalog.son(name);
+    if (relationship === 'daughter') return catalog.daughter(name);
+    if (relationship === 'guardian') return catalog.guardian(name);
+    if (relationship === 'colleague') return catalog.colleague(name);
+    if (relationship === 'mentor') return catalog.mentor(name);
+    return catalog.family(name);
+};
 
 export const getHighlySpecificLetter = (
     name: string,
@@ -11,176 +56,10 @@ export const getHighlySpecificLetter = (
     _interests: string[] = [],
     language: string = 'en',
     senderName?: string
-) => {
-    const isFemale = gender === 'female';
-    const isMale = gender === 'male';
-    const isFrench = language === 'fr' || language === 'french' || language === 'francais' || language === 'française' || language === 'francaise';
-    const isHindi = language === 'hi' || language === 'hindi' || language === 'in';
-    const isBengali = language === 'bn' || language === 'bengali' || language === 'bangla';
-
-    let letter = '';
-
-    if (isFrench) {
-        if (relationship === 'partner') {
-            letter = isFemale ? FRENCH_EMOTIONAL_LETTERS.partner.female(name) : FRENCH_EMOTIONAL_LETTERS.partner.male(name);
-        } else if (relationship === 'friend') {
-            if (isFemale) letter = FRENCH_EMOTIONAL_LETTERS.friend.friendly(name);
-            else if (isMale) letter = FRENCH_EMOTIONAL_LETTERS.friend.legend(name);
-            else letter = FRENCH_EMOTIONAL_LETTERS.friend.romantic(name);
-        } else if (relationship === 'sibling') {
-            letter = FRENCH_EMOTIONAL_LETTERS.sibling(name);
-        } else if (relationship === 'brother') {
-            letter = FRENCH_EMOTIONAL_LETTERS.brother(name);
-        } else if (relationship === 'sister') {
-            letter = FRENCH_EMOTIONAL_LETTERS.sister(name);
-        } else if (relationship === 'father') {
-            letter = FRENCH_EMOTIONAL_LETTERS.father(name);
-        } else if (relationship === 'mother') {
-            letter = FRENCH_EMOTIONAL_LETTERS.mother(name);
-        } else if (relationship === 'grandfather') {
-            letter = FRENCH_EMOTIONAL_LETTERS.grandfather(name);
-        } else if (relationship === 'grandmother') {
-            letter = FRENCH_EMOTIONAL_LETTERS.grandmother(name);
-        } else if (relationship === 'uncle') {
-            letter = FRENCH_EMOTIONAL_LETTERS.uncle(name);
-        } else if (relationship === 'aunt') {
-            letter = FRENCH_EMOTIONAL_LETTERS.aunt(name);
-        } else if (relationship === 'cousin') {
-            letter = FRENCH_EMOTIONAL_LETTERS.cousin(name);
-        } else if (relationship === 'son') {
-            letter = FRENCH_EMOTIONAL_LETTERS.son(name);
-        } else if (relationship === 'daughter') {
-            letter = FRENCH_EMOTIONAL_LETTERS.daughter(name);
-        } else if (relationship === 'guardian') {
-            letter = FRENCH_EMOTIONAL_LETTERS.guardian(name);
-        } else if (relationship === 'colleague') {
-            letter = FRENCH_EMOTIONAL_LETTERS.colleague(name);
-        } else if (relationship === 'mentor') {
-            letter = FRENCH_EMOTIONAL_LETTERS.mentor(name);
-        } else {
-            letter = FRENCH_EMOTIONAL_LETTERS.family(name);
-        }
-    } else if (isBengali) {
-        if (relationship === 'partner') {
-            letter = isFemale ? BENGALI_EMOTIONAL_LETTERS.partner.female(name) : BENGALI_EMOTIONAL_LETTERS.partner.male(name);
-        } else if (relationship === 'friend') {
-            if (isFemale) letter = BENGALI_EMOTIONAL_LETTERS.friend.friendly(name);
-            else if (isMale) letter = BENGALI_EMOTIONAL_LETTERS.friend.legend(name);
-            else letter = BENGALI_EMOTIONAL_LETTERS.friend.romantic(name);
-        } else if (relationship === 'sibling') {
-            letter = BENGALI_EMOTIONAL_LETTERS.sibling(name);
-        } else if (relationship === 'brother') {
-            letter = BENGALI_EMOTIONAL_LETTERS.brother(name);
-        } else if (relationship === 'sister') {
-            letter = BENGALI_EMOTIONAL_LETTERS.sister(name);
-        } else if (relationship === 'father') {
-            letter = BENGALI_EMOTIONAL_LETTERS.father(name);
-        } else if (relationship === 'mother') {
-            letter = BENGALI_EMOTIONAL_LETTERS.mother(name);
-        } else if (relationship === 'grandfather') {
-            letter = BENGALI_EMOTIONAL_LETTERS.grandfather(name);
-        } else if (relationship === 'grandmother') {
-            letter = BENGALI_EMOTIONAL_LETTERS.grandmother(name);
-        } else if (relationship === 'uncle') {
-            letter = BENGALI_EMOTIONAL_LETTERS.uncle(name);
-        } else if (relationship === 'aunt') {
-            letter = BENGALI_EMOTIONAL_LETTERS.aunt(name);
-        } else if (relationship === 'cousin') {
-            letter = BENGALI_EMOTIONAL_LETTERS.cousin(name);
-        } else if (relationship === 'son') {
-            letter = BENGALI_EMOTIONAL_LETTERS.son(name);
-        } else if (relationship === 'daughter') {
-            letter = BENGALI_EMOTIONAL_LETTERS.daughter(name);
-        } else if (relationship === 'guardian') {
-            letter = BENGALI_EMOTIONAL_LETTERS.guardian(name);
-        } else if (relationship === 'colleague') {
-            letter = BENGALI_EMOTIONAL_LETTERS.colleague(name);
-        } else if (relationship === 'mentor') {
-            letter = BENGALI_EMOTIONAL_LETTERS.mentor(name);
-        } else {
-            letter = BENGALI_EMOTIONAL_LETTERS.family(name);
-        }
-    } else if (isHindi) {
-        if (relationship === 'partner') {
-            letter = isFemale ? HINDI_EMOTIONAL_LETTERS.partner.female(name) : HINDI_EMOTIONAL_LETTERS.partner.male(name);
-        } else if (relationship === 'friend') {
-            if (isFemale) letter = HINDI_EMOTIONAL_LETTERS.friend.friendly(name);
-            else if (isMale) letter = HINDI_EMOTIONAL_LETTERS.friend.legend(name);
-            else letter = HINDI_EMOTIONAL_LETTERS.friend.romantic(name);
-        } else if (relationship === 'sibling') {
-            letter = HINDI_EMOTIONAL_LETTERS.sibling(name);
-        } else if (relationship === 'brother') {
-            letter = HINDI_EMOTIONAL_LETTERS.brother(name);
-        } else if (relationship === 'sister') {
-            letter = HINDI_EMOTIONAL_LETTERS.sister(name);
-        } else if (relationship === 'father') {
-            letter = HINDI_EMOTIONAL_LETTERS.father(name);
-        } else if (relationship === 'mother') {
-            letter = HINDI_EMOTIONAL_LETTERS.mother(name);
-        } else if (relationship === 'grandfather') {
-            letter = HINDI_EMOTIONAL_LETTERS.grandfather(name);
-        } else if (relationship === 'grandmother') {
-            letter = HINDI_EMOTIONAL_LETTERS.grandmother(name);
-        } else if (relationship === 'uncle') {
-            letter = HINDI_EMOTIONAL_LETTERS.uncle(name);
-        } else if (relationship === 'aunt') {
-            letter = HINDI_EMOTIONAL_LETTERS.aunt(name);
-        } else if (relationship === 'cousin') {
-            letter = HINDI_EMOTIONAL_LETTERS.cousin(name);
-        } else if (relationship === 'son') {
-            letter = HINDI_EMOTIONAL_LETTERS.son(name);
-        } else if (relationship === 'daughter') {
-            letter = HINDI_EMOTIONAL_LETTERS.daughter(name);
-        } else if (relationship === 'guardian') {
-            letter = HINDI_EMOTIONAL_LETTERS.guardian(name);
-        } else if (relationship === 'colleague') {
-            letter = HINDI_EMOTIONAL_LETTERS.colleague(name);
-        } else if (relationship === 'mentor') {
-            letter = HINDI_EMOTIONAL_LETTERS.mentor(name);
-        } else {
-            letter = HINDI_EMOTIONAL_LETTERS.family(name);
-        }
-    } else {
-        if (relationship === 'partner') {
-            letter = isFemale ? EMOTIONAL_LETTERS.partner.female(name) : EMOTIONAL_LETTERS.partner.male(name);
-        } else if (relationship === 'friend') {
-            if (isFemale) letter = EMOTIONAL_LETTERS.friend.friendly(name);
-            else if (isMale) letter = EMOTIONAL_LETTERS.friend.legend(name);
-            else letter = EMOTIONAL_LETTERS.friend.romantic(name);
-        } else if (relationship === 'sibling') {
-            letter = EMOTIONAL_LETTERS.sibling(name);
-        } else if (relationship === 'brother') {
-            letter = EMOTIONAL_LETTERS.brother(name);
-        } else if (relationship === 'sister') {
-            letter = EMOTIONAL_LETTERS.sister(name);
-        } else if (relationship === 'father') {
-            letter = EMOTIONAL_LETTERS.father(name);
-        } else if (relationship === 'mother') {
-            letter = EMOTIONAL_LETTERS.mother(name);
-        } else if (relationship === 'grandfather') {
-            letter = EMOTIONAL_LETTERS.grandfather(name);
-        } else if (relationship === 'grandmother') {
-            letter = EMOTIONAL_LETTERS.grandmother(name);
-        } else if (relationship === 'uncle') {
-            letter = EMOTIONAL_LETTERS.uncle(name);
-        } else if (relationship === 'aunt') {
-            letter = EMOTIONAL_LETTERS.aunt(name);
-        } else if (relationship === 'cousin') {
-            letter = EMOTIONAL_LETTERS.cousin(name);
-        } else if (relationship === 'son') {
-            letter = EMOTIONAL_LETTERS.son(name);
-        } else if (relationship === 'daughter') {
-            letter = EMOTIONAL_LETTERS.daughter(name);
-        } else if (relationship === 'guardian') {
-            letter = EMOTIONAL_LETTERS.guardian(name);
-        } else if (relationship === 'colleague') {
-            letter = EMOTIONAL_LETTERS.colleague(name);
-        } else if (relationship === 'mentor') {
-            letter = EMOTIONAL_LETTERS.mentor(name);
-        } else {
-            letter = EMOTIONAL_LETTERS.family(name);
-        }
-    }
+): string => {
+    const lang = normalizeLanguage(language);
+    const catalog = LETTER_CATALOG[lang] || EMOTIONAL_LETTERS;
+    const letter = resolveLetterTemplate(catalog, relationship, name, gender);
 
     const cleanSender = senderName ? senderName.trim() : '';
     return letter
@@ -194,22 +73,19 @@ export const getHighlySpecificLetter = (
 export const getBigWishes = (
     name: string,
     relationship: RelationshipType,
-    gender: GenderType,
+    _gender: GenderType,
     interests: string[] = [],
     language: string = 'en'
 ) => {
-    const isFrench = language === 'fr' || language === 'french' || language === 'francais' || language === 'française' || language === 'francaise';
-    if (isFrench) {
+    const lang = normalizeLanguage(language);
+
+    if (lang === 'fr') {
         return FRENCH_BIG_WISHES(name, relationship, interests);
     }
-
-    const isBengali = language === 'bn' || language === 'bengali' || language === 'bangla';
-    if (isBengali) {
+    if (lang === 'bn') {
         return BENGALI_BIG_WISHES(name, relationship, interests);
     }
-
-    const isHindi = language === 'hi' || language === 'hindi' || language === 'in';
-    if (isHindi) {
+    if (lang === 'hi') {
         return HINDI_BIG_WISHES(name, relationship, interests);
     }
 
@@ -218,11 +94,17 @@ export const getBigWishes = (
         { emoji: "💎", wish: `You are a diamond in the rough, ${name}. Stay precious.` }
     ];
     if (relationship === 'partner') {
-        wishes.push({ emoji: "❤️", wish: `Every heartbeat of mine is a wish for your happiness, ${name}.` }, { emoji: "💍", wish: `To many more years of us making the world jealous of our love.` });
+        wishes.push(
+            { emoji: "❤️", wish: `Every heartbeat of mine is a wish for your happiness, ${name}.` },
+            { emoji: "💍", wish: `To many more years of us making the world jealous of our love.` }
+        );
+    } else if (relationship === 'friend') {
+        wishes.push(
+            { emoji: "🔥", wish: `Stay legendary, stay wild, and keep breaking the internet, ${name}!` },
+            { emoji: "🍻", wish: `To the nights we won't remember and the friend I'll never forget.` }
+        );
     }
-    else if (relationship === 'friend') {
-        wishes.push({ emoji: "🔥", wish: `Stay legendary, stay wild, and keep breaking the internet, ${name}!` }, { emoji: "🍻", wish: `To the nights we won't remember and the friend I'll never forget.` });
-    }
+
     if (interests.some(i => i.toLowerCase().includes('car'))) {
         wishes.push({ emoji: "🏎️", wish: `May your life accelerate from 0 to 100 in pure happiness this year!` });
     }
