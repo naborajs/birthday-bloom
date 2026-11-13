@@ -90,13 +90,13 @@ export const parseCelebrationParams = (search: string): ParsedCelebrationQuery =
     const params = new URLSearchParams(search);
     const result: ParsedCelebrationQuery = {};
 
-    const name = params.get("name") || params.get("recipient") || params.get("user");
+    const name = params.get("name") || params.get("recipient") || params.get("user") || params.get("to");
     if (name) result.name = name.trim();
 
-    const rel = params.get("rel") || params.get("relationship");
+    const rel = params.get("rel") || params.get("relationship") || params.get("archetype");
     if (rel) result.relationship = rel.trim();
 
-    const lang = params.get("lang") || params.get("language");
+    const lang = params.get("lang") || params.get("language") || params.get("locale");
     if (lang) result.language = lang.trim();
 
     const age = params.get("age");
