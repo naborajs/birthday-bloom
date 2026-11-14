@@ -55,3 +55,9 @@ Welcome! We are thrilled that you're interested in contributing to Birthday Bloo
 - [Developer Guide & Contributor Walkthroughs](https://naborajs.me/projects/birthday-bloom/docs/developer-guide) ([Local](obsidian-docs/developer-guide.md))
 - [Pull Request Policy](https://naborajs.me/projects/birthday-bloom/docs/pull-request-policy) ([Local](.github/PULL_REQUEST_POLICY.md))
 - [Code of Conduct](https://naborajs.me/projects/birthday-bloom/docs/code-of-conduct) ([Local](.github/CODE_OF_CONDUCT.md))
+
+
+### Architectural Guidelines for Pull Requests
+- Maintain strict Directed Acyclic Graph (DAG) dependencies.
+- Keep utilities pure and isolated in `src/utils/` or leaf modules.
+- Ensure all 470 tests pass with `npm test` before submitting PRs.
