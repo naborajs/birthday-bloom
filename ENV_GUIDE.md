@@ -188,3 +188,7 @@ VITE_PARTICLE_COUNT=10
 1. **Set Environment Variables**: Add all required `VITE_*` keys in your hosting provider's dashboard.
 2. **Verify Media URLs**: Ensure audio and image URLs use secure HTTPS.
 3. **Build & Test**: Run `npm run build` and `npm test` to confirm quality gates pass.
+
+
+### v3.5 Canonical Normalization Rules
+All environment variables are parsed through centralized normalizers (`normalizeRelationship`, `normalizeGender`, `normalizeLanguage`) ensuring uniform behavior between URL overrides and build-time env configs.
