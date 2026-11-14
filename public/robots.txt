@@ -122,3 +122,9 @@ Disallow: /
 
 # XML Sitemap Specification
 Sitemap: https://birthday-bloom.vercel.app/sitemap.xml
+
+# Enhanced SEO & LLM Crawler Directives
+Allow: /docs/
+Allow: /obsidian-docs/
+Allow: /llms.txt
+Allow: /llms-full.txt
