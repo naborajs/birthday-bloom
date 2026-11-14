@@ -53,3 +53,9 @@ Birthday Bloom is a modern, deeply emotional, high-performance birthday celebrat
 - `obsidian-docs/`: 31 markdown technical, architectural, and user guides
 - `public/`: Assets, audio, favicon, `site.webmanifest`, `sitemap.xml`, `robots.txt`, `llms.txt`, `llms-full.txt`
 - `src/test/`: Unit, integration, stress, SEO, and E2E test suites (17 suites, 408 passing tests)
+
+
+### Milestone Update (v3.5.1 Untangle Complete)
+- [x] Full codebase audit and structural untangling complete.
+- [x] 0 circular dependencies verified via DAG topology.
+- [x] 100% test pass rate across 470 test assertions.
