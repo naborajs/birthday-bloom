@@ -1,3 +1,13 @@
+
+## [3.5.1] - 2026-11-15
+### Architectural Untangling & Modernization
+- **Inverted Dependency Correction**: Moved date parsing to `dateUtils.ts` with pattern formatting, inverting `password.ts` dependency.
+- **Acyclic i18n Architecture**: Isolated `languageUtils.ts` to eliminate circular store cycles.
+- **Domain Normalizers**: Extracted `relationshipUtils.ts` for canonical archetype mapping.
+- **Template Catalog**: Refactored `SuperPersonalizedLogic.ts` to O(1) letter catalog.
+- **Bundle Budget Optimization**: Minified JSON-LD in index.html to 13.18 kB (<15 kB budget).
+- **Test Integrity**: 470/470 tests passing across 24 suites.
+
 # Changelog
 
 🌐 **Canonical Web Documentation**: [Project Changelog & Release Notes](https://naborajs.me/projects/birthday-bloom/docs/changelog) | [Migration Guide](https://naborajs.me/projects/birthday-bloom/docs/migration-guide)
