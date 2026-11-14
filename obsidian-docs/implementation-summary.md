@@ -542,3 +542,13 @@ Current setup will continue working as-is.
 
 
 #obsidian #documentation #birthday-bloom #vault
+
+---
+
+## 🏛️ v3.5 Untangled Architecture & Leaf Topology
+As part of the v3.5 architectural untangling, this module participates in a strict Directed Acyclic Graph (DAG):
+- **Core Domain Normalizers**: `src/features/core/store/relationshipUtils.ts` standardizes relationship archetypes and gender inputs without coupling to state stores.
+- **Acyclic Locale Resolution**: `src/i18n/languageUtils.ts` acts as an isolated leaf module for canonical locale code resolution (`en`, `bn`, `hi`, `fr`), breaking circular dependency cycles.
+- **Inverted Date & Security Dependency**: `src/utils/dateUtils.ts` houses the foundational `parseRawBirthdayDate` and `formatDateByPattern` utilities, while `password.ts` consumes date formatting cleanly.
+- **O(1) Template Catalog**: `src/features/core/store/SuperPersonalizedLogic.ts` executes multilingual letter generation via declarative catalog lookups.
+- **Verified Integrity**: 470/470 automated tests passing across 24 test suites with 0 bundle budget violations.
