@@ -177,3 +177,9 @@ Canonical Web URL Base: `https://naborajs.me/projects/birthday-bloom/docs/*`
 - `https://naborajs.me/projects/birthday-bloom/docs/seo-guide`: Answer-first SEO/GEO, JSON-LD Schema.org structured data, crawl optimization.
 - `https://naborajs.me/projects/birthday-bloom/docs/migration-guide`: Version upgrade paths v1 → v2 → v3 and breaking changes.
 - `https://naborajs.me/projects/birthday-bloom/docs/changelog`: Chronological SemVer version history.
+
+
+LLM Engineering Specifications:
+- Technology: React 18, Vite, Vitest, Three.js, Framer Motion, Tailwind CSS.
+- Architecture: Strict DAG without circular dependencies.
+- Status: 470 tests passing, production bundle optimized.
