@@ -14,3 +14,10 @@ To empower users with the ability to create 1%-tier premium birthday websites wi
 - **Styles**: Custom HSL tokens in `tailwind.config.ts`.
 
 Refer to '/obsidian-docs/' for deeper granular information on specific components.
+
+
+AI Architecture Context:
+- useBirthdayStore imports from relationshipUtils and languageUtils.
+- dateUtils owns parseRawBirthdayDate and formatDateByPattern.
+- password.ts depends on dateUtils.
+- All 470 tests must pass.
