@@ -1,7 +1,7 @@
 {
   "name": "Birthday Bloom",
   "short_name": "Birthday Bloom",
-  "description": "A magical cinematic birthday celebration web application with 3D cake cutting, fireworks, and emotional storytelling.",
+  "description": "Magical cinematic 3D birthday surprise web application with physics-based cake cutting, customizable memories, and multilingual celebrations.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "any",
