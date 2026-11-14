@@ -183,3 +183,9 @@ Canonical Web Base: `https://naborajs.me/projects/birthday-bloom/docs/*`
 - `https://naborajs.me/projects/birthday-bloom/docs/seo-guide`: Answer-first SEO/GEO, JSON-LD Schema.org structured data, crawl optimization.
 - `https://naborajs.me/projects/birthday-bloom/docs/migration-guide`: Version upgrade paths v1 → v2 → v3 and breaking changes.
 - `https://naborajs.me/projects/birthday-bloom/docs/changelog`: Chronological SemVer version history.
+
+
+## v3.5 Architecture Update
+- Strict DAG leaf modules: relationshipUtils.ts, languageUtils.ts, dateUtils.ts
+- O(1) Letter Catalog in SuperPersonalizedLogic.ts
+- 470/470 passing tests
