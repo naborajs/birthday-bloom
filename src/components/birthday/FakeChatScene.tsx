@@ -4,6 +4,7 @@ import { useSoundManager } from "./SoundManager";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useTranslation } from "@/i18n";
 import { getTemplateEmojiKit } from "@/config/emojiKits";
+import { normalizeImageUrl } from "@/utils/mediaUtils";
 import {
     ChevronLeft,
     Phone,
@@ -128,7 +129,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
     const [floatingHearts, setFloatingHearts] = useState<FloatingHeart[]>([]);
     const [isHeartLiked, setIsHeartLiked] = useState(true);
 
-    const { playType, playWhoosh, playReveal, playPop } = useSoundManager();
+    const { playType, playWhoosh, playReveal, playPop, playBoom } = useSoundManager();
     const { config } = useBirthdayStore();
     const { t, isHindi, isBengali, isFrench } = useTranslation();
     const { name, relationship, favoriteColor, gender } = config;
@@ -234,6 +235,29 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
     const lastTapRef = useRef<number>(0);
     const chatStreamRef = useRef<HTMLElement | null>(null);
     const activeKeyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const completedRef = useRef(false);
+
+    const finishScene = useCallback(() => {
+        if (completedRef.current) return;
+        completedRef.current = true;
+        setPhase("done");
+        playWhoosh();
+        setTimeout(() => {
+            onComplete();
+        }, 280);
+    }, [onComplete, playWhoosh]);
+
+    const handleInstantComplete = useCallback(() => {
+        if (completedRef.current) return;
+        playReveal();
+        if (typeof playBoom === "function") {
+            playBoom();
+        } else {
+            playPop();
+        }
+        triggerHeartBurst();
+        finishScene();
+    }, [playReveal, playBoom, playPop, triggerHeartBurst, finishScene]);
 
     useEffect(() => {
         return () => {
@@ -391,12 +415,9 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
             playReveal();
 
             // Climax display duration before seamless transition
-            await sleep(3800);
-            if (!isMounted) return;
-            setPhase("done");
-            playWhoosh();
-            await sleep(300);
-            onComplete();
+            await sleep(4000);
+            if (!isMounted || completedRef.current) return;
+            finishScene();
         };
 
         runSequence().catch((err) => {
@@ -406,10 +427,15 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
         return () => {
             isMounted = false;
         };
-    }, [onComplete, playType, playWhoosh, playReveal, playPop, basicText, heartfeltText]);
+    }, [finishScene, playType, playReveal, playPop, basicText, heartfeltText]);
 
     const emojiKit = useMemo(() => getTemplateEmojiKit(config), [config]);
     const contactName = name || (relationship === "partner" ? "My Love" : relationship === "friend" ? "Bestie 🔥" : "Family 🌟");
+    const celebrantPhoto = useMemo(() => {
+        return (config.photos && config.photos.length > 0)
+            ? normalizeImageUrl(config.photos[0])
+            : null;
+    }, [config.photos]);
     const avatarEmoji = emojiKit.chat?.avatar || (relationship === "partner" ? "💖" : relationship === "friend" ? "😎" : "👑");
     const floatingBadges = useMemo(
         () => (emojiKit.floating?.length >= 4 ? emojiKit.floating.slice(0, 4) : ["💖", "✨", "🌹", "🦋"]),
@@ -471,34 +497,54 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                 className="relative w-[92vw] max-w-[362px] h-[83dvh] max-h-[720px] sm:max-w-[388px] sm:h-[87vh] sm:max-h-[790px] mb-8 sm:mb-2 p-[4px] sm:p-[5px] rounded-[44px] sm:rounded-[50px] bg-gradient-to-br from-[#7c6270] via-[#2b2228] to-[#523b47] shadow-[0_30px_80px_rgba(0,0,0,0.8),0_0_45px_rgba(255,42,109,0.18),inset_0_1px_2px_rgba(255,255,255,0.45)] flex flex-col"
             >
                 {/* 3D Parallax Floating Template Emoji Orbs Around Smartphone Bezel */}
-                <div
-                    aria-hidden="true"
+                <button
+                    type="button"
+                    aria-label="Floating celebration badge 1"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        triggerHeartBurst(e.clientX, e.clientY);
+                    }}
                     style={{ transform: "translateZ(28px)" }}
-                    className="pointer-events-none hidden sm:flex absolute -left-8 top-14 w-11 h-11 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-xl shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
+                    className="pointer-events-auto hidden sm:flex absolute -left-8 top-14 w-11 h-11 rounded-2xl bg-[#1c0d20]/85 border border-white/20 backdrop-blur-xl items-center justify-center text-xl shadow-[0_12px_30px_rgba(0,0,0,0.6),0_0_15px_rgba(255,42,109,0.25)] hover:scale-115 hover:border-rose-400/60 active:scale-90 transition-all duration-200 cursor-pointer"
                 >
                     {floatingBadges[0]}
-                </div>
-                <div
-                    aria-hidden="true"
+                </button>
+                <button
+                    type="button"
+                    aria-label="Floating celebration badge 2"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        triggerHeartBurst(e.clientX, e.clientY);
+                    }}
                     style={{ transform: "translateZ(34px)" }}
-                    className="pointer-events-none hidden sm:flex absolute -right-8 top-28 w-11 h-11 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-xl shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
+                    className="pointer-events-auto hidden sm:flex absolute -right-8 top-28 w-11 h-11 rounded-2xl bg-[#1c0d20]/85 border border-white/20 backdrop-blur-xl items-center justify-center text-xl shadow-[0_12px_30px_rgba(0,0,0,0.6),0_0_15px_rgba(255,42,109,0.25)] hover:scale-115 hover:border-rose-400/60 active:scale-90 transition-all duration-200 cursor-pointer"
                 >
                     {floatingBadges[1]}
-                </div>
-                <div
-                    aria-hidden="true"
+                </button>
+                <button
+                    type="button"
+                    aria-label="Floating celebration badge 3"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        triggerHeartBurst(e.clientX, e.clientY);
+                    }}
                     style={{ transform: "translateZ(24px)" }}
-                    className="pointer-events-none hidden sm:flex absolute -left-7 bottom-28 w-10 h-10 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-lg shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
+                    className="pointer-events-auto hidden sm:flex absolute -left-7 bottom-28 w-10 h-10 rounded-2xl bg-[#1c0d20]/85 border border-white/20 backdrop-blur-xl items-center justify-center text-lg shadow-[0_12px_30px_rgba(0,0,0,0.6),0_0_15px_rgba(255,42,109,0.25)] hover:scale-115 hover:border-rose-400/60 active:scale-90 transition-all duration-200 cursor-pointer"
                 >
                     {floatingBadges[2]}
-                </div>
-                <div
-                    aria-hidden="true"
+                </button>
+                <button
+                    type="button"
+                    aria-label="Floating celebration badge 4"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        triggerHeartBurst(e.clientX, e.clientY);
+                    }}
                     style={{ transform: "translateZ(30px)" }}
-                    className="pointer-events-none hidden sm:flex absolute -right-7 bottom-16 w-10 h-10 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-xl items-center justify-center text-lg shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
+                    className="pointer-events-auto hidden sm:flex absolute -right-7 bottom-16 w-10 h-10 rounded-2xl bg-[#1c0d20]/85 border border-white/20 backdrop-blur-xl items-center justify-center text-lg shadow-[0_12px_30px_rgba(0,0,0,0.6),0_0_15px_rgba(255,42,109,0.25)] hover:scale-115 hover:border-rose-400/60 active:scale-90 transition-all duration-200 cursor-pointer"
                 >
                     {floatingBadges[3]}
-                </div>
+                </button>
 
                 {/* 3D Hardware Left Buttons (Action + Volume Up/Down) */}
                 <div className="pointer-events-none absolute -left-[3px] top-[96px] w-[3px] h-6 rounded-l-md bg-gradient-to-b from-[#8e7281] to-[#3d2e36] shadow-sm" />
@@ -552,10 +598,15 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                     <div className="relative z-30 px-5 pt-2.5 pb-1 flex items-center justify-between text-white/90 text-xs font-semibold shrink-0">
                         <span className="tracking-tight text-[12px] font-semibold text-white/90 pl-1">9:41</span>
 
-                        {/* Dynamic Island Pill */}
+                        {/* Dynamic Island Pill with Live Audio Visualizer */}
                         <div className="w-24 h-5 rounded-full bg-black flex items-center justify-between px-2.5 shadow-inner border border-white/10">
-                            <div className="w-2 h-2 rounded-full bg-[#1c1c1e] border border-white/10" />
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#00E676]/85 animate-pulse" />
+                            <div className="w-2 h-2 rounded-full bg-[#1c1c1e] ring-1 ring-white/15" />
+                            {/* Live iOS Equalizer Waveform Bars */}
+                            <div className="flex items-center gap-[2px]">
+                                <span className="w-[2px] h-2 rounded-full bg-[#00E676] animate-pulse" />
+                                <span className="w-[2px] h-3 rounded-full bg-[#00E676] animate-pulse [animation-delay:150ms]" />
+                                <span className="w-[2px] h-1.5 rounded-full bg-[#00E676] animate-pulse [animation-delay:300ms]" />
+                            </div>
                         </div>
 
                         {/* Cell, WiFi, Battery Indicators */}
@@ -586,11 +637,20 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                 <ChevronLeft size={24} />
                             </button>
 
-                            {/* Story Gradient Avatar Ring */}
+                            {/* Authentic Instagram 5-Stop Story Gradient Avatar Ring */}
                             <div className="relative">
-                                <div className="p-[2px] rounded-full bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF] shadow-[0_0_10px_rgba(221,42,123,0.45)]">
-                                    <div className="w-9 h-9 rounded-full bg-[#121212] flex items-center justify-center text-lg border border-white/10">
-                                        {avatarEmoji}
+                                <div className="p-[2.5px] rounded-full bg-gradient-to-tr from-[#f09433] via-[#e6683c] via-[#dc2743] via-[#cc2366] to-[#bc1888] shadow-[0_0_12px_rgba(225,48,108,0.5)]">
+                                    <div className="w-9 h-9 rounded-full bg-[#121212] overflow-hidden flex items-center justify-center text-lg border border-white/10">
+                                        {celebrantPhoto ? (
+                                            <img
+                                                src={celebrantPhoto}
+                                                alt={contactName}
+                                                referrerPolicy="no-referrer"
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            avatarEmoji
+                                        )}
                                     </div>
                                 </div>
                                 <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-[#00E676] ring-2 ring-[#1A0717] shadow-[0_0_6px_#00E676]" />
@@ -713,11 +773,13 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                     className="self-end max-w-[85%] flex flex-col items-end gap-1"
                                 >
                                     <div
-                                        className="relative px-3.5 py-2.5 rounded-[18px] rounded-br-[4px] text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal shadow-[0_8px_24px_rgba(236,72,153,0.35)] leading-snug border border-white/15"
+                                        className="relative px-4 py-2.5 rounded-[20px] rounded-br-[4px] text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal shadow-[0_6px_22px_rgba(225,48,108,0.42)] leading-snug border border-white/20 overflow-hidden"
                                         style={{
-                                            background: "linear-gradient(135deg, #833AB4 0%, #FD1D1D 50%, #FCB045 100%)",
+                                            background: "linear-gradient(135deg, #7F00FF 0%, #E100FF 36%, #FF1361 72%, #FFA033 100%)",
                                         }}
                                     >
+                                        {/* Subtle top gloss highlight */}
+                                        <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
                                         {sentMessageText}
                                     </div>
 
@@ -725,11 +787,11 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                     <motion.div
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
-                                        className="text-[10px] text-white/55 pr-1 flex items-center gap-1 font-medium normal-case"
+                                        className="text-[10px] text-white/60 pr-1 flex items-center gap-1 font-medium normal-case"
                                     >
                                         {phase === "seen" || phase === "climax" || phase === "done" ? (
-                                            <span className="flex items-center gap-1 text-rose-300/85">
-                                                Seen just now • <Heart size={9} fill="#FF2A6D" className="inline text-[#FF2A6D]" />
+                                            <span className="flex items-center gap-1 text-rose-300 font-semibold">
+                                                Seen just now • <Heart size={10} fill="#FF2A6D" className="inline text-[#FF2A6D] animate-pulse drop-shadow-[0_0_4px_#FF2A6D]" />
                                             </span>
                                         ) : (
                                             <span>Delivered</span>
@@ -1039,36 +1101,70 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                     <AnimatePresence>
                         {phase === "climax" && (
                             <motion.div
-                                initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                                initial={{ opacity: 0, y: 35, scale: 0.88 }}
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, scale: 1.08 }}
-                                transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                                className="absolute inset-x-3.5 top-[28%] z-30 p-5 sm:p-6 rounded-[24px] bg-black/90 border border-white/25 backdrop-blur-3xl text-center shadow-[0_25px_80px_rgba(0,0,0,0.95)]"
+                                exit={{ opacity: 0, scale: 1.05 }}
+                                transition={{ type: "spring", stiffness: 280, damping: 22 }}
+                                className="absolute inset-x-3 sm:inset-x-4 top-[24%] z-30 flex flex-col items-center"
                             >
-                                <div className="flex justify-center mb-2.5 text-rose-400">
-                                    <Sparkles size={26} className="animate-spin-slow" />
+                                {/* Glowing Ambient Aura Halo */}
+                                <div className="absolute -inset-3 rounded-[32px] bg-gradient-to-r from-rose-500/35 via-pink-500/25 to-amber-500/35 blur-xl -z-10 animate-pulse pointer-events-none" />
+
+                                {/* Glassmorphic Card Container */}
+                                <div className="relative w-full overflow-hidden p-5 sm:p-6 rounded-[26px] bg-gradient-to-b from-[#210927]/96 via-[#140618]/98 to-[#0B020E]/98 border border-rose-400/40 backdrop-blur-3xl text-center shadow-[0_25px_70px_rgba(0,0,0,0.95),0_0_35px_rgba(244,63,94,0.35),inset_0_1px_2px_rgba(255,255,255,0.35)]">
+                                    {/* Shimmer line on top rim */}
+                                    <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-rose-300 to-transparent pointer-events-none" />
+
+                                    {/* Eyebrow Tag */}
+                                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-rose-500/20 to-amber-500/20 border border-rose-400/30 text-amber-200 text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase mb-3 shadow-[0_0_12px_rgba(244,63,94,0.3)]">
+                                        <Sparkles size={11} className="text-amber-300 animate-spin-slow" />
+                                        <span>A Special Surprise Awaits</span>
+                                        <Sparkles size={11} className="text-amber-300 animate-spin-slow" />
+                                    </div>
+
+                                    {/* Animated Center Jewel */}
+                                    <div className="relative w-12 h-12 mx-auto mb-3 flex items-center justify-center">
+                                        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-rose-500/40 to-amber-400/40 blur-md animate-pulse" />
+                                        <div className="relative w-11 h-11 rounded-full bg-[#240C2A] border border-rose-400/50 flex items-center justify-center shadow-[0_0_20px_rgba(244,63,94,0.6)]">
+                                            <Heart size={20} fill="#FF2A6D" className="text-[#FF2A6D] drop-shadow-[0_0_8px_rgba(255,42,109,0.9)] animate-pulse" />
+                                        </div>
+                                    </div>
+
+                                    {/* Climax Narrative Headline */}
+                                    <p className="text-[16px] sm:text-[18px] font-bold normal-case tracking-tight leading-snug bg-gradient-to-r from-amber-100 via-rose-100 to-pink-200 bg-clip-text text-transparent drop-shadow-[0_2px_14px_rgba(244,63,94,0.4)]">
+                                        {relationship === "partner"
+                                            ? isFrench
+                                                ? isMale
+                                                    ? "Parce qu'un prince comme toi mérite bien plus qu'un simple message... ✨"
+                                                    : "Parce qu'une princesse comme toi mérite bien plus qu'un simple message... ✨"
+                                                : isBengali
+                                                ? isMale
+                                                    ? "কারণ আমার রাজপুত্রের জন্য শুধু একটা টেক্সট যথেষ্ট নয়... ✨"
+                                                    : "কারণ আমার রাজকন্যার জন্য শুধু একটা টেক্সট যথেষ্ট নয়... ✨"
+                                                : isHindi
+                                                ? isMale
+                                                    ? "क्योंकि मेरे राजा के लिए सिर्फ एक टेक्स्ट काफी नहीं... ✨"
+                                                    : "क्योंकि मेरी रानी के लिए सिर्फ एक टेक्स्ट काफी नहीं... ✨"
+                                                : isMale
+                                                ? "Because a King like you deserves more than just a text message... ✨"
+                                                : "Because a Queen like you deserves more than just a text message... ✨"
+                                            : relationship === "friend"
+                                            ? t("chat.highLegendLevel")
+                                            : t("chat.moreMagicalSurprise")}
+                                    </p>
+
+                                    {/* Interactive Pulsing CTA Button */}
+                                    <motion.button
+                                        type="button"
+                                        onClick={handleInstantComplete}
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="mt-4 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#FF2A6D] via-[#FF5E7E] to-[#FFA033] text-white text-[12px] sm:text-[13px] font-semibold tracking-normal flex items-center justify-center gap-2 mx-auto shadow-[0_6px_22px_rgba(255,42,109,0.5),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_8px_28px_rgba(255,42,109,0.7)] transition-all cursor-pointer group"
+                                    >
+                                        <span>Enter Celebration</span>
+                                        <Sparkles size={14} className="group-hover:rotate-12 transition-transform text-amber-200" />
+                                    </motion.button>
                                 </div>
-                                <p className="text-lg sm:text-xl font-bold normal-case tracking-normal leading-snug bg-gradient-to-r from-white via-rose-200 to-amber-200 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]">
-                                    {relationship === "partner"
-                                        ? isFrench
-                                            ? isMale
-                                                ? "Parce qu'un prince comme toi mérite bien plus qu'un simple message... ✨"
-                                                : "Parce qu'une princesse comme toi mérite bien plus qu'un simple message... ✨"
-                                            : isBengali
-                                            ? isMale
-                                                ? "কারণ আমার রাজপুত্রের জন্য শুধু একটা টেক্সট যথেষ্ট নয়... ✨"
-                                                : "কারণ আমার রাজকন্যার জন্য শুধু একটা টেক্সট যথেষ্ট নয়... ✨"
-                                            : isHindi
-                                            ? isMale
-                                                ? "क्योंकि मेरे राजा के लिए सिर्फ एक टेक्स्ट काफी नहीं... ✨"
-                                                : "क्योंकि मेरी रानी के लिए सिर्फ एक टेक्स्ट काफी नहीं... ✨"
-                                            : isMale
-                                            ? "Because a King like you deserves more than just a text message... ✨"
-                                            : "Because a Queen like you deserves more than just a text message... ✨"
-                                        : relationship === "friend"
-                                        ? t("chat.highLegendLevel")
-                                        : t("chat.moreMagicalSurprise")}
-                                </p>
                             </motion.div>
                         )}
                     </AnimatePresence>
