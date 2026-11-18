@@ -14,6 +14,7 @@ import {
     type GenderType,
 } from './relationshipUtils';
 import { normalizeLanguage } from '@/i18n/languageUtils';
+import { normalizeImageUrl } from '@/utils/mediaUtils';
 
 export type { RelationshipType, GenderType };
 export interface BirthdayConfig {
@@ -104,8 +105,26 @@ const parseEnvList = (...values: unknown[]): string[] => {
             return [];
         }
     }
+    if (raw.includes('|')) {
+        return raw.split('|').map((item) => item.trim()).filter(Boolean);
+    }
+    if (raw.includes('\n')) {
+        return raw.split('\n').map((item) => item.trim()).filter(Boolean);
+    }
+    if (raw.trim().toLowerCase().startsWith('data:')) {
+        return [raw.trim()];
+    }
+    if (raw.includes('http://') || raw.includes('https://')) {
+        const httpCount = (raw.match(/https?:\/\//g) || []).length;
+        if (httpCount > 1) {
+            return raw.split(/,\s*(?=https?:\/\/)/).map((item) => item.trim()).filter(Boolean);
+        }
+        if (httpCount === 1) {
+            return [raw.trim()];
+        }
+    }
     return raw
-        .split(/[,\n|]/)
+        .split(',')
         .map((item) => item.trim())
         .filter(Boolean);
 };
@@ -149,14 +168,55 @@ catch (_e) {
 }
 const envItems = parseEnvList(import.meta.env.VITE_BIRTHDAY_INTERESTS, import.meta.env.VITE_FAVORITE_ITEMS);
 const envFavoriteEmojis = parseEnvList(import.meta.env.VITE_FAVORITE_EMOJIS, import.meta.env.VITE_BIRTHDAY_EMOJIS);
-const envPhotos = parseEnvList(import.meta.env.VITE_PHOTOS, [
+
+// Support all photo environment variables (singular, plural, numbered, without VITE_)
+const rawPhotoSources = [
+    import.meta.env.VITE_PHOTOS,
+    import.meta.env.VITE_PHOTO,
+    import.meta.env.VITE_PHOTOGRAPHS,
+    import.meta.env.VITE_PHOTOGRAPH,
+    import.meta.env.VITE_IMAGES,
+    import.meta.env.VITE_IMAGE,
+    import.meta.env.VITE_PICTURES,
+    import.meta.env.VITE_PICTURE,
+    import.meta.env.VITE_PHOTO_URL,
+    import.meta.env.VITE_IMAGE_URL,
     import.meta.env.VITE_PHOTO_1,
     import.meta.env.VITE_PHOTO_2,
     import.meta.env.VITE_PHOTO_3,
     import.meta.env.VITE_PHOTO_4,
     import.meta.env.VITE_PHOTO_5,
     import.meta.env.VITE_PHOTO_6,
-].filter(Boolean).join('|'));
+    import.meta.env.VITE_PHOTO_7,
+    import.meta.env.VITE_PHOTO_8,
+    import.meta.env.VITE_PHOTO_9,
+    import.meta.env.VITE_PHOTO_10,
+    import.meta.env.VITE_PHOTO_11,
+    import.meta.env.VITE_PHOTO_12,
+    import.meta.env.VITE_IMAGE_1,
+    import.meta.env.VITE_IMAGE_2,
+    import.meta.env.VITE_IMAGE_3,
+    (import.meta.env as Record<string, unknown>).PHOTOS,
+    (import.meta.env as Record<string, unknown>).PHOTO,
+    (import.meta.env as Record<string, unknown>).PHOTOGRAPHS,
+    (import.meta.env as Record<string, unknown>).PHOTOGRAPH,
+    (import.meta.env as Record<string, unknown>).PHOTO_1,
+    (import.meta.env as Record<string, unknown>).PHOTO_2,
+    (import.meta.env as Record<string, unknown>).PHOTO_3,
+];
+
+const collectedPhotos: string[] = [];
+for (const source of rawPhotoSources) {
+    if (!source) continue;
+    const items = parseEnvList(source);
+    for (const item of items) {
+        const normalized = normalizeImageUrl(item);
+        if (normalized && !collectedPhotos.includes(normalized)) {
+            collectedPhotos.push(normalized);
+        }
+    }
+}
+const envPhotos = collectedPhotos;
 const envPhotoCaptions = parseEnvList(import.meta.env.VITE_PHOTO_CAPTIONS);
 const envVideos = [
     import.meta.env.VITE_VIDEO_1,
@@ -258,13 +318,13 @@ export const useBirthdayStore = create<BirthdayStore>((set, get) => ({
         animationSpeed: (urlOverrides.animationSpeed || (import.meta.env.VITE_ANIMATION_SPEED as 'slow' | 'moderate' | 'fast')) || null,
         animationIntensity: (parseEnvString(import.meta.env.VITE_ANIMATION_INTENSITY) as 'low' | 'medium' | 'high') || 'high',
         particleCount: parseEnvNumber(import.meta.env.VITE_PARTICLE_COUNT, 25) ?? 25,
-        photos: envPhotos,
-        photoCaptions: envPhotoCaptions,
+        photos: urlOverrides.photos !== undefined && urlOverrides.photos.length > 0 ? urlOverrides.photos : envPhotos,
+        photoCaptions: urlOverrides.photoCaptions !== undefined ? urlOverrides.photoCaptions : envPhotoCaptions,
         videos: envVideos,
         letterTitle: envLetterTitle,
         letterOverride: envLetterOverride,
         showCakeSection: envShowCake,
-        showPhotoSection: envShowPhotos,
+        showPhotoSection: urlOverrides.showPhotoSection !== undefined ? urlOverrides.showPhotoSection : envShowPhotos,
         showQuizSection: envShowQuiz,
         showHeartTreeSection: envShowHeartTree,
         showVideoSection: envShowVideo,
