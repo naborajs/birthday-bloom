@@ -185,9 +185,13 @@ VITE_PARTICLE_COUNT=10
 
 ## Production Deployment
 
-1. **Set Environment Variables**: Add all required `VITE_*` keys in your hosting provider's dashboard.
-2. **Verify Media URLs**: Ensure audio and image URLs use secure HTTPS.
-3. **Build & Test**: Run `npm run build` and `npm test` to confirm quality gates pass.
+1. **Set Environment Variables**: Add all required VITE_* keys in your hosting provider's dashboard (e.g., Vercel).
+2. **Use Direct Image URLs**: Always ensure photo links point directly to the image file (ending in .jpg, .png, .webp, or direct CDN links like i.postimg.cc, i.ibb.co), NOT the webpage viewer (postimg.cc/xxx or ibb.co/xxx). Birthday Bloom includes auto-transformers for Postimages, Google Drive, Dropbox, and Imgur, but for ImgBB, copy the **Direct link** from the embed codes dropdown.
+3. **Always Trigger a Redeploy in Vercel**: Vite compiles environment variables into static client JS at build time. When you change variables in Vercel Settings, go to **Deployments** and click **Redeploy** to bake the new values into production.
+4. **Verify Media URLs**: Ensure audio and image URLs use secure HTTPS.
+5. **Build & Test**: Run 
+pm run build and 
+pm test to confirm quality gates pass.
 
 
 ### v3.5 Canonical Normalization Rules
