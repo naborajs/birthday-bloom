@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
+
 interface Firefly {
     id: number;
     x: number;
@@ -9,6 +11,7 @@ interface Firefly {
     size: number;
 }
 export const FireflyEffect = ({ intensity = 15 }) => {
+    const isMobile = useIsMobile();
     const fireflies: Firefly[] = useMemo(() => Array.from({ length: intensity }, (_, i) => ({
         id: i,
         x: Math.random() * 100,
@@ -24,7 +27,7 @@ export const FireflyEffect = ({ intensity = 15 }) => {
                 width: firefly.size,
                 height: firefly.size,
                 backgroundColor: "#FFD700",
-                boxShadow: "0 0 10px #FFD700, 0 0 20px #FFA500",
+                boxShadow: isMobile ? undefined : "0 0 10px #FFD700, 0 0 20px #FFA500",
             }} animate={{
                 opacity: [0, 1, 1, 0],
                 scale: [0, 1, 1, 0],

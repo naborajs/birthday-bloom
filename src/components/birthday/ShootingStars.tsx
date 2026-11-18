@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
+
 interface Star {
     id: number;
     x: number;
@@ -9,6 +11,7 @@ interface Star {
     duration: number;
 }
 export const ShootingStars = ({ count = 10 }) => {
+    const isMobile = useIsMobile();
     const stars: Star[] = useMemo(() => Array.from({ length: count }, (_, i) => ({
         id: i,
         x: Math.random() * 100,
@@ -34,7 +37,7 @@ export const ShootingStars = ({ count = 10 }) => {
           <div className="w-1 h-1 bg-white rounded-full" style={{
                 width: star.size,
                 height: star.size,
-                boxShadow: "0 0 8px #fff, 0 0 16px rgba(255,255,255,0.8)",
+                boxShadow: isMobile ? undefined : "0 0 8px #fff, 0 0 16px rgba(255,255,255,0.8)",
             }} />
         </motion.div>))}
     </div>);

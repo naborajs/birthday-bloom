@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
+
 interface Sparkle {
     id: number;
     left: string;
@@ -8,7 +10,9 @@ interface Sparkle {
     size: number;
     opacity: number;
 }
+
 export const SparkleRain = ({ intensity = 20 }) => {
+    const isMobile = useIsMobile();
     const sparkles: Sparkle[] = useMemo(() => Array.from({ length: intensity }, (_, i) => ({
         id: i,
         left: `${Math.random() * 100}%`,
@@ -17,6 +21,7 @@ export const SparkleRain = ({ intensity = 20 }) => {
         size: 2 + Math.random() * 4,
         opacity: 0.3 + Math.random() * 0.4,
     })), [intensity]);
+
     return (<div className="fixed inset-0 pointer-events-none overflow-hidden">
       {sparkles.map((sparkle) => (<motion.div key={sparkle.id} className="absolute rounded-full" style={{
                 left: sparkle.left,
@@ -24,7 +29,7 @@ export const SparkleRain = ({ intensity = 20 }) => {
                 height: sparkle.size,
                 backgroundColor: "#ffffff",
                 opacity: sparkle.opacity,
-                boxShadow: "0 0 6px #ffffff",
+                boxShadow: isMobile ? undefined : "0 0 6px #ffffff",
                 top: "-10px",
             }} animate={{
                 y: [0, window.innerHeight + 20],
