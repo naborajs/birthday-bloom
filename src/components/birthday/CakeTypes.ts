@@ -2,10 +2,10 @@ import { normalizeLanguage, type SupportedLanguage } from "@/i18n/languageUtils"
 
 export type Phase = "select" | "baking" | "blow-intro" | "blowing" | "wish" | "countdown" | "knife-enter" | "cutting" | "burst" | "quotes";
 
-import chocolateCake from "@/assets/birthday/cake-maroon.png";
-import strawberryCake from "@/assets/birthday/cake-pink.png";
-import royalCake from "@/assets/birthday/birthday-gold.png";
-import natureCake from "@/assets/birthday/cake-green.png";
+import chocolateCake from "@/assets/birthday/cake-maroon.webp";
+import strawberryCake from "@/assets/birthday/cake-pink.webp";
+import royalCake from "@/assets/birthday/birthday-gold.webp";
+import natureCake from "@/assets/birthday/cake-green.webp";
 
 export interface Cake3DConfig {
     spongeColor: string;

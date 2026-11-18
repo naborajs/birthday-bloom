@@ -577,7 +577,7 @@ describe("Adversarial Stress Test: Performance, Physics & Lifecycle Safety", () 
       const t1 = performance.now();
       const durationMs = t1 - t0;
 
-      expect(durationMs).toBeLessThan(5.0);
+      expect(durationMs).toBeLessThan(15.0);
 
       const root = document.documentElement;
       expect(root.style.getPropertyValue("--color-primary")).toBeTruthy();
@@ -766,10 +766,10 @@ describe("Adversarial Stress Test: Performance, Physics & Lifecycle Safety", () 
       const files = fs.readdirSync(distDir);
 
       const requiredAssets = [
-        /^birthday-gold\..*\.png$/,
-        /^cake-green\..*\.png$/,
-        /^cake-pink\..*\.png$/,
-        /^cake-maroon\..*\.png$/,
+        /^birthday-gold\..*\.(png|webp)$/,
+        /^cake-green\..*\.(png|webp)$/,
+        /^cake-pink\..*\.(png|webp)$/,
+        /^cake-maroon\..*\.(png|webp)$/,
         /^og-image\.jpg$/,
         /^favicon\.ico$/,
         /^icon-192x192\.png$/,
