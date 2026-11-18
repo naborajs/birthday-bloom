@@ -248,11 +248,30 @@ const envMemories = import.meta.env.VITE_SPECIAL_MEMORIES
         return { text: text?.trim(), image: image?.trim() };
     })
     : [];
-const envPassword = parseEnvString(import.meta.env.VITE_PASSWORD);
-const envPasswordHint = parseEnvString(import.meta.env.VITE_PASSWORD_HINT);
-const envPasswordFormat = parseEnvString(import.meta.env.VITE_PASSWORD_FORMAT) || 'MMDD';
-const envPasswordRequired = import.meta.env.VITE_PASSWORD_REQUIRED !== undefined
-    ? parseEnvBoolean(import.meta.env.VITE_PASSWORD_REQUIRED, false)
+const envPassword = parseEnvString(
+    import.meta.env.VITE_PASSWORD,
+    import.meta.env.VITE_PASS,
+    import.meta.env.VITE_PASSCODE,
+    (import.meta.env as Record<string, unknown>).PASSWORD,
+    (import.meta.env as Record<string, unknown>).PASS
+);
+const envPasswordHint = parseEnvString(
+    import.meta.env.VITE_PASSWORD_HINT,
+    import.meta.env.VITE_HINT,
+    (import.meta.env as Record<string, unknown>).PASSWORD_HINT,
+    (import.meta.env as Record<string, unknown>).HINT
+);
+const envPasswordFormat = parseEnvString(
+    import.meta.env.VITE_PASSWORD_FORMAT,
+    import.meta.env.VITE_DATE_FORMAT,
+    (import.meta.env as Record<string, unknown>).PASSWORD_FORMAT
+) || 'MMDD';
+const rawPasswordRequired = import.meta.env.VITE_PASSWORD_REQUIRED ??
+    import.meta.env.VITE_LOCKED ??
+    (import.meta.env as Record<string, unknown>).PASSWORD_REQUIRED ??
+    (import.meta.env as Record<string, unknown>).LOCKED;
+const envPasswordRequired = rawPasswordRequired !== undefined
+    ? parseEnvBoolean(rawPasswordRequired, false)
     : undefined;
 const envFamilyProfileJson = parseEnvJson<FamilyMemberProfile>(import.meta.env.VITE_FAMILY_PROFILE_JSON);
 const envFamilyType = parseEnvString(import.meta.env.VITE_FAMILY_MEMBER_TYPE) as FamilyMemberType;
