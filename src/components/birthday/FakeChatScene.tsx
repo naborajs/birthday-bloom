@@ -233,6 +233,15 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
 
     const lastTapRef = useRef<number>(0);
     const chatStreamRef = useRef<HTMLElement | null>(null);
+    const activeKeyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => {
+        return () => {
+            if (activeKeyTimeoutRef.current) {
+                clearTimeout(activeKeyTimeoutRef.current);
+            }
+        };
+    }, []);
 
     useEffect(() => {
         if (chatStreamRef.current && typeof chatStreamRef.current.scrollTo === "function") {
@@ -263,8 +272,13 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
     const handleManualKeyPress = useCallback((keyId: string) => {
         playType();
         setActiveKey(keyId);
-        setTimeout(() => {
-            setActiveKey((prev) => (prev === keyId ? null : prev));
+        if (activeKeyTimeoutRef.current) {
+            clearTimeout(activeKeyTimeoutRef.current);
+        }
+        activeKeyTimeoutRef.current = setTimeout(() => {
+            if (typeof window !== "undefined") {
+                setActiveKey((prev) => (prev === keyId ? null : prev));
+            }
         }, 120);
     }, [playType]);
 
