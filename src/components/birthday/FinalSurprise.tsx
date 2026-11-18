@@ -8,14 +8,21 @@ import { useTranslation } from "@/i18n";
 import { getBigWishes } from "@/features/core/store/SuperPersonalizedLogic";
 import { getTemplateEmojiKit } from "@/config/emojiKits";
 
-import { isRealImageUrl, isValidVideoUrl } from "@/utils/mediaUtils";
+import { isRealImageUrl, normalizeImageUrl, isValidVideoUrl } from "@/utils/mediaUtils";
 
 export const FinalSurprise = () => {
     const { config } = useBirthdayStore();
     const { isHindi, isBengali, isFrench, language } = useTranslation();
     const isMobile = useIsMobile();
     const allMemories = config.specialMemories || [];
-    const memories = allMemories.filter(m => m.text && (isRealImageUrl(m.image) || !m.image));
+    const memories = useMemo(() => {
+        return allMemories
+            .map(m => ({
+                text: m.text,
+                image: m.image ? normalizeImageUrl(m.image) : undefined,
+            }))
+            .filter(m => m.text && (isRealImageUrl(m.image) || !m.image));
+    }, [allMemories]);
     const hasRealMemories = memories.length > 0 && memories.some(m => isRealImageUrl(m.image));
     const primaryColor = config.favoriteColor || "#ff0080";
     const isValidVideo = isValidVideoUrl(config.finalVideoUrl);
@@ -52,7 +59,18 @@ export const FinalSurprise = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-32">
             {memories.map((memory, i) => (<motion.div key={i} initial={{ opacity: 0, y: 50, rotate: i % 2 === 0 ? -2 : 2 }} whileInView={{ opacity: 1, y: 0, rotate: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.2 }} whileHover={{ scale: 1.05, y: -10, rotate: i % 2 === 0 ? 2 : -2 }} className="group relative aspect-[4/5] bg-white/5 border border-white/10 p-4 rounded-3xl backdrop-blur-xl overflow-hidden shadow-2xl">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"/>
-                {memory.image ? (<img src={memory.image} alt={memory.text || `Special celebration memory ${i + 1}`} className="w-full h-full object-cover rounded-2xl grayscale group-hover:grayscale-0 transition-all duration-700"/>) : (<div className="w-full h-full flex items-center justify-center bg-white/5 rounded-2xl">
+                {memory.image ? (
+                  <img
+                    src={memory.image}
+                    alt={memory.text || `Special celebration memory ${i + 1}`}
+                    loading="lazy"
+                    decoding="async"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.opacity = '0.35';
+                    }}
+                    className="w-full h-full object-cover rounded-2xl grayscale group-hover:grayscale-0 transition-all duration-700"
+                  />
+                ) : (<div className="w-full h-full flex items-center justify-center bg-white/5 rounded-2xl">
                     <Camera size={48} className="text-white/10"/>
                   </div>)}
                 <div className="absolute bottom-8 left-8 right-8">
