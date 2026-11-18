@@ -35,6 +35,13 @@ describe("mediaUtils", () => {
                 .toBe("https://i.imgur.com/AbCdEfG.jpg");
         });
 
+        it("converts Postimages viewer links to direct stream URLs", () => {
+            expect(normalizeImageUrl("https://postimg.cc/nX1YHsX8"))
+                .toBe("https://i.postimg.cc/nX1YHsX8/image.jpg");
+            expect(normalizeImageUrl("https://postimages.org/xXPy0kc4"))
+                .toBe("https://i.postimg.cc/xXPy0kc4/image.jpg");
+        });
+
         it("safely handles null, undefined, and empty strings", () => {
             expect(normalizeImageUrl("")).toBe("");
             expect(normalizeImageUrl(null)).toBe("");
