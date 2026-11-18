@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Lock, Unlock, HelpCircle, ArrowRight } from "lucide-react";
 import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useSoundManager } from "./SoundManager";
-import { getEffectivePassword } from "@/utils/password";
+import { getEffectivePassword, validateCelebrationPassword } from "@/utils/password";
 import { useConfetti } from "./Confetti";
 import { useTranslation } from "@/i18n";
 interface PasswordUnlockProps {
@@ -33,7 +33,7 @@ export const PasswordUnlock = ({ onUnlock }: PasswordUnlockProps) => {
         if (unlocked)
             return;
         const inputClean = password.trim();
-        if (inputClean.toLowerCase() === expectedPassword.toLowerCase()) {
+        if (validateCelebrationPassword(inputClean, config)) {
             setUnlocked(true);
             setError(false);
             setLocalFlash(true);
@@ -61,6 +61,12 @@ export const PasswordUnlock = ({ onUnlock }: PasswordUnlockProps) => {
     const getDynamicHint = () => {
         if (config.passwordHint)
             return config.passwordHint;
+        if (config.password && config.password.trim()) {
+            if (isFrench) return "Indice : Entrez le mot de passe secret ou la date d'anniversaire ! 🎂";
+            if (isBengali) return "ইঙ্গিত: গোপন পাসকোড অথবা জন্মদিনের বিশেষ তারিখটি লিখুন! 🎂";
+            if (isHindi) return "संकेत: गुप्त पासवर्ड या जन्मदिन की खास तारीख दर्ज करें! 🎂";
+            return "Hint: Enter the secret passcode or the special birthday date! 🎂";
+        }
         const format = config.passwordFormat || 'MMDD';
         if (isFrench) {
             switch (format.toUpperCase()) {
@@ -177,8 +183,7 @@ export const PasswordUnlock = ({ onUnlock }: PasswordUnlockProps) => {
               id="passcode-input"
               aria-label={t('common.enterPasscodePlaceholder')}
               type="text"
-              inputMode={isNumericFormat ? "numeric" : "text"}
-              pattern={isNumericFormat ? "[0-9]*" : undefined}
+              inputMode="text"
               value={password}
               onChange={handleInputChange}
               placeholder={isNumericFormat ? "••••" : t('common.enterPasscodePlaceholder')}
