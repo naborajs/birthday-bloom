@@ -30,7 +30,7 @@ const CakeCard = ({ cake, onSelect }: {
             whileHover={!isMobile ? { scale: 1.05, y: -10, rotateZ: 2 } : undefined} 
             whileTap={{ scale: 0.95 }} 
             onClick={onSelect} 
-            className="group relative flex flex-col items-center gap-3 p-3 border border-white/10 backdrop-blur-2xl transition-all duration-500 overflow-hidden w-44 sm:w-48" 
+            className="group relative flex flex-col items-center gap-3 p-3 border border-white/10 backdrop-blur-sm sm:backdrop-blur-md transition-all duration-500 overflow-hidden w-44 sm:w-48 will-change-transform" 
             style={{
                 background: "linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01))",
                 borderRadius: 'var(--card-radius, 2rem)',

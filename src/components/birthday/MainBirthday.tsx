@@ -202,7 +202,7 @@ export const MainBirthday = () => {
           {(emojiKit.signature || []).slice(0, 5).map((em, idx) => (
             <span
               key={`sig-${idx}`}
-              className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-xl flex items-center justify-center text-lg shadow-lg"
+              className="w-9 h-9 rounded-full bg-white/[0.08] border border-white/20 flex items-center justify-center text-lg shadow-md"
             >
               {em}
             </span>
@@ -210,9 +210,9 @@ export const MainBirthday = () => {
           {(config.interests || []).slice(0, 5).map((interest, idx) => (
             <span
               key={`int-${idx}`}
-              className="px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase text-white/85 border border-white/15 backdrop-blur-xl shadow-md"
+              className="px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase text-white/90 border border-white/20 shadow-md"
               style={{
-                background: `linear-gradient(135deg, ${primaryColor}2E, rgba(255,255,255,0.04))`,
+                background: `linear-gradient(135deg, ${primaryColor}40, rgba(255,255,255,0.06))`,
               }}
             >
               ✦ {interest}
@@ -263,7 +263,7 @@ export const MainBirthday = () => {
 
       {config.showGiftSection && <section className="relative z-20 px-4 pb-20">
         <div className="max-w-6xl mx-auto">
-          <motion.button type="button" onClick={openGift} whileHover={shouldAnimate ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.98 }} transition={{ duration: 0.3 }} className="w-full rounded-[3rem] border border-white/10 bg-gradient-to-r from-primary/15 to-transparent p-8 text-left shadow-2xl backdrop-blur-xl hover:border-primary/40">
+          <motion.button type="button" onClick={openGift} whileHover={shouldAnimate ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.98 }} transition={{ duration: 0.3 }} className="w-full rounded-[3rem] border border-white/10 bg-gradient-to-r from-primary/15 to-transparent p-8 text-left shadow-2xl backdrop-blur-sm sm:backdrop-blur-md hover:border-primary/40">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div>
                 <p className="text-2xl md:text-3xl font-display font-black text-white">{t('gift.title')}</p>
@@ -331,7 +331,7 @@ export const MainBirthday = () => {
             { label: isFrench ? "💫 Amour !" : isBengali ? "💫 ভালোবাসা!" : isHindi ? "💫 प्यार!" : "💫 Love!", color: "hsl(200, 80%, 50%)", action: () => { for (let i = 0; i < 5; i++)
                     setTimeout(addEmoji, i * 200); } },
             { label: isFrench ? "💌 Partager !" : isBengali ? "💌 শেয়ার!" : isHindi ? "💌 शेयर!" : "💌 Share!", color: "hsl(320, 85%, 55%)", action: () => setShareOpen(true) }
-        ].map((btn, i) => (<motion.button key={i} whileHover={shouldAnimate ? { scale: 1.08, y: -4 } : undefined} whileTap={{ scale: 0.94 }} onClick={() => { btn.action(); addEmoji(); }} className="px-8 sm:px-12 py-4 sm:py-6 rounded-full text-lg sm:text-2xl font-black text-white shadow-2xl transition-all border border-white/20 backdrop-blur-xl" style={{
+        ].map((btn, i) => (<motion.button key={i} whileHover={shouldAnimate ? { scale: 1.08, y: -4 } : undefined} whileTap={{ scale: 0.94 }} onClick={() => { btn.action(); addEmoji(); }} className="px-8 sm:px-12 py-4 sm:py-6 rounded-full text-lg sm:text-2xl font-black text-white shadow-2xl transition-all border border-white/20 will-change-transform" style={{
                 background: `linear-gradient(135deg, ${btn.color}cc, ${btn.color}88)`,
                 boxShadow: `0 15px 40px -10px ${btn.color}50, inset 0 1px 0 rgba(255,255,255,0.4)`
             }}>
