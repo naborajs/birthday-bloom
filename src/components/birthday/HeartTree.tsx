@@ -7,6 +7,7 @@ import { HINDI_SPECIAL_QUOTES } from "@/config/hindiTemplates";
 import { BENGALI_SPECIAL_QUOTES } from "@/config/bengaliTemplates";
 import { FRENCH_SPECIAL_QUOTES } from "@/config/frenchTemplates";
 import { useTranslation } from "@/i18n";
+import { isRealImageUrl, normalizeImageUrl } from "@/utils/mediaUtils";
 
 interface HeartTreeProps { delay?: number; }
 
@@ -106,16 +107,6 @@ const LEAVES = [
     { cx: 262, cy: 92,  s: 0.7, d: 400 },
 ];
 
-const isRealImageUrl = (url?: string): boolean => {
-    if (!url || !url.trim()) return false;
-    const lower = url.toLowerCase();
-    if (lower.includes('unsplash.com')) return false;
-    if (lower.includes('example.com')) return false;
-    if (lower.includes('placeholder')) return false;
-    if (lower.includes('picsum.photos')) return false;
-    return true;
-};
-
 export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
     const [stage, setStage] = useState(0);
     const [activeMsg, setActiveMsg] = useState<string | null>(null);
@@ -129,7 +120,7 @@ export const HeartTree = ({ delay = 0 }: HeartTreeProps) => {
     const scalesRef = useRef<number[]>(Array(12).fill(0));
     const { config } = useBirthdayStore();
     const { relationship, gender, photos = [] } = config;
-    const validPhotos = useMemo(() => photos.filter(p => isRealImageUrl(p)), [photos]);
+    const validPhotos = useMemo(() => photos.map(p => normalizeImageUrl(p)).filter(p => isRealImageUrl(p)), [photos]);
     const { isHindi, isBengali, isFrench } = useTranslation();
     const primaryColor = config.favoriteColor || 'hsl(330, 90%, 75%)';
     const { playPop } = useSoundManager();
