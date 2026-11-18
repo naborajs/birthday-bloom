@@ -11,6 +11,7 @@ export const PhotoGallery = () => {
     const [lightbox, setLightbox] = useState<number | null>(null);
     const [photoRatios, setPhotoRatios] = useState<Record<string, number>>({});
     const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+    const [fallbackUrls, setFallbackUrls] = useState<Record<string, string>>({});
     const [supportsTilt, setSupportsTilt] = useState(false);
     const [isReducedMotion, setIsReducedMotion] = useState(false);
     const [isInView, setIsInView] = useState(false);
@@ -247,7 +248,7 @@ export const PhotoGallery = () => {
 
         <motion.div onMouseEnter={handleMouseEnter} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ rotateX, rotateY, perspective: 1000 }} className={`relative group ${isMobile ? '' : 'cursor-none'}`}>
           <AnimatePresence mode="wait">
-            <motion.div key={activeIndex} initial={isMobile ? { opacity: 1, scale: 1, rotateY: 0 } : { opacity: 0, scale: 0.94, rotateY: -12 }} animate={{ opacity: 1, scale: 1, rotateY: 0 }} exit={isMobile ? undefined : { opacity: 0, scale: 1.06, rotateY: 12 }} transition={{ duration: transitionDuration, ease: [0.22, 1, 0.36, 1] }} style={{ aspectRatio: photoRatios[photos[activeIndex].key] ?? 16 / 9 }} className="relative rounded-[3rem] overflow-hidden shadow-[0_60px_120px_-20px_rgba(0,0,0,0.8)] border border-white/10" onClick={() => setLightbox(activeIndex)}>
+            <motion.div key={activeIndex} initial={isMobile ? { opacity: 1, scale: 1, rotateY: 0 } : { opacity: 0, scale: 0.94, rotateY: -12 }} animate={{ opacity: 1, scale: 1, rotateY: 0 }} exit={isMobile ? undefined : { opacity: 0, scale: 1.06, rotateY: 12 }} transition={{ duration: transitionDuration, ease: [0.22, 1, 0.36, 1] }} style={{ aspectRatio: photoRatios[photos[activeIndex].key] ?? 16 / 9 }} className="relative rounded-[3rem] overflow-hidden shadow-[0_60px_120px_-20px_rgba(0,0,0,0.8)] border border-white/10 max-h-[75vh] max-w-4xl mx-auto flex items-center justify-center bg-black/40" onClick={() => setLightbox(activeIndex)}>
               {failedImages[photos[activeIndex].key] ? (
                 <div className="w-full h-full min-h-[350px] flex flex-col items-center justify-center p-8 bg-white/5 backdrop-blur-xl text-center">
                   <div className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center text-4xl mb-4">📸</div>
@@ -255,18 +256,28 @@ export const PhotoGallery = () => {
                 </div>
               ) : (
                 <img
-                  src={photos[activeIndex].src}
+                  src={fallbackUrls[photos[activeIndex].key] || photos[activeIndex].src}
                   alt={photos[activeIndex].caption}
                   onLoad={(e) => handleImageLoad(photos[activeIndex].key, e)}
                   onError={() => {
+                    const currentSrc = fallbackUrls[photos[activeIndex].key] || photos[activeIndex].src;
+                    const gDriveMatch = currentSrc.match(/lh3\.googleusercontent\.com\/d\/([a-zA-Z0-9_-]+)/);
+                    if (gDriveMatch && !fallbackUrls[photos[activeIndex].key]) {
+                      setFallbackUrls(prev => ({
+                        ...prev,
+                        [photos[activeIndex].key]: `https://drive.google.com/thumbnail?id=${gDriveMatch[1]}&sz=w1600`
+                      }));
+                      return;
+                    }
                     setFailedImages(prev => ({ ...prev, [photos[activeIndex].key]: true }));
                   }}
+                  referrerPolicy="no-referrer"
                   loading="lazy"
                   decoding="async"
-                  className={`w-full h-full object-cover transition-transform [transition-duration:3000ms] ${!isMobile ? "group-hover:scale-110" : ""}`}
+                  className={`w-full h-full max-h-[75vh] object-cover transition-transform [transition-duration:3000ms] ${!isMobile ? "group-hover:scale-105" : ""}`}
                 />
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"/>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"/>
               
               <div className="absolute bottom-0 inset-x-0 p-8 sm:p-16 text-center">
                 <p className="font-display text-3xl sm:text-5xl md:text-7xl font-black text-white italic tracking-tighter drop-shadow-2xl mb-4">
@@ -304,12 +315,19 @@ export const PhotoGallery = () => {
           <div className="flex justify-center mt-20 gap-8">
             {photos.map((photo, i) => (<motion.div key={i} role="button" tabIndex={0} aria-label={`View photo ${i + 1}: ${photo.caption}`} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveIndex(i); } }} onClick={() => setActiveIndex(i)} whileHover={!isMobile ? { scale: 1.15, y: -10, rotate: i % 2 === 0 ? 2 : -2 } : undefined} whileTap={{ scale: 0.9 }} className={`relative cursor-pointer rounded-3xl overflow-hidden w-28 h-28 md:w-40 md:h-40 border-4 transition-all duration-700 focus:outline-none focus:ring-2 focus:ring-primary ${i === activeIndex ? "border-primary scale-110 shadow-[0_20px_50px_rgba(var(--color-primary-rgb,255,107,107),0.4)]" : "border-transparent opacity-30 hover:opacity-100"}`}>
                 <img
-                  src={photo.src}
+                  src={fallbackUrls[photo.key] || photo.src}
                   alt={photo.caption || `Celebration photo memory thumbnail ${i + 1}`}
                   loading="lazy"
                   decoding="async"
+                  referrerPolicy="no-referrer"
                   onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.opacity = '0.5';
+                    const currentTarget = e.currentTarget as HTMLImageElement;
+                    const gDriveMatch = photo.src.match(/lh3\.googleusercontent\.com\/d\/([a-zA-Z0-9_-]+)/);
+                    if (gDriveMatch && !currentTarget.src.includes('drive.google.com/thumbnail')) {
+                      currentTarget.src = `https://drive.google.com/thumbnail?id=${gDriveMatch[1]}&sz=w400`;
+                      return;
+                    }
+                    currentTarget.style.opacity = '0.4';
                   }}
                   className="w-full h-full object-cover"
                 />
@@ -322,7 +340,13 @@ export const PhotoGallery = () => {
       <AnimatePresence>
         {lightbox !== null && (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center bg-black/98 backdrop-blur-md p-8" onClick={() => setLightbox(null)}>
             <motion.div initial={{ scale: 0.7, opacity: 0, rotateX: 20 }} animate={{ scale: 1, opacity: 1, rotateX: 0 }} exit={{ scale: 1.2, opacity: 0 }} className="relative max-w-7xl w-full" onClick={(e) => e.stopPropagation()}>
-              <img src={photos[lightbox].src} alt={photos[lightbox].caption} decoding="async" className="w-full max-h-[85vh] object-contain rounded-[2.5rem] shadow-[0_100px_200px_-50px_rgba(0,0,0,1)] border border-white/10"/>
+              <img
+                src={fallbackUrls[photos[lightbox].key] || photos[lightbox].src}
+                alt={photos[lightbox].caption}
+                decoding="async"
+                referrerPolicy="no-referrer"
+                className="w-full max-h-[85vh] object-contain rounded-[2.5rem] shadow-[0_100px_200px_-50px_rgba(0,0,0,1)] border border-white/10"
+              />
               <div className="text-center mt-12">
                 <p className="font-display text-4xl md:text-6xl text-white font-black italic tracking-tighter drop-shadow-2xl">
                   {photos[lightbox].caption}
