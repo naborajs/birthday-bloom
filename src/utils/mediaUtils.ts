@@ -48,6 +48,14 @@ export const normalizeImageUrl = (url?: string | null): string => {
         return `https://i.imgur.com/${imgurMatch[1]}.jpg`;
     }
 
+    // 4. Postimages Viewer Links (postimg.cc / postimages.org):
+    // Viewer link: https://postimg.cc/nX1YHsX8
+    // Direct stream: https://i.postimg.cc/nX1YHsX8/image.jpg
+    const postimgMatch = trimmed.match(/^https?:\/\/(?:www\.)?(?:postimg\.cc|postimages\.org)\/([a-zA-Z0-9]+)\/?$/i);
+    if (postimgMatch?.[1]) {
+        return `https://i.postimg.cc/${postimgMatch[1]}/image.jpg`;
+    }
+
     return trimmed;
 };
 
