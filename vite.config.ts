@@ -4,6 +4,7 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
+  envPrefix: ['VITE_', 'NEXT_PUBLIC_', 'PHOTO', 'BIRTHDAY_'],
   server: {
     host: "0.0.0.0",
     port: 5000,
