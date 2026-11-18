@@ -916,10 +916,16 @@ export const Cake3D = ({
     return (
         <div className="w-full h-full min-h-[440px] cursor-grab active:cursor-grabbing select-none overflow-visible">
             <Canvas
-                shadows
-                dpr={isMobile ? [1, 1.5] : [1, 2]}
+                shadows={!isMobile}
+                dpr={isMobile ? [1, 1.25] : [1, 1.75]}
                 camera={{ position: [0, 4.4, 8.4], fov: 42 }}
-                gl={{ powerPreference: "high-performance", antialias: true, alpha: true }}
+                gl={{ 
+                    powerPreference: "high-performance", 
+                    antialias: !isMobile, 
+                    alpha: true,
+                    stencil: false,
+                    depth: true
+                }}
             >
                 <Suspense fallback={null}>
                     <Scene cake={cake} phase={phase} primaryColor={effectiveColor} isMobile={isMobile} />
