@@ -5,6 +5,7 @@ import {
     calculateAge,
     formatBirthdayDisplay,
 } from "@/utils/dateUtils";
+import { validateCelebrationPassword, getAllValidPasswords } from "@/utils/password";
 
 describe("dateUtils", () => {
     describe("getDaysUntilBirthday", () => {
@@ -72,6 +73,21 @@ describe("dateUtils", () => {
         it("returns empty string on empty input", () => {
             expect(formatBirthdayDisplay(null)).toBe("");
             expect(formatBirthdayDisplay("")).toBe("");
+        });
+    });
+
+    describe("validateCelebrationPassword with custom 0809 passcode", () => {
+        it("accepts custom password 0809", () => {
+            const config = { password: "0809", passwordRequired: true };
+            expect(getAllValidPasswords(config)).toContain("0809");
+            expect(validateCelebrationPassword("0809", config)).toBe(true);
+            expect(validateCelebrationPassword(" 0809 ", config)).toBe(true);
+            expect(validateCelebrationPassword("1234", config)).toBe(false);
+        });
+
+        it("accepts 0809 when derived from birthday date August 9", () => {
+            const config = { birthdayDate: "2000-08-09", passwordRequired: true };
+            expect(validateCelebrationPassword("0809", config)).toBe(true);
         });
     });
 });
