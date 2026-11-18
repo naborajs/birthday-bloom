@@ -4,12 +4,13 @@ import { useBirthdayStore } from "@/features/core/store/useBirthdayStore";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTranslation } from "@/i18n";
 import { Sparkles } from "lucide-react";
-import { isRealImageUrl } from "@/utils/mediaUtils";
+import { isRealImageUrl, normalizeImageUrl } from "@/utils/mediaUtils";
 
 export const PhotoGallery = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [lightbox, setLightbox] = useState<number | null>(null);
     const [photoRatios, setPhotoRatios] = useState<Record<string, number>>({});
+    const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
     const [supportsTilt, setSupportsTilt] = useState(false);
     const [isReducedMotion, setIsReducedMotion] = useState(false);
     const [isInView, setIsInView] = useState(false);
@@ -24,9 +25,11 @@ export const PhotoGallery = () => {
     const transitionDuration = reducedMotion ? 0.9 : animationPacing === 'fast' ? 0.8 : animationPacing === 'slow' ? 1.5 : 1.2;
     const autoAdvanceDelay = animationPacing === 'fast' ? 4500 : animationPacing === 'slow' ? 8500 : 6000;
 
-    // Filter to only genuine configured photos
+    // Filter to only genuine configured photos and normalize URLs
     const validPhotos = useMemo(() => {
-        return (config.photos || []).filter(src => isRealImageUrl(src));
+        return (config.photos || [])
+            .map(src => normalizeImageUrl(src))
+            .filter(src => isRealImageUrl(src));
     }, [config.photos]);
 
     const photos = useMemo(() => {
@@ -245,7 +248,24 @@ export const PhotoGallery = () => {
         <motion.div onMouseEnter={handleMouseEnter} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ rotateX, rotateY, perspective: 1000 }} className={`relative group ${isMobile ? '' : 'cursor-none'}`}>
           <AnimatePresence mode="wait">
             <motion.div key={activeIndex} initial={isMobile ? { opacity: 1, scale: 1, rotateY: 0 } : { opacity: 0, scale: 0.94, rotateY: -12 }} animate={{ opacity: 1, scale: 1, rotateY: 0 }} exit={isMobile ? undefined : { opacity: 0, scale: 1.06, rotateY: 12 }} transition={{ duration: transitionDuration, ease: [0.22, 1, 0.36, 1] }} style={{ aspectRatio: photoRatios[photos[activeIndex].key] ?? 16 / 9 }} className="relative rounded-[3rem] overflow-hidden shadow-[0_60px_120px_-20px_rgba(0,0,0,0.8)] border border-white/10" onClick={() => setLightbox(activeIndex)}>
-              <img src={photos[activeIndex].src} alt={photos[activeIndex].caption} onLoad={(e) => handleImageLoad(photos[activeIndex].key, e)} loading="lazy" decoding="async" className={`w-full h-full object-cover transition-transform [transition-duration:3000ms] ${!isMobile ? "group-hover:scale-110" : ""}`}/>
+              {failedImages[photos[activeIndex].key] ? (
+                <div className="w-full h-full min-h-[350px] flex flex-col items-center justify-center p-8 bg-white/5 backdrop-blur-xl text-center">
+                  <div className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center text-4xl mb-4">📸</div>
+                  <p className="font-display text-2xl text-white font-bold">{photos[activeIndex].caption}</p>
+                </div>
+              ) : (
+                <img
+                  src={photos[activeIndex].src}
+                  alt={photos[activeIndex].caption}
+                  onLoad={(e) => handleImageLoad(photos[activeIndex].key, e)}
+                  onError={() => {
+                    setFailedImages(prev => ({ ...prev, [photos[activeIndex].key]: true }));
+                  }}
+                  loading="lazy"
+                  decoding="async"
+                  className={`w-full h-full object-cover transition-transform [transition-duration:3000ms] ${!isMobile ? "group-hover:scale-110" : ""}`}
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"/>
               
               <div className="absolute bottom-0 inset-x-0 p-8 sm:p-16 text-center">
@@ -283,7 +303,16 @@ export const PhotoGallery = () => {
         {photos.length > 1 && (
           <div className="flex justify-center mt-20 gap-8">
             {photos.map((photo, i) => (<motion.div key={i} role="button" tabIndex={0} aria-label={`View photo ${i + 1}: ${photo.caption}`} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveIndex(i); } }} onClick={() => setActiveIndex(i)} whileHover={!isMobile ? { scale: 1.15, y: -10, rotate: i % 2 === 0 ? 2 : -2 } : undefined} whileTap={{ scale: 0.9 }} className={`relative cursor-pointer rounded-3xl overflow-hidden w-28 h-28 md:w-40 md:h-40 border-4 transition-all duration-700 focus:outline-none focus:ring-2 focus:ring-primary ${i === activeIndex ? "border-primary scale-110 shadow-[0_20px_50px_rgba(var(--color-primary-rgb,255,107,107),0.4)]" : "border-transparent opacity-30 hover:opacity-100"}`}>
-                <img src={photo.src} alt={photo.caption || `Celebration photo memory thumbnail ${i + 1}`} loading="lazy" decoding="async" className="w-full h-full object-cover"/>
+                <img
+                  src={photo.src}
+                  alt={photo.caption || `Celebration photo memory thumbnail ${i + 1}`}
+                  loading="lazy"
+                  decoding="async"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.opacity = '0.5';
+                  }}
+                  className="w-full h-full object-cover"
+                />
                 {i === activeIndex && (<motion.div layoutId="active-thumb-glow" className="absolute inset-0 bg-primary/10 pointer-events-none"/>)}
               </motion.div>))}
           </div>
