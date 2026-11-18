@@ -1,6 +1,7 @@
 import type { BirthdayConfig } from './useBirthdayStore';
 import { normalizeRelationship, normalizeGender } from './relationshipUtils';
 import { normalizeLanguage } from '@/i18n/languageUtils';
+import { normalizeImageUrl } from '@/utils/mediaUtils';
 
 /**
  * Safely parses URL query parameters to allow custom, shareable birthday celebration links.
@@ -105,6 +106,32 @@ export const parseBirthdayUrlParams = (searchString?: string): Partial<BirthdayC
     const rawHint = params.get('hint') || params.get('passwordHint');
     if (rawHint && rawHint.trim()) {
       overrides.passwordHint = rawHint.trim();
+    }
+
+    // Photos & Images
+    const rawPhoto = params.get('photo') || params.get('photos') || params.get('image') || params.get('img') || params.get('picture');
+    if (rawPhoto && rawPhoto.trim()) {
+      const splitPhotos = rawPhoto.includes('|')
+        ? rawPhoto.split('|')
+        : rawPhoto.split(/,\s*(?=https?:\/\/)/);
+      const cleaned = splitPhotos.map(p => normalizeImageUrl(p)).filter(Boolean);
+      if (cleaned.length > 0) {
+        overrides.photos = cleaned;
+      }
+    }
+
+    // Photo Captions
+    const rawCaptions = params.get('captions') || params.get('photoCaptions') || params.get('caption');
+    if (rawCaptions && rawCaptions.trim()) {
+      overrides.photoCaptions = rawCaptions.includes('|')
+        ? rawCaptions.split('|').map(c => c.trim()).filter(Boolean)
+        : rawCaptions.split(',').map(c => c.trim()).filter(Boolean);
+    }
+
+    // Toggle Photo Section
+    const rawShowPhotos = params.get('showPhotoSection') || params.get('showPhotos') || params.get('photoSection');
+    if (rawShowPhotos !== null) {
+      overrides.showPhotoSection = !['false', '0', 'no', 'off', 'disabled'].includes(rawShowPhotos.toLowerCase().trim());
     }
 
     return overrides;
