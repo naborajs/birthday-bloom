@@ -210,7 +210,7 @@ export const PhotoGallery = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                    className="relative rounded-[2.5rem] border border-white/10 p-8 sm:p-14 text-center overflow-hidden backdrop-blur-2xl"
+                    className="relative rounded-[2.5rem] border border-white/10 p-8 sm:p-14 text-center overflow-hidden backdrop-blur-sm sm:backdrop-blur-md"
                     style={{
                         background: "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
                         boxShadow: "0 30px 100px -20px rgba(0,0,0,0.6)",
@@ -250,7 +250,7 @@ export const PhotoGallery = () => {
           <AnimatePresence mode="wait">
             <motion.div key={activeIndex} initial={isMobile ? { opacity: 1, scale: 1, rotateY: 0 } : { opacity: 0, scale: 0.94, rotateY: -12 }} animate={{ opacity: 1, scale: 1, rotateY: 0 }} exit={isMobile ? undefined : { opacity: 0, scale: 1.06, rotateY: 12 }} transition={{ duration: transitionDuration, ease: [0.22, 1, 0.36, 1] }} style={{ aspectRatio: photoRatios[photos[activeIndex].key] ?? 16 / 9 }} className="relative rounded-[3rem] overflow-hidden shadow-[0_60px_120px_-20px_rgba(0,0,0,0.8)] border border-white/10 max-h-[75vh] max-w-4xl mx-auto flex items-center justify-center bg-black/40" onClick={() => setLightbox(activeIndex)}>
               {failedImages[photos[activeIndex].key] ? (
-                <div className="w-full h-full min-h-[350px] flex flex-col items-center justify-center p-8 bg-white/5 backdrop-blur-xl text-center">
+                <div className="w-full h-full min-h-[350px] flex flex-col items-center justify-center p-8 bg-white/5 backdrop-blur-sm sm:backdrop-blur-md text-center">
                   <div className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center text-4xl mb-4">📸</div>
                   <p className="font-display text-2xl text-white font-bold">{photos[activeIndex].caption}</p>
                 </div>
