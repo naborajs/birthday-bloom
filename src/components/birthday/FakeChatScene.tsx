@@ -127,7 +127,9 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
     const [activeKey, setActiveKey] = useState<string | null>(null);
     const [isShiftActive, setIsShiftActive] = useState(false);
     const [floatingHearts, setFloatingHearts] = useState<FloatingHeart[]>([]);
-    const [isHeartLiked, setIsHeartLiked] = useState(true);
+    const [likedMessages, setLikedMessages] = useState<Record<string, boolean>>({ msg2: true });
+    const [animatingHeartMsg, setAnimatingHeartMsg] = useState<string | null>(null);
+    const isHeartLiked = likedMessages.msg2 ?? true;
 
     const { playType, playWhoosh, playReveal, playPop, playBoom } = useSoundManager();
     const { config } = useBirthdayStore();
@@ -227,14 +229,16 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
         }));
 
         setFloatingHearts((prev) => [...prev, ...newHearts]);
-        setTimeout(() => {
+        const tId = setTimeout(() => {
             setFloatingHearts((prev) => prev.filter((h) => !newHearts.some((nh) => nh.id === h.id)));
         }, 1200);
+        heartTimeoutsRef.current.push(tId);
     }, [playPop]);
 
     const lastTapRef = useRef<number>(0);
     const chatStreamRef = useRef<HTMLElement | null>(null);
     const activeKeyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const heartTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
     const completedRef = useRef(false);
 
     const finishScene = useCallback(() => {
@@ -264,6 +268,8 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
             if (activeKeyTimeoutRef.current) {
                 clearTimeout(activeKeyTimeoutRef.current);
             }
+            heartTimeoutsRef.current.forEach(clearTimeout);
+            heartTimeoutsRef.current = [];
         };
     }, []);
 
@@ -282,12 +288,15 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
         return parts[parts.length - 1] || "";
     }, [typedInputText]);
 
-    const handleDoubleTapMessage = (e: React.MouseEvent | React.TouchEvent) => {
+    const handleDoubleTapMessage = (msgId: string, e: React.MouseEvent | React.TouchEvent) => {
         const now = Date.now();
-        if (now - lastTapRef.current < 320) {
-            setIsHeartLiked(true);
-            const clientX = "clientX" in e ? e.clientX : e.touches[0]?.clientX;
-            const clientY = "clientY" in e ? e.clientY : e.touches[0]?.clientY;
+        if (now - lastTapRef.current < 400) {
+            setLikedMessages((prev) => ({ ...prev, [msgId]: true }));
+            setAnimatingHeartMsg(msgId);
+            const clearAnimTimeout = setTimeout(() => setAnimatingHeartMsg(null), 850);
+            heartTimeoutsRef.current.push(clearAnimTimeout);
+            const clientX = "clientX" in e ? e.clientX : e.touches?.[0]?.clientX;
+            const clientY = "clientY" in e ? e.clientY : e.touches?.[0]?.clientY;
             triggerHeartBurst(clientX, clientY);
         }
         lastTapRef.current = now;
@@ -454,7 +463,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center select-none bg-black/30 backdrop-blur-md p-2 sm:p-6 overflow-hidden"
+            className="fixed inset-0 z-50 flex items-center justify-center select-none bg-black/75 sm:backdrop-blur-sm p-2 sm:p-6 overflow-hidden"
             style={{
                 perspective: "1400px",
             }}
@@ -473,28 +482,24 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                 }}
             />
 
-            {/* ── 3D Smartphone Hardware Model Wrapper (Works on Both Mobile & Desktop) ── */}
+            {/* ── 3D Smartphone Hardware Model Wrapper (Hardware Accelerated Zero-Lag Compositing) ── */}
             <motion.div
-                initial={{ opacity: 0, scale: 0.9, rotateX: 10, rotateY: -8, y: 24 }}
+                initial={{ opacity: 0, scale: 0.92, y: 16 }}
                 animate={{
                     opacity: 1,
                     scale: 1,
-                    rotateX: [2, 0.5, 2],
-                    rotateY: [-2.5, 2, -2.5],
-                    y: [0, -4, 0],
+                    y: 0,
                 }}
                 exit={{ opacity: 0, scale: 1.05 }}
                 transition={{
-                    opacity: { duration: 0.45, ease: "easeOut" },
-                    scale: { duration: 0.5, ease: "easeOut" },
-                    rotateX: { duration: 8, repeat: Infinity, ease: "easeInOut" },
-                    rotateY: { duration: 9, repeat: Infinity, ease: "easeInOut" },
-                    y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+                    duration: 0.45,
+                    ease: "easeOut",
                 }}
                 style={{
                     transformStyle: "preserve-3d",
+                    transform: "perspective(1400px) rotateX(1.8deg) rotateY(-1.2deg)",
                 }}
-                className="relative w-[92vw] max-w-[362px] h-[83dvh] max-h-[720px] sm:max-w-[388px] sm:h-[87vh] sm:max-h-[790px] mb-8 sm:mb-2 p-[4px] sm:p-[5px] rounded-[44px] sm:rounded-[50px] bg-gradient-to-br from-[#7c6270] via-[#2b2228] to-[#523b47] shadow-[0_30px_80px_rgba(0,0,0,0.8),0_0_45px_rgba(255,42,109,0.18),inset_0_1px_2px_rgba(255,255,255,0.45)] flex flex-col"
+                className="relative w-[92vw] max-w-[362px] h-[83dvh] max-h-[720px] sm:max-w-[388px] sm:h-[87vh] sm:max-h-[790px] mb-8 sm:mb-2 p-[4px] sm:p-[5px] rounded-[44px] sm:rounded-[50px] bg-gradient-to-br from-[#7c6270] via-[#2b2228] to-[#523b47] shadow-[0_30px_80px_rgba(0,0,0,0.8),0_0_45px_rgba(255,42,109,0.18),inset_0_1px_2px_rgba(255,255,255,0.45)] flex flex-col will-change-transform animate-subtle-float"
             >
                 {/* 3D Parallax Floating Template Emoji Orbs Around Smartphone Bezel */}
                 <button
@@ -627,7 +632,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                     </div>
 
                     {/* ── Instagram Direct Message Header Bar ── */}
-                    <header className="relative z-20 px-2.5 py-1.5 sm:px-3.5 sm:py-2 flex items-center justify-between border-b border-white/10 bg-[#1A0717]/85 backdrop-blur-xl shrink-0">
+                    <header className="relative z-20 px-2.5 py-1.5 sm:px-3.5 sm:py-2 flex items-center justify-between border-b border-white/10 bg-[#1A0717]/95 sm:backdrop-blur-md shrink-0">
                         <div className="flex items-center gap-2">
                             <button
                                 type="button"
@@ -716,7 +721,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                             initial={{ opacity: 0, x: -14, scale: 0.95 }}
                             animate={{ opacity: 1, x: 0, scale: 1 }}
                             transition={{ duration: 0.3, ease: "easeOut" }}
-                            onClick={handleDoubleTapMessage}
+                            onClick={(e) => handleDoubleTapMessage("msg1", e)}
                             className="relative self-start max-w-[82%] px-3.5 py-2 rounded-[18px] rounded-bl-[4px] bg-[#26262B]/95 text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal shadow-md border border-white/10 leading-snug cursor-pointer active:scale-[0.98] transition-transform"
                         >
                             <span>
@@ -726,6 +731,39 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                     ? t("chat.heyFriend")
                                     : t("chat.heyGeneral")}
                             </span>
+
+                            {/* Instagram DM Center Double-Tap Pop Heart */}
+                            <AnimatePresence>
+                                {animatingHeartMsg === "msg1" && (
+                                    <motion.div
+                                        initial={{ scale: 0, opacity: 0 }}
+                                        animate={{ scale: [0, 1.45, 1, 0], opacity: [0, 1, 1, 0], y: [0, -8, -20] }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.75, ease: "easeOut" }}
+                                        className="pointer-events-none absolute inset-0 flex items-center justify-center z-20"
+                                    >
+                                        <Heart size={36} fill="#FF2A6D" className="text-[#FF2A6D] drop-shadow-[0_0_12px_rgba(255,42,109,0.95)]" />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
+                            {/* Liked Heart Badge */}
+                            <AnimatePresence>
+                                {likedMessages.msg1 && (
+                                    <motion.div
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: [0, 1.3, 1] }}
+                                        transition={{ delay: 0.1, duration: 0.25, type: "spring" }}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            triggerHeartBurst(e.clientX, e.clientY);
+                                        }}
+                                        className="absolute -bottom-2.5 -right-1.5 px-1.5 py-0.5 rounded-full bg-[#1C1C20] border border-white/15 flex items-center shadow-lg cursor-pointer hover:scale-110 active:scale-95 transition-transform z-10"
+                                    >
+                                        <Heart size={11} fill="#FF2A6D" className="text-[#FF2A6D] drop-shadow-[0_0_6px_rgba(255,42,109,0.8)]" />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </motion.div>
 
                         {/* Received Message 2 with Double-Tap Heart Reaction */}
@@ -733,7 +771,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                             initial={{ opacity: 0, x: -14, scale: 0.95 }}
                             animate={{ opacity: 1, x: 0, scale: 1 }}
                             transition={{ delay: 0.25, duration: 0.3, ease: "easeOut" }}
-                            onClick={handleDoubleTapMessage}
+                            onClick={(e) => handleDoubleTapMessage("msg2", e)}
                             className="relative self-start max-w-[85%] px-3.5 py-2 rounded-[18px] rounded-bl-[4px] bg-[#26262B]/95 text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal shadow-md border border-white/10 leading-snug cursor-pointer active:scale-[0.98] transition-transform mb-1"
                         >
                             <span>
@@ -743,6 +781,21 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                     ? t("chat.prepareEpic")
                                     : t("chat.specialSurpriseMsg")}
                             </span>
+
+                            {/* Instagram DM Center Double-Tap Pop Heart */}
+                            <AnimatePresence>
+                                {animatingHeartMsg === "msg2" && (
+                                    <motion.div
+                                        initial={{ scale: 0, opacity: 0 }}
+                                        animate={{ scale: [0, 1.45, 1, 0], opacity: [0, 1, 1, 0], y: [0, -8, -20] }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.75, ease: "easeOut" }}
+                                        className="pointer-events-none absolute inset-0 flex items-center justify-center z-20"
+                                    >
+                                        <Heart size={36} fill="#FF2A6D" className="text-[#FF2A6D] drop-shadow-[0_0_12px_rgba(255,42,109,0.95)]" />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
 
                             {/* Liked Heart Badge */}
                             <AnimatePresence>
@@ -755,7 +808,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                             e.stopPropagation();
                                             triggerHeartBurst(e.clientX, e.clientY);
                                         }}
-                                        className="absolute -bottom-2.5 -right-1.5 px-1.5 py-0.5 rounded-full bg-[#1C1C20] border border-white/15 flex items-center shadow-lg cursor-pointer hover:scale-110 active:scale-95 transition-transform"
+                                        className="absolute -bottom-2.5 -right-1.5 px-1.5 py-0.5 rounded-full bg-[#1C1C20] border border-white/15 flex items-center shadow-lg cursor-pointer hover:scale-110 active:scale-95 transition-transform z-10"
                                     >
                                         <Heart size={11} fill="#FF2A6D" className="text-[#FF2A6D] drop-shadow-[0_0_6px_rgba(255,42,109,0.8)]" />
                                     </motion.div>
@@ -773,7 +826,8 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                     className="self-end max-w-[85%] flex flex-col items-end gap-1"
                                 >
                                     <div
-                                        className="relative px-4 py-2.5 rounded-[20px] rounded-br-[4px] text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal shadow-[0_6px_22px_rgba(225,48,108,0.42)] leading-snug border border-white/20 overflow-hidden"
+                                        onClick={(e) => handleDoubleTapMessage("sent", e)}
+                                        className="relative px-4 py-2.5 rounded-[20px] rounded-br-[4px] text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal shadow-[0_6px_22px_rgba(225,48,108,0.42)] leading-snug border border-white/20 overflow-hidden cursor-pointer active:scale-[0.98] transition-transform"
                                         style={{
                                             background: "linear-gradient(135deg, #7F00FF 0%, #E100FF 36%, #FF1361 72%, #FFA033 100%)",
                                         }}
@@ -781,7 +835,40 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                         {/* Subtle top gloss highlight */}
                                         <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
                                         {sentMessageText}
+
+                                        {/* Instagram DM Center Double-Tap Pop Heart */}
+                                        <AnimatePresence>
+                                            {animatingHeartMsg === "sent" && (
+                                                <motion.div
+                                                    initial={{ scale: 0, opacity: 0 }}
+                                                    animate={{ scale: [0, 1.45, 1, 0], opacity: [0, 1, 1, 0], y: [0, -8, -20] }}
+                                                    exit={{ opacity: 0 }}
+                                                    transition={{ duration: 0.75, ease: "easeOut" }}
+                                                    className="pointer-events-none absolute inset-0 flex items-center justify-center z-20"
+                                                >
+                                                    <Heart size={34} fill="#FF2A6D" className="text-[#FF2A6D] drop-shadow-[0_0_12px_rgba(255,42,109,0.95)]" />
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
                                     </div>
+
+                                    {/* Liked Heart Badge on Sent Message */}
+                                    <AnimatePresence>
+                                        {likedMessages.sent && (
+                                            <motion.div
+                                                initial={{ scale: 0 }}
+                                                animate={{ scale: [0, 1.3, 1] }}
+                                                transition={{ duration: 0.25, type: "spring" }}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    triggerHeartBurst(e.clientX, e.clientY);
+                                                }}
+                                                className="self-end -mt-3.5 mr-1 px-1.5 py-0.5 rounded-full bg-[#1C1C20] border border-white/15 flex items-center shadow-lg cursor-pointer hover:scale-110 active:scale-95 transition-transform z-10"
+                                            >
+                                                <Heart size={10} fill="#FF2A6D" className="text-[#FF2A6D] drop-shadow-[0_0_6px_rgba(255,42,109,0.8)]" />
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
 
                                     {/* Micro-Receipt: Delivered -> Seen just now • ❤️ */}
                                     <motion.div
@@ -831,7 +918,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                     </main>
 
                     {/* ── Non-Bloating Instagram Input Bar ── */}
-                    <div className="relative z-20 px-2.5 py-2 bg-[#1A0717]/95 border-t border-white/10 backdrop-blur-xl shrink-0">
+                    <div className="relative z-20 px-2.5 py-2 bg-[#1A0717]/98 sm:backdrop-blur-md border-t border-white/10 shrink-0">
                         <div className="flex items-end gap-1.5">
                             {/* Blue Camera Button */}
                             <button
@@ -925,7 +1012,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                 animate={{ height: "auto", opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
                                 transition={{ duration: 0.28, ease: "easeInOut" }}
-                                className="relative z-20 bg-[#18181D]/95 border-t border-white/10 backdrop-blur-2xl px-1.5 pt-1.5 pb-1.5 select-none shrink-0 overflow-hidden"
+                                className="relative z-20 bg-[#18181D]/98 sm:backdrop-blur-md border-t border-white/10 px-1.5 pt-1.5 pb-1.5 select-none shrink-0 overflow-hidden"
                             >
                                 {/* Live iOS Predictive Text Suggestion Bar */}
                                 <div
