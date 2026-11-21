@@ -55,7 +55,7 @@ const KeyButton = memo(({ keyId, isPressed, isShiftActive, onPress }: KeyButtonP
             className={`relative h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all duration-75 ${
                 isPressed
                     ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
-                    : "bg-[#3A3A44] text-white shadow-[0_1.5px_0_#000000] border-t border-white/15 hover:bg-[#454552]"
+                    : "bg-[#2D232B] text-white shadow-[0_1.5px_0_#000000] border-t border-white/10 hover:bg-[#382C36]"
             }`}
         >
             {isPressed && (
@@ -145,73 +145,67 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
     const heartfeltText = useMemo(() => {
         if (isFrench) {
             if (relationship === "partner")
-                return isMale ? "Pour l'homme qui fait battre mon cœur... ❤️" : isFemale ? "Pour la femme de mes rêves... ❤️" : "Pour l'âme qui me complète... ❤️";
+                return "Un simple message ne suffira jamais pour toi... Ouvre ta surprise : birthday-bloom.vercel.app 🎁✨";
             if (relationship === "friend")
-                return "Attends, un simple message texte ? Ce n'est pas notre genre ! 😂🚀";
+                return "Attends, un simple SMS ? Pas notre genre ! Ouvre ta surprise : birthday-bloom.vercel.app 🚀🔥";
             if (relationship === "brother" || relationship === "sibling")
-                return "Un simple SMS pour le meilleur frère du monde ? Pas question ! 🏆";
+                return "Un simple SMS pour mon frère ? Jamais ! Ouvre ta surprise : birthday-bloom.vercel.app 🏆✨";
             if (relationship === "sister")
-                return "Un simple message pour ma sœur adorée ? Tu mérites tout un univers ! 🌸✨";
-            if (relationship === "father")
-                return "Un simple texto ne suffira jamais pour remercier mon héros... 🌟💪";
-            if (relationship === "mother")
-                return "Un simple message ne pourra jamais exprimer tout mon amour... 💐💛";
+                return "Un simple message pour ma sœur ? Ouvre ta surprise : birthday-bloom.vercel.app 🌸✨";
+            if (relationship === "father" || relationship === "mother")
+                return "Un simple texto ne suffira jamais... Ouvre ta surprise : birthday-bloom.vercel.app 💐💛";
             if (relationship === "mentor" || relationship === "colleague")
-                return "Un simple message pour une telle inspiration ? On a créé bien mieux ! 🎯✨";
-            return "Un simple message ne suffirait jamais pour exprimer tout notre amour... 💝🌟";
+                return "Un simple message pour une telle inspiration ? Ouvre ta surprise : birthday-bloom.vercel.app 🎯✨";
+            return "Un simple message ne suffirait jamais... Ouvre ta surprise : birthday-bloom.vercel.app 💝🌟";
         }
         if (isBengali) {
             if (relationship === "partner")
-                return isMale ? "আমার মনের রাজপুত্রের জন্য... ❤️" : isFemale ? "আমার স্বপ্নের রাজকন্যার জন্য... ❤️" : "সেই বিশেষ মানুষের জন্য যে আমাকে পূর্ণ করে... ❤️";
+                return "শুধু একটা সাধারণ টেক্সট তোমার জন্য যথেষ্ট নয়... তোমার সারপ্রাইজটি খোলো: birthday-bloom.vercel.app 🎁✨";
             if (relationship === "friend")
-                return "দাঁড়াও, এত সাধারণ মেসেজ? এটা আমরা নই! 😂🚀";
+                return "দাঁড়াও, এত বোরিং টেক্সট? এটা আমরা নই! তোর সারপ্রাইজ খোল: birthday-bloom.vercel.app 🚀🔥";
             if (relationship === "brother" || relationship === "sibling")
-                return "সেরা ভাইয়ের জন্য এত সাধারণ টেক্সট? হতেই পারে না! 🏆";
+                return "সেরা ভাইয়ের জন্য এত সাধারণ টেক্সট? সারপ্রাইজ খোল: birthday-bloom.vercel.app 🏆✨";
             if (relationship === "sister")
-                return "আমার মিষ্টি বোনের জন্য সামান্য মেসেজ? তোর জন্য পুরো একটা ওয়েবসাইট! 🌸✨";
-            if (relationship === "father")
-                return "আমার জীবনের আসল হিরোকে একটা মেসেজে কি আর ভালোবাসা জানানো যায়... 🌟💪";
-            if (relationship === "mother")
-                return "মায়ের জন্য শুধু একটা মেসেজ? কোনোদিনও যথেষ্ট নয়... 💐💛";
+                return "মিষ্টি বোনের জন্য সামান্য মেসেজ? তোর সারপ্রাইজ খোল: birthday-bloom.vercel.app 🌸✨";
+            if (relationship === "father" || relationship === "mother")
+                return "বাবা-মায়ের জন্য শুধু একটা মেসেজ? কোনোদিনও যথেষ্ট নয়... সারপ্রাইজ দেখুন: birthday-bloom.vercel.app 💐💛";
             if (relationship === "mentor" || relationship === "colleague")
-                return "আমাদের সেরা অনুপ্রেরণাকে এত সাধারণ শুভেচ্ছা? অসম্ভব! 🎯✨";
-            return "পরিবারের এত বিশেষ মানুষের জন্য একটা টেক্সট কখনোই যথেষ্ট নয়... 💝🌟";
+                return "সেরা অনুপ্রেরণাকে এত সাধারণ শুভেচ্ছা? অসম্ভব! সারপ্রাইজটি দেখুন: birthday-bloom.vercel.app 🎯✨";
+            return "পরিবারের এত বিশেষ মানুষের জন্য শুধু একটা টেক্সট যথেষ্ট নয়... সারপ্রাইজটি দেখুন: birthday-bloom.vercel.app 💝🌟";
         }
         if (isHindi) {
             if (relationship === "partner")
-                return isMale ? "मेरे दिल के राजा के लिए... ❤️" : isFemale ? "मेरे ख्वाबों की मलिका के लिए... ❤️" : "उस इंसान के लिए जो मुझे पूरा करता है... ❤️";
+                return "सिर्फ एक टेक्स्ट आपके लिए काफी नहीं हो सकता... अपना सरप्राइज खोलें: birthday-bloom.vercel.app 🎁✨";
             if (relationship === "friend")
-                return "अरे रुको, सिर्फ एक साधारण संदेश? वो हम नहीं! 😂🚀";
+                return "अरे, एक बोरिंग टेक्स्ट? वो हम नहीं! अपना सरप्राइज खोलो: birthday-bloom.vercel.app 🚀🔥";
             if (relationship === "brother" || relationship === "sibling")
-                return "दुनिया के सबसे धांसू भाई के लिए सिर्फ एक टेक्स्ट? कभी नहीं! 🏆";
+                return "धांसू भाई के लिए सिर्फ एक टेक्स्ट? कभी नहीं! अपना सरप्राइज खोलो: birthday-bloom.vercel.app 🏆✨";
             if (relationship === "sister")
-                return "मेरी प्यारी बहन के लिए सिर्फ एक मैसेज? तुम्हारे लिए पूरी दुनिया हाजिर है! 🌸✨";
-            if (relationship === "father")
-                return "हमारे असली हीरो के लिए सिर्फ एक संदेश काफी नहीं हो सकता... 🌟💪";
-            if (relationship === "mother")
-                return "माँ के लिए सिर्फ एक टेक्स्ट? कभी भी मुमकिन नहीं... 💐💛";
+                return "मेरी प्यारी बहन के लिए सिर्फ एक मैसेज? अपना सरप्राइज खोलो: birthday-bloom.vercel.app 🌸✨";
+            if (relationship === "father" || relationship === "mother")
+                return "सिर्फ एक संदेश काफी नहीं हो सकता... अपना सरप्राइज खोलें: birthday-bloom.vercel.app 💐💛";
             if (relationship === "mentor" || relationship === "colleague")
-                return "हमारी सबसे बड़ी प्रेरणा के लिए साधारण मैसेज? हमने कुछ खास बनाया है! 🎯✨";
-            return "परिवार के इतने अनमोल सदस्य के लिए सिर्फ एक टेक्स्ट काफी नहीं... 💝🌟";
+                return "साधारण मैसेज? कभी नहीं! हमने कुछ खास बनाया है: birthday-bloom.vercel.app 🎯✨";
+            return "सिर्फ एक साधारण टेक्स्ट कभी काफी नहीं हो सकता... अपना सरপ্রाइज खोलें: birthday-bloom.vercel.app 💝🌟";
         }
 
         // English Default
         if (relationship === "partner")
-            return isMale ? "To the man who holds my heart... ❤️" : isFemale ? "To the woman of my dreams... ❤️" : "To the soul who completes me... ❤️";
+            return "A simple text could never capture how special you are... Open your surprise: birthday-bloom.vercel.app 🎁✨";
         if (relationship === "friend")
-            return "Wait, a boring text? That's not us! 😂🚀";
+            return "Wait, a boring text? That's not us! Open your surprise: birthday-bloom.vercel.app 🚀🔥";
         if (relationship === "brother" || relationship === "sibling")
-            return "A basic text for the best brother in the universe? Not a chance! 🏆";
+            return "A basic text for the best brother in the universe? Open your surprise: birthday-bloom.vercel.app 🏆✨";
         if (relationship === "sister")
-            return "A plain text for my sweetest sister? You deserve a whole universe! 🌸✨";
+            return "A plain text for my sweetest sister? Open your surprise: birthday-bloom.vercel.app 🌸✨";
         if (relationship === "father")
-            return "A mere text could never thank you enough for being my hero... 🌟💪";
+            return "A mere text could never thank you enough... Open your surprise: birthday-bloom.vercel.app 🌟💪";
         if (relationship === "mother")
-            return "A simple message could never express how much your warmth means to me... 💐💛";
+            return "A simple message could never express our love... Open your surprise: birthday-bloom.vercel.app 💐💛";
         if (relationship === "mentor" || relationship === "colleague")
-            return "A regular birthday ping? For our greatest inspiration? We built something better! 🎯✨";
-        return "A simple text could never capture how much you mean to our family... 💝🌟";
-    }, [relationship, isMale, isFemale, isHindi, isBengali, isFrench]);
+            return "A regular ping? We built something better! Open your surprise: birthday-bloom.vercel.app 🎯✨";
+        return "A simple text could never capture how much you mean to us... Open your surprise: birthday-bloom.vercel.app 💝🌟";
+    }, [relationship, isHindi, isBengali, isFrench]);
 
     const triggerHeartBurst = useCallback((clientX?: number, clientY?: number) => {
         playPop();
@@ -463,22 +457,17 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center select-none bg-black/75 sm:backdrop-blur-sm p-2 sm:p-6 overflow-hidden"
+            className="fixed inset-0 z-50 flex items-center justify-center select-none bg-black/80 sm:backdrop-blur-sm p-2 sm:p-6 overflow-hidden"
             style={{
                 perspective: "1400px",
             }}
         >
-            {/* ── Website Theme-Harmonious Ambient Backdrop (Preserves Crimson/Gold/Rose Glow) ── */}
+            {/* ── Seamless Atmospheric Dark Romantic Backdrop ── */}
             <div
-                className="absolute inset-0 pointer-events-none opacity-85 transition-opacity duration-1000"
+                className="absolute inset-0 pointer-events-none opacity-95 transition-opacity duration-1000"
                 style={{
-                    background: `radial-gradient(circle at 50% 45%, ${primaryColor}33 0%, rgba(131, 58, 180, 0.22) 42%, rgba(12, 4, 10, 0.72) 100%)`,
-                }}
-            />
-            <div
-                className="absolute w-[340px] h-[580px] sm:w-[500px] sm:h-[760px] rounded-full opacity-35 pointer-events-none"
-                style={{
-                    background: `radial-gradient(circle, ${primaryColor}66 0%, rgba(252,176,69,0.28) 45%, transparent 70%)`,
+                    background:
+                        "radial-gradient(ellipse at 50% 50%, rgba(26, 6, 22, 0.8) 0%, rgba(13, 3, 11, 0.95) 60%, #0A0209 100%)",
                 }}
             />
 
@@ -499,7 +488,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                     transformStyle: "preserve-3d",
                     transform: "perspective(1400px) rotateX(1.8deg) rotateY(-1.2deg)",
                 }}
-                className="relative w-[92vw] max-w-[362px] h-[83dvh] max-h-[720px] sm:max-w-[388px] sm:h-[87vh] sm:max-h-[790px] mb-8 sm:mb-2 p-[4px] sm:p-[5px] rounded-[44px] sm:rounded-[50px] bg-gradient-to-br from-[#7c6270] via-[#2b2228] to-[#523b47] shadow-[0_30px_80px_rgba(0,0,0,0.8),0_0_45px_rgba(255,42,109,0.18),inset_0_1px_2px_rgba(255,255,255,0.45)] flex flex-col will-change-transform animate-subtle-float"
+                className="relative w-[92vw] max-w-[362px] h-[83dvh] max-h-[720px] sm:max-w-[388px] sm:h-[87vh] sm:max-h-[790px] mb-8 sm:mb-2 p-[4px] sm:p-[5px] rounded-[44px] sm:rounded-[50px] bg-gradient-to-br from-[#2D242B] via-[#171115] to-[#251D23] shadow-[0_30px_90px_rgba(0,0,0,0.92),0_0_35px_rgba(255,42,109,0.12),inset_0_1px_2px_rgba(255,255,255,0.35)] flex flex-col will-change-transform animate-subtle-float"
             >
                 {/* 3D Parallax Floating Template Emoji Orbs Around Smartphone Bezel */}
                 <button
@@ -566,7 +555,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                 <div
                     className="relative w-full h-full flex-1 flex flex-col rounded-[40px] sm:rounded-[45px] overflow-hidden border border-white/10 font-sans normal-case tracking-normal"
                     style={{
-                        background: "#12040E",
+                        background: "#0C020A",
                         fontFamily:
                             "'Inter', 'Outfit', -apple-system, BlinkMacSystemFont, 'Noto Sans Bengali', 'Noto Sans Devanagari', sans-serif",
                     }}
@@ -576,26 +565,22 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                         className="pointer-events-none absolute inset-0 z-40"
                         style={{
                             background:
-                                "linear-gradient(125deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.015) 30%, transparent 48%)",
+                                "linear-gradient(125deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 30%, transparent 48%)",
                         }}
                     />
 
-                    {/* ── Modern Instagram "Midnight Rose" Ambient Mesh Wallpaper ── */}
+                    {/* ── Seamless Color-Harmonized OLED Wallpaper ── */}
                     <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
                         <div
                             className="absolute inset-0"
                             style={{
                                 background:
-                                    "radial-gradient(ellipse at 50% 0%, #310A20 0%, #1B0515 52%, #0F030C 100%)",
+                                    "radial-gradient(ellipse at 50% 0%, #1D0618 0%, #10030E 48%, #090208 100%)",
                             }}
                         />
                         <div
-                            className="absolute top-[6%] -left-24 w-80 h-80 rounded-full opacity-35"
-                            style={{ background: `radial-gradient(circle, ${primaryColor} 0%, transparent 70%)` }}
-                        />
-                        <div
-                            className="absolute bottom-[18%] -right-24 w-80 h-80 rounded-full opacity-30"
-                            style={{ background: "radial-gradient(circle, #A855F7 0%, transparent 70%)" }}
+                            className="absolute top-0 inset-x-0 h-64 opacity-25"
+                            style={{ background: `radial-gradient(circle at 50% 0%, ${primaryColor}4D 0%, transparent 75%)` }}
                         />
                     </div>
 
@@ -632,7 +617,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                     </div>
 
                     {/* ── Instagram Direct Message Header Bar ── */}
-                    <header className="relative z-20 px-2.5 py-1.5 sm:px-3.5 sm:py-2 flex items-center justify-between border-b border-white/10 bg-[#1A0717]/95 sm:backdrop-blur-md shrink-0">
+                    <header className="relative z-20 px-2.5 py-1.5 sm:px-3.5 sm:py-2 flex items-center justify-between border-b border-white/8 bg-[#130311]/95 sm:backdrop-blur-md shrink-0">
                         <div className="flex items-center gap-2">
                             <button
                                 type="button"
@@ -834,7 +819,23 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                     >
                                         {/* Subtle top gloss highlight */}
                                         <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
-                                        {sentMessageText}
+                                        <div className="flex flex-col gap-1.5 text-left">
+                                            <span>{sentMessageText}</span>
+                                            {/* Rich Instagram DM Link Preview Card */}
+                                            <div className="mt-1 p-2 rounded-xl bg-black/40 border border-white/20 backdrop-blur-md flex items-center gap-2.5 text-left shadow-md">
+                                                <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-rose-500 to-amber-400 flex items-center justify-center text-sm shrink-0 shadow-inner">
+                                                    🎁
+                                                </div>
+                                                <div className="flex flex-col min-w-0">
+                                                    <span className="text-[11px] font-semibold text-white/95 truncate">
+                                                        {name ? `${name}'s Birthday Celebration` : "Birthday Celebration"}
+                                                    </span>
+                                                    <span className="text-[9px] text-amber-200/90 truncate flex items-center gap-1 font-medium">
+                                                        birthday-bloom.vercel.app ↗
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         {/* Instagram DM Center Double-Tap Pop Heart */}
                                         <AnimatePresence>
@@ -918,7 +919,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                     </main>
 
                     {/* ── Non-Bloating Instagram Input Bar ── */}
-                    <div className="relative z-20 px-2.5 py-2 bg-[#1A0717]/98 sm:backdrop-blur-md border-t border-white/10 shrink-0">
+                    <div className="relative z-20 px-2.5 py-2 bg-[#130311]/98 sm:backdrop-blur-md border-t border-white/8 shrink-0">
                         <div className="flex items-end gap-1.5">
                             {/* Blue Camera Button */}
                             <button
@@ -930,7 +931,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                             </button>
 
                             {/* Sleek Rounded-[20px] Input Box (Never bloats into a clipping oval) */}
-                            <div className="flex-1 rounded-[20px] px-3.5 py-2 bg-[#26262B] border border-white/12 flex items-center justify-between min-h-[38px] max-h-[84px] overflow-y-auto transition-all">
+                            <div className="flex-1 rounded-[20px] px-3.5 py-2 bg-[#231A21] border border-white/10 flex items-center justify-between min-h-[38px] max-h-[84px] overflow-y-auto transition-all">
                                 <div className="flex-1 min-w-0 pr-1">
                                     {typedInputText ? (
                                         <span className="block text-white text-[13px] sm:text-[14px] font-normal normal-case tracking-normal leading-snug break-words">
@@ -1012,7 +1013,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                 animate={{ height: "auto", opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
                                 transition={{ duration: 0.28, ease: "easeInOut" }}
-                                className="relative z-20 bg-[#18181D]/98 sm:backdrop-blur-md border-t border-white/10 px-1.5 pt-1.5 pb-1.5 select-none shrink-0 overflow-hidden"
+                                className="relative z-20 bg-[#120310]/98 sm:backdrop-blur-md border-t border-white/8 px-1.5 pt-1.5 pb-1.5 select-none shrink-0 overflow-hidden"
                             >
                                 {/* Live iOS Predictive Text Suggestion Bar */}
                                 <div
@@ -1075,7 +1076,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                             className={`w-9 sm:w-10 h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-xs font-semibold transition-all duration-75 shrink-0 ${
                                                 isShiftActive
                                                     ? "bg-white text-black scale-[0.92] shadow-inner"
-                                                    : "bg-[#2C2C35] text-white/90 shadow-[0_1.5px_0_#000000] border-t border-white/10"
+                                                    : "bg-[#251B23] text-white/90 shadow-[0_1.5px_0_#000000] border-t border-white/10"
                                             }`}
                                         >
                                             ⇧
@@ -1103,7 +1104,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                             className={`w-9 sm:w-10 h-8 sm:h-9 rounded-[6px] flex items-center justify-center transition-all duration-75 shrink-0 ${
                                                 activeKey === "backspace"
                                                     ? "bg-[#121217] text-rose-400 scale-[0.86] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/70"
-                                                    : "bg-[#2C2C35] text-white/90 shadow-[0_1.5px_0_#000000] border-t border-white/10"
+                                                    : "bg-[#251B23] text-white/90 shadow-[0_1.5px_0_#000000] border-t border-white/10"
                                             }`}
                                         >
                                             <Delete size={15} />
@@ -1120,7 +1121,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                             className={`w-10 sm:w-11 h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[11px] font-semibold transition-all duration-75 shrink-0 ${
                                                 activeKey === "123"
                                                     ? "bg-[#121217] text-rose-300 scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
-                                                    : "bg-[#2C2C35] text-white/90 shadow-[0_1.5px_0_#000000] border-t border-white/10"
+                                                    : "bg-[#251B23] text-white/90 shadow-[0_1.5px_0_#000000] border-t border-white/10"
                                             }`}
                                         >
                                             123
@@ -1135,7 +1136,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                             className={`w-9 sm:w-10 h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-sm transition-all duration-75 shrink-0 ${
                                                 activeKey === "emoji"
                                                     ? "bg-[#121217] scale-[0.88] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/60"
-                                                    : "bg-[#2C2C35] text-white/90 shadow-[0_1.5px_0_#000000] border-t border-white/10"
+                                                    : "bg-[#251B23] text-white/90 shadow-[0_1.5px_0_#000000] border-t border-white/10"
                                             }`}
                                         >
                                             😊
@@ -1151,7 +1152,7 @@ export const FakeChatScene = ({ onComplete }: FakeChatSceneProps) => {
                                             className={`flex-1 h-8 sm:h-9 rounded-[6px] flex items-center justify-center text-[12px] font-medium tracking-normal normal-case transition-all duration-75 ${
                                                 activeKey === "space"
                                                     ? "bg-[#121217] text-rose-200 scale-[0.95] translate-y-[1.5px] brightness-75 shadow-inner ring-1 ring-rose-500/50"
-                                                    : "bg-[#3A3A44] text-white/85 shadow-[0_1.5px_0_#000000] border-t border-white/15"
+                                                    : "bg-[#332530] text-white/85 shadow-[0_1.5px_0_#000000] border-t border-white/12"
                                             }`}
                                         >
                                             space
