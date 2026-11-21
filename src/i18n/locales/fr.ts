@@ -107,9 +107,9 @@ export const fr: TranslationSchema = {
         heyLove: "Coucou mon amour 💕",
         heyFriend: "Salut l'ami(e) ! 🎉",
         heyGeneral: "Bonjour à une personne merveilleuse ✨",
-        stayedUpLate: "J'ai passé la nuit à préparer quelque chose d'exceptionnel...",
-        prepareEpic: "Prépare-toi pour une surprise grandiose...",
-        specialSurpriseMsg: "Voici une surprise créée spécialement pour toi !",
+        stayedUpLate: "Tu te souviens de ce qu'il y a de spécial aujourd'hui ? 🥺🎂",
+        prepareEpic: "Tu sais quel jour on est aujourd'hui ?! 👀🔥",
+        specialSurpriseMsg: "Tu te souviens de ce qu'il y a de spécial aujourd'hui ? 🥺🎂",
         deservesMoreThanWords: "Parce qu'une personne comme toi mérite bien plus que de simples mots...",
         highLegendLevel: "Un niveau de légende qui mérite une fête inoubliable !",
         moreMagicalSurprise: "Une expérience magique qui commence maintenant !"
